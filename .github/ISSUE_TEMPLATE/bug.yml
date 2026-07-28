@@ -1,0 +1,38 @@
+name: Bug
+description: Signaler un comportement incorrect de La Grange
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Décrire le comportement observé et attendu.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Étapes de reproduction
+      placeholder: "1. Ouvrir…\n2. Synchroniser…\n3. Constater…"
+    validations:
+      required: true
+  - type: dropdown
+    id: context
+    attributes:
+      label: Contexte
+      options:
+        - En ligne
+        - Hors ligne
+        - Installation PWA
+        - Après mise à jour
+        - Autre
+  - type: input
+    id: device
+    attributes:
+      label: Appareil et navigateur
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Captures ou erreurs
+      description: Ne joindre aucun token ni donnée sensible.
