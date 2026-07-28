@@ -36,3 +36,9 @@ Aucun appel GitHub, aucune vraie carte projet et aucun asset final.
 ## Revue particulière
 
 Vérifier le chemin des assets sous `/La-Grange/`, la navigation après rechargement et l’absence d’une dépendance disproportionnée.
+
+## État de réalisation
+
+Phase implémentée le 28 juillet 2026. Le socle utilise un service worker natif afin de ne pas ajouter une dépendance PWA : il met en cache le shell sous `/La-Grange/`, tandis que les futures données applicatives resteront gérées par IndexedDB conformément à l’architecture.
+
+Les vues livrées sont volontairement des placeholders accessibles. Aucun appel GitHub, projet fictif ou comportement des phases suivantes n’est inclus.

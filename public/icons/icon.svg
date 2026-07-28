@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="La Grange">
+  <rect width="512" height="512" rx="96" fill="#15100b"/>
+  <path d="M96 236 256 96l160 140v180H96Z" fill="#2a1d13" stroke="#d69a32" stroke-width="20" stroke-linejoin="round"/>
+  <path d="M188 416V268h136v148M188 324h136" fill="none" stroke="#ead8b5" stroke-width="18"/>
+  <circle cx="256" cy="190" r="25" fill="#d69a32"/>
+</svg>

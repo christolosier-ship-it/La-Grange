@@ -1,0 +1,15 @@
+{
+  "name": "La Grange — L’atelier où vivent mes projets",
+  "short_name": "La Grange",
+  "description": "Un hub personnel en lecture seule pour découvrir des projets publics.",
+  "lang": "fr",
+  "start_url": "./#/",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#15100b",
+  "theme_color": "#15100b",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

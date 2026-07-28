@@ -30,6 +30,22 @@ La Grange n’est ni une GMAO du code, ni un clone de GitHub, ni un outil de pil
 - service worker et manifest PWA ;
 - configuration éditoriale centralisée dans `public/data/project-overrides.json`.
 
+## Développement local
+
+Prérequis : Node.js 20.19 ou plus récent et npm.
+
+```bash
+npm ci
+npm run dev
+npm run typecheck
+npm run lint
+npm test
+npm run build
+npm run preview
+```
+
+Le service worker est enregistré uniquement par le build de production. Pour repartir d’un environnement propre, supprimer le service worker et les données du site depuis les outils de développement du navigateur.
+
 ## Documentation
 
 Le point d’entrée documentaire est [`docs/INDEX.md`](docs/INDEX.md).
@@ -46,4 +62,4 @@ Documents majeurs :
 
 ## État
 
-Le projet est actuellement en phase de conception. Aucune implémentation fonctionnelle n’est encore engagée.
+La phase 1 est implémentée : le socle Vite, le shell responsive, la navigation hash et les fondations PWA sont en place. L’intégration des données GitHub appartient à la phase 2.
