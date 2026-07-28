@@ -34,7 +34,9 @@ export function createRouter(shell: HTMLElement, windowObject: Window = window) 
       windowObject.addEventListener('hashchange', render);
       render();
     },
-    stop: (): void => windowObject.removeEventListener('hashchange', render),
+    stop: (): void => {
+      windowObject.removeEventListener('hashchange', render);
+    },
     render,
   };
 }
