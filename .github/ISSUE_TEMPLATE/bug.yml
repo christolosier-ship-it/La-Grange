@@ -1,5 +1,5 @@
 name: Bug
-about: Signaler un comportement incorrect de La Grange
+description: Signaler un comportement incorrect de La Grange
 title: "[Bug] "
 labels: ["bug"]
 body:
