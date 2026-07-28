@@ -1,0 +1,38 @@
+name: Évolution
+about: Proposer une amélioration sans élargir silencieusement le MVP
+title: "[Évolution] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: Besoin utilisateur
+      description: Quel problème concret cette évolution résout-elle ?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposition
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Impact pressenti
+      options:
+        - Interface uniquement
+        - Modèle de données
+        - API GitHub
+        - Cache ou PWA
+        - Sécurité ou authentification
+        - Inconnu
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Vérifications
+      options:
+        - label: Cette proposition ne transforme pas La Grange en outil de pilotage.
+          required: true
+        - label: J’accepte qu’elle soit reportée après le MVP.
+          required: true
