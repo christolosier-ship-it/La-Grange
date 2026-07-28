@@ -8,7 +8,9 @@ export function registerServiceWorker(): void {
       registration.addEventListener('updatefound', () => {
         const worker = registration.installing;
         worker?.addEventListener('statechange', () => {
-          if (worker.state === 'installed' && navigator.serviceWorker.controller) showUpdateNotice(worker);
+          if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+            showUpdateNotice(worker);
+          }
         });
       });
     }).catch(() => {
@@ -18,11 +20,26 @@ export function registerServiceWorker(): void {
 }
 
 function showUpdateNotice(worker: ServiceWorker): void {
+  if (document.querySelector('.update-notice')) return;
+
   const notice = document.createElement('div');
   notice.className = 'update-notice';
   notice.setAttribute('role', 'status');
-  notice.innerHTML = '<span>Une nouvelle version de l’atelier est prête.</span><button type="button">Recharger</button>';
-  notice.querySelector('button')?.addEventListener('click', () => worker.postMessage({ type: 'SKIP_WAITING' }));
+
+  const message = document.createElement('span');
+  message.textContent = 'Une nouvelle version de l’atelier est prête.';
+
+  const reloadButton = document.createElement('button');
+  reloadButton.type = 'button';
+  reloadButton.textContent = 'Recharger';
+  reloadButton.addEventListener('click', () => {
+    worker.postMessage({ type: 'SKIP_WAITING' });
+  });
+
+  notice.append(message, reloadButton);
   document.body.append(notice);
-  navigator.serviceWorker.addEventListener('controllerchange', () => window.location.reload(), { once: true });
+
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  }, { once: true });
 }
