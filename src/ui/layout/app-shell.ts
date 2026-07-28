@@ -1,3 +1,5 @@
+import type { RouteName } from '../../app/routes';
+
 const NAVIGATION = [
   { href: '#/', label: 'Vue d’ensemble', route: 'dashboard' },
   { href: '#/projects', label: 'Projets', route: 'projects' },
@@ -15,18 +17,25 @@ export function createAppShell(): HTMLElement {
     <aside class="workbench-note" aria-label="État de l’atelier"><p><strong>Socle prêt</strong></p><p>Les outils sont rangés. L’inventaire arrivera à la prochaine phase.</p></aside>
     <footer><small>La Grange · lecture seule</small></footer>`;
 
-  const list = shell.querySelector('ul')!;
+  const list = shell.querySelector('ul');
+  if (!list) throw new Error('La navigation principale est introuvable.');
+
   for (const item of NAVIGATION) {
     const li = document.createElement('li');
-    li.innerHTML = `<a href="${item.href}" data-route="${item.route}">${item.label}</a>`;
+    const link = document.createElement('a');
+    link.href = item.href;
+    link.dataset.route = item.route;
+    link.textContent = item.label;
+    li.append(link);
     list.append(li);
   }
   return shell;
 }
 
-export function updateActiveNavigation(shell: HTMLElement, routeName: string): void {
+export function updateActiveNavigation(shell: HTMLElement, routeName: RouteName): void {
+  const activeRoute = routeName === 'project' ? 'projects' : routeName;
   shell.querySelectorAll<HTMLAnchorElement>('[data-route]').forEach((link) => {
-    if (link.dataset.route === routeName) link.setAttribute('aria-current', 'page');
+    if (link.dataset.route === activeRoute) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   });
 }

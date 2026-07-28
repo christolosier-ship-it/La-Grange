@@ -3,8 +3,12 @@ import { renderView } from '../features/views';
 import { updateActiveNavigation } from '../ui/layout/app-shell';
 
 const TITLES = {
-  dashboard: 'Vue d’ensemble', projects: 'Tous les projets', project: 'Projet',
-  activity: 'Activité', settings: 'Paramètres', 'not-found': 'Page introuvable',
+  dashboard: 'Vue d’ensemble',
+  projects: 'Tous les projets',
+  project: 'Projet',
+  activity: 'Activité',
+  settings: 'Paramètres',
+  'not-found': 'Page introuvable',
 } as const;
 
 export function createRouter(shell: HTMLElement, windowObject: Window = window) {
@@ -16,15 +20,23 @@ export function createRouter(shell: HTMLElement, windowObject: Window = window) 
     const view = renderView(route);
     main.replaceChildren(view);
     updateActiveNavigation(shell, route.name);
-    const detail = route.name === 'project' ? ` · ${route.params.repositoryName ?? ''}` : '';
-    document.title = `${TITLES[route.name]}${detail} · La Grange`;
-    main.focus({ preventScroll: true });
+
+    const repositoryName = route.name === 'project' ? route.params.repositoryName : undefined;
+    document.title = repositoryName
+      ? `${repositoryName} · La Grange`
+      : `${TITLES[route.name]} · La Grange`;
+
     view.querySelector<HTMLHeadingElement>('h1')?.focus({ preventScroll: true });
   };
 
   return {
-    start: (): void => { windowObject.addEventListener('hashchange', render); render(); },
-    stop: (): void => windowObject.removeEventListener('hashchange', render),
+    start: (): void => {
+      windowObject.addEventListener('hashchange', render);
+      render();
+    },
+    stop: (): void => {
+      windowObject.removeEventListener('hashchange', render);
+    },
     render,
   };
 }

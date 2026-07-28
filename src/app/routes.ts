@@ -16,22 +16,29 @@ const STATIC_ROUTES = new Map<string, RouteName>([
 export function matchRoute(hash: string): RouteMatch {
   const fragment = hash.replace(/^#/, '') || '/';
   const [rawPath = '/', rawQuery = ''] = fragment.split('?', 2);
-  const path = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+  const path = normalizePath(rawPath);
+  const query = new URLSearchParams(rawQuery);
   const staticName = STATIC_ROUTES.get(path);
 
-  if (staticName) return { name: staticName, params: {}, query: new URLSearchParams(rawQuery) };
+  if (staticName) return { name: staticName, params: {}, query };
 
   const projectMatch = /^\/project\/([^/]+)$/.exec(path);
   if (projectMatch?.[1]) {
     try {
       const repositoryName = decodeURIComponent(projectMatch[1]);
-      if (repositoryName.trim()) {
-        return { name: 'project', params: { repositoryName }, query: new URLSearchParams(rawQuery) };
+      if (repositoryName.trim() && !repositoryName.includes('/')) {
+        return { name: 'project', params: { repositoryName }, query };
       }
     } catch {
       // A malformed URL is treated as an unknown route.
     }
   }
 
-  return { name: 'not-found', params: {}, query: new URLSearchParams(rawQuery) };
+  return { name: 'not-found', params: {}, query };
+}
+
+function normalizePath(rawPath: string): string {
+  const prefixedPath = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+  const compactPath = prefixedPath.replace(/\/{2,}/g, '/');
+  return compactPath.length > 1 ? compactPath.replace(/\/$/, '') : compactPath;
 }

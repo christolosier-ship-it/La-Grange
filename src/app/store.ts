@@ -19,11 +19,15 @@ export function createStore(initialState: AppState = INITIAL_STATE) {
     getState: (): AppState => state,
     setCatalogue: (catalogue: CatalogueState): void => {
       state = { ...state, catalogue };
-      listeners.forEach((listener) => listener(state));
+      listeners.forEach((listener) => {
+        listener(state);
+      });
     },
     subscribe: (listener: Listener): (() => void) => {
       listeners.add(listener);
-      return () => listeners.delete(listener);
+      return () => {
+        listeners.delete(listener);
+      };
     },
   };
 }
