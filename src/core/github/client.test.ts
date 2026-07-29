@@ -23,7 +23,7 @@ function repository(id: number, name = `repo-${String(id)}`): GitHubRepositoryDt
 }
 
 describe('GitHubClient', () => {
-  it('paginates, sends headers only where appropriate and removes duplicates', async () => {
+  it('paginates, sends browser-safe headers and removes duplicates', async () => {
     const fetcher = vi.fn<typeof fetch>();
     fetcher
       .mockResolvedValueOnce(new Response(JSON.stringify([repository(1)]), {
@@ -42,7 +42,9 @@ describe('GitHubClient', () => {
     const secondHeaders = new Headers(fetcher.mock.calls[1]?.[1]?.headers);
     expect(firstHeaders.get('Accept')).toBe('application/vnd.github+json');
     expect(firstHeaders.get('If-None-Match')).toBe('old');
+    expect(firstHeaders.get('X-GitHub-Api-Version')).toBeNull();
     expect(secondHeaders.get('If-None-Match')).toBeNull();
+    expect(secondHeaders.get('X-GitHub-Api-Version')).toBeNull();
   });
 
   it('keeps the cache on 304', async () => {
@@ -64,7 +66,7 @@ describe('GitHubClient', () => {
 
     await expect(
       new GitHubClient(failed, 'https://api.test').fetchAllRepositories('me'),
-    ).rejects.toMatchObject({ code: 'network' });
+    ).rejects.toMatchObject({ code: 'network', userMessage: 'GitHub a répondu avec le statut 500.' });
 
     const limited = vi.fn<typeof fetch>();
     limited.mockResolvedValue(new Response(null, {
@@ -74,6 +76,18 @@ describe('GitHubClient', () => {
     await expect(
       new GitHubClient(limited).fetchAllRepositories('me'),
     ).rejects.toMatchObject({ code: 'rate-limit', recoverable: true });
+  });
+
+  it('reports browser fetch failures without hiding the technical cause', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new TypeError('Load failed'));
+
+    await expect(
+      new GitHubClient(fetcher).fetchAllRepositories('me'),
+    ).rejects.toMatchObject({
+      code: 'network',
+      message: 'GitHub fetch failed: Load failed',
+      userMessage: 'Connexion à GitHub impossible depuis le navigateur.',
+    });
   });
 
   it('rejects invalid repository data and untrusted pagination links', async () => {
