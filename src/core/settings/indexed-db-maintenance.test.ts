@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { SyncSnapshot } from '../projects/model';
-import { profileProjectIds } from './indexed-db-maintenance';
+import { profileDetailKeys, profileProjectIds } from './indexed-db-maintenance';
 
 const snapshot: SyncSnapshot = {
   schemaVersion: 1,
@@ -58,5 +58,11 @@ describe('profile cache reset plan', () => {
   it('returns only stable project ids from the selected profile snapshot', () => {
     expect(profileProjectIds(snapshot)).toEqual([7, 42]);
     expect(profileProjectIds(undefined)).toEqual([]);
+  });
+
+  it('deletes and counts only details that exist for the selected profile', () => {
+    expect(profileDetailKeys([7, 42], [7, 99, 100, '42'])).toEqual([7]);
+    expect(profileDetailKeys([7, 42], [7, 42, 99])).toEqual([7, 42]);
+    expect(profileDetailKeys([], [7, 42])).toEqual([]);
   });
 });
