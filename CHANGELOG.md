@@ -26,7 +26,10 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - fiches projets responsive avec illustration, actions sûres, métadonnées, topics et retour contextualisé ;
 - détails GitHub chargés uniquement à la demande pour le dépôt ouvert : trois commits, dernière release et existence du README ;
 - cache IndexedDB séparé de 45 minutes pour les détails projets et alias locaux des dépôts renommés ;
-- tests unitaires, d’intégration et smoke test réel couvrant le catalogue, les fiches et les détails ciblés.
+- tests unitaires, d’intégration et smoke test réel couvrant le catalogue, les fiches et les détails ciblés ;
+- journal d’activité local de phase 5A, regroupé par semaine et par jour à partir des changements réellement détectés ;
+- lecture IndexedDB des événements isolée par utilisateur, validée profondément et résistante aux entrées locales corrompues ;
+- états accessibles du journal pour chargement, vide, hors ligne, erreur de cache et données partiellement invalides.
 
 ### Corrigé
 
