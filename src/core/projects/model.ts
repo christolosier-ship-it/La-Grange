@@ -46,6 +46,7 @@ export interface SyncSnapshot {
   readonly syncedAt: string;
   readonly etag?: string;
   readonly overridesSignature?: string;
+  readonly aliases?: Readonly<Record<string, number>>;
 }
 
 export interface ActivityEvent {
