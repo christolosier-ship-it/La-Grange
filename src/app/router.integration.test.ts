@@ -95,6 +95,23 @@ describe('router integration', () => {
     router.stop();
   });
 
+  it('guards project route callbacks against synchronous store re-entry', () => {
+    window.location.hash = '#/project/Luma';
+    const store = storeWithSnapshot();
+    const routed = vi.fn((routedProject: Project) => {
+      store.setProjectDetail({ projectId: routedProject.id, status: 'loading-cache' });
+    });
+    const shell = createAppShell();
+    document.body.append(shell);
+    const router = createRouter(shell, window, store, { onProjectRoute: routed });
+
+    router.start();
+
+    expect(routed).toHaveBeenCalledOnce();
+    expect(store.getState().projectDetails[1]?.status).toBe('loading-cache');
+    router.stop();
+  });
+
   it('activates a direct project route when its snapshot arrives after startup', () => {
     window.location.hash = '#/project/Luma';
     const store = createStore();
@@ -135,6 +152,31 @@ describe('router integration', () => {
     expect(leave).toHaveBeenCalledWith(1);
     router.stop();
     expect(leave).toHaveBeenCalledOnce();
+  });
+
+  it('relays focus to loading status and restores it to the enabled detail button', () => {
+    window.location.hash = '#/project/Luma';
+    const store = storeWithSnapshot();
+    const shell = createAppShell();
+    document.body.append(shell);
+    const router = createRouter(shell, window, store);
+    router.start();
+
+    const initialButton = shell.querySelector<HTMLButtonElement>('[data-focus-key="project-details-1"]');
+    expect(initialButton).not.toBeNull();
+    initialButton?.focus();
+    expect(document.activeElement).toBe(initialButton);
+
+    store.setProjectDetail({ projectId: 1, status: 'loading' });
+    const loadingStatus = shell.querySelector<HTMLElement>('[role="status"][data-focus-key="project-details-1"]');
+    expect(document.activeElement).toBe(loadingStatus);
+    expect(loadingStatus?.textContent).toContain('Chargement des détails GitHub');
+
+    store.setProjectDetail({ projectId: 1, status: 'ready' });
+    const restoredButton = shell.querySelector<HTMLButtonElement>('[data-focus-key="project-details-1"]');
+    expect(restoredButton?.disabled).toBe(false);
+    expect(document.activeElement).toBe(restoredButton);
+    router.stop();
   });
 
   it('hydrates catalogue state from the hash and preserves the search focus on store updates', () => {

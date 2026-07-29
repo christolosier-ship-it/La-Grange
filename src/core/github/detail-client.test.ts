@@ -71,7 +71,7 @@ describe('GitHubDetailClient', () => {
     });
   });
 
-  it('surfaces rate-limit reset information without continuing the request chain', async () => {
+  it('surfaces primary rate-limit reset information without continuing the request chain', async () => {
     const reset = String(Math.floor(Date.now() / 1_000) + 600);
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(response(undefined, 403, {
       'x-ratelimit-remaining': '0',
@@ -84,6 +84,22 @@ describe('GitHubDetailClient', () => {
     if (!(failure instanceof AppError)) throw new Error('Expected an AppError');
     expect(failure.code).toBe('rate-limit');
     expect(failure.retryAt).toEqual(expect.any(String));
+    expect(fetcher).toHaveBeenCalledOnce();
+  });
+
+  it('treats a secondary 403 with Retry-After as a rate limit', async () => {
+    const before = Date.now();
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(response(undefined, 403, {
+      'retry-after': '120',
+      'x-ratelimit-remaining': '42',
+    }));
+    const client = new GitHubDetailClient(fetcher);
+
+    const failure: unknown = await client.fetchProjectDetails('example', 'repo').catch((error: unknown) => error);
+    expect(failure).toBeInstanceOf(AppError);
+    if (!(failure instanceof AppError)) throw new Error('Expected an AppError');
+    expect(failure.code).toBe('rate-limit');
+    expect(Date.parse(failure.retryAt ?? '')).toBeGreaterThanOrEqual(before + 120_000);
     expect(fetcher).toHaveBeenCalledOnce();
   });
 

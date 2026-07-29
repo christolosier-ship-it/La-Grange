@@ -27,9 +27,11 @@ function scheduleRetryUnlock(
   const update = (): void => {
     const remaining = retryAt.getTime() - Date.now();
     if (remaining <= 0) {
+      const restoreFocus = document.activeElement === notice;
       button.disabled = false;
       button.textContent = readyLabel;
       notice.remove();
+      if (restoreFocus) button.focus({ preventScroll: true });
       return;
     }
     window.setTimeout(update, Math.min(remaining, MAX_TIMER_DELAY_MS));
@@ -115,6 +117,11 @@ function createReadme(details: ProjectDetails, offline: boolean): HTMLElement {
   return group;
 }
 
+function makeFocusRelay(element: HTMLElement, focusKey: string): void {
+  element.tabIndex = -1;
+  element.dataset.focusKey = focusKey;
+}
+
 export function createOnDemandDetails(
   project: Project,
   state: AppState,
@@ -130,6 +137,7 @@ export function createOnDemandDetails(
 
   const detail = state.projectDetails[project.id];
   const offline = state.sync.status === 'offline';
+  const focusKey = `project-details-${String(project.id)}`;
   if (detail?.details) {
     const grid = document.createElement('div');
     grid.className = 'project-detail__details-grid';
@@ -150,6 +158,7 @@ export function createOnDemandDetails(
     const status = document.createElement('p');
     status.setAttribute('role', 'status');
     status.textContent = 'Lecture des détails en réserve…';
+    makeFocusRelay(status, focusKey);
     section.append(status);
   } else if (detail?.status === 'loading') {
     const status = document.createElement('p');
@@ -157,6 +166,7 @@ export function createOnDemandDetails(
     status.textContent = detail.details
       ? 'Actualisation GitHub en cours. Les derniers détails connus restent visibles.'
       : 'Chargement des détails GitHub…';
+    makeFocusRelay(status, focusKey);
     section.append(status);
   } else if (detail?.status === 'offline' || offline) {
     const status = document.createElement('p');
@@ -191,6 +201,7 @@ export function createOnDemandDetails(
     retryNotice = document.createElement('p');
     retryNotice.className = 'project-detail__notice project-detail__retry';
     retryNotice.setAttribute('role', 'status');
+    makeFocusRelay(retryNotice, focusKey);
     const time = document.createElement('time');
     time.dateTime = retryAt.toISOString();
     time.textContent = formatFullDate(retryAt.toISOString());
@@ -206,7 +217,7 @@ export function createOnDemandDetails(
   button.type = 'button';
   button.className = 'project-detail__load';
   button.disabled = !canRequest;
-  button.dataset.focusKey = `project-details-${String(project.id)}`;
+  button.dataset.focusKey = focusKey;
   button.textContent = coolingDown ? 'Limite GitHub en cours' : readyLabel;
   button.addEventListener('click', () => {
     actions.onProjectDetailsRequest?.(project, Boolean(detail?.details));

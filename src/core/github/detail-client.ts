@@ -68,7 +68,13 @@ function retryAt(response: Response): string | undefined {
 function responseError(response: Response): AppError {
   const status = String(response.status);
   const rateLimited = response.status === 429
-    || (response.status === 403 && response.headers.get('x-ratelimit-remaining') === '0');
+    || (
+      response.status === 403
+      && (
+        response.headers.get('x-ratelimit-remaining') === '0'
+        || response.headers.has('retry-after')
+      )
+    );
   if (rateLimited) {
     return new AppError(
       'rate-limit',

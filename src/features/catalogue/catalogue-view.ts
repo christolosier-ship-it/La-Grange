@@ -1,4 +1,5 @@
 import type { AppState } from '../../app/store';
+import { AppError } from '../../core/errors/app-error';
 import type { Project } from '../../core/projects/model';
 import { createProjectCard } from '../../ui/components/project-card';
 import type { ViewActions } from '../view-actions';
@@ -14,6 +15,11 @@ import {
 function projectDetailHref(project: Project, catalogue: CatalogueState): string {
   const query = new URLSearchParams({ from: catalogueHash(catalogue) });
   return `#/project/${encodeURIComponent(project.repositoryName)}?${query}`;
+}
+
+function readableError(error: Error | undefined): string {
+  if (!error) return 'Aucun projet n’est encore disponible.';
+  return error instanceof AppError ? error.userMessage : error.message;
 }
 
 function createHeader(): HTMLElement {
@@ -43,7 +49,7 @@ function createUnavailableState(state: AppState | undefined): HTMLElement {
   } else if (state?.sync.status === 'offline') {
     message.textContent = 'Aucun inventaire local n’est disponible hors ligne pour le moment.';
   } else {
-    message.textContent = state?.sync.error?.message ?? 'Aucun projet n’est encore disponible.';
+    message.textContent = readableError(state?.sync.error);
   }
   panel.append(title, message);
   return panel;

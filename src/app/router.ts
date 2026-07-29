@@ -41,12 +41,21 @@ function captureFocus(main: HTMLElement): FocusSnapshot | undefined {
   return { key };
 }
 
+function canReceiveFocus(element: HTMLElement): boolean {
+  return !(element instanceof HTMLButtonElement
+    || element instanceof HTMLInputElement
+    || element instanceof HTMLSelectElement
+    || element instanceof HTMLTextAreaElement)
+    || !element.disabled;
+}
+
 function restoreFocus(main: HTMLElement, snapshot: FocusSnapshot | undefined): void {
   if (!snapshot) return;
-  const target = [...main.querySelectorAll<HTMLElement>('[data-focus-key]')].find((candidate) => (
+  const candidates = [...main.querySelectorAll<HTMLElement>('[data-focus-key]')].filter((candidate) => (
     candidate.dataset.focusKey === snapshot.key
   ));
-  if (!target) return;
+  const target = candidates.find(canReceiveFocus) ?? candidates[0];
+  if (!target || !canReceiveFocus(target)) return;
   target.focus({ preventScroll: true });
   if (
     (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)
@@ -130,10 +139,13 @@ export function createRouter(
       : `${TITLES[route.name]} · La Grange`;
 
     if (notifiedProject && (!project || project.id !== notifiedProject.id)) {
-      actions.onProjectRouteLeave?.(notifiedProject.id);
+      const leavingProject = notifiedProject;
       notifiedProject = undefined;
+      actions.onProjectRouteLeave?.(leavingProject.id);
     }
     if (project && (!notifiedProject || project.id !== notifiedProject.id)) {
+      // Mark the route before callbacks: they may synchronously publish to the store and re-enter render().
+      notifiedProject = project;
       if (actions.onProjectOpened) {
         const onProjectOpened = actions.onProjectOpened;
         invokeSafely(() => onProjectOpened(project.repositoryName));
@@ -142,7 +154,6 @@ export function createRouter(
         const onProjectRoute = actions.onProjectRoute;
         invokeSafely(() => onProjectRoute(project));
       }
-      notifiedProject = project;
     }
 
     if (focusHeading) view.querySelector<HTMLHeadingElement>('h1')?.focus({ preventScroll: true });
