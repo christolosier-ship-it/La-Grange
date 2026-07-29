@@ -63,6 +63,9 @@ export function startApplication(root: HTMLElement | null): void {
     onProjectRoute: async (project) => {
       await details.loadCached(project);
     },
+    onProjectRouteLeave: (projectId) => {
+      details.cancel(projectId);
+    },
     onProjectDetailsRequest: (project, force) => {
       void details.refresh(project, { online: navigator.onLine, force });
     },
@@ -90,6 +93,7 @@ export function startApplication(root: HTMLElement | null): void {
     synchronize(true);
   });
   window.addEventListener('offline', () => {
+    details.cancel();
     synchronize(true);
   });
   document.addEventListener('visibilitychange', () => {
