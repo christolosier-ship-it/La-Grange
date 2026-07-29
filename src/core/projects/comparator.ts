@@ -4,6 +4,7 @@ export interface Comparison {
   readonly projects: Project[];
   readonly events: ActivityEvent[];
   readonly removedIds: number[];
+  readonly aliases: Readonly<Record<string, number>>;
 }
 
 export function compareProjects(
@@ -11,10 +12,12 @@ export function compareProjects(
   incoming: readonly Project[],
   username: string,
   now: string,
+  previousAliases: Readonly<Record<string, number>> = {},
 ): Comparison {
   const oldById = new Map(previous?.map((project) => [project.id, project]));
   const firstImport = previous === undefined;
   const events: ActivityEvent[] = [];
+  const aliases: Record<string, number> = { ...previousAliases };
 
   const projects = incoming.map((project) => {
     const old = oldById.get(project.id);
@@ -30,6 +33,7 @@ export function compareProjects(
         occurredAt: now,
         detail: `${old.repositoryName} → ${project.repositoryName}`,
       });
+      aliases[old.repositoryName] = project.id;
     }
     if (old && !old.archived && project.archived) {
       events.push({ username, projectId: project.id, type: 'archived', occurredAt: now });
@@ -57,9 +61,15 @@ export function compareProjects(
     });
   }
 
+  for (const [name, projectId] of Object.entries(aliases)) {
+    if (!incomingIds.has(projectId)) delete aliases[name];
+  }
+  for (const project of projects) delete aliases[project.repositoryName];
+
   return {
     projects,
     events,
     removedIds: removed.map(({ id }) => id),
+    aliases,
   };
 }
