@@ -1,4 +1,11 @@
-export type ProjectCategory = 'applications' | 'experiments' | 'libraries' | 'other';
+export type ProjectCategory =
+  | 'games'
+  | 'applications'
+  | 'professional-tools'
+  | 'experiments'
+  | 'learning'
+  | 'uncategorized';
+
 export type ActivityState = 'active' | 'maintenance' | 'sleeping' | 'archived';
 
 export interface Project {
@@ -44,7 +51,7 @@ export interface ActivityEvent {
   readonly id?: number;
   readonly username: string;
   readonly projectId: number;
-  readonly type: 'added' | 'renamed' | 'archived' | 'app-url-changed';
+  readonly type: 'added' | 'renamed' | 'removed' | 'archived' | 'app-url-changed';
   readonly occurredAt: string;
   readonly detail?: string;
 }
