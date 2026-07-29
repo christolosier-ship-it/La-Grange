@@ -87,8 +87,9 @@ describe('GitHubClient', () => {
     untrusted.mockResolvedValue(new Response(JSON.stringify([repository(1)]), {
       headers: { link: '<https://evil.example/page/2>; rel="next"' },
     }));
-    const result = await new GitHubClient(untrusted).fetchAllRepositories('me');
-    expect(result.status === 'success' ? result.repositories : []).toHaveLength(1);
+    await expect(
+      new GitHubClient(untrusted).fetchAllRepositories('me'),
+    ).rejects.toMatchObject({ code: 'invalid-response' });
     expect(untrusted).toHaveBeenCalledOnce();
   });
 });
