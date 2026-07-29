@@ -75,6 +75,7 @@ export function createFavoriteSettings(state: AppState, actions: ViewActions): H
   const clear = document.createElement('button');
   clear.type = 'button';
   clear.className = 'settings-secondary-action';
+  clear.dataset.focusKey = 'settings-clear-favorites';
   clear.textContent = 'Retirer tous les favoris';
   clear.addEventListener('click', () => {
     openConfirmationModal(clear, {
@@ -109,7 +110,8 @@ export function createCacheSettings(state: AppState, actions: ViewActions): HTML
   addDefinition(list, 'Connexion', navigator.onLine ? 'En ligne' : 'Hors ligne');
   addDefinition(list, 'Synchronisation', state.sync.status);
   addDefinition(list, 'Dernière synchronisation complète', formatFullDate(state.sync.snapshot?.syncedAt));
-  addDefinition(list, 'Projets dans le snapshot', String(state.sync.snapshot?.projects.length ?? 0));
+  addDefinition(list, 'Projets affichés en mémoire', String(state.sync.snapshot?.projects.length ?? 0));
+  addDefinition(list, 'Projets dans le cache', String(cache?.projectCount ?? 0));
   addDefinition(list, 'IndexedDB', cache?.available ? 'Disponible' : state.settings.status === 'error' ? 'Indisponible' : 'Vérification en cours');
   addDefinition(list, 'Événements locaux', String(cache?.activityCount ?? 0));
   addDefinition(list, 'Entrées d’activité ignorées', String(cache?.invalidActivityCount ?? 0));
@@ -141,6 +143,7 @@ export function createCacheSettings(state: AppState, actions: ViewActions): HTML
   actionsRow.className = 'settings-actions';
   const refresh = document.createElement('button');
   refresh.type = 'button';
+  refresh.dataset.focusKey = 'settings-refresh-cache';
   refresh.textContent = 'Actualiser les informations';
   refresh.disabled = state.settings.status === 'loading';
   refresh.addEventListener('click', () => {
@@ -149,6 +152,7 @@ export function createCacheSettings(state: AppState, actions: ViewActions): HTML
   const reset = document.createElement('button');
   reset.type = 'button';
   reset.className = 'is-destructive';
+  reset.dataset.focusKey = 'settings-reset-cache';
   reset.textContent = 'Réinitialiser le cache de ce profil';
   reset.disabled = state.settings.status === 'loading';
   reset.addEventListener('click', () => {
@@ -184,6 +188,7 @@ export function createDiagnosticSettings(state: AppState): HTMLElement {
   preview.textContent = diagnostics;
   const copy = document.createElement('button');
   copy.type = 'button';
+  copy.dataset.focusKey = 'settings-copy-diagnostics';
   copy.textContent = 'Copier le diagnostic';
   const status = document.createElement('p');
   status.className = 'settings-copy-status';
