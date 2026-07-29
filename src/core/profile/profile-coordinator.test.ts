@@ -59,6 +59,7 @@ describe('ProfileCoordinator', () => {
     expect(current.synchronize).toHaveBeenCalledWith({ online: false });
     expect(current.loadActivity).toHaveBeenCalledTimes(2);
     expect(afterSynchronization).toHaveBeenCalledWith('first-user');
+    expect(factory).toHaveBeenCalledWith('first-user', 900_000, 0);
   });
 
   it('cancels the old session and clears memory before loading a distinct profile', async () => {
@@ -78,10 +79,12 @@ describe('ProfileCoordinator', () => {
     expect(first.cancelDetails).toHaveBeenCalledOnce();
     expect(first.resetActivity).toHaveBeenCalledOnce();
     expect(beforeProfileChange).toHaveBeenCalledWith('second-user');
-    expect(factory).toHaveBeenLastCalledWith('second-user', 1_800_000);
+    expect(factory).toHaveBeenLastCalledWith('second-user', 1_800_000, 1);
     expect(second.loadActivity).toHaveBeenNthCalledWith(1, 'second-user');
     expect(second.synchronize).toHaveBeenCalledWith({ online: true, force: true });
     expect(coordinator.username).toBe('second-user');
+    expect(coordinator.isCurrentGeneration(0)).toBe(false);
+    expect(coordinator.isCurrentGeneration(1)).toBe(true);
   });
 
   it('rebuilds freshness without clearing the active profile state', async () => {
@@ -101,6 +104,7 @@ describe('ProfileCoordinator', () => {
     expect(first.cancelDetails).toHaveBeenCalledOnce();
     expect(beforeProfileChange).not.toHaveBeenCalled();
     expect(rebuilt.synchronize).toHaveBeenCalledWith({ online: true });
+    expect(factory).toHaveBeenLastCalledWith('same-user', 3_600_000, 1);
   });
 
   it('rebuilds an empty session after cache reset without an automatic request', () => {
@@ -118,7 +122,7 @@ describe('ProfileCoordinator', () => {
     expect(first.cancelSync).toHaveBeenCalledOnce();
     expect(first.cancelDetails).toHaveBeenCalledOnce();
     expect(first.resetActivity).toHaveBeenCalledOnce();
-    expect(factory).toHaveBeenLastCalledWith('same-user', 1_800_000);
+    expect(factory).toHaveBeenLastCalledWith('same-user', 1_800_000, 1);
     expect(rebuilt.synchronize).not.toHaveBeenCalled();
     expect(rebuilt.loadActivity).not.toHaveBeenCalled();
     expect(coordinator.username).toBe('same-user');
