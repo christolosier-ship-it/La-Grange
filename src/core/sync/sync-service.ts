@@ -44,6 +44,18 @@ function isAbortError(error: unknown): boolean {
   return error instanceof Error && error.name === 'AbortError';
 }
 
+function newestSnapshot(
+  displayed: SyncSnapshot | undefined,
+  persisted: SyncSnapshot | undefined,
+): SyncSnapshot | undefined {
+  if (!displayed) return persisted;
+  if (!persisted) return displayed;
+
+  const displayedTime = Date.parse(displayed.syncedAt);
+  const persistedTime = Date.parse(persisted.syncedAt);
+  return persistedTime > displayedTime ? persisted : displayed;
+}
+
 export class SyncService {
   private active?: Promise<SyncState>;
   private controller?: AbortController;
@@ -135,7 +147,7 @@ export class SyncService {
 
     try {
       const persisted = await this.cache.getSnapshot(this.username);
-      if (persisted) cached = persisted;
+      cached = newestSnapshot(displayedSnapshot, persisted);
     } catch (error) {
       warning = normalizeError(error, 'Cache failure');
     }
