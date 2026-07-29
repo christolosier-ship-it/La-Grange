@@ -44,16 +44,22 @@ export function startApplication(root: HTMLElement | null): void {
   const cache = new IndexedDbCache();
   const maintenance = new CacheMaintenanceService(
     new IndexedDbMaintenance(),
-    (state) => store.setSettings(state),
+    (state) => {
+      store.setSettings(state);
+    },
   );
   const createSession = (username: string, freshnessMs: number): ProfileSession => {
-    const activity = new ActivityService(cache, (state) => store.setActivity(state));
+    const activity = new ActivityService(cache, (state) => {
+      store.setActivity(state);
+    });
     const sync = new SyncService(
       username,
       new GitHubClient(),
       cache,
       () => loadOverrides(),
-      (state) => store.setSync(state),
+      (state) => {
+        store.setSync(state);
+      },
       undefined,
       freshnessMs,
     );
@@ -61,7 +67,9 @@ export function startApplication(root: HTMLElement | null): void {
       username,
       new GitHubDetailClient(),
       cache,
-      (state) => store.setProjectDetail(state),
+      (state) => {
+        store.setProjectDetail(state);
+      },
     );
     return { username, activity, sync, details };
   };
@@ -70,7 +78,9 @@ export function startApplication(root: HTMLElement | null): void {
     freshnessMilliseconds(preferences.freshnessMinutes),
     createSession,
     {
-      beforeProfileChange: () => store.resetProfileState(),
+      beforeProfileChange: () => {
+        store.resetProfileState();
+      },
       afterSynchronization: async (username) => {
         await maintenance.inspect(username);
       },
@@ -170,8 +180,12 @@ export function startApplication(root: HTMLElement | null): void {
     void coordinator.synchronize({ online: navigator.onLine, force });
   };
 
-  window.addEventListener(SYNC_REQUEST_EVENT, () => synchronize(true));
-  window.addEventListener('online', () => synchronize(true));
+  window.addEventListener(SYNC_REQUEST_EVENT, () => {
+    synchronize(true);
+  });
+  window.addEventListener('online', () => {
+    synchronize(true);
+  });
   window.addEventListener('offline', () => {
     coordinator.cancelProjectDetails();
     synchronize(true);
