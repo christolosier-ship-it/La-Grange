@@ -64,30 +64,15 @@ export function buildLocalDiagnostics(input: LocalDiagnosticsInput): string {
 
 export async function copyText(
   text: string,
-  clipboard: Pick<Clipboard, 'writeText'> | undefined = navigator.clipboard,
-  documentObject: Document = document,
+  clipboard?: Pick<Clipboard, 'writeText'>,
 ): Promise<boolean> {
+  const browserClipboard = (navigator as Navigator & { clipboard?: Clipboard }).clipboard;
+  const target = clipboard ?? browserClipboard;
+  if (!target) return false;
   try {
-    if (clipboard) {
-      await clipboard.writeText(text);
-      return true;
-    }
-  } catch {
-    // Fall through to the local selection fallback.
-  }
-
-  const field = documentObject.createElement('textarea');
-  field.value = text;
-  field.readOnly = true;
-  field.style.position = 'fixed';
-  field.style.opacity = '0';
-  documentObject.body.append(field);
-  field.select();
-  try {
-    return documentObject.execCommand('copy');
+    await target.writeText(text);
+    return true;
   } catch {
     return false;
-  } finally {
-    field.remove();
   }
 }
