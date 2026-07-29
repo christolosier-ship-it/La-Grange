@@ -93,6 +93,26 @@ describe('ProjectDetailService', () => {
     expect(result.status).toBe('ready');
   });
 
+  it('aborts an in-flight request when its project route is left', async () => {
+    const context = setup();
+    let capturedSignal: AbortSignal | undefined;
+    context.fetchProjectDetails.mockImplementation((_username, _repositoryName, signal) => {
+      capturedSignal = signal;
+      return new Promise((_resolve, reject) => {
+        signal?.addEventListener('abort', () => {
+          reject(new DOMException('Aborted', 'AbortError'));
+        }, { once: true });
+      });
+    });
+
+    const pending = context.service.refresh(project, { online: true, force: true });
+    context.service.cancel(project.id);
+
+    await expect(pending).resolves.toMatchObject({ status: 'idle' });
+    expect(capturedSignal?.aborted).toBe(true);
+    expect(context.saveProjectDetails).not.toHaveBeenCalled();
+  });
+
   it('preserves cached details after a network error and works offline', async () => {
     const context = setup();
     context.getProjectDetails.mockResolvedValue(cachedDetails);
