@@ -84,6 +84,13 @@ export class ProfileCoordinator {
     return state;
   }
 
+  resetCurrent(freshnessMs: number): void {
+    const username = this.session.username;
+    this.cancelCurrent();
+    this.session.activity.reset();
+    this.session = this.createSession(username, freshnessMs);
+  }
+
   async synchronize(options: SyncOptions = {}): Promise<SyncState> {
     const state = await this.session.sync.synchronize(options);
     await this.refreshActivity();
