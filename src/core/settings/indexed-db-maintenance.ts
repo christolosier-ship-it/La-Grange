@@ -1,5 +1,6 @@
 import { isValidActivityEvent } from '../activity/activity-model';
 import { AppError } from '../errors/app-error';
+import { isValidSyncSnapshot } from '../cache/indexed-db';
 import type { ProjectDetails } from '../projects/details';
 import type {
   CacheMaintenanceApi,
@@ -78,17 +79,6 @@ function openDatabase(factory: IDBFactory): Promise<IDBDatabase> {
   });
 }
 
-function storedSnapshot(value: unknown, username: string): Record<string, unknown> | undefined {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
-  const snapshot = value as Record<string, unknown>;
-  return snapshot.username === username
-    && Array.isArray(snapshot.projects)
-    && typeof snapshot.syncedAt === 'string'
-    && Number.isFinite(Date.parse(snapshot.syncedAt))
-    ? snapshot
-    : undefined;
-}
-
 function isStoredDetail(value: unknown): value is ProjectDetails {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
   const detail = value as Record<string, unknown>;
@@ -143,7 +133,7 @@ export class IndexedDbMaintenance implements CacheMaintenanceApi {
       const detailValues = await requestResult(
         transaction.objectStore('projectDetails').getAll() as IDBRequest<unknown[]>,
       );
-      const snapshot = storedSnapshot(rawSnapshot, username);
+      const snapshot = isValidSyncSnapshot(rawSnapshot, username) ? rawSnapshot : undefined;
       const projectIds = new Set(profileProjectIds(snapshot));
       const activityCount = activityValues.filter((value) => (
         isValidActivityEvent(value, username)
@@ -192,7 +182,7 @@ export class IndexedDbMaintenance implements CacheMaintenanceApi {
       const storedDetailKeys = await requestResult(
         readTransaction.objectStore('projectDetails').getAllKeys(),
       );
-      const snapshot = storedSnapshot(rawSnapshot, username);
+      const snapshot = isValidSyncSnapshot(rawSnapshot, username) ? rawSnapshot : undefined;
       const projectIds = profileProjectIds(snapshot);
       const detailKeys = profileDetailKeys(projectIds, storedDetailKeys);
 
@@ -210,7 +200,7 @@ export class IndexedDbMaintenance implements CacheMaintenanceApi {
 
       return {
         username,
-        snapshotDeleted: snapshot !== undefined,
+        snapshotDeleted: rawSnapshot !== undefined,
         activityDeleted: activityKeys.length,
         detailsDeleted: detailKeys.length,
       };
