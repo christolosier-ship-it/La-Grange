@@ -13,25 +13,41 @@ const DATABASE_VERSION = 2;
 
 function requestResult<T>(request: IDBRequest<T>): Promise<T> {
   return new Promise((resolve, reject) => {
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error ?? new Error('IndexedDB request failed'));
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+    request.onerror = () => {
+      reject(request.error ?? new Error('IndexedDB request failed'));
+    };
   });
 }
 
 function transactionDone(transaction: IDBTransaction): Promise<void> {
   return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve();
-    transaction.onerror = () => reject(transaction.error ?? new Error('IndexedDB transaction failed'));
-    transaction.onabort = () => reject(transaction.error ?? new Error('IndexedDB transaction aborted'));
+    transaction.oncomplete = () => {
+      resolve();
+    };
+    transaction.onerror = () => {
+      reject(transaction.error ?? new Error('IndexedDB transaction failed'));
+    };
+    transaction.onabort = () => {
+      reject(transaction.error ?? new Error('IndexedDB transaction aborted'));
+    };
   });
 }
 
 function openDatabase(factory: IDBFactory): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = factory.open(DATABASE, DATABASE_VERSION);
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error ?? new Error('IndexedDB open failed'));
-    request.onblocked = () => reject(new Error('IndexedDB open blocked'));
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+    request.onerror = () => {
+      reject(request.error ?? new Error('IndexedDB open failed'));
+    };
+    request.onblocked = () => {
+      reject(new Error('IndexedDB open blocked'));
+    };
   });
 }
 
@@ -70,16 +86,14 @@ export class IndexedDbMaintenance implements CacheMaintenanceApi {
         ['snapshots', 'activityEvents', 'projectDetails'],
         'readonly',
       );
-      const snapshotRequest = transaction.objectStore('snapshots').get(username);
+      const snapshotRequest = transaction.objectStore('snapshots').get(username) as IDBRequest<unknown>;
       const activityRequest = transaction.objectStore('activityEvents')
         .index('byUsername')
-        .getAll(IDBKeyRange.only(username));
-      const detailRequest = transaction.objectStore('projectDetails').getAll();
-      const [rawSnapshot, activityValues, detailValues] = await Promise.all([
-        requestResult(snapshotRequest),
-        requestResult(activityRequest),
-        requestResult(detailRequest),
-      ]);
+        .getAll(IDBKeyRange.only(username)) as IDBRequest<unknown[]>;
+      const detailRequest = transaction.objectStore('projectDetails').getAll() as IDBRequest<unknown[]>;
+      const rawSnapshot = await requestResult(snapshotRequest);
+      const activityValues = await requestResult(activityRequest);
+      const detailValues = await requestResult(detailRequest);
       const snapshot = isSnapshotForUser(rawSnapshot, username) ? rawSnapshot : undefined;
       const projectIds = new Set(profileProjectIds(snapshot));
       const activityCount = activityValues.filter((value) => (
@@ -118,14 +132,12 @@ export class IndexedDbMaintenance implements CacheMaintenanceApi {
         ['snapshots', 'activityEvents'],
         'readonly',
       );
-      const snapshotRequest = readTransaction.objectStore('snapshots').get(username);
+      const snapshotRequest = readTransaction.objectStore('snapshots').get(username) as IDBRequest<unknown>;
       const activityKeysRequest = readTransaction.objectStore('activityEvents')
         .index('byUsername')
-        .getAllKeys(IDBKeyRange.only(username));
-      const [rawSnapshot, activityKeys] = await Promise.all([
-        requestResult(snapshotRequest),
-        requestResult(activityKeysRequest),
-      ]);
+        .getAllKeys(IDBKeyRange.only(username)) as IDBRequest<IDBValidKey[]>;
+      const rawSnapshot = await requestResult(snapshotRequest);
+      const activityKeys = await requestResult(activityKeysRequest);
       const snapshot = isSnapshotForUser(rawSnapshot, username) ? rawSnapshot : undefined;
       const projectIds = profileProjectIds(snapshot);
 
