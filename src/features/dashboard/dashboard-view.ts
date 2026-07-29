@@ -23,7 +23,7 @@ export function renderDashboard(state: AppState | undefined): HTMLElement {
   if (feedback) dashboard.append(feedback);
 
   const inventory = state?.sync.snapshot?.projects;
-  if (!inventory || !state) {
+  if (!inventory) {
     dashboard.append(createDashboardLoadingState(state?.sync));
     return dashboard;
   }
