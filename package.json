@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "vitest run src/app/router.integration.test.ts"
+    "test:e2e": "vitest run src/app/router.integration.test.ts",
+    "smoke:github": "vitest run src/core/github/live-smoke.test.ts --environment node"
   },
   "devDependencies": {
     "@eslint/js": "9.30.1",
