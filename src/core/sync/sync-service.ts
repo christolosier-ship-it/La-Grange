@@ -3,6 +3,7 @@ import type { RepositoryFetchResult } from '../github/types';
 import type { SnapshotCache } from '../cache/indexed-db';
 import { compareProjects } from '../projects/comparator';
 import { mapRepository } from '../projects/mapper';
+import { overridesSignature } from '../projects/override-signature';
 import type { ProjectOverrides } from '../projects/overrides';
 import { enrichProjects } from '../projects/overrides';
 import type { SyncSnapshot } from '../projects/model';
@@ -118,8 +119,20 @@ export class SyncService {
       return this.emit({ status: 'offline', snapshot: cached, warning });
     }
 
+    let overrides: ProjectOverrides = {};
+    let currentOverridesSignature: string | undefined;
+    try {
+      overrides = await this.overridesLoader();
+      currentOverridesSignature = overridesSignature(overrides);
+    } catch (error) {
+      warning = normalizeError(error, 'Invalid overrides');
+    }
+
+    const overridesUnchanged = currentOverridesSignature !== undefined
+      && cached?.overridesSignature === currentOverridesSignature;
     const cachedTime = cached ? Date.parse(cached.syncedAt) : Number.NaN;
     const fresh = cached !== undefined
+      && overridesUnchanged
       && Number.isFinite(cachedTime)
       && this.now().getTime() - cachedTime < this.freshnessMs;
 
@@ -131,25 +144,18 @@ export class SyncService {
     this.emit({ status: 'syncing', snapshot: cached, warning });
 
     try {
-      let overrides: ProjectOverrides = {};
-      try {
-        overrides = await this.overridesLoader();
-      } catch (error) {
-        warning = normalizeError(error, 'Invalid overrides');
-      }
-
       const result = await this.client.fetchAllRepositories(
         this.username,
-        cached?.etag,
+        overridesUnchanged ? cached?.etag : undefined,
         this.controller.signal,
       );
       const checkedAt = this.now().toISOString();
 
       if (result.status === 'not-modified') {
-        if (!cached) {
+        if (!cached || !overridesUnchanged) {
           throw new AppError(
             'invalid-response',
-            'GitHub returned 304 without a cached snapshot',
+            'GitHub returned 304 without a compatible cached snapshot',
             'Réponse GitHub incohérente.',
             true,
           );
@@ -159,6 +165,7 @@ export class SyncService {
           ...cached,
           syncedAt: checkedAt,
           etag: result.etag ?? cached.etag,
+          overridesSignature: currentOverridesSignature,
         };
         return await this.saveRefreshedSnapshot(refreshed, warning);
       }
@@ -174,6 +181,7 @@ export class SyncService {
         projects: comparison.projects,
         syncedAt: checkedAt,
         etag: result.etag,
+        overridesSignature: currentOverridesSignature,
       };
 
       try {
