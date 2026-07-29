@@ -58,7 +58,7 @@ export function renderCatalogue(
   view.append(createHeader());
 
   const projects = state?.sync.snapshot?.projects;
-  if (!projects || !state) {
+  if (!projects) {
     view.append(createUnavailableState(state));
     return view;
   }
