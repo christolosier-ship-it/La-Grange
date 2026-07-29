@@ -76,7 +76,22 @@ Les détails sont séparés du snapshot principal. Ils sont chargés uniquement 
 
 ## ActivityEvent
 
-Le journal local enregistre les ajouts, renommages, disparitions, archivages et changements d’URL d’application. Il est indexé par utilisateur et par date. La rétention est bornée aux 500 événements les plus récents par utilisateur afin d’éviter une croissance illimitée d’IndexedDB.
+```ts
+interface ActivityEvent {
+  id?: number;
+  username: string;
+  projectId: number;
+  type: 'added' | 'renamed' | 'removed' | 'archived' | 'app-url-changed';
+  occurredAt: string; // ISO UTC
+  detail?: string;
+}
+```
+
+Le journal local enregistre uniquement les changements produits par la comparaison de deux synchronisations complètes réussies. Le premier import ne génère aucun événement. Les entrées sont isolées par utilisateur, triées de la plus récente à la plus ancienne et limitées aux 500 événements les plus récents par utilisateur.
+
+Chaque entrée relue depuis IndexedDB est validée profondément. Une entrée invalide est ignorée individuellement et comptabilisée pour permettre un avertissement non bloquant. Les regroupements par semaine et par jour sont calculés à l’affichage dans le fuseau local sans modifier la date UTC stockée.
+
+L’identifiant GitHub numérique résout le projet courant et sa route canonique. Un événement concernant un dépôt disparu conserve son dernier nom connu dans `detail`, mais ne produit jamais de lien mort.
 
 ## Preferences
 
@@ -85,7 +100,7 @@ Les préférences légères de Phase 4 utilisent `localStorage` :
 - identifiants des projets favoris ;
 - mode d’affichage grille ou liste.
 
-La recherche, les filtres, le tri et le contexte de retour sont sérialisés dans le hash de l’URL. Ils ne sont pas dupliqués dans `localStorage`, ce qui garde le lien partageable et évite deux sources de vérité.
+La recherche, les filtres, le tri et le contexte de retour sont sérialisés dans le hash de l’URL. Ils ne sont pas dupliqués dans `localStorage`, ce qui garde le lien partageable et évite deux sources de vérité. La Phase 5B remplacera ce stockage par un schéma de préférences versionné tout en migrant ces valeurs.
 
 ## Versionnement
 

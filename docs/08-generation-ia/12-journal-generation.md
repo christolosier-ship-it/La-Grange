@@ -124,3 +124,27 @@ Limites ou tests non exécutés : aucune capture navigateur automatisée supplé
 Dette créée : aucune dette volontaire.
 
 Prochaine étape : publier la PR #11 pour revue, résoudre les quatre fils historiques et toute nouvelle remarque P1/P2, puis fusionner après CI finale verte.
+
+## Phase 5A — Journal d’activité
+
+Date : 2026-07-29
+
+Branche / PR : `feature/phase-5a-activite` / PR #12
+
+Objectif : construire le journal local factuel de la Phase 5 sans engager les paramètres et profils de la Phase 5B.
+
+Documents lus : intégralité de la documentation initiale via la PR documentaire, documents actuels de fondations, produit, UX/UI, technique, qualité, roadmap, Phase 5, ADR, règles de génération, README, architecture et règles agents.
+
+Fichiers modifiés : modèle et service d’activité, API IndexedDB de lecture, store, bootstrap, vue et styles responsive, tests unitaires et DOM, README, changelog, modèle de données, documentation cache, document de phase, contrôle visuel, version et cache PWA.
+
+Décisions prises : aucune requête GitHub pour consulter le journal ; validation individuelle des entrées ; tri décroissant ; regroupement semaine puis jour dans le fuseau local ; lien canonique seulement pour un projet encore présent ; nom connu sans lien pour un dépôt disparu ; conservation des événements déjà affichés après une erreur ; aucune migration IndexedDB car le store et les index étaient déjà réservés.
+
+Tests exécutés : validation, tri, regroupement, libellés, résolution de projet, course de lecture, erreur cache, état vide, multi-jours, hors ligne, données invalides, store, TypeScript strict, ESLint, suite Vitest, smoke test GitHub réel et build production.
+
+Résultats : première CI fonctionnelle entièrement verte avant finalisation documentaire. Validation finale requise sur le head exact après audit et revue de la PR #12.
+
+Limites ou tests non exécutés : le pipeline ne produit pas de captures navigateur automatiques ; le contrôle statique multi-format et des états est consigné dans `docs/04-qualite/12-controle-visuel-phase-5a.md`.
+
+Dette créée : aucune dette fonctionnelle volontaire. Les paramètres, profils, diagnostics et reset du cache restent explicitement réservés à la Phase 5B.
+
+Prochaine étape : valider et fusionner la PR #12 sans P1/P2, contrôler `main`, puis créer la branche Phase 5B.

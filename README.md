@@ -62,4 +62,4 @@ Documents majeurs :
 
 ## État
 
-Les phases 1 à 4 sont implémentées : socle PWA, synchronisation GitHub cache-first, dashboard responsive, catalogue complet avec recherche et filtres locaux, favoris, modes grille/liste, fiches projets détaillées et chargement GitHub ciblé à la demande avec cache dédié.
+Les phases 1 à 4 et la Phase 5A sont implémentées : socle PWA, synchronisation GitHub cache-first, dashboard responsive, catalogue complet, fiches projets détaillées, détails GitHub ciblés à la demande et journal local factuel regroupé par semaine et par jour. La Phase 5B ajoutera les paramètres, profils, diagnostics et actions de maintenance du cache.

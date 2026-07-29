@@ -1,3 +1,8 @@
+import {
+  isValidActivityEvent,
+  sortActivityEvents,
+  type ActivityReadResult,
+} from '../activity/activity-model';
 import { AppError } from '../errors/app-error';
 import type { ProjectDetails } from '../projects/details';
 import type {
@@ -41,6 +46,10 @@ export interface SnapshotCache {
 export interface ProjectDetailsCache {
   getProjectDetails(projectId: number): Promise<ProjectDetails | undefined>;
   saveProjectDetails(details: ProjectDetails): Promise<void>;
+}
+
+export interface ActivityCache {
+  getActivityEvents(username: string): Promise<ActivityReadResult>;
 }
 
 function idbError(value: DOMException | null, fallback: string): Error {
@@ -224,7 +233,7 @@ async function pruneActivityEvents(
   for (const key of activityKeysToPrune(keys)) store.delete(key);
 }
 
-export class IndexedDbCache implements SnapshotCache, ProjectDetailsCache {
+export class IndexedDbCache implements SnapshotCache, ProjectDetailsCache, ActivityCache {
   private database?: Promise<IDBDatabase>;
 
   constructor(private readonly indexedDBFactory: IDBFactory = indexedDB) {}
@@ -293,6 +302,32 @@ export class IndexedDbCache implements SnapshotCache, ProjectDetailsCache {
         'cache',
         error instanceof Error ? error.message : 'Cache read failed',
         'Cache local indisponible.',
+        true,
+      );
+    }
+  }
+
+  async getActivityEvents(username: string): Promise<ActivityReadResult> {
+    try {
+      const database = await this.open();
+      const transaction = database.transaction('activityEvents', 'readonly');
+      const values: unknown[] = await requestResult(
+        transaction.objectStore('activityEvents')
+          .index('byUsername')
+          .getAll(IDBKeyRange.only(username)),
+      );
+      const events = values.filter((value): value is ActivityEvent => (
+        isValidActivityEvent(value, username)
+      ));
+      return {
+        events: sortActivityEvents(events),
+        invalidCount: values.length - events.length,
+      };
+    } catch (error) {
+      throw new AppError(
+        'cache',
+        error instanceof Error ? error.message : 'Activity cache read failed',
+        'Journal local indisponible.',
         true,
       );
     }
