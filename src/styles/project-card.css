@@ -14,3 +14,8 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+.project-card__launch.requires-connection {
+  border-style: dashed;
+  color: var(--color-text-muted);
+}
