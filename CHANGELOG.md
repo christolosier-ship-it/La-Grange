@@ -13,7 +13,9 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - shell responsive mobile, tablette et bureau fondé sur les tokens du design system ;
 - routeur hash accessible, store minimal et placeholders des cinq vues ;
 - manifest, icônes PWA provisoires et service worker natif pour le shell hors ligne ;
-- tests unitaires et d’intégration du routage et du store.
+- tests unitaires et d’intégration du routage et du store ;
+- couche de données de phase 2 : client GitHub public paginé avec ETag et limites, modèle et mapping des projets, overrides validés, détection des changements, synchronisation cache-first et cache IndexedDB transactionnel ;
+- tests unitaires et d’intégration couvrant pagination, mapping, enrichissement, nouveaux dépôts, renommage, mode hors ligne, erreurs réseau et flux de synchronisation unique.
 
 ### Corrigé
 

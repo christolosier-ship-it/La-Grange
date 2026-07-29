@@ -1,3 +1,5 @@
+import type { SyncState } from '../core/sync/sync-service';
+
 export interface CatalogueState {
   readonly filter: string;
   readonly query: string;
@@ -5,11 +7,12 @@ export interface CatalogueState {
 
 export interface AppState {
   readonly catalogue: CatalogueState;
+  readonly sync: SyncState;
 }
 
 type Listener = (state: AppState) => void;
 
-const INITIAL_STATE: AppState = { catalogue: { filter: 'all', query: '' } };
+const INITIAL_STATE: AppState = { catalogue: { filter: 'all', query: '' }, sync: { status: 'idle' } };
 
 export function createStore(initialState: AppState = INITIAL_STATE) {
   let state = initialState;
@@ -22,6 +25,10 @@ export function createStore(initialState: AppState = INITIAL_STATE) {
       listeners.forEach((listener) => {
         listener(state);
       });
+    },
+    setSync: (sync: SyncState): void => {
+      state = { ...state, sync };
+      listeners.forEach((listener) => { listener(state); });
     },
     subscribe: (listener: Listener): (() => void) => {
       listeners.add(listener);
