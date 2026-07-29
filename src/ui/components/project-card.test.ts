@@ -82,4 +82,13 @@ describe('createProjectCard', () => {
     expect(card.textContent).toContain('Archivé');
     expect(card.querySelector('.project-card__launch')).toBeNull();
   });
+
+  it('marks application links as requiring connectivity while offline', () => {
+    const card = createProjectCard(project(), { offline: true });
+    const action = card.querySelector<HTMLAnchorElement>('.project-card__launch');
+
+    expect(action?.textContent).toContain('connexion requise');
+    expect(action?.classList.contains('requires-connection')).toBe(true);
+    expect(action?.getAttribute('aria-label')).toContain('connexion requise');
+  });
 });
