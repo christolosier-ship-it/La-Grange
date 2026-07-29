@@ -58,12 +58,12 @@ export function renderCatalogue(
   view.append(createHeader());
 
   const projects = state?.sync.snapshot?.projects;
-  if (!projects) {
+  if (!projects || !state) {
     view.append(createUnavailableState(state));
     return view;
   }
 
-  let current = state.catalogue ?? DEFAULT_CATALOGUE_STATE;
+  let current = state.catalogue;
   let synchronizeControls: (next: CatalogueState) => void = () => undefined;
   const facets = catalogueFacets(projects);
   const resultsSection = document.createElement('section');
