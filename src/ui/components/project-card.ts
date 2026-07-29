@@ -31,6 +31,34 @@ function coverUrl(path: string): string {
   return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
 }
 
+function createCrateIcon(): SVGSVGElement {
+  const namespace = 'http://www.w3.org/2000/svg';
+  const icon = document.createElementNS(namespace, 'svg');
+  icon.classList.add('project-card__crate-icon');
+  icon.setAttribute('viewBox', '0 0 48 48');
+  icon.setAttribute('fill', 'none');
+  icon.setAttribute('aria-hidden', 'true');
+
+  const frame = document.createElementNS(namespace, 'rect');
+  frame.setAttribute('x', '6');
+  frame.setAttribute('y', '9');
+  frame.setAttribute('width', '36');
+  frame.setAttribute('height', '30');
+  frame.setAttribute('rx', '2');
+
+  const diagonalLeft = document.createElementNS(namespace, 'path');
+  diagonalLeft.setAttribute('d', 'M9 36 39 12');
+  const diagonalRight = document.createElementNS(namespace, 'path');
+  diagonalRight.setAttribute('d', 'm9 12 30 24');
+  const slatTop = document.createElementNS(namespace, 'path');
+  slatTop.setAttribute('d', 'M6 17h36');
+  const slatBottom = document.createElementNS(namespace, 'path');
+  slatBottom.setAttribute('d', 'M6 31h36');
+
+  icon.append(frame, diagonalLeft, diagonalRight, slatTop, slatBottom);
+  return icon;
+}
+
 function createVisual(project: Project): HTMLElement {
   const visual = document.createElement('div');
   visual.className = 'project-card__visual';
@@ -42,7 +70,7 @@ function createVisual(project: Project): HTMLElement {
 
   const initials = document.createElement('span');
   initials.textContent = projectInitials(project.displayName);
-  fallback.append(initials);
+  fallback.append(createCrateIcon(), initials);
 
   if (!project.cover) {
     visual.classList.add('is-fallback');
