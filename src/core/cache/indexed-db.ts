@@ -136,6 +136,14 @@ function ensureActivityIndexes(store: IDBObjectStore): void {
   }
 }
 
+export function activityKeysToPrune(
+  keys: readonly IDBValidKey[],
+  maximum = MAX_ACTIVITY_EVENTS_PER_USER,
+): IDBValidKey[] {
+  const excess = Math.max(0, keys.length - maximum);
+  return keys.slice(0, excess);
+}
+
 async function pruneActivityEvents(
   store: IDBObjectStore,
   username: string,
@@ -143,10 +151,7 @@ async function pruneActivityEvents(
   const keys = await requestResult(
     store.index('byUsername').getAllKeys(IDBKeyRange.only(username)),
   );
-  const excess = keys.length - MAX_ACTIVITY_EVENTS_PER_USER;
-  if (excess <= 0) return;
-
-  for (const key of keys.slice(0, excess)) store.delete(key);
+  for (const key of activityKeysToPrune(keys)) store.delete(key);
 }
 
 export class IndexedDbCache implements SnapshotCache {
