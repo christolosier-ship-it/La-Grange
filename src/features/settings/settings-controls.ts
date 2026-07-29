@@ -64,6 +64,7 @@ export function createProfileSettings(state: AppState, actions: ViewActions): HT
   const submit = document.createElement('button');
   submit.type = 'submit';
   submit.textContent = 'Changer de profil';
+  submit.dataset.focusKey = 'settings-profile-submit';
   submit.disabled = actions.onProfileChange === undefined;
   form.append(label, input, help, error, submit);
 
@@ -100,6 +101,7 @@ export function createProfileSettings(state: AppState, actions: ViewActions): HT
 
 function createCheckbox(
   id: string,
+  focusKey: string,
   labelText: string,
   checked: boolean,
   onChange: (checked: boolean) => void,
@@ -111,6 +113,7 @@ function createCheckbox(
   input.id = id;
   input.type = 'checkbox';
   input.checked = checked;
+  input.dataset.focusKey = focusKey;
   input.addEventListener('change', () => {
     onChange(input.checked);
   });
@@ -129,13 +132,13 @@ export function createDisplaySettings(state: AppState, actions: ViewActions): HT
   const choices = document.createElement('div');
   choices.className = 'settings-choice-grid';
   choices.append(
-    createCheckbox('settings-hide-forks', 'Masquer les forks dans les listes', preferences.hideForks, (checked) => {
+    createCheckbox('settings-hide-forks', 'settings-hide-forks', 'Masquer les forks dans les listes', preferences.hideForks, (checked) => {
       emitPreference(preferences, { hideForks: checked }, actions);
     }),
-    createCheckbox('settings-hide-archives', 'Masquer les archives dans les listes', preferences.hideArchived, (checked) => {
+    createCheckbox('settings-hide-archives', 'settings-hide-archives', 'Masquer les archives dans les listes', preferences.hideArchived, (checked) => {
       emitPreference(preferences, { hideArchived: checked }, actions);
     }),
-    createCheckbox('settings-reduce-motion', 'Réduire les animations', preferences.reduceMotion, (checked) => {
+    createCheckbox('settings-reduce-motion', 'settings-reduce-motion', 'Réduire les animations', preferences.reduceMotion, (checked) => {
       emitPreference(preferences, { reduceMotion: checked }, actions);
     }),
   );
@@ -147,6 +150,7 @@ export function createDisplaySettings(state: AppState, actions: ViewActions): HT
   freshnessLabel.textContent = 'Fraîcheur de l’inventaire';
   const freshness = document.createElement('select');
   freshness.id = 'settings-freshness';
+  freshness.dataset.focusKey = 'settings-freshness';
   for (const minutes of FRESHNESS_OPTIONS) {
     const option = document.createElement('option');
     option.value = String(minutes);
@@ -165,6 +169,7 @@ export function createDisplaySettings(state: AppState, actions: ViewActions): HT
   densityLabel.textContent = 'Densité de l’interface';
   const density = document.createElement('select');
   density.id = 'settings-density';
+  density.dataset.focusKey = 'settings-density';
   const densityOptions: readonly [InterfaceDensity, string][] = [
     ['comfortable', 'Confortable'],
     ['compact', 'Compacte'],
