@@ -62,4 +62,4 @@ Documents majeurs :
 
 ## État
 
-Les phases 1 à 3 sont implémentées : socle PWA, synchronisation GitHub cache-first et dashboard responsive avec statistiques réelles, cartes accessibles, fallbacks visuels, activité synthétique, nouvelle arrivée et états réseau complets.
+Les phases 1 à 4 sont implémentées : socle PWA, synchronisation GitHub cache-first, dashboard responsive, catalogue complet avec recherche et filtres locaux, favoris, modes grille/liste, fiches projets détaillées et chargement GitHub ciblé à la demande avec cache dédié.
