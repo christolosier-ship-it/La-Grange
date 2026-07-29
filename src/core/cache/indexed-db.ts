@@ -8,8 +8,9 @@ import type {
 } from '../projects/model';
 
 const DATABASE = 'la-grange-db';
-const DATABASE_VERSION = 1;
+const DATABASE_VERSION = 2;
 const SNAPSHOT_SCHEMA_VERSION = 1;
+const MAX_ACTIVITY_EVENTS_PER_USER = 500;
 
 const PROJECT_CATEGORIES = new Set<ProjectCategory>([
   'games',
@@ -121,8 +122,31 @@ function validSnapshot(value: unknown, username: string): value is SyncSnapshot 
     && typeof item.syncedAt === 'string'
     && Number.isFinite(Date.parse(item.syncedAt))
     && optionalString(item.etag)
+    && optionalString(item.overridesSignature)
     && Array.isArray(item.projects)
     && item.projects.every(validProject);
+}
+
+function ensureActivityIndexes(store: IDBObjectStore): void {
+  if (!store.indexNames.contains('byUsername')) {
+    store.createIndex('byUsername', 'username', { unique: false });
+  }
+  if (!store.indexNames.contains('byOccurredAt')) {
+    store.createIndex('byOccurredAt', 'occurredAt', { unique: false });
+  }
+}
+
+async function pruneActivityEvents(
+  store: IDBObjectStore,
+  username: string,
+): Promise<void> {
+  const keys = await requestResult(
+    store.index('byUsername').getAllKeys(IDBKeyRange.only(username)),
+  );
+  const excess = keys.length - MAX_ACTIVITY_EVENTS_PER_USER;
+  if (excess <= 0) return;
+
+  for (const key of keys.slice(0, excess)) store.delete(key);
 }
 
 export class IndexedDbCache implements SnapshotCache {
@@ -144,14 +168,15 @@ export class IndexedDbCache implements SnapshotCache {
         if (!database.objectStoreNames.contains('projectDetails')) {
           database.createObjectStore('projectDetails', { keyPath: 'projectId' });
         }
-        if (!database.objectStoreNames.contains('activityEvents')) {
-          const events = database.createObjectStore('activityEvents', {
-            keyPath: 'id',
-            autoIncrement: true,
-          });
-          events.createIndex('byUsername', 'username', { unique: false });
-          events.createIndex('byOccurredAt', 'occurredAt', { unique: false });
-        }
+
+        const eventStore = database.objectStoreNames.contains('activityEvents')
+          ? opening.transaction?.objectStore('activityEvents')
+          : database.createObjectStore('activityEvents', {
+              keyPath: 'id',
+              autoIncrement: true,
+            });
+        if (eventStore) ensureActivityIndexes(eventStore);
+
         if (!database.objectStoreNames.contains('metadata')) {
           database.createObjectStore('metadata', { keyPath: 'key' });
         }
@@ -209,15 +234,17 @@ export class IndexedDbCache implements SnapshotCache {
         ['snapshots', 'activityEvents', 'projectDetails'],
         'readwrite',
       );
+      const completion = transactionDone(transaction);
 
       transaction.objectStore('snapshots').put(snapshot);
       const eventStore = transaction.objectStore('activityEvents');
       for (const event of events) eventStore.add(event);
+      await pruneActivityEvents(eventStore, snapshot.username);
 
       const detailStore = transaction.objectStore('projectDetails');
       for (const id of removedIds) detailStore.delete(id);
 
-      await transactionDone(transaction);
+      await completion;
     } catch (error) {
       throw new AppError(
         'cache',
