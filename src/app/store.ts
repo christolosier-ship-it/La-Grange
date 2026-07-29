@@ -1,3 +1,7 @@
+import {
+  INITIAL_ACTIVITY_STATE,
+  type ActivityState,
+} from '../core/activity/activity-service';
 import type { ProjectDetailState } from '../core/details/project-detail-service';
 import type { SyncState } from '../core/sync/sync-service';
 import {
@@ -6,6 +10,7 @@ import {
 } from '../features/catalogue/catalogue-model';
 
 export interface AppState {
+  readonly activity: ActivityState;
   readonly catalogue: CatalogueState;
   readonly favoriteIds: readonly number[];
   readonly projectDetails: Readonly<Record<number, ProjectDetailState>>;
@@ -15,6 +20,7 @@ export interface AppState {
 type Listener = (state: AppState) => void;
 
 export const INITIAL_STATE: AppState = {
+  activity: INITIAL_ACTIVITY_STATE,
   catalogue: DEFAULT_CATALOGUE_STATE,
   favoriteIds: [],
   projectDetails: {},
@@ -33,6 +39,10 @@ export function createStore(initialState: AppState = INITIAL_STATE) {
 
   return {
     getState: (): AppState => state,
+    setActivity: (activity: ActivityState): void => {
+      state = { ...state, activity };
+      publish();
+    },
     setCatalogue: (catalogue: CatalogueState, notify = true): void => {
       state = { ...state, catalogue };
       if (notify) publish();
