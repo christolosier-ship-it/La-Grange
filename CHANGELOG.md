@@ -26,7 +26,9 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - ajout des icônes PNG 192, 512, maskable et Apple Touch ;
 - correction de la configuration TypeScript et ESLint ;
 - normalisation des routes, navigation active des fiches projet et retour accessible depuis la page introuvable ;
-- sécurisation de l’avis de mise à jour PWA et couverture de tests associée.
+- sécurisation de l’avis de mise à jour PWA et couverture de tests associée ;
+- suppression de l’en-tête `X-GitHub-Api-Version` côté navigateur afin d’éviter la prévalidation CORS problématique sur Safari/iOS ;
+- amélioration des messages de diagnostic réseau et HTTP du client GitHub.
 
 ## Versionnement prévu
 
