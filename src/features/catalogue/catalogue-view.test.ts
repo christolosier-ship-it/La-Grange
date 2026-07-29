@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { INITIAL_STATE, type AppState } from '../../app/store';
+import { AppError } from '../../core/errors/app-error';
 import type { Project } from '../../core/projects/model';
 import { renderCatalogue } from './catalogue-view';
 
@@ -121,6 +122,21 @@ describe('renderCatalogue', () => {
     view.querySelector<HTMLButtonElement>('.catalogue-empty button')?.click();
     expect(view.querySelectorAll('.project-card')).toHaveLength(1);
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ query: '' }));
+  });
+
+  it('displays the localized AppError message when no snapshot is available', () => {
+    const technical = 'GitHub HTTP 403 secondary rate limit';
+    const userMessage = 'Limite GitHub atteinte. Réessayez plus tard.';
+    const view = renderCatalogue({
+      ...INITIAL_STATE,
+      sync: {
+        status: 'error',
+        error: new AppError('rate-limit', technical, userMessage, true),
+      },
+    });
+
+    expect(view.textContent).toContain(userMessage);
+    expect(view.textContent).not.toContain(technical);
   });
 
   it('delegates favorite changes and flags app links offline', () => {
