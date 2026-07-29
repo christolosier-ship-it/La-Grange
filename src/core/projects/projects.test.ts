@@ -3,6 +3,7 @@ import type { GitHubRepositoryDto } from '../github/types';
 import { activityState } from './activity';
 import { compareProjects } from './comparator';
 import { mapRepository } from './mapper';
+import { overridesSignature } from './override-signature';
 import { enrichProjects, parseOverrides } from './overrides';
 
 const dto: GitHubRepositoryDto = {
@@ -23,7 +24,7 @@ const dto: GitHubRepositoryDto = {
 };
 
 describe('project domain', () => {
-  it('maps nullable data, safe links, topics and activity', () => {
+  it('maps nullable data, safe links, topics and exact activity thresholds', () => {
     const project = mapRepository(dto, new Date('2025-01-10T00:00:00Z'));
     expect(project).toMatchObject({
       id: 1,
@@ -33,9 +34,12 @@ describe('project domain', () => {
       activityState: 'active',
       category: 'uncategorized',
     });
-    expect(
-      activityState('2025-01-01T00:00:00Z', false, new Date('2025-07-01T00:00:00Z')),
-    ).toBe('sleeping');
+
+    const pushedAt = '2025-01-01T00:00:00Z';
+    expect(activityState(pushedAt, false, new Date('2025-01-31T00:00:00Z'))).toBe('active');
+    expect(activityState(pushedAt, false, new Date('2025-01-31T00:00:00.001Z'))).toBe('maintenance');
+    expect(activityState(pushedAt, false, new Date('2025-06-30T00:00:00Z'))).toBe('maintenance');
+    expect(activityState(pushedAt, false, new Date('2025-06-30T00:00:00.001Z'))).toBe('sleeping');
     expect(activityState(undefined, true)).toBe('archived');
   });
 
@@ -58,6 +62,19 @@ describe('project domain', () => {
     });
     expect(() => parseOverrides({ Old: { surprise: true } }, true)).toThrow();
     expect(() => parseOverrides({ Old: { cover: '../secret.webp' } }, true)).toThrow();
+  });
+
+  it('creates a stable override signature independent of object order', () => {
+    const first = parseOverrides({
+      Beta: { featured: true },
+      Alpha: { displayName: 'Alpha', sortOrder: 1 },
+    }, true);
+    const second = parseOverrides({
+      Alpha: { sortOrder: 1, displayName: 'Alpha' },
+      Beta: { featured: true },
+    }, true);
+
+    expect(overridesSignature(first)).toBe(overridesSignature(second));
   });
 
   it('hides configured projects without leaking the hidden property', () => {
