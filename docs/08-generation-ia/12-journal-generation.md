@@ -141,10 +141,34 @@ Décisions prises : aucune requête GitHub pour consulter le journal ; validatio
 
 Tests exécutés : validation, tri, regroupement, libellés, résolution de projet, course de lecture, erreur cache, état vide, multi-jours, hors ligne, données invalides, store, TypeScript strict, ESLint, suite Vitest, smoke test GitHub réel et build production.
 
-Résultats : première CI fonctionnelle entièrement verte avant finalisation documentaire. Validation finale requise sur le head exact après audit et revue de la PR #12.
+Résultats : PR #12 fusionnée après CI verte sur le head `ac7d6cf1342ecde7685b713932885a418b93dcd1`, commit de fusion `f90220c0d4c166becdf337420ea8017cd803a8c7`.
 
 Limites ou tests non exécutés : le pipeline ne produit pas de captures navigateur automatiques ; le contrôle statique multi-format et des états est consigné dans `docs/04-qualite/12-controle-visuel-phase-5a.md`.
 
 Dette créée : aucune dette fonctionnelle volontaire. Les paramètres, profils, diagnostics et reset du cache restent explicitement réservés à la Phase 5B.
 
-Prochaine étape : valider et fusionner la PR #12 sans P1/P2, contrôler `main`, puis créer la branche Phase 5B.
+Prochaine étape : réaliser la Phase 5B sur une PR séparée.
+
+## Phase 5B — Paramètres et profils
+
+Date : 2026-07-29
+
+Branche / PR : `feature/phase-5b-parametres` / PR #13
+
+Objectif : terminer la Phase 5 avec des préférences versionnées, des sessions GitHub isolées, un écran Paramètres complet, la maintenance ciblée du cache et un diagnostic local sûr.
+
+Documents lus : documentation complète du projet, architecture et état réel de `main` après la PR #12, avec priorité aux règles métier, UX, stockage, synchronisation, erreurs, qualité et Phase 5.
+
+Fichiers modifiés : schéma et migration des préférences, visibilité des projets, coordinateur de profils, maintenance IndexedDB, diagnostics, store, bootstrap, actions de vues, dashboard, catalogue, fiche, Paramètres, modale, contrôleur d’affichage, CSS, tests, README, architecture, documentation technique, phase, changelog, contrôle visuel, version et cache PWA.
+
+Décisions prises : préférences globales au navigateur ; profil `christolosier-ship-it` par défaut ; services reconstruits plutôt que mutés ; rollback vers l’ancien profil sans nouveau snapshot valide ; visibilité appliquée uniquement aux listes ; fiche directe conservée ; reset limité au profil actif et sans synchronisation automatique ; Clipboard API moderne uniquement ; ancien stockage Phase 4 supprimé après migration.
+
+Tests exécutés : migration et réparation des préférences, validation du profil, visibilité, sessions, reconstruction après reset, maintenance et compteurs réels, diagnostic, presse-papiers, modale et focus, interactions des paramètres, favoris indisponibles, store, catalogue, fiches directes, TypeScript strict, ESLint, suite Vitest, smoke GitHub réel et build production.
+
+Résultats : première CI fonctionnelle verte avant finalisation documentaire. Validation finale requise sur le head exact, puis revue et résolution de tout fil P1/P2 avant fusion.
+
+Limites ou tests non exécutés : aucune capture navigateur automatisée ; contrôle multi-format et des états consigné dans `docs/04-qualite/13-controle-visuel-phase-5b.md`. Le diagnostic dépend de Clipboard API pour la copie automatique, mais reste visible et sélectionnable si l’autorisation est refusée.
+
+Dette créée : aucune dette fonctionnelle volontaire. Le polissage visuel avancé reste réservé à la Phase 6.
+
+Prochaine étape : CI finale, revue Codex, corrections éventuelles, fusion de la PR #13 et contrôle direct de `main`.
