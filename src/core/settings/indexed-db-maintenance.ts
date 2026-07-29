@@ -75,6 +75,18 @@ export function profileProjectIds(snapshot: SyncSnapshot | undefined): number[] 
     : [];
 }
 
+export function profileDetailKeys(
+  projectIds: readonly number[],
+  storedKeys: readonly IDBValidKey[],
+): number[] {
+  const allowed = new Set(projectIds);
+  return storedKeys.filter((key): key is number => (
+    typeof key === 'number'
+    && Number.isInteger(key)
+    && allowed.has(key)
+  ));
+}
+
 export class IndexedDbMaintenance implements CacheMaintenanceApi {
   constructor(private readonly indexedDBFactory: IDBFactory = indexedDB) {}
 
@@ -129,17 +141,20 @@ export class IndexedDbMaintenance implements CacheMaintenanceApi {
     try {
       database = await openDatabase(this.indexedDBFactory);
       const readTransaction = database.transaction(
-        ['snapshots', 'activityEvents'],
+        ['snapshots', 'activityEvents', 'projectDetails'],
         'readonly',
       );
       const snapshotRequest = readTransaction.objectStore('snapshots').get(username) as IDBRequest<unknown>;
       const activityKeysRequest = readTransaction.objectStore('activityEvents')
         .index('byUsername')
         .getAllKeys(IDBKeyRange.only(username));
+      const detailKeysRequest = readTransaction.objectStore('projectDetails').getAllKeys();
       const rawSnapshot = await requestResult(snapshotRequest);
       const activityKeys = await requestResult(activityKeysRequest);
+      const storedDetailKeys = await requestResult(detailKeysRequest);
       const snapshot = isSnapshotForUser(rawSnapshot, username) ? rawSnapshot : undefined;
       const projectIds = profileProjectIds(snapshot);
+      const detailKeys = profileDetailKeys(projectIds, storedDetailKeys);
 
       const transaction = database.transaction(
         ['snapshots', 'activityEvents', 'projectDetails'],
@@ -150,14 +165,14 @@ export class IndexedDbMaintenance implements CacheMaintenanceApi {
       const activityStore = transaction.objectStore('activityEvents');
       for (const key of activityKeys) activityStore.delete(key);
       const detailStore = transaction.objectStore('projectDetails');
-      for (const projectId of projectIds) detailStore.delete(projectId);
+      for (const key of detailKeys) detailStore.delete(key);
       await completion;
 
       return {
         username,
         snapshotDeleted: snapshot !== undefined,
         activityDeleted: activityKeys.length,
-        detailsDeleted: projectIds.length,
+        detailsDeleted: detailKeys.length,
       };
     } catch (error) {
       throw new AppError(
