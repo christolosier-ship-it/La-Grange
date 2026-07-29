@@ -175,7 +175,8 @@ export class GitHubClient {
       let data: unknown;
       try {
         data = await response.json();
-      } catch {
+      } catch (error) {
+        if (isAbortError(error)) throw error;
         data = undefined;
       }
 
