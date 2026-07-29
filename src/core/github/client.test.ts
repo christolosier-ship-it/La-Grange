@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { GitHubClient } from './client';
 import type { GitHubRepositoryDto } from './types';
 
@@ -21,6 +21,10 @@ function repository(id: number, name = `repo-${String(id)}`): GitHubRepositoryDt
     pushed_at: null,
   };
 }
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 describe('GitHubClient', () => {
   it('paginates with a simple CORS request and removes duplicates', async () => {
@@ -49,6 +53,21 @@ describe('GitHubClient', () => {
         referrerPolicy: 'no-referrer',
       });
     }
+  });
+
+  it('keeps the native Window.fetch receiver required by Safari', async () => {
+    const strictWindowFetch = vi.fn(function (this: unknown): Promise<Response> {
+      if (this !== globalThis) {
+        throw new TypeError('Can only call Window.fetch on instances of Window');
+      }
+      return Promise.resolve(new Response(JSON.stringify([repository(1)])));
+    }) as unknown as typeof fetch;
+    vi.stubGlobal('fetch', strictWindowFetch);
+
+    const result = await new GitHubClient(undefined, 'https://api.test').fetchAllRepositories('me');
+
+    expect(result.status === 'success' ? result.repositories : []).toHaveLength(1);
+    expect(strictWindowFetch).toHaveBeenCalledOnce();
   });
 
   it('stops on an intermediate error and identifies rate limits', async () => {
