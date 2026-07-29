@@ -1,3 +1,4 @@
+import { isAbortError } from '../../utils/errors';
 import { AppError } from '../errors/app-error';
 import type { GitHubRepositoryDto, RepositoryFetchResult } from './types';
 
@@ -99,10 +100,6 @@ function responseError(response: Response): AppError {
     `GitHub a répondu avec le statut HTTP ${status}.`,
     response.status >= 500 || response.status === 403,
   );
-}
-
-function isAbortError(error: unknown): boolean {
-  return error instanceof Error && error.name === 'AbortError';
 }
 
 function browserFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
