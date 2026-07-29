@@ -1,3 +1,4 @@
+import { SYNC_REQUEST_EVENT } from './events';
 import { createRouter } from './router';
 import { createStore } from './store';
 import { registerServiceWorker } from './service-worker';
@@ -34,6 +35,9 @@ export function startApplication(root: HTMLElement | null): void {
     void sync.synchronize({ online: navigator.onLine, force });
   };
 
+  window.addEventListener(SYNC_REQUEST_EVENT, () => {
+    synchronize(true);
+  });
   window.addEventListener('online', () => {
     synchronize(true);
   });

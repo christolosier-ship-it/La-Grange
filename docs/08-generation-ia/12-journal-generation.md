@@ -32,3 +32,27 @@ Phase : 0 — Documentation
 Objectif : définir la documentation d’architecture, produit, UX, technique, qualité, réalisation et déploiement avant le développement.
 
 Décisions : MVP public, lecture seule, sans backend, TypeScript/Vite, sans framework UI, cache IndexedDB, routeur hash et overrides centralisés.
+
+## Phase 3 — Dashboard
+
+Date : 2026-07-29
+
+Branche / PR : `feature/phase-3-dashboard` / PR #8
+
+Objectif : construire le dashboard principal responsive à partir des données réelles de la phase 2, conformément au prototype validé et à `docs/05-realisation/05-phase-3-dashboard.md`.
+
+Documents lus : README, architecture, règles agents, index documentaire, fondations, besoins, parcours, règles métier, spécifications des vues, composants, design system, responsive, animations, accessibilité, architecture technique, modèle de données, stratégies qualité, roadmap, phase 3 et décisions d’architecture.
+
+Fichiers modifiés : feature dashboard, sélecteurs, cartes projets, utilitaires de date, événements applicatifs, styles responsive, shell, tests, README, changelog, contrôle visuel, version et cache PWA.
+
+Décisions prises : quatre statistiques factuelles uniquement ; activité formulée comme détectée ; cartes centrales sans doublon ; rail d’activité synthétique ; fallback déterministe avec initiales et caisse SVG ; aucune dépendance UI ou graphique ; assets et textures finales reportés à la phase 6 ; navigation basse mobile et rail gauche dès la tablette.
+
+Tests exécutés : installation reproductible, TypeScript strict, ESLint, tests Vitest unitaires et d’intégration, smoke test du client de production contre les dépôts publics réels, build Vite production.
+
+Résultats : tous les contrôles sont verts sur le head de code `c1875ada42c580b0fad3313b293aff6081361d3a` ; les états nominal, cache, synchronisation, hors ligne, erreur, inventaire vide, couverture absente, projet nouveau et projet archivé sont couverts.
+
+Limites ou tests non exécutés : aucune capture navigateur automatisée n’a été produite ; le contrôle visuel par format et par état est consigné dans `docs/04-qualite/10-controle-visuel-phase-3.md`. Les couvertures éditoriales finales ne font pas partie de cette phase.
+
+Dette créée : aucune dette fonctionnelle volontaire ; la finition graphique détaillée reste planifiée en phase 6.
+
+Prochaine étape : phase 4, catalogue complet et fiches projets, sans modifier les sélecteurs ni les composants stables du dashboard hors besoin démontré.

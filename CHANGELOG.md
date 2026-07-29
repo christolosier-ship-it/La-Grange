@@ -16,7 +16,11 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - tests unitaires et d’intégration du routage et du store ;
 - couche de données de phase 2 : client GitHub public paginé avec ETag et limites, modèle et mapping des projets, overrides validés, détection des changements, synchronisation cache-first et cache IndexedDB transactionnel ;
 - tests unitaires et d’intégration couvrant pagination, mapping, enrichissement, nouveaux dépôts, renommage, mode hors ligne, erreurs réseau et flux de synchronisation unique ;
-- smoke test dynamique exécutant le véritable client de production contre les dépôts publics réels avant fusion et déploiement.
+- smoke test dynamique exécutant le véritable client de production contre les dépôts publics réels avant fusion et déploiement ;
+- dashboard de phase 3 avec quatre statistiques réelles, L’établi, Prêts à partir, activité synthétique, répartition et nouvelle arrivée ;
+- cartes projets accessibles avec variantes, couverture chargée paresseusement et fallback déterministe ;
+- états complets du dashboard pour cache, synchronisation, hors ligne, avertissement, erreur et inventaire vide ;
+- tests de composants et sélecteurs couvrant les données, les images absentes, les sections vides et le déclenchement de synchronisation.
 
 ### Corrigé
 
@@ -31,7 +35,8 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - suppression de tous les en-têtes conditionnels côté navigateur afin de garantir une requête CORS simple sur Safari/iOS ;
 - amélioration des messages de diagnostic réseau, HTTP et de format de données du client GitHub ;
 - renouvellement automatique du service worker et du cache applicatif avec affichage de la version exécutée ;
-- conservation du récepteur natif `Window` lors de l’appel à `fetch`, requise par Safari/iOS.
+- conservation du récepteur natif `Window` lors de l’appel à `fetch`, requise par Safari/iOS ;
+- navigation principale restructurée pour un rail latéral sur tablette et bureau et une barre basse sur mobile.
 
 ## Versionnement prévu
 

@@ -62,4 +62,4 @@ Documents majeurs :
 
 ## État
 
-Les phases 1 et 2 sont implémentées : le socle applicatif et PWA est complété par le client GitHub paginé, le modèle métier, les overrides, la synchronisation cache-first et le stockage IndexedDB atomique.
+Les phases 1 à 3 sont implémentées : socle PWA, synchronisation GitHub cache-first et dashboard responsive avec statistiques réelles, cartes accessibles, fallbacks visuels, activité synthétique, nouvelle arrivée et états réseau complets.
