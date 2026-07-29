@@ -111,7 +111,9 @@ function createCheckbox(
   input.id = id;
   input.type = 'checkbox';
   input.checked = checked;
-  input.addEventListener('change', () => onChange(input.checked));
+  input.addEventListener('change', () => {
+    onChange(input.checked);
+  });
   const label = document.createElement('span');
   label.textContent = labelText;
   wrapper.append(input, label);
