@@ -124,6 +124,27 @@ describe('renderCatalogue', () => {
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ query: '' }));
   });
 
+  it('applies fork and archive visibility without changing the cached inventory', () => {
+    const projects = [
+      project(1),
+      project(2, { fork: true }),
+      project(3, { archived: true, activityState: 'archived' }),
+    ];
+    const view = renderCatalogue({
+      ...state(projects),
+      preferences: {
+        ...INITIAL_STATE.preferences,
+        hideForks: true,
+        hideArchived: true,
+      },
+    });
+
+    expect(view.querySelectorAll('.project-card')).toHaveLength(1);
+    expect(view.querySelector('.project-card__title')?.textContent).toBe('Projet 1');
+    expect(view.textContent).toContain('1 projet sur 1 visible');
+    expect(projects).toHaveLength(3);
+  });
+
   it('displays the localized AppError message when no snapshot is available', () => {
     const technical = 'GitHub HTTP 403 secondary rate limit';
     const userMessage = 'Limite GitHub atteinte. Réessayez plus tard.';
