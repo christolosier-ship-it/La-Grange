@@ -1,5 +1,5 @@
-import type { AppState } from '../../app/store';
 import { SYNC_REQUEST_EVENT } from '../../app/events';
+import type { AppState } from '../../app/store';
 import { AppError } from '../../core/errors/app-error';
 import type { ActivityState, Project } from '../../core/projects/model';
 import type { SyncState } from '../../core/sync/sync-service';
@@ -28,9 +28,9 @@ function createEyebrow(text: string): HTMLParagraphElement {
 
 function createSyncButton(sync: SyncState | undefined): HTMLButtonElement {
   const button = document.createElement('button');
+  const busy = sync?.status === 'syncing' || sync?.status === 'loading-cache';
   button.type = 'button';
   button.className = 'sync-button';
-  const busy = sync?.status === 'syncing' || sync?.status === 'loading-cache';
   button.disabled = busy;
   button.setAttribute('aria-busy', String(busy));
   button.textContent = busy ? 'Inventaire en cours…' : 'Actualiser l’inventaire';
@@ -71,13 +71,12 @@ function createHero(sync: SyncState | undefined): HTMLElement {
 }
 
 function createFeedback(sync: SyncState | undefined): HTMLElement | undefined {
-  if (!sync || sync.status === 'idle' || sync.status === 'ready') {
-    if (!sync?.warning) return undefined;
-  }
+  if (!sync) return undefined;
+  if ((sync.status === 'idle' || sync.status === 'ready') && !sync.warning) return undefined;
 
   const feedback = document.createElement('div');
   feedback.className = 'dashboard-feedback';
-  feedback.setAttribute('role', sync?.status === 'error' && !sync.snapshot ? 'alert' : 'status');
+  feedback.setAttribute('role', sync.status === 'error' && !sync.snapshot ? 'alert' : 'status');
 
   if (sync.status === 'loading-cache') {
     feedback.dataset.tone = 'neutral';
@@ -123,10 +122,7 @@ function createLoadingState(sync: SyncState | undefined): HTMLElement {
   const skeleton = document.createElement('div');
   skeleton.className = 'dashboard-skeleton';
   skeleton.setAttribute('aria-hidden', 'true');
-  for (let index = 0; index < 4; index += 1) {
-    const block = document.createElement('span');
-    skeleton.append(block);
-  }
+  for (let index = 0; index < 4; index += 1) skeleton.append(document.createElement('span'));
 
   state.append(title, message, skeleton);
   if (sync?.status === 'error' || sync?.status === 'offline') state.append(createSyncButton(sync));
@@ -137,7 +133,6 @@ function createStatCard(value: number, label: string, kind: string): HTMLElement
   const card = document.createElement('article');
   card.className = 'stat-card';
   card.dataset.kind = kind;
-
   const number = document.createElement('strong');
   number.textContent = String(value);
   const text = document.createElement('span');
@@ -147,15 +142,15 @@ function createStatCard(value: number, label: string, kind: string): HTMLElement
 }
 
 function createStats(projects: readonly Project[]): HTMLElement {
-  const model = selectDashboard(projects);
+  const { statistics } = selectDashboard(projects);
   const section = document.createElement('section');
   section.className = 'dashboard-stats';
   section.setAttribute('aria-label', 'Statistiques de l’inventaire');
   section.append(
-    createStatCard(model.statistics.total, 'Projets', 'total'),
-    createStatCard(model.statistics.active, 'Actifs', 'active'),
-    createStatCard(model.statistics.launchable, 'Applications', 'launchable'),
-    createStatCard(model.statistics.archived, 'Archives', 'archived'),
+    createStatCard(statistics.total, 'Projets', 'total'),
+    createStatCard(statistics.active, 'Actifs', 'active'),
+    createStatCard(statistics.launchable, 'Applications', 'launchable'),
+    createStatCard(statistics.archived, 'Archives', 'archived'),
   );
   return section;
 }
@@ -290,8 +285,13 @@ function createDistribution(projects: readonly Project[]): HTMLElement {
   chart.style.background = `conic-gradient(var(--color-green) 0 ${String(activeEnd)}%, var(--color-amber) ${String(activeEnd)}% ${String(maintenanceEnd)}%, var(--color-blue) ${String(maintenanceEnd)}% ${String(sleepingEnd)}%, var(--color-purple) ${String(sleepingEnd)}% 100%)`;
   chart.setAttribute('role', 'img');
   chart.setAttribute('aria-label', `${String(distribution.active)} actifs, ${String(distribution.maintenance)} en maintenance, ${String(distribution.sleeping)} en sommeil et ${String(distribution.archived)} archivés.`);
+
   const total = document.createElement('span');
-  total.innerHTML = `<strong>${String(statistics.total)}</strong><small>projets</small>`;
+  const totalValue = document.createElement('strong');
+  totalValue.textContent = String(statistics.total);
+  const totalLabel = document.createElement('small');
+  totalLabel.textContent = 'projets';
+  total.append(totalValue, totalLabel);
   chart.append(total);
 
   const legend = document.createElement('ul');
