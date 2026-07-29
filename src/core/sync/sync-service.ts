@@ -1,5 +1,6 @@
+import { AppError } from '../errors/app-error';
+import type { RepositoryFetchResult } from '../github/types';
 import type { SnapshotCache } from '../cache/indexed-db';
-import type { GitHubClient } from '../github/client';
 import { compareProjects } from '../projects/comparator';
 import { mapRepository } from '../projects/mapper';
 import type { ProjectOverrides } from '../projects/overrides';
@@ -7,19 +8,48 @@ import { enrichProjects } from '../projects/overrides';
 import type { SyncSnapshot } from '../projects/model';
 
 export type SyncStatus = 'idle' | 'loading-cache' | 'syncing' | 'ready' | 'offline' | 'error';
-export interface SyncState { readonly status: SyncStatus; readonly snapshot?: SyncSnapshot; readonly error?: Error; readonly checkedAt?: string }
+
+export interface SyncState {
+  readonly status: SyncStatus;
+  readonly snapshot?: SyncSnapshot;
+  readonly error?: Error;
+  readonly warning?: Error;
+  readonly checkedAt?: string;
+}
+
 export type SyncListener = (state: SyncState) => void;
-export interface SyncOptions { readonly force?: boolean; readonly online?: boolean }
+
+export interface SyncOptions {
+  readonly force?: boolean;
+  readonly online?: boolean;
+}
+
+export interface RepositoryClient {
+  fetchAllRepositories(
+    username: string,
+    etag?: string,
+    signal?: AbortSignal,
+  ): Promise<RepositoryFetchResult>;
+}
 
 const SCHEMA_VERSION = 1;
 export const DEFAULT_FRESHNESS_MS = 15 * 60 * 1_000;
 
+function normalizeError(error: unknown, fallback: string): Error {
+  return error instanceof Error ? error : new Error(fallback);
+}
+
+function isAbortError(error: unknown): boolean {
+  return error instanceof Error && error.name === 'AbortError';
+}
+
 export class SyncService {
   private active?: Promise<SyncState>;
   private controller?: AbortController;
+
   constructor(
     private readonly username: string,
-    private readonly client: GitHubClient,
+    private readonly client: RepositoryClient,
     private readonly cache: SnapshotCache,
     private readonly overridesLoader: () => Promise<ProjectOverrides>,
     private readonly publish: SyncListener,
@@ -28,41 +58,152 @@ export class SyncService {
   ) {}
 
   synchronize(options: SyncOptions = {}): Promise<SyncState> {
-    this.active ??= this.run(options).finally(() => { this.active = undefined; this.controller = undefined; });
+    if (this.active) return this.active;
+
+    this.active = this.run(options).finally(() => {
+      this.active = undefined;
+      this.controller = undefined;
+    });
     return this.active;
   }
 
-  cancel(): void { this.controller?.abort(); }
+  cancel(): void {
+    this.controller?.abort();
+  }
 
-  private emit(state: SyncState): SyncState { this.publish(state); return state; }
+  private emit(state: SyncState): SyncState {
+    this.publish(state);
+    return state;
+  }
+
+  private async saveRefreshedSnapshot(
+    snapshot: SyncSnapshot,
+    warning?: Error,
+  ): Promise<SyncState> {
+    try {
+      await this.cache.saveSnapshot(snapshot, [], []);
+      return this.emit({
+        status: 'ready',
+        snapshot,
+        checkedAt: snapshot.syncedAt,
+        warning,
+      });
+    } catch (error) {
+      return this.emit({
+        status: 'ready',
+        snapshot,
+        checkedAt: snapshot.syncedAt,
+        warning: normalizeError(error, 'Cache refresh failed'),
+      });
+    }
+  }
 
   private async run(options: SyncOptions): Promise<SyncState> {
     this.emit({ status: 'loading-cache' });
+
     let cached: SyncSnapshot | undefined;
-    try { cached = await this.cache.getSnapshot(this.username); } catch (error) {
-      this.emit({ status: 'error', error: error instanceof Error ? error : new Error('Cache failure') });
+    let warning: Error | undefined;
+
+    try {
+      cached = await this.cache.getSnapshot(this.username);
+    } catch (error) {
+      warning = normalizeError(error, 'Cache failure');
     }
-    if (cached) this.emit({ status: 'ready', snapshot: cached });
-    if (options.online === false) return this.emit({ status: 'offline', snapshot: cached });
-    const fresh = cached && this.now().getTime() - Date.parse(cached.syncedAt) < this.freshnessMs;
-    if (fresh && !options.force) return { status: 'ready', snapshot: cached };
+
+    if (cached) {
+      this.emit({ status: 'ready', snapshot: cached, warning });
+    }
+
+    if (options.online === false) {
+      return this.emit({ status: 'offline', snapshot: cached, warning });
+    }
+
+    const cachedTime = cached ? Date.parse(cached.syncedAt) : Number.NaN;
+    const fresh = cached !== undefined
+      && Number.isFinite(cachedTime)
+      && this.now().getTime() - cachedTime < this.freshnessMs;
+
+    if (fresh && !options.force) {
+      return this.emit({ status: 'ready', snapshot: cached, warning });
+    }
 
     this.controller = new AbortController();
-    this.emit({ status: 'syncing', snapshot: cached });
+    this.emit({ status: 'syncing', snapshot: cached, warning });
+
     try {
       let overrides: ProjectOverrides = {};
-      try { overrides = await this.overridesLoader(); } catch { /* invalid presentation must not block GitHub data */ }
-      const result = await this.client.fetchAllRepositories(this.username, cached?.etag, this.controller.signal);
+      try {
+        overrides = await this.overridesLoader();
+      } catch (error) {
+        warning = normalizeError(error, 'Invalid overrides');
+      }
+
+      const result = await this.client.fetchAllRepositories(
+        this.username,
+        cached?.etag,
+        this.controller.signal,
+      );
       const checkedAt = this.now().toISOString();
-      if (result.status === 'not-modified') return this.emit({ status: 'ready', snapshot: cached, checkedAt });
-      const mapped = result.repositories.map((repository) => mapRepository(repository, this.now()));
-      const comparison = compareProjects(cached?.projects, enrichProjects(mapped, overrides), this.username, checkedAt);
-      const snapshot: SyncSnapshot = { schemaVersion: SCHEMA_VERSION, username: this.username, projects: comparison.projects, syncedAt: checkedAt, etag: result.etag };
-      await this.cache.saveSnapshot(snapshot, comparison.events, comparison.removedIds);
-      return this.emit({ status: 'ready', snapshot, checkedAt });
+
+      if (result.status === 'not-modified') {
+        if (!cached) {
+          throw new AppError(
+            'invalid-response',
+            'GitHub returned 304 without a cached snapshot',
+            'Réponse GitHub incohérente.',
+            true,
+          );
+        }
+
+        const refreshed: SyncSnapshot = {
+          ...cached,
+          syncedAt: checkedAt,
+          etag: result.etag ?? cached.etag,
+        };
+        return this.saveRefreshedSnapshot(refreshed, warning);
+      }
+
+      const mapped = result.repositories.map((repository) => (
+        mapRepository(repository, this.now())
+      ));
+      const enriched = enrichProjects(mapped, overrides);
+      const comparison = compareProjects(cached?.projects, enriched, this.username, checkedAt);
+      const snapshot: SyncSnapshot = {
+        schemaVersion: SCHEMA_VERSION,
+        username: this.username,
+        projects: comparison.projects,
+        syncedAt: checkedAt,
+        etag: result.etag,
+      };
+
+      try {
+        await this.cache.saveSnapshot(snapshot, comparison.events, comparison.removedIds);
+      } catch (error) {
+        return this.emit({
+          status: 'error',
+          snapshot,
+          checkedAt,
+          error: normalizeError(error, 'Cache write failed'),
+          warning,
+        });
+      }
+
+      return this.emit({ status: 'ready', snapshot, checkedAt, warning });
     } catch (error) {
-      if (error instanceof DOMException && error.name === 'AbortError') return this.emit({ status: cached ? 'ready' : 'idle', snapshot: cached });
-      return this.emit({ status: 'error', snapshot: cached, error: error instanceof Error ? error : new Error('Synchronization failed') });
+      if (isAbortError(error)) {
+        return this.emit({
+          status: cached ? 'ready' : 'idle',
+          snapshot: cached,
+          warning,
+        });
+      }
+
+      return this.emit({
+        status: 'error',
+        snapshot: cached,
+        error: normalizeError(error, 'Synchronization failed'),
+        warning,
+      });
     }
   }
 }
