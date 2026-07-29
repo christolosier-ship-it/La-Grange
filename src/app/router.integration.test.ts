@@ -95,6 +95,30 @@ describe('router integration', () => {
     router.stop();
   });
 
+  it('activates a direct project route when its snapshot arrives after startup', () => {
+    window.location.hash = '#/project/Luma';
+    const store = createStore();
+    const opened = vi.fn().mockResolvedValue(undefined);
+    const routed = vi.fn().mockResolvedValue(undefined);
+    const shell = createAppShell();
+    document.body.append(shell);
+    const router = createRouter(shell, window, store, {
+      onProjectOpened: opened,
+      onProjectRoute: routed,
+    });
+    router.start();
+
+    expect(shell.querySelector('h1')?.textContent).toBe('Luma');
+    expect(opened).not.toHaveBeenCalled();
+    store.setSync({ status: 'ready', snapshot });
+
+    expect(document.title).toBe('Luma · La Grange');
+    expect(opened).toHaveBeenCalledOnce();
+    expect(opened).toHaveBeenCalledWith('Luma');
+    expect(routed).toHaveBeenCalledOnce();
+    router.stop();
+  });
+
   it('hydrates catalogue state from the hash and preserves the search focus on store updates', () => {
     window.location.hash = '#/projects?q=luma&state=active&view=list';
     const store = storeWithSnapshot();
