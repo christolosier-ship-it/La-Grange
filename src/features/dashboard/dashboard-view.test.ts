@@ -77,11 +77,14 @@ describe('renderDashboard', () => {
     expect(arrival?.textContent).toContain('Nouvelle arrivée');
   });
 
-  it('keeps cached data visible while offline', () => {
-    const view = renderDashboard(state([project(1)], 'offline'));
+  it('keeps cached data visible and marks external actions while offline', () => {
+    const view = renderDashboard(state([
+      project(1, { appUrl: 'https://example.com/one' }),
+    ], 'offline'));
 
     expect(view.querySelector('.dashboard-feedback')?.textContent).toContain('réserves');
     expect(view.querySelectorAll('.project-card')).not.toHaveLength(0);
+    expect(view.querySelector('.project-card__launch')?.textContent).toContain('connexion requise');
   });
 
   it('shows a useful first-load error with a retry action', () => {
