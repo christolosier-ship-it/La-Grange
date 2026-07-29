@@ -15,7 +15,8 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - manifest, icônes PWA provisoires et service worker natif pour le shell hors ligne ;
 - tests unitaires et d’intégration du routage et du store ;
 - couche de données de phase 2 : client GitHub public paginé avec ETag et limites, modèle et mapping des projets, overrides validés, détection des changements, synchronisation cache-first et cache IndexedDB transactionnel ;
-- tests unitaires et d’intégration couvrant pagination, mapping, enrichissement, nouveaux dépôts, renommage, mode hors ligne, erreurs réseau et flux de synchronisation unique.
+- tests unitaires et d’intégration couvrant pagination, mapping, enrichissement, nouveaux dépôts, renommage, mode hors ligne, erreurs réseau et flux de synchronisation unique ;
+- smoke test dynamique exécutant le véritable client de production contre les dépôts publics réels avant fusion et déploiement.
 
 ### Corrigé
 
@@ -27,8 +28,9 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - correction de la configuration TypeScript et ESLint ;
 - normalisation des routes, navigation active des fiches projet et retour accessible depuis la page introuvable ;
 - sécurisation de l’avis de mise à jour PWA et couverture de tests associée ;
-- suppression de l’en-tête `X-GitHub-Api-Version` côté navigateur afin d’éviter la prévalidation CORS problématique sur Safari/iOS ;
-- amélioration des messages de diagnostic réseau et HTTP du client GitHub.
+- suppression de tous les en-têtes conditionnels côté navigateur afin de garantir une requête CORS simple sur Safari/iOS ;
+- amélioration des messages de diagnostic réseau, HTTP et de format de données du client GitHub ;
+- renouvellement automatique du service worker et du cache applicatif avec affichage de la version exécutée.
 
 ## Versionnement prévu
 

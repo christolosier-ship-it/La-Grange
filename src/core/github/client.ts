@@ -1,7 +1,6 @@
 import { AppError } from '../errors/app-error';
 import type { GitHubRepositoryDto, RepositoryFetchResult } from './types';
 
-const ACCEPT = 'application/vnd.github+json';
 const MAX_PAGES = 100;
 
 function isNullableString(value: unknown): value is string | null {
@@ -97,7 +96,7 @@ function responseError(response: Response): AppError {
   return new AppError(
     'network',
     `GitHub HTTP ${status}`,
-    `GitHub a répondu avec le statut ${status}.`,
+    `GitHub a répondu avec le statut HTTP ${status}.`,
     response.status >= 500 || response.status === 403,
   );
 }
@@ -122,7 +121,7 @@ export class GitHubClient {
 
   async fetchAllRepositories(
     username: string,
-    etag?: string,
+    _etag?: string,
     signal?: AbortSignal,
   ): Promise<RepositoryFetchResult> {
     const cleanUsername = username.trim();
@@ -135,7 +134,6 @@ export class GitHubClient {
     const ids = new Set<number>();
     const visitedPages = new Set<string>();
     let responseEtag: string | undefined;
-    let firstPage = true;
     let pageCount = 0;
 
     while (url) {
@@ -148,10 +146,11 @@ export class GitHubClient {
       let response: Response;
       try {
         response = await this.fetcher(url, {
-          headers: {
-            Accept: ACCEPT,
-            ...(firstPage && etag ? { 'If-None-Match': etag } : {}),
-          },
+          mode: 'cors',
+          credentials: 'omit',
+          cache: 'no-store',
+          redirect: 'follow',
+          referrerPolicy: 'no-referrer',
           signal,
         });
       } catch (error) {
@@ -160,16 +159,13 @@ export class GitHubClient {
         throw new AppError(
           'network',
           `GitHub fetch failed: ${technicalMessage}`,
-          'Connexion à GitHub impossible depuis le navigateur.',
+          `Le navigateur n’a pas pu lire l’API GitHub (${technicalMessage}).`,
           true,
         );
       }
 
-      if (firstPage && response.status === 304) {
-        return { status: 'not-modified', etag: response.headers.get('etag') ?? etag };
-      }
       if (!response.ok) throw responseError(response);
-      if (firstPage) responseEtag = response.headers.get('etag') ?? undefined;
+      responseEtag ??= response.headers.get('etag') ?? undefined;
 
       let data: unknown;
       try {
@@ -183,7 +179,7 @@ export class GitHubClient {
         throw new AppError(
           'invalid-response',
           'Invalid GitHub repository response',
-          'Réponse GitHub invalide.',
+          'Les données GitHub reçues ne correspondent pas au format attendu.',
           true,
         );
       }
@@ -195,7 +191,6 @@ export class GitHubClient {
       }
 
       url = parseNextPage(response.headers.get('link'), this.apiOrigin);
-      firstPage = false;
     }
 
     return { status: 'success', repositories, etag: responseEtag };

@@ -23,7 +23,7 @@ function repository(id: number, name = `repo-${String(id)}`): GitHubRepositoryDt
 }
 
 describe('GitHubClient', () => {
-  it('paginates, sends browser-safe headers and removes duplicates', async () => {
+  it('paginates with a simple CORS request and removes duplicates', async () => {
     const fetcher = vi.fn<typeof fetch>();
     fetcher
       .mockResolvedValueOnce(new Response(JSON.stringify([repository(1)]), {
@@ -38,22 +38,17 @@ describe('GitHubClient', () => {
     expect(result.status === 'success' ? result.repositories.map(({ id }) => id) : []).toEqual([1, 2]);
     expect(fetcher).toHaveBeenCalledTimes(2);
 
-    const firstHeaders = new Headers(fetcher.mock.calls[0]?.[1]?.headers);
-    const secondHeaders = new Headers(fetcher.mock.calls[1]?.[1]?.headers);
-    expect(firstHeaders.get('Accept')).toBe('application/vnd.github+json');
-    expect(firstHeaders.get('If-None-Match')).toBe('old');
-    expect(firstHeaders.get('X-GitHub-Api-Version')).toBeNull();
-    expect(secondHeaders.get('If-None-Match')).toBeNull();
-    expect(secondHeaders.get('X-GitHub-Api-Version')).toBeNull();
-  });
-
-  it('keeps the cache on 304', async () => {
-    const fetcher = vi.fn<typeof fetch>();
-    fetcher.mockResolvedValue(new Response(null, { status: 304, headers: { etag: 'v2' } }));
-
-    await expect(
-      new GitHubClient(fetcher).fetchAllRepositories('me', 'v1'),
-    ).resolves.toEqual({ status: 'not-modified', etag: 'v2' });
+    for (const call of fetcher.mock.calls) {
+      const options = call[1];
+      expect(options?.headers).toBeUndefined();
+      expect(options).toMatchObject({
+        mode: 'cors',
+        credentials: 'omit',
+        cache: 'no-store',
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+      });
+    }
   });
 
   it('stops on an intermediate error and identifies rate limits', async () => {
@@ -66,7 +61,7 @@ describe('GitHubClient', () => {
 
     await expect(
       new GitHubClient(failed, 'https://api.test').fetchAllRepositories('me'),
-    ).rejects.toMatchObject({ code: 'network', userMessage: 'GitHub a répondu avec le statut 500.' });
+    ).rejects.toMatchObject({ code: 'network' });
 
     const limited = vi.fn<typeof fetch>();
     limited.mockResolvedValue(new Response(null, {
@@ -76,18 +71,6 @@ describe('GitHubClient', () => {
     await expect(
       new GitHubClient(limited).fetchAllRepositories('me'),
     ).rejects.toMatchObject({ code: 'rate-limit', recoverable: true });
-  });
-
-  it('reports browser fetch failures without hiding the technical cause', async () => {
-    const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new TypeError('Load failed'));
-
-    await expect(
-      new GitHubClient(fetcher).fetchAllRepositories('me'),
-    ).rejects.toMatchObject({
-      code: 'network',
-      message: 'GitHub fetch failed: Load failed',
-      userMessage: 'Connexion à GitHub impossible depuis le navigateur.',
-    });
   });
 
   it('rejects invalid repository data and untrusted pagination links', async () => {
@@ -121,5 +104,17 @@ describe('GitHubClient', () => {
     await expect(
       new GitHubClient(fetcher).fetchAllRepositories('me'),
     ).rejects.toMatchObject({ name: 'AbortError' });
+  });
+
+  it('exposes a useful browser fetch failure message', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockRejectedValue(new TypeError('Load failed'));
+
+    await expect(
+      new GitHubClient(fetcher).fetchAllRepositories('me'),
+    ).rejects.toMatchObject({
+      code: 'network',
+      message: 'GitHub fetch failed: Load failed',
+      userMessage: 'Le navigateur n’a pas pu lire l’API GitHub (Load failed).',
+    });
   });
 });

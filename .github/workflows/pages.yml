@@ -25,6 +25,10 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
+      - name: Smoke test des dépôts publics réels
+        env:
+          LIVE_GITHUB_SMOKE: '1'
+        run: npm run smoke:github
       - run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
