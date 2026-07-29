@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { Project, SyncSnapshot } from '../core/projects/model';
 import { createRouter } from './router';
 import { createStore } from './store';
@@ -41,6 +41,7 @@ describe('router integration', () => {
   afterEach(() => {
     window.location.hash = '';
     document.body.replaceChildren();
+    vi.restoreAllMocks();
   });
 
   it('renders a direct route, updates title, navigation and focus', () => {
@@ -67,6 +68,27 @@ describe('router integration', () => {
     expect(shell.querySelector('h1')?.textContent).toBe('Luma');
     expect(document.title).toBe('Luma · La Grange');
     expect(shell.querySelector('[aria-current="page"]')?.textContent).toBe('Projets');
+    router.stop();
+  });
+
+  it('acknowledges a new project when its detail route opens', () => {
+    window.location.hash = '#/project/Luma';
+    const store = createStore({
+      catalogue: { filter: 'all', query: '' },
+      sync: {
+        status: 'ready',
+        snapshot: { ...snapshot, projects: [{ ...project, isNew: true }] },
+      },
+    });
+    const opened = vi.fn().mockResolvedValue(undefined);
+    const shell = createAppShell();
+    document.body.append(shell);
+    const router = createRouter(shell, window, store, opened);
+
+    router.start();
+
+    expect(opened).toHaveBeenCalledOnce();
+    expect(opened).toHaveBeenCalledWith('Luma');
     router.stop();
   });
 
