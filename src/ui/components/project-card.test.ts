@@ -58,13 +58,15 @@ describe('createProjectCard', () => {
     expect(image?.src).toContain('projects/la-grange/cover.webp');
   });
 
-  it('falls back cleanly when the cover fails', () => {
+  it('falls back to deterministic initials and a generic crate pictogram', () => {
     const card = createProjectCard(project({ cover: 'projects/missing.webp' }));
     const image = card.querySelector<HTMLImageElement>('img');
     image?.dispatchEvent(new Event('error'));
 
     expect(card.querySelector('img')).toBeNull();
     expect(card.querySelector<HTMLElement>('.project-card__fallback')?.hidden).toBe(false);
+    expect(card.querySelector('.project-card__crate-icon')).not.toBeNull();
+    expect(card.querySelector('.project-card__fallback span')?.textContent).toBe('LG');
     expect(card.querySelector('.project-card__visual')?.classList.contains('is-fallback')).toBe(true);
   });
 
