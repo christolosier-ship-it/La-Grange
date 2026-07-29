@@ -62,9 +62,11 @@ describe('renderCatalogue', () => {
     const view = renderCatalogue(state(projects), { onCatalogueChange: onChange });
     document.body.append(view);
     const search = view.querySelector<HTMLInputElement>('#catalogue-search-field');
+    expect(search).not.toBeNull();
+    if (!search) throw new Error('Catalogue search field missing');
 
-    search!.value = 'energie';
-    search!.dispatchEvent(new Event('input', { bubbles: true }));
+    search.value = 'energie';
+    search.dispatchEvent(new Event('input', { bubbles: true }));
 
     expect(view.querySelectorAll('.project-card')).toHaveLength(1);
     expect(view.querySelector('.project-card__title')?.textContent).toBe('Énergie Claire');
@@ -119,12 +121,10 @@ describe('renderCatalogue', () => {
 
   it('delegates favorite changes and flags app links offline', () => {
     const toggle = vi.fn();
+    const offlineSnapshot = state([project(1, { appUrl: 'https://example.com/app' })]).sync.snapshot;
     const view = renderCatalogue({
       ...state([project(1, { appUrl: 'https://example.com/app' })]),
-      sync: {
-        status: 'offline',
-        snapshot: state([project(1, { appUrl: 'https://example.com/app' })]).sync.snapshot,
-      },
+      sync: { status: 'offline', snapshot: offlineSnapshot },
     }, { onToggleFavorite: toggle });
 
     view.querySelector<HTMLButtonElement>('.project-card__favorite')?.click();
