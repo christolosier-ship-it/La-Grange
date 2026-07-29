@@ -11,17 +11,38 @@ const GITHUB_USERNAME = 'christolosier-ship-it';
 
 export function startApplication(root: HTMLElement | null): void {
   if (!root) throw new Error('Élément racine #app introuvable.');
+
   const store = createStore();
   const shell = createAppShell();
   root.replaceChildren(shell);
-  createRouter(shell).start();
+
+  const router = createRouter(shell, window, store);
+  router.start();
   registerServiceWorker();
+
   const sync = new SyncService(
     GITHUB_USERNAME,
     new GitHubClient(),
     new IndexedDbCache(),
     () => loadOverrides(),
-    (state) => { store.setSync(state); },
+    (state) => {
+      store.setSync(state);
+    },
   );
-  void sync.synchronize({ online: navigator.onLine });
+
+  const synchronize = (force = false): void => {
+    void sync.synchronize({ online: navigator.onLine, force });
+  };
+
+  window.addEventListener('online', () => {
+    synchronize(true);
+  });
+  window.addEventListener('offline', () => {
+    synchronize(true);
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') synchronize();
+  });
+
+  synchronize();
 }
