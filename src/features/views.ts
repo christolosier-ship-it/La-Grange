@@ -4,6 +4,7 @@ import { renderActivity } from './activity/activity-view';
 import { renderCatalogue } from './catalogue/catalogue-view';
 import { renderDashboard } from './dashboard/dashboard-view';
 import { renderProjectDetail } from './project-detail/project-detail-view';
+import { renderSettings } from './settings/settings-view';
 import type { ViewActions } from './view-actions';
 
 interface ViewContent {
@@ -11,12 +12,6 @@ interface ViewContent {
   readonly title: string;
   readonly description: string;
 }
-
-const SETTINGS_PLACEHOLDER: ViewContent = {
-  eyebrow: 'Préférences',
-  title: 'Paramètres',
-  description: 'Les réglages locaux et les informations détaillées du cache seront disponibles ici.',
-};
 
 function createPanel(content: ViewContent): HTMLElement {
   const article = document.createElement('article');
@@ -57,6 +52,6 @@ export function renderView(
   if (route.name === 'project') return renderProjectDetail(route, state, actions);
   if (route.name === 'dashboard') return renderDashboard(state);
   if (route.name === 'activity') return renderActivity(state);
-  if (route.name === 'settings') return createPanel(SETTINGS_PLACEHOLDER);
+  if (route.name === 'settings') return renderSettings(state, actions);
   return renderNotFound();
 }
