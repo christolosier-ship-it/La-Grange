@@ -7,10 +7,12 @@ afterEach(() => {
 });
 
 describe('openConfirmationModal', () => {
-  it('focuses cancel, traps Tab and restores the trigger after Escape', () => {
+  it('focuses cancel, traps Tab, makes the background inert and restores it after Escape', () => {
+    const shell = document.createElement('main');
     const trigger = document.createElement('button');
     trigger.textContent = 'Ouvrir';
-    document.body.append(trigger);
+    shell.append(trigger);
+    document.body.append(shell);
     trigger.focus();
     const onCancel = vi.fn();
 
@@ -23,6 +25,8 @@ describe('openConfirmationModal', () => {
     });
     const buttons = [...overlay.querySelectorAll<HTMLButtonElement>('button')];
     expect(document.activeElement).toBe(buttons[0]);
+    expect(shell.inert).toBe(true);
+    expect(shell.getAttribute('aria-hidden')).toBe('true');
 
     buttons[1]?.focus();
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
@@ -30,6 +34,8 @@ describe('openConfirmationModal', () => {
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     expect(document.querySelector('.modal-overlay')).toBeNull();
+    expect(shell.inert).toBe(false);
+    expect(shell.hasAttribute('aria-hidden')).toBe(false);
     expect(document.activeElement).toBe(trigger);
     expect(onCancel).toHaveBeenCalledOnce();
   });
