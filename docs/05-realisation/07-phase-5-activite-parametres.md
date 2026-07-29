@@ -1,15 +1,23 @@
 # Phase 5 — Activité et paramètres
 
-## Activité
+La phase est livrée en deux PR successives afin de séparer le journal local de la mutation plus structurante des profils et préférences.
 
-- journal local des ajouts, renommages, archivages et changements détectés ;
-- regroupement par jour et semaine ;
-- formulations prudentes ;
-- limite de rétention ;
-- lien vers le projet concerné ;
-- état vide.
+## Phase 5A — Activité
 
-## Paramètres
+- journal local des ajouts, renommages, disparitions, archivages et changements d’URL d’application détectés ;
+- aucun événement lors du premier import complet ;
+- lecture isolée par utilisateur ;
+- validation profonde de chaque entrée ;
+- tri du plus récent au plus ancien ;
+- regroupement par semaine puis par jour dans le fuseau local ;
+- formulations prudentes et centralisées ;
+- limite de rétention de 500 événements par utilisateur ;
+- lien vers la route canonique du projet lorsqu’il existe encore ;
+- nom connu sans lien mort lorsqu’un dépôt a disparu ;
+- états chargement, vide, hors ligne, cache indisponible et données partiellement invalides ;
+- aucune requête GitHub déclenchée par la consultation du journal.
+
+## Phase 5B — Paramètres
 
 - utilisateur GitHub ;
 - masquer forks ;
@@ -27,6 +35,8 @@
 
 Changer d’utilisateur crée ou charge un instantané distinct. Une confirmation est nécessaire si cela modifie fortement l’affichage. Aucun champ de token.
 
+Les événements et snapshots restent isolés par utilisateur. Les préférences d’affichage sont globales au navigateur dans le MVP, sauf décision contraire explicitement documentée pendant la Phase 5B.
+
 ## Critères de sortie
 
 - préférences persistantes ;
@@ -35,4 +45,6 @@ Changer d’utilisateur crée ou charge un instantané distinct. Une confirmatio
 - activité cohérente avec les changements connus ;
 - aucun événement inventé ;
 - paramètres utilisables au clavier et sur mobile ;
-- tests de migration et de changement d’utilisateur.
+- tests de migration et de changement d’utilisateur ;
+- aucune régression des Phases 1 à 4 ;
+- aucun fil P1 ou P2 ouvert avant chaque fusion.
