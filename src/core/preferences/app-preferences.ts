@@ -141,12 +141,13 @@ function migrateLegacy(value: unknown): AppPreferences {
 export function saveAppPreferences(
   preferences: AppPreferences,
   storage: Pick<Storage, 'setItem'> = localStorage,
-): void {
+): boolean {
   const repaired = repairAppPreferences(preferences).preferences;
   try {
     storage.setItem(STORAGE_KEY, JSON.stringify(repaired));
+    return true;
   } catch {
-    // Private browsing or a full quota must not block consultation.
+    return false;
   }
 }
 
@@ -163,13 +164,15 @@ export function loadAppPreferences(
   const legacyRaw = storage.getItem(LEGACY_STORAGE_KEY);
   if (legacyRaw) {
     const preferences = migrateLegacy(parseStored(legacyRaw));
-    saveAppPreferences(preferences, storage);
-    try {
-      storage.removeItem(LEGACY_STORAGE_KEY);
-    } catch {
-      // The migrated preferences remain usable even if legacy cleanup fails.
+    const stored = saveAppPreferences(preferences, storage);
+    if (stored) {
+      try {
+        storage.removeItem(LEGACY_STORAGE_KEY);
+      } catch {
+        // The migrated preferences remain available through the v2 key.
+      }
     }
-    return { preferences, repairedFields: [], migratedLegacy: true };
+    return { preferences, repairedFields: [], migratedLegacy: stored };
   }
 
   return {
