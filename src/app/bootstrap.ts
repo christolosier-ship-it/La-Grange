@@ -49,13 +49,15 @@ export function startApplication(root: HTMLElement | null): void {
     },
   );
 
-  let coordinator: ProfileCoordinator;
+  const coordinatorRef: { current?: ProfileCoordinator } = {};
   const createSession = (
     username: string,
     freshnessMs: number,
     generation: number,
   ): ProfileSession => {
-    const isCurrent = (): boolean => coordinator.isCurrentGeneration(generation);
+    const isCurrent = (): boolean => (
+      coordinatorRef.current?.isCurrentGeneration(generation) ?? generation === 0
+    );
     const activity = new ActivityService(cache, (state) => {
       if (isCurrent()) store.setActivity(state);
     });
@@ -82,7 +84,7 @@ export function startApplication(root: HTMLElement | null): void {
     return { username, activity, sync, details };
   };
 
-  coordinator = new ProfileCoordinator(
+  const coordinator = new ProfileCoordinator(
     preferences.username,
     freshnessMilliseconds(preferences.freshnessMinutes),
     createSession,
@@ -95,6 +97,7 @@ export function startApplication(root: HTMLElement | null): void {
       },
     },
   );
+  coordinatorRef.current = coordinator;
 
   const persistPreferences = (next: AppPreferences): void => {
     saveAppPreferences(next);
