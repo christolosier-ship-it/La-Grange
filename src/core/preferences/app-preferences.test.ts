@@ -63,6 +63,22 @@ describe('application preferences', () => {
     expect(result.preferences.catalogueView).toBe('list');
   });
 
+  it('falls back to defaults when localStorage reads are blocked', () => {
+    const storage = {
+      getItem: (): string | null => {
+        throw new DOMException('blocked', 'SecurityError');
+      },
+      setItem: (): void => undefined,
+      removeItem: (): void => undefined,
+    };
+
+    expect(loadAppPreferences(storage)).toEqual({
+      preferences: DEFAULT_APP_PREFERENCES,
+      repairedFields: [],
+      migratedLegacy: false,
+    });
+  });
+
   it('repairs invalid values independently instead of discarding valid choices', () => {
     const result = repairAppPreferences({
       schemaVersion: 1,
