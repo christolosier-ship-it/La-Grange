@@ -26,7 +26,11 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - coordinateur de sessions isolant synchronisation, détails et activité pour chaque profil ;
 - écran Paramètres responsive avec confirmations accessibles, informations réelles du cache et version ;
 - inspection et reset ciblés du snapshot, du journal et des détails du profil actif ;
-- diagnostic local copiable limité aux états, compteurs et préférences effectives.
+- diagnostic local copiable limité aux états, compteurs et préférences effectives ;
+- cadrage documentaire complet de la Phase 6 avec bible visuelle, inventaire et budgets d’assets, responsive artistique, grammaire de mouvement et checklist qualité ;
+- référence visuelle Phase 6 conservée dans le dépôt en WebP documentaire ;
+- protocole Lovable et ADR maintenant GitHub comme source de vérité du prototypage visuel ;
+- découpage de la Phase 6 en prototype isolé puis PR 6A à 6E.
 
 ### Corrigé
 
