@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { matchRoute } from '../../app/routes';
 import { INITIAL_STATE, type AppState } from '../../app/store';
+import { AppError } from '../../core/errors/app-error';
 import type { ProjectDetails } from '../../core/projects/details';
 import type { Project } from '../../core/projects/model';
 import { renderProjectDetail } from './project-detail-view';
@@ -74,6 +75,7 @@ function state(projectValue: Project, status: AppState['sync']['status'] = 'read
 afterEach(() => {
   document.body.replaceChildren();
   vi.restoreAllMocks();
+  vi.useRealTimers();
 });
 
 describe('renderProjectDetail', () => {
@@ -126,6 +128,39 @@ describe('renderProjectDetail', () => {
     expect(view.textContent).toContain('Construire la fiche');
     expect(view.textContent).toContain('Version 1');
     expect(view.textContent).toContain('Les détails locaux restent visibles');
+  });
+
+  it('disables detail retries until the GitHub reset time and re-enables automatically', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-07-29T12:00:00Z'));
+    const projectState = state(project());
+    const view = renderProjectDetail(matchRoute('#/project/La-Grange'), {
+      ...projectState,
+      projectDetails: {
+        42: {
+          projectId: 42,
+          status: 'error',
+          error: new AppError(
+            'rate-limit',
+            'GitHub detail rate limit',
+            'Limite GitHub atteinte pour les détails.',
+            true,
+            '2026-07-29T12:01:00Z',
+          ),
+        },
+      },
+    });
+    const button = view.querySelector<HTMLButtonElement>('.project-detail__load');
+    const retryTime = view.querySelector<HTMLTimeElement>('.project-detail__retry time');
+
+    expect(button?.disabled).toBe(true);
+    expect(button?.textContent).toBe('Limite GitHub en cours');
+    expect(retryTime?.dateTime).toBe('2026-07-29T12:01:00.000Z');
+
+    vi.advanceTimersByTime(60_000);
+    expect(button?.disabled).toBe(false);
+    expect(button?.textContent).toBe('Charger les détails récents');
+    expect(view.querySelector('.project-detail__retry')).toBeNull();
   });
 
   it('flags every external action and prevents first detail loading offline', () => {
