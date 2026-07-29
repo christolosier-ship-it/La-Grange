@@ -50,10 +50,7 @@ function newestSnapshot(
 ): SyncSnapshot | undefined {
   if (!displayed) return persisted;
   if (!persisted) return displayed;
-
-  const displayedTime = Date.parse(displayed.syncedAt);
-  const persistedTime = Date.parse(persisted.syncedAt);
-  return persistedTime > displayedTime ? persisted : displayed;
+  return Date.parse(persisted.syncedAt) > Date.parse(displayed.syncedAt) ? persisted : displayed;
 }
 
 export class SyncService {
@@ -69,11 +66,11 @@ export class SyncService {
     private readonly publish: SyncListener,
     private readonly now: () => Date = () => new Date(),
     private readonly freshnessMs = DEFAULT_FRESHNESS_MS,
+    private readonly isCurrent: () => boolean = () => true,
   ) {}
 
   synchronize(options: SyncOptions = {}): Promise<SyncState> {
     if (this.active) return this.active;
-
     this.active = this.run(options).finally(() => {
       this.active = undefined;
       this.controller = undefined;
@@ -87,18 +84,17 @@ export class SyncService {
 
   async acknowledgeProject(repositoryName: string): Promise<SyncState> {
     if (this.active) await this.active;
-
+    if (!this.isCurrent()) return this.currentState;
     const snapshot = this.currentState.snapshot;
     const project = snapshot?.projects.find((candidate) => candidate.repositoryName === repositoryName);
     if (!snapshot || !project?.isNew) return this.currentState;
-
     const updatedSnapshot: SyncSnapshot = {
       ...snapshot,
       projects: snapshot.projects.map((candidate) => (
         candidate.id === project.id ? { ...candidate, isNew: false } : candidate
       )),
     };
-
+    if (!this.isCurrent()) return this.currentState;
     try {
       await this.cache.saveSnapshot(updatedSnapshot, [], []);
       return this.emit({ ...this.currentState, snapshot: updatedSnapshot });
@@ -111,23 +107,18 @@ export class SyncService {
   }
 
   private emit(state: SyncState): SyncState {
+    if (!this.isCurrent()) return this.currentState;
     this.currentState = state;
     this.publish(state);
     return state;
   }
 
-  private async saveRefreshedSnapshot(
-    snapshot: SyncSnapshot,
-    warning?: Error,
-  ): Promise<SyncState> {
+  private async saveRefreshedSnapshot(snapshot: SyncSnapshot, warning?: Error): Promise<SyncState> {
+    if (!this.isCurrent()) return this.currentState;
     try {
       await this.cache.saveSnapshot(snapshot, [], []);
-      return this.emit({
-        status: 'ready',
-        snapshot,
-        checkedAt: snapshot.syncedAt,
-        warning,
-      });
+      if (!this.isCurrent()) return this.currentState;
+      return this.emit({ status: 'ready', snapshot, checkedAt: snapshot.syncedAt, warning });
     } catch (error) {
       return this.emit({
         status: 'ready',
@@ -141,29 +132,23 @@ export class SyncService {
   private async run(options: SyncOptions): Promise<SyncState> {
     const displayedSnapshot = this.currentState.snapshot;
     this.emit({ status: 'loading-cache', snapshot: displayedSnapshot });
-
     let cached = displayedSnapshot;
     let warning: Error | undefined;
-
     try {
       const persisted = await this.cache.getSnapshot(this.username);
+      if (!this.isCurrent()) return this.currentState;
       cached = newestSnapshot(displayedSnapshot, persisted);
     } catch (error) {
       warning = normalizeError(error, 'Cache failure');
     }
-
-    if (cached) {
-      this.emit({ status: 'ready', snapshot: cached, warning });
-    }
-
-    if (options.online === false) {
-      return this.emit({ status: 'offline', snapshot: cached, warning });
-    }
+    if (cached) this.emit({ status: 'ready', snapshot: cached, warning });
+    if (options.online === false) return this.emit({ status: 'offline', snapshot: cached, warning });
 
     let overrides: ProjectOverrides = {};
     let currentOverridesSignature: string | undefined;
     try {
       overrides = await this.overridesLoader();
+      if (!this.isCurrent()) return this.currentState;
       currentOverridesSignature = overridesSignature(overrides);
     } catch (error) {
       warning = normalizeError(error, 'Invalid overrides');
@@ -176,45 +161,34 @@ export class SyncService {
       && overridesUnchanged
       && Number.isFinite(cachedTime)
       && this.now().getTime() - cachedTime < this.freshnessMs;
-
-    if (fresh && !options.force) {
-      return this.emit({ status: 'ready', snapshot: cached, warning });
-    }
+    if (fresh && !options.force) return this.emit({ status: 'ready', snapshot: cached, warning });
 
     this.controller = new AbortController();
     this.emit({ status: 'syncing', snapshot: cached, warning });
-
     try {
       const result = await this.client.fetchAllRepositories(
         this.username,
         overridesUnchanged ? cached?.etag : undefined,
         this.controller.signal,
       );
+      if (!this.isCurrent()) return this.currentState;
       const checkedAt = this.now().toISOString();
-
       if (result.status === 'not-modified') {
         if (!cached || !overridesUnchanged) {
-          throw new AppError(
-            'invalid-response',
-            'GitHub returned 304 without a compatible cached snapshot',
-            'Réponse GitHub incohérente.',
-            true,
-          );
+          throw new AppError('invalid-response', 'GitHub returned 304 without cache', 'Réponse GitHub incohérente.', true);
         }
-
-        const refreshed: SyncSnapshot = {
+        return await this.saveRefreshedSnapshot({
           ...cached,
           syncedAt: checkedAt,
           etag: result.etag ?? cached.etag,
           overridesSignature: currentOverridesSignature,
-        };
-        return await this.saveRefreshedSnapshot(refreshed, warning);
+        }, warning);
       }
 
-      const mapped = result.repositories.map((repository) => (
-        mapRepository(repository, this.now())
-      ));
-      const enriched = enrichProjects(mapped, overrides);
+      const enriched = enrichProjects(
+        result.repositories.map((repository) => mapRepository(repository, this.now())),
+        overrides,
+      );
       const comparison = compareProjects(
         cached?.projects,
         enriched,
@@ -231,9 +205,10 @@ export class SyncService {
         overridesSignature: currentOverridesSignature,
         aliases: comparison.aliases,
       };
-
+      if (!this.isCurrent()) return this.currentState;
       try {
         await this.cache.saveSnapshot(snapshot, comparison.events, comparison.removedIds);
+        if (!this.isCurrent()) return this.currentState;
       } catch (error) {
         return this.emit({
           status: 'error',
@@ -243,17 +218,12 @@ export class SyncService {
           warning,
         });
       }
-
       return this.emit({ status: 'ready', snapshot, checkedAt, warning });
     } catch (error) {
+      if (!this.isCurrent()) return this.currentState;
       if (isAbortError(error)) {
-        return this.emit({
-          status: cached ? 'ready' : 'idle',
-          snapshot: cached,
-          warning,
-        });
+        return this.emit({ status: cached ? 'ready' : 'idle', snapshot: cached, warning });
       }
-
       return this.emit({
         status: 'error',
         snapshot: cached,
