@@ -78,3 +78,27 @@ Limites ou tests non exécutés : le comportement d’ouverture hors ligne d’u
 Dette créée : aucune dette volontaire.
 
 Prochaine étape : résoudre les fils de la PR #8, fusionner la PR #9 après CI finale verte, puis seulement engager la phase 4.
+
+## Phase 4 — Catalogue et fiche projet
+
+Date : 2026-07-29
+
+Branche / PR : `feature/phase-4-catalogue-fiche` / PR #10
+
+Objectif : réaliser le catalogue complet et les fiches projets selon `docs/05-realisation/06-phase-4-fiche-projet.md`, sans élargir le périmètre vers le journal de Phase 5.
+
+Documents lus : ensemble des fondations, besoins, user stories, parcours, règles métier, critères d’acceptation, spécifications de vues et composants, design system, responsive, animations, états, accessibilité, architecture système, modèle de données, intégration GitHub, synchronisation, IndexedDB, routage, erreurs, sécurité, performance, overrides, stratégies et cas de tests, Definition of Done, audit final, roadmap, prompt de Phase 4 et ADR de l’API publique.
+
+Fichiers modifiés : modèle et sélecteurs du catalogue, contrôles accessibles, cartes projets, préférences locales, routeur, store, bootstrap, alias de renommage, client et service de détails ciblés, cache IndexedDB, fiche projet modulaire, styles responsive, tests, smoke test réel, README, changelog, documentation technique, contrôle visuel, version et cache PWA.
+
+Décisions prises : recherche locale sans requête GitHub ; état utile dans le hash ; favoris et mode d’affichage uniquement dans `localStorage` ; trois endpoints de détail au maximum après action explicite ; aucun HTML README distant injecté ; cache détails de 45 minutes ; fiche de base toujours indépendante des détails ; ancienne URL résolue par identifiant stable ; requêtes navigateur simples compatibles Safari ; modules de rendu séparés après audit de maintenabilité.
+
+Tests exécutés : tests purs de recherche, filtres, tri, URL et alias ; tests de composants catalogue et fiche ; tests du client, du mapper et du service de détails ; tests du store et du routeur ; TypeScript strict ; ESLint ; suite Vitest ; smoke test réel de l’inventaire et de la fiche `La-Grange` ; build Vite production.
+
+Résultats : une première chaîne complète a été obtenue avant la finalisation documentaire et le refactor de maintenabilité. Une validation finale du head exact reste obligatoire avant fusion.
+
+Limites ou tests non exécutés : aucune capture navigateur automatisée n’est produite par le pipeline actuel. Le contrôle responsive et des états est consigné dans `docs/04-qualite/11-controle-visuel-phase-4.md`.
+
+Dette créée : aucune dette fonctionnelle volontaire. Les images éditoriales et textures finales restent planifiées en Phase 6 ; un futur navigateur E2E automatisé améliorerait encore la preuve visuelle.
+
+Prochaine étape : audit du diff final, résolution de toute revue P1/P2, CI verte sur le SHA final, fusion, puis contrôle post-merge avant Phase 5.
