@@ -102,4 +102,25 @@ describe('ProfileCoordinator', () => {
     expect(beforeProfileChange).not.toHaveBeenCalled();
     expect(rebuilt.synchronize).toHaveBeenCalledWith({ online: true });
   });
+
+  it('rebuilds an empty session after cache reset without an automatic request', () => {
+    const first = session('same-user');
+    const rebuilt = session('same-user');
+    const factory = vi.fn()
+      .mockReturnValueOnce(first.value)
+      .mockReturnValueOnce(rebuilt.value);
+    const coordinator = new ProfileCoordinator('same-user', 900_000, factory, {
+      beforeProfileChange: vi.fn(),
+    });
+
+    coordinator.resetCurrent(1_800_000);
+
+    expect(first.cancelSync).toHaveBeenCalledOnce();
+    expect(first.cancelDetails).toHaveBeenCalledOnce();
+    expect(first.resetActivity).toHaveBeenCalledOnce();
+    expect(factory).toHaveBeenLastCalledWith('same-user', 1_800_000);
+    expect(rebuilt.synchronize).not.toHaveBeenCalled();
+    expect(rebuilt.loadActivity).not.toHaveBeenCalled();
+    expect(coordinator.username).toBe('same-user');
+  });
 });
