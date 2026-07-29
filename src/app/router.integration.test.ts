@@ -119,6 +119,24 @@ describe('router integration', () => {
     router.stop();
   });
 
+  it('signals the project route departure exactly once', () => {
+    window.location.hash = '#/project/Luma';
+    const store = storeWithSnapshot();
+    const leave = vi.fn();
+    const shell = createAppShell();
+    document.body.append(shell);
+    const router = createRouter(shell, window, store, { onProjectRouteLeave: leave });
+    router.start();
+
+    window.location.hash = '#/projects';
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
+
+    expect(leave).toHaveBeenCalledOnce();
+    expect(leave).toHaveBeenCalledWith(1);
+    router.stop();
+    expect(leave).toHaveBeenCalledOnce();
+  });
+
   it('hydrates catalogue state from the hash and preserves the search focus on store updates', () => {
     window.location.hash = '#/projects?q=luma&state=active&view=list';
     const store = storeWithSnapshot();
