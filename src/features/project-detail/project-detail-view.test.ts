@@ -150,17 +150,22 @@ describe('renderProjectDetail', () => {
         },
       },
     });
+    document.body.append(view);
     const button = view.querySelector<HTMLButtonElement>('.project-detail__load');
-    const retryTime = view.querySelector<HTMLTimeElement>('.project-detail__retry time');
+    const retryNotice = view.querySelector<HTMLElement>('.project-detail__retry');
+    const retryTime = retryNotice?.querySelector<HTMLTimeElement>('time');
 
     expect(button?.disabled).toBe(true);
     expect(button?.textContent).toBe('Limite GitHub en cours');
     expect(retryTime?.dateTime).toBe('2026-07-29T12:01:00.000Z');
+    retryNotice?.focus();
+    expect(document.activeElement).toBe(retryNotice);
 
     vi.advanceTimersByTime(60_000);
     expect(button?.disabled).toBe(false);
     expect(button?.textContent).toBe('Charger les détails récents');
     expect(view.querySelector('.project-detail__retry')).toBeNull();
+    expect(document.activeElement).toBe(button);
   });
 
   it('flags every external action and prevents first detail loading offline', () => {
