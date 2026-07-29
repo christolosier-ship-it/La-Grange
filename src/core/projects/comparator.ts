@@ -4,6 +4,7 @@ export interface Comparison {
   readonly projects: Project[];
   readonly events: ActivityEvent[];
   readonly removedIds: number[];
+  readonly aliases: Readonly<Record<string, number>>;
 }
 
 export function compareProjects(
@@ -11,10 +12,12 @@ export function compareProjects(
   incoming: readonly Project[],
   username: string,
   now: string,
+  previousAliases: Readonly<Record<string, number>> = {},
 ): Comparison {
   const oldById = new Map(previous?.map((project) => [project.id, project]));
   const firstImport = previous === undefined;
   const events: ActivityEvent[] = [];
+  const aliasCandidates: Record<string, number> = { ...previousAliases };
 
   const projects = incoming.map((project) => {
     const old = oldById.get(project.id);
@@ -30,6 +33,7 @@ export function compareProjects(
         occurredAt: now,
         detail: `${old.repositoryName} → ${project.repositoryName}`,
       });
+      aliasCandidates[old.repositoryName] = project.id;
     }
     if (old && !old.archived && project.archived) {
       events.push({ username, projectId: project.id, type: 'archived', occurredAt: now });
@@ -45,6 +49,12 @@ export function compareProjects(
   });
 
   const incomingIds = new Set(incoming.map(({ id }) => id));
+  const canonicalNames = new Set(projects.map(({ repositoryName }) => repositoryName));
+  const aliases = Object.fromEntries(
+    Object.entries(aliasCandidates).filter(([name, projectId]) => (
+      incomingIds.has(projectId) && !canonicalNames.has(name)
+    )),
+  );
   const removed = previous?.filter(({ id }) => !incomingIds.has(id)) ?? [];
 
   for (const project of removed) {
@@ -61,5 +71,6 @@ export function compareProjects(
     projects,
     events,
     removedIds: removed.map(({ id }) => id),
+    aliases,
   };
 }

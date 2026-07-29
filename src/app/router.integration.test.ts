@@ -1,8 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { Project, SyncSnapshot } from '../core/projects/model';
-import { createRouter } from './router';
-import { createStore } from './store';
+import { DEFAULT_CATALOGUE_STATE } from '../features/catalogue/catalogue-model';
 import { createAppShell } from '../ui/layout/app-shell';
+import { createRouter } from './router';
+import { createStore, INITIAL_STATE } from './store';
 
 const project: Project = {
   id: 1,
@@ -37,6 +38,13 @@ const snapshot: SyncSnapshot = {
   syncedAt: '2026-01-01T00:00:00Z',
 };
 
+function storeWithSnapshot(value: SyncSnapshot = snapshot) {
+  return createStore({
+    ...INITIAL_STATE,
+    sync: { status: 'ready', snapshot: value },
+  });
+}
+
 describe('router integration', () => {
   afterEach(() => {
     window.location.hash = '';
@@ -58,37 +66,113 @@ describe('router integration', () => {
     router.stop();
   });
 
-  it('keeps the projects navigation active on a project detail route', () => {
+  it('supports direct project hashes and invokes route side effects once', () => {
     window.location.hash = '#/project/Luma';
+    const store = storeWithSnapshot({
+      ...snapshot,
+      projects: [{ ...project, isNew: true }],
+    });
+    const opened = vi.fn().mockResolvedValue(undefined);
+    const routed = vi.fn().mockResolvedValue(undefined);
     const shell = createAppShell();
     document.body.append(shell);
-    const router = createRouter(shell);
+    const router = createRouter(shell, window, store, {
+      onProjectOpened: opened,
+      onProjectRoute: routed,
+    });
     router.start();
 
     expect(shell.querySelector('h1')?.textContent).toBe('Luma');
     expect(document.title).toBe('Luma · La Grange');
     expect(shell.querySelector('[aria-current="page"]')?.textContent).toBe('Projets');
+    expect(opened).toHaveBeenCalledOnce();
+    expect(opened).toHaveBeenCalledWith('Luma');
+    expect(routed).toHaveBeenCalledWith(expect.objectContaining({ id: 1 }));
+
+    store.toggleFavorite(1);
+    expect(opened).toHaveBeenCalledOnce();
+    expect(routed).toHaveBeenCalledOnce();
     router.stop();
   });
 
-  it('acknowledges a new project when its detail route opens', () => {
+  it('activates a direct project route when its snapshot arrives after startup', () => {
     window.location.hash = '#/project/Luma';
-    const store = createStore({
-      catalogue: { filter: 'all', query: '' },
-      sync: {
-        status: 'ready',
-        snapshot: { ...snapshot, projects: [{ ...project, isNew: true }] },
-      },
-    });
+    const store = createStore();
     const opened = vi.fn().mockResolvedValue(undefined);
+    const routed = vi.fn().mockResolvedValue(undefined);
     const shell = createAppShell();
     document.body.append(shell);
-    const router = createRouter(shell, window, store, opened);
-
+    const router = createRouter(shell, window, store, {
+      onProjectOpened: opened,
+      onProjectRoute: routed,
+    });
     router.start();
 
+    expect(shell.querySelector('h1')?.textContent).toBe('Luma');
+    expect(opened).not.toHaveBeenCalled();
+    store.setSync({ status: 'ready', snapshot });
+
+    expect(document.title).toBe('Luma · La Grange');
     expect(opened).toHaveBeenCalledOnce();
     expect(opened).toHaveBeenCalledWith('Luma');
+    expect(routed).toHaveBeenCalledOnce();
+    router.stop();
+  });
+
+  it('signals the project route departure exactly once', () => {
+    window.location.hash = '#/project/Luma';
+    const store = storeWithSnapshot();
+    const leave = vi.fn();
+    const shell = createAppShell();
+    document.body.append(shell);
+    const router = createRouter(shell, window, store, { onProjectRouteLeave: leave });
+    router.start();
+
+    window.location.hash = '#/projects';
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
+
+    expect(leave).toHaveBeenCalledOnce();
+    expect(leave).toHaveBeenCalledWith(1);
+    router.stop();
+    expect(leave).toHaveBeenCalledOnce();
+  });
+
+  it('hydrates catalogue state from the hash and preserves the search focus on store updates', () => {
+    window.location.hash = '#/projects?q=luma&state=active&view=list';
+    const store = storeWithSnapshot();
+    const shell = createAppShell();
+    document.body.append(shell);
+    const router = createRouter(shell, window, store);
+    router.start();
+
+    expect(store.getState().catalogue).toEqual({
+      ...DEFAULT_CATALOGUE_STATE,
+      query: 'luma',
+      states: ['active'],
+      view: 'list',
+    });
+    const search = shell.querySelector<HTMLInputElement>('#catalogue-search-field');
+    search?.focus();
+    search?.setSelectionRange(2, 2);
+    store.toggleFavorite(1);
+
+    const restored = shell.querySelector<HTMLInputElement>('#catalogue-search-field');
+    expect(document.activeElement).toBe(restored);
+    expect(restored?.selectionStart).toBe(2);
+    router.stop();
+  });
+
+  it('redirects a renamed repository alias to the canonical project', () => {
+    window.location.hash = '#/project/Ancien-Nom?from=%23%2Fprojects%3Fq%3Dluma';
+    const store = storeWithSnapshot({ ...snapshot, aliases: { 'Ancien-Nom': 1 } });
+    const shell = createAppShell();
+    document.body.append(shell);
+    const router = createRouter(shell, window, store);
+    router.start();
+
+    expect(window.location.hash).toContain('#/project/Luma?');
+    expect(decodeURIComponent(window.location.hash)).toContain('renamedFrom=Ancien-Nom');
+    expect(shell.querySelector('h1')?.textContent).toBe('Luma');
     router.stop();
   });
 
@@ -106,7 +190,7 @@ describe('router integration', () => {
     router.stop();
   });
 
-  it('renders real projects from the store and refreshes without stealing focus', () => {
+  it('renders catalogue projects when synchronization publishes a snapshot', () => {
     window.location.hash = '#/projects';
     const store = createStore();
     const shell = createAppShell();
@@ -114,14 +198,10 @@ describe('router integration', () => {
     const router = createRouter(shell, window, store);
     router.start();
 
-    const focusTarget = document.createElement('button');
-    shell.append(focusTarget);
-    focusTarget.focus();
     store.setSync({ status: 'ready', snapshot });
 
-    expect(shell.querySelector('.project-row h2')?.textContent).toBe('Luma');
+    expect(shell.querySelector('.project-card__title')?.textContent).toBe('Luma');
     expect(shell.querySelector('[data-sync-panel]')?.textContent).toContain('1 projet(s)');
-    expect(document.activeElement).toBe(focusTarget);
     router.stop();
   });
 });

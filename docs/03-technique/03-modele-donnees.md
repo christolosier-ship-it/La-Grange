@@ -39,7 +39,7 @@ interface Project {
 
 Champs facultatifs : `displayName`, `description`, `category`, `cover`, `logo`, `accent`, `featured`, `appUrl`, `hidden`, `sortOrder`.
 
-Une signature déterministe de la configuration valide est conservée dans le snapshot. Lorsque cette signature change, l’ETag GitHub n’est pas envoyé afin de récupérer une liste technique complète avant de réappliquer les overrides. Cela permet notamment de faire réapparaître un projet précédemment masqué sans attendre une modification côté GitHub.
+Une signature déterministe de la configuration valide est conservée dans le snapshot. Lorsque cette signature change, une synchronisation complète récupère la liste technique avant de réappliquer les overrides. Cela permet notamment de faire réapparaître un projet précédemment masqué sans attendre une modification côté GitHub.
 
 ## SyncSnapshot
 
@@ -49,10 +49,30 @@ interface SyncSnapshot {
   username: string;
   projects: Project[];
   syncedAt: string;
-  etag?: string;
+  etag?: string; // compatibilité de schéma, non requis par le client navigateur actuel
   overridesSignature?: string;
+  aliases?: Record<string, number>;
 }
 ```
+
+`aliases` relie un ancien nom de dépôt à son identifiant GitHub stable. Le routeur peut ainsi rediriger une ancienne URL de fiche vers le nom courant. Les alias sont supprimés lorsque le projet disparaît ou lorsqu’un nom redevient canonique.
+
+## ProjectDetails
+
+```ts
+interface ProjectDetails {
+  schemaVersion: 1;
+  projectId: number;
+  repositoryName: string;
+  fetchedAt: string;
+  commits: ProjectCommit[];
+  release?: ProjectRelease;
+  readmeAvailable: boolean;
+  readmeUrl?: string;
+}
+```
+
+Les détails sont séparés du snapshot principal. Ils sont chargés uniquement pour la fiche ouverte, validés avant mapping et enregistrés dans l’object store `projectDetails`. Le nom du dépôt est conservé avec l’identifiant afin d’ignorer proprement une entrée devenue obsolète après renommage.
 
 ## ActivityEvent
 
@@ -60,7 +80,12 @@ Le journal local enregistre les ajouts, renommages, disparitions, archivages et 
 
 ## Preferences
 
-Filtres d’affichage persistants, densité, favoris, animations réduites, masquage des forks et archives.
+Les préférences légères de Phase 4 utilisent `localStorage` :
+
+- identifiants des projets favoris ;
+- mode d’affichage grille ou liste.
+
+La recherche, les filtres, le tri et le contexte de retour sont sérialisés dans le hash de l’URL. Ils ne sont pas dupliqués dans `localStorage`, ce qui garde le lien partageable et évite deux sources de vérité.
 
 ## Versionnement
 

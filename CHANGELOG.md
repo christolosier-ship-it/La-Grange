@@ -20,7 +20,13 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - dashboard de phase 3 avec quatre statistiques réelles, L’établi, Prêts à partir, activité synthétique, répartition et nouvelle arrivée ;
 - cartes projets accessibles avec variantes, couverture chargée paresseusement et fallback déterministe ;
 - états complets du dashboard pour cache, synchronisation, hors ligne, avertissement, erreur et inventaire vide ;
-- tests de composants et sélecteurs couvrant les données, les images absentes, les sections vides et le déclenchement de synchronisation.
+- tests de composants et sélecteurs couvrant les données, les images absentes, les sections vides et le déclenchement de synchronisation ;
+- catalogue de phase 4 avec recherche locale insensible aux accents et à la casse, filtres combinables, tris stables, favoris et modes grille/liste ;
+- contexte utile du catalogue conservé dans le hash et préférences légères enregistrées localement ;
+- fiches projets responsive avec illustration, actions sûres, métadonnées, topics et retour contextualisé ;
+- détails GitHub chargés uniquement à la demande pour le dépôt ouvert : trois commits, dernière release et existence du README ;
+- cache IndexedDB séparé de 45 minutes pour les détails projets et alias locaux des dépôts renommés ;
+- tests unitaires, d’intégration et smoke test réel couvrant le catalogue, les fiches et les détails ciblés.
 
 ### Corrigé
 
@@ -41,7 +47,9 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - conservation du snapshot mémoire pendant les rafraîchissements manuels et en cas d’échec IndexedDB ;
 - respect du délai de reprise GitHub après une limite API, avec heure affichée et bouton temporairement désactivé ;
 - signalement des liens externes nécessitant une connexion en mode hors ligne ;
-- centralisation des libellés d’état utilisés par les cartes et le panneau d’activité.
+- centralisation des libellés d’état utilisés par les cartes et le panneau d’activité ;
+- conservation d’une ancienne URL de fiche après renommage du dépôt, avec redirection locale vers le nom courant ;
+- maintien des détails locaux et de la fiche de base lors d’une erreur GitHub ou IndexedDB.
 
 ## Versionnement prévu
 

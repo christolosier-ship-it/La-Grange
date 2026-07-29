@@ -1,4 +1,5 @@
 import { AppError } from '../errors/app-error';
+import type { ProjectDetails } from '../projects/details';
 import type {
   ActivityEvent,
   ActivityState,
@@ -10,6 +11,7 @@ import type {
 const DATABASE = 'la-grange-db';
 const DATABASE_VERSION = 2;
 const SNAPSHOT_SCHEMA_VERSION = 1;
+const PROJECT_DETAILS_SCHEMA_VERSION = 1;
 const MAX_ACTIVITY_EVENTS_PER_USER = 500;
 
 const PROJECT_CATEGORIES = new Set<ProjectCategory>([
@@ -34,6 +36,11 @@ export interface SnapshotCache {
     events: readonly ActivityEvent[],
     removedIds: readonly number[],
   ): Promise<void>;
+}
+
+export interface ProjectDetailsCache {
+  getProjectDetails(projectId: number): Promise<ProjectDetails | undefined>;
+  saveProjectDetails(details: ProjectDetails): Promise<void>;
 }
 
 function idbError(value: DOMException | null, fallback: string): Error {
@@ -67,6 +74,19 @@ function transactionDone(transaction: IDBTransaction): Promise<void> {
 
 function optionalString(value: unknown): boolean {
   return value === undefined || typeof value === 'string';
+}
+
+function validDate(value: unknown): value is string {
+  return typeof value === 'string' && Number.isFinite(Date.parse(value));
+}
+
+function validHttpsUrl(value: unknown): value is string {
+  if (typeof value !== 'string') return false;
+  try {
+    return new URL(value).protocol === 'https:';
+  } catch {
+    return false;
+  }
 }
 
 function validProject(value: unknown): value is Project {
@@ -113,6 +133,17 @@ function validProject(value: unknown): value is Project {
       || (typeof item.sortOrder === 'number' && Number.isFinite(item.sortOrder)));
 }
 
+function validAliases(value: unknown): boolean {
+  if (value === undefined) return true;
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  return Object.entries(value).every(([name, projectId]) => (
+    name.trim().length > 0
+    && typeof projectId === 'number'
+    && Number.isInteger(projectId)
+    && projectId > 0
+  ));
+}
+
 function validSnapshot(value: unknown, username: string): value is SyncSnapshot {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
   const item = value as Record<string, unknown>;
@@ -123,8 +154,47 @@ function validSnapshot(value: unknown, username: string): value is SyncSnapshot 
     && Number.isFinite(Date.parse(item.syncedAt))
     && optionalString(item.etag)
     && optionalString(item.overridesSignature)
+    && validAliases(item.aliases)
     && Array.isArray(item.projects)
     && item.projects.every(validProject);
+}
+
+export function isValidProjectDetails(value: unknown): value is ProjectDetails {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  const item = value as Record<string, unknown>;
+  const release = item.release;
+  const validRelease = release === undefined || (
+    Boolean(release)
+    && typeof release === 'object'
+    && !Array.isArray(release)
+    && typeof (release as Record<string, unknown>).name === 'string'
+    && typeof (release as Record<string, unknown>).tagName === 'string'
+    && ((release as Record<string, unknown>).publishedAt === undefined
+      || validDate((release as Record<string, unknown>).publishedAt))
+    && validHttpsUrl((release as Record<string, unknown>).url)
+  );
+
+  return item.schemaVersion === PROJECT_DETAILS_SCHEMA_VERSION
+    && typeof item.projectId === 'number'
+    && Number.isInteger(item.projectId)
+    && item.projectId > 0
+    && typeof item.repositoryName === 'string'
+    && item.repositoryName.trim().length > 0
+    && validDate(item.fetchedAt)
+    && Array.isArray(item.commits)
+    && item.commits.every((commit) => {
+      if (!commit || typeof commit !== 'object' || Array.isArray(commit)) return false;
+      const entry = commit as Record<string, unknown>;
+      return typeof entry.sha === 'string'
+        && typeof entry.message === 'string'
+        && typeof entry.authorName === 'string'
+        && validDate(entry.committedAt)
+        && validHttpsUrl(entry.url);
+    })
+    && validRelease
+    && typeof item.readmeAvailable === 'boolean'
+    && (item.readmeUrl === undefined || validHttpsUrl(item.readmeUrl))
+    && (!item.readmeAvailable || validHttpsUrl(item.readmeUrl));
 }
 
 function ensureActivityIndexes(store: IDBObjectStore): void {
@@ -154,7 +224,7 @@ async function pruneActivityEvents(
   for (const key of activityKeysToPrune(keys)) store.delete(key);
 }
 
-export class IndexedDbCache implements SnapshotCache {
+export class IndexedDbCache implements SnapshotCache, ProjectDetailsCache {
   private database?: Promise<IDBDatabase>;
 
   constructor(private readonly indexedDBFactory: IDBFactory = indexedDB) {}
@@ -223,6 +293,41 @@ export class IndexedDbCache implements SnapshotCache {
         'cache',
         error instanceof Error ? error.message : 'Cache read failed',
         'Cache local indisponible.',
+        true,
+      );
+    }
+  }
+
+  async getProjectDetails(projectId: number): Promise<ProjectDetails | undefined> {
+    try {
+      const database = await this.open();
+      const transaction = database.transaction('projectDetails', 'readonly');
+      const value: unknown = await requestResult(
+        transaction.objectStore('projectDetails').get(projectId),
+      );
+      return isValidProjectDetails(value) ? value : undefined;
+    } catch (error) {
+      throw new AppError(
+        'cache',
+        error instanceof Error ? error.message : 'Project detail cache read failed',
+        'Détails locaux indisponibles.',
+        true,
+      );
+    }
+  }
+
+  async saveProjectDetails(details: ProjectDetails): Promise<void> {
+    try {
+      const database = await this.open();
+      const transaction = database.transaction('projectDetails', 'readwrite');
+      const completion = transactionDone(transaction);
+      transaction.objectStore('projectDetails').put(details);
+      await completion;
+    } catch (error) {
+      throw new AppError(
+        'cache',
+        error instanceof Error ? error.message : 'Project detail cache write failed',
+        'Enregistrement des détails impossible.',
         true,
       );
     }

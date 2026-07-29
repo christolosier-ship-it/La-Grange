@@ -1,7 +1,13 @@
-import { matchRoute } from './routes';
-import type { AppStore } from './store';
+import type { Project } from '../core/projects/model';
+import {
+  catalogueStateFromQuery,
+  catalogueStatesEqual,
+} from '../features/catalogue/catalogue-model';
 import { renderView } from '../features/views';
+import type { ViewActions } from '../features/view-actions';
 import { updateActiveNavigation, updateWorkbenchStatus } from '../ui/layout/app-shell';
+import { matchRoute, type RouteMatch } from './routes';
+import type { AppState, AppStore } from './store';
 
 const TITLES = {
   dashboard: 'Vue d’ensemble',
@@ -12,56 +18,135 @@ const TITLES = {
   'not-found': 'Page introuvable',
 } as const;
 
-export type ProjectOpenedListener = (repositoryName: string) => Promise<void> | void;
+export interface RouterActions extends ViewActions {
+  readonly onProjectOpened?: (repositoryName: string) => Promise<void> | void;
+  readonly onProjectRoute?: (project: Project) => Promise<void> | void;
+  readonly onProjectRouteLeave?: (projectId: number) => void;
+}
+
+interface FocusSnapshot {
+  readonly key: string;
+  readonly selectionStart?: number | null;
+  readonly selectionEnd?: number | null;
+}
+
+function captureFocus(main: HTMLElement): FocusSnapshot | undefined {
+  const active = document.activeElement;
+  if (!(active instanceof HTMLElement) || !main.contains(active)) return undefined;
+  const key = active.dataset.focusKey;
+  if (!key) return undefined;
+  if (active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement) {
+    return { key, selectionStart: active.selectionStart, selectionEnd: active.selectionEnd };
+  }
+  return { key };
+}
+
+function restoreFocus(main: HTMLElement, snapshot: FocusSnapshot | undefined): void {
+  if (!snapshot) return;
+  const target = [...main.querySelectorAll<HTMLElement>('[data-focus-key]')].find((candidate) => (
+    candidate.dataset.focusKey === snapshot.key
+  ));
+  if (!target) return;
+  target.focus({ preventScroll: true });
+  if (
+    (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)
+    && snapshot.selectionStart !== undefined
+    && snapshot.selectionEnd !== undefined
+  ) {
+    target.setSelectionRange(snapshot.selectionStart, snapshot.selectionEnd);
+  }
+}
+
+function projectForRoute(route: RouteMatch, state: AppState | undefined): Project | undefined {
+  if (route.name !== 'project') return undefined;
+  const repositoryName = route.params.repositoryName;
+  if (!repositoryName) return undefined;
+  return state?.sync.snapshot?.projects.find((project) => project.repositoryName === repositoryName);
+}
+
+function canonicalProjectRoute(
+  route: RouteMatch,
+  state: AppState | undefined,
+  windowObject: Window,
+): RouteMatch {
+  if (route.name !== 'project' || projectForRoute(route, state)) return route;
+  const repositoryName = route.params.repositoryName;
+  if (!repositoryName) return route;
+  const projectId = state?.sync.snapshot?.aliases?.[repositoryName];
+  const project = state?.sync.snapshot?.projects.find((candidate) => candidate.id === projectId);
+  if (!project) return route;
+
+  const query = new URLSearchParams(route.query);
+  query.set('renamedFrom', repositoryName);
+  const suffix = query.toString();
+  const hash = `#/project/${encodeURIComponent(project.repositoryName)}${suffix ? `?${suffix}` : ''}`;
+  windowObject.history.replaceState(null, '', hash);
+  return matchRoute(hash);
+}
+
+function invokeSafely(callback: () => Promise<void> | void): void {
+  try {
+    void Promise.resolve(callback()).catch(() => undefined);
+  } catch {
+    // View navigation remains usable if a background side effect fails.
+  }
+}
 
 export function createRouter(
   shell: HTMLElement,
   windowObject: Window = window,
   store?: AppStore,
-  onProjectOpened?: ProjectOpenedListener,
+  actions: RouterActions = {},
 ) {
   const main = shell.querySelector<HTMLElement>('main');
   if (!main) throw new Error('Le shell doit contenir un élément main.');
 
   let unsubscribe: (() => void) | undefined;
   let started = false;
-  const pendingAcknowledgements = new Set<string>();
-
-  const acknowledgeOpenedProject = (repositoryName: string | undefined): void => {
-    if (!repositoryName || !onProjectOpened || pendingAcknowledgements.has(repositoryName)) return;
-    const project = store?.getState().sync.snapshot?.projects.find((candidate) => (
-      candidate.repositoryName === repositoryName
-    ));
-    if (!project?.isNew) return;
-
-    pendingAcknowledgements.add(repositoryName);
-    try {
-      const result = onProjectOpened(repositoryName);
-      void Promise.resolve(result)
-        .catch(() => undefined)
-        .finally(() => {
-          pendingAcknowledgements.delete(repositoryName);
-        });
-    } catch {
-      pendingAcknowledgements.delete(repositoryName);
-    }
-  };
+  let notifiedProject: Project | undefined;
 
   const render = (focusHeading: boolean): void => {
-    const route = matchRoute(windowObject.location.hash);
-    const state = store?.getState();
-    const view = renderView(route, state);
+    const focus = focusHeading ? undefined : captureFocus(main);
+    let route = matchRoute(windowObject.location.hash);
+    let state = store?.getState();
+
+    if (route.name === 'projects' && state && store) {
+      const catalogue = catalogueStateFromQuery(route.query, state.catalogue);
+      if (!catalogueStatesEqual(catalogue, state.catalogue)) {
+        store.setCatalogue(catalogue, false);
+        state = store.getState();
+      }
+    }
+
+    route = canonicalProjectRoute(route, state, windowObject);
+    const project = projectForRoute(route, state);
+    const view = renderView(route, state, actions);
     main.replaceChildren(view);
     updateActiveNavigation(shell, route.name);
     updateWorkbenchStatus(shell, state?.sync);
 
-    const repositoryName = route.name === 'project' ? route.params.repositoryName : undefined;
-    document.title = repositoryName
-      ? `${repositoryName} · La Grange`
+    document.title = project
+      ? `${project.displayName} · La Grange`
       : `${TITLES[route.name]} · La Grange`;
 
-    acknowledgeOpenedProject(repositoryName);
+    if (notifiedProject && (!project || project.id !== notifiedProject.id)) {
+      actions.onProjectRouteLeave?.(notifiedProject.id);
+      notifiedProject = undefined;
+    }
+    if (project && (!notifiedProject || project.id !== notifiedProject.id)) {
+      if (actions.onProjectOpened) {
+        const onProjectOpened = actions.onProjectOpened;
+        invokeSafely(() => onProjectOpened(project.repositoryName));
+      }
+      if (actions.onProjectRoute) {
+        const onProjectRoute = actions.onProjectRoute;
+        invokeSafely(() => onProjectRoute(project));
+      }
+      notifiedProject = project;
+    }
+
     if (focusHeading) view.querySelector<HTMLHeadingElement>('h1')?.focus({ preventScroll: true });
+    else restoreFocus(main, focus);
   };
 
   const handleRouteChange = (): void => {
@@ -84,7 +169,8 @@ export function createRouter(
       windowObject.removeEventListener('hashchange', handleRouteChange);
       unsubscribe?.();
       unsubscribe = undefined;
-      pendingAcknowledgements.clear();
+      if (notifiedProject) actions.onProjectRouteLeave?.(notifiedProject.id);
+      notifiedProject = undefined;
     },
     render: (): void => {
       render(false);
