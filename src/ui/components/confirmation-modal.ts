@@ -24,7 +24,8 @@ function readableError(error: unknown): string {
 function restoreFocus(trigger: HTMLElement, documentObject: Document): void {
   const key = trigger.dataset.focusKey;
   const replacement = key
-    ? documentObject.querySelector<HTMLElement>(`[data-focus-key="${CSS.escape(key)}"]`)
+    ? [...documentObject.querySelectorAll<HTMLElement>('[data-focus-key]')]
+        .find((candidate) => candidate.dataset.focusKey === key)
     : undefined;
   const target = trigger.isConnected ? trigger : replacement;
   target?.focus({ preventScroll: true });
