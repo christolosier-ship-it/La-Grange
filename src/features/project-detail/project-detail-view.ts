@@ -1,11 +1,11 @@
-import type { AppState } from '../../app/store';
 import { matchRoute, type RouteMatch } from '../../app/routes';
+import type { AppState } from '../../app/store';
 import { AppError } from '../../core/errors/app-error';
 import type { ProjectDetails } from '../../core/projects/details';
 import type { Project } from '../../core/projects/model';
-import { formatFullDate, formatRelativeDate } from '../../utils/date';
 import { SINGULAR_ACTIVITY_STATE_LABELS } from '../../ui/text/activity-state-labels';
 import { PROJECT_CATEGORY_LABELS } from '../../ui/text/project-labels';
+import { formatFullDate, formatRelativeDate } from '../../utils/date';
 import type { ViewActions } from '../view-actions';
 
 function assetUrl(path: string): string {
@@ -75,7 +75,7 @@ function createArtwork(project: Project): HTMLElement {
 function createExternalLink(
   href: string,
   label: string,
-  projectName: string,
+  subject: string,
   offline: boolean,
   primary = false,
 ): HTMLAnchorElement {
@@ -87,7 +87,7 @@ function createExternalLink(
   link.textContent = offline ? `${label} · connexion requise` : label;
   link.setAttribute(
     'aria-label',
-    `${label} pour ${projectName} dans un nouvel onglet${offline ? ', connexion requise' : ''}`,
+    `${label} pour ${subject} dans un nouvel onglet${offline ? ', connexion requise' : ''}`,
   );
   if (offline) {
     link.classList.add('requires-connection');
@@ -270,7 +270,7 @@ function createOnDemandDetails(
   } else if (detail?.status === 'offline' || offline) {
     const status = document.createElement('p');
     status.className = 'project-detail__notice';
-    status.textContent = detail.details
+    status.textContent = detail?.details
       ? 'Mode hors ligne : détails locaux affichés.'
       : 'Une connexion est nécessaire pour charger ces détails pour la première fois.';
     section.append(status);
@@ -303,6 +303,16 @@ function createOnDemandDetails(
   });
   section.append(button);
   return section;
+}
+
+function createRenamedNotice(route: RouteMatch): HTMLElement | undefined {
+  const previousName = route.query.get('renamedFrom')?.trim();
+  if (!previousName) return undefined;
+  const notice = document.createElement('p');
+  notice.className = 'project-detail__rename-notice';
+  notice.setAttribute('role', 'status');
+  notice.textContent = `Ce dépôt était auparavant accessible sous le nom ${previousName}. L’adresse a été mise à jour.`;
+  return notice;
 }
 
 export function renderProjectDetail(
@@ -418,6 +428,9 @@ export function renderProjectDetail(
   rail.append(createMetadata(project), createTopics(project));
   panels.append(main, rail);
 
-  view.append(back, hero, panels);
+  view.append(back);
+  const renamedNotice = createRenamedNotice(route);
+  if (renamedNotice) view.append(renamedNotice);
+  view.append(hero, panels);
   return view;
 }
