@@ -1,13 +1,16 @@
 import type { Project } from '../../core/projects/model';
-import { SINGULAR_ACTIVITY_STATE_LABELS } from '../text/activity-state-labels';
 import { formatFullDate, formatRelativeDate } from '../../utils/date';
+import { SINGULAR_ACTIVITY_STATE_LABELS } from '../text/activity-state-labels';
 
-export type ProjectCardVariant = 'standard' | 'compact' | 'featured';
+export type ProjectCardVariant = 'standard' | 'compact' | 'featured' | 'list';
 
 export interface ProjectCardOptions {
   readonly variant?: ProjectCardVariant;
   readonly now?: Date;
   readonly offline?: boolean;
+  readonly detailHref?: string;
+  readonly favorite?: boolean;
+  readonly onToggleFavorite?: (projectId: number) => void;
 }
 
 function projectInitials(name: string): string {
@@ -109,6 +112,27 @@ function createTime(project: Project, now: Date): HTMLTimeElement {
   return time;
 }
 
+function createFavoriteButton(project: Project, options: ProjectCardOptions): HTMLButtonElement | undefined {
+  if (!options.onToggleFavorite) return undefined;
+  const favorite = options.favorite === true;
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'project-card__favorite';
+  button.dataset.focusKey = `favorite-${String(project.id)}`;
+  button.setAttribute('aria-pressed', String(favorite));
+  button.setAttribute(
+    'aria-label',
+    favorite
+      ? `Retirer ${project.displayName} des favoris`
+      : `Ajouter ${project.displayName} aux favoris`,
+  );
+  button.textContent = favorite ? 'Favori' : 'Ajouter aux favoris';
+  button.addEventListener('click', () => {
+    options.onToggleFavorite?.(project.id);
+  });
+  return button;
+}
+
 export function createProjectCard(project: Project, options: ProjectCardOptions = {}): HTMLElement {
   const variant = options.variant ?? 'standard';
   const card = document.createElement('article');
@@ -130,11 +154,13 @@ export function createProjectCard(project: Project, options: ProjectCardOptions 
     newBadge.textContent = 'Nouvelle arrivée';
     badges.append(newBadge);
   }
+  const favoriteButton = createFavoriteButton(project, options);
+  if (favoriteButton) badges.append(favoriteButton);
 
   const heading = document.createElement('h3');
   heading.className = 'project-card__title';
   const detailLink = document.createElement('a');
-  detailLink.href = `#/project/${encodeURIComponent(project.repositoryName)}`;
+  detailLink.href = options.detailHref ?? `#/project/${encodeURIComponent(project.repositoryName)}`;
   detailLink.textContent = project.displayName;
   heading.append(detailLink);
 
