@@ -17,7 +17,8 @@ function isRepository(value: unknown): value is GitHubRepositoryDto {
   if (!value || typeof value !== 'object') return false;
   const repo = value as Record<string, unknown>;
 
-  return Number.isInteger(repo.id)
+  return typeof repo.id === 'number'
+    && Number.isInteger(repo.id)
     && typeof repo.name === 'string'
     && (repo.node_id === undefined || typeof repo.node_id === 'string')
     && isNullableString(repo.description)
@@ -29,6 +30,7 @@ function isRepository(value: unknown): value is GitHubRepositoryDto {
     && typeof repo.default_branch === 'string'
     && Array.isArray(repo.topics)
     && repo.topics.every((topic) => typeof topic === 'string')
+    && typeof repo.open_issues_count === 'number'
     && Number.isInteger(repo.open_issues_count)
     && isValidDateString(repo.created_at)
     && isValidDateString(repo.updated_at)
@@ -46,8 +48,15 @@ function parseNextPage(link: string | null, allowedOrigin: string): string | und
       const url = new URL(match[1]);
       if (url.protocol === 'https:' && url.origin === allowedOrigin) return url.href;
     } catch {
-      return undefined;
+      // The explicit error below avoids silently accepting an incomplete inventory.
     }
+
+    throw new AppError(
+      'invalid-response',
+      'Untrusted GitHub pagination link',
+      'Pagination GitHub invalide.',
+      true,
+    );
   }
 
   return undefined;
