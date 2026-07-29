@@ -49,16 +49,14 @@ describe('local diagnostics', () => {
   it('uses the Clipboard API when available', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
 
-    await expect(copyText('diagnostic', { writeText }, document)).resolves.toBe(true);
+    await expect(copyText('diagnostic', { writeText })).resolves.toBe(true);
     expect(writeText).toHaveBeenCalledWith('diagnostic');
   });
 
-  it('falls back to a temporary local selection', async () => {
-    const execCommand = vi.fn().mockReturnValue(true);
-    Object.defineProperty(document, 'execCommand', { value: execCommand, configurable: true });
+  it('reports Clipboard API rejection without creating hidden DOM content', async () => {
+    const writeText = vi.fn().mockRejectedValue(new Error('Permission denied'));
 
-    await expect(copyText('diagnostic', undefined, document)).resolves.toBe(true);
-    expect(execCommand).toHaveBeenCalledWith('copy');
+    await expect(copyText('diagnostic', { writeText })).resolves.toBe(false);
     expect(document.querySelector('textarea')).toBeNull();
   });
 });
