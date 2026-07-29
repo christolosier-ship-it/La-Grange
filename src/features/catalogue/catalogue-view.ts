@@ -1,5 +1,6 @@
 import type { AppState } from '../../app/store';
 import { AppError } from '../../core/errors/app-error';
+import { selectVisibleProjects } from '../../core/preferences/project-visibility';
 import type { Project } from '../../core/projects/model';
 import { createProjectCard } from '../../ui/components/project-card';
 import type { ViewActions } from '../view-actions';
@@ -33,7 +34,7 @@ function createHeader(): HTMLElement {
   title.textContent = 'Tous les projets';
   const description = document.createElement('p');
   description.className = 'lead';
-  description.textContent = 'Recherchez, filtrez et ouvrez chaque caisse de La Grange sans nouvel appel à GitHub.';
+  description.textContent = 'Recherchez, filtrez et ouvrez chaque caisse visible de La Grange sans nouvel appel à GitHub.';
   header.append(eyebrow, title, description);
   return header;
 }
@@ -63,12 +64,13 @@ export function renderCatalogue(
   view.className = 'catalogue';
   view.append(createHeader());
 
-  const projects = state?.sync.snapshot?.projects;
-  if (!projects) {
+  const inventory = state?.sync.snapshot?.projects;
+  if (!inventory || !state) {
     view.append(createUnavailableState(state));
     return view;
   }
 
+  const projects = selectVisibleProjects(inventory, state.preferences);
   let current = state.catalogue;
   let synchronizeControls: (next: CatalogueState) => void = () => undefined;
   const facets = catalogueFacets(projects);
@@ -91,7 +93,7 @@ export function renderCatalogue(
 
   const updateResults = (): void => {
     const selected = selectCatalogueProjects(projects, current, state.favoriteIds);
-    count.textContent = `${String(selected.length)} projet${selected.length > 1 ? 's' : ''} sur ${String(projects.length)}`;
+    count.textContent = `${String(selected.length)} projet${selected.length > 1 ? 's' : ''} sur ${String(projects.length)} visible${projects.length > 1 ? 's' : ''}`;
     results.className = current.view === 'list'
       ? 'catalogue-grid catalogue-grid--list'
       : 'catalogue-grid catalogue-grid--cards';
@@ -103,10 +105,12 @@ export function renderCatalogue(
       const title = document.createElement('h3');
       title.textContent = 'Aucun projet ne correspond à cet inventaire';
       const message = document.createElement('p');
-      message.textContent = 'Essayez une recherche plus large ou remettez les filtres à zéro.';
+      message.textContent = projects.length === 0
+        ? 'Les préférences actuelles masquent tous les projets. Modifiez-les dans Paramètres.'
+        : 'Essayez une recherche plus large ou remettez les filtres à zéro.';
       const reset = document.createElement('button');
       reset.type = 'button';
-      reset.textContent = 'Réinitialiser';
+      reset.textContent = 'Réinitialiser les filtres';
       reset.addEventListener('click', () => {
         current = { ...DEFAULT_CATALOGUE_STATE, view: current.view };
         synchronizeControls(current);
