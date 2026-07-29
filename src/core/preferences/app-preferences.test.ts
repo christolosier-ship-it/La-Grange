@@ -42,6 +42,27 @@ describe('application preferences', () => {
     expect(storage.getItem('la-grange-preferences-v2')).not.toBeNull();
   });
 
+  it('keeps the legacy key when writing the migrated preferences fails', () => {
+    const legacy = JSON.stringify({ favoriteIds: [8], view: 'list' });
+    const storage = {
+      getItem: (key: string): string | null => (
+        key === 'la-grange-catalogue-preferences-v1' ? legacy : null
+      ),
+      setItem: (): void => {
+        throw new Error('quota full');
+      },
+      removeItem: (): void => {
+        throw new Error('legacy must stay');
+      },
+    };
+
+    const result = loadAppPreferences(storage);
+
+    expect(result.migratedLegacy).toBe(false);
+    expect(result.preferences.favoriteIds).toEqual([8]);
+    expect(result.preferences.catalogueView).toBe('list');
+  });
+
   it('repairs invalid values independently instead of discarding valid choices', () => {
     const result = repairAppPreferences({
       schemaVersion: 1,
