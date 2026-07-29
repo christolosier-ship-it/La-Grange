@@ -28,7 +28,7 @@ export function renderDashboard(state: AppState | undefined): HTMLElement {
   }
 
   const model = selectDashboard(projects);
-  const offline = state?.sync.status === 'offline';
+  const offline = state.sync.status === 'offline';
   dashboard.append(createDashboardStats(projects));
 
   const layout = document.createElement('div');
