@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SYNC_REQUEST_EVENT } from '../../app/events';
-import type { AppState } from '../../app/store';
+import { INITIAL_STATE, type AppState } from '../../app/store';
 import type { Project, SyncSnapshot } from '../../core/projects/model';
 import { renderDashboard } from './dashboard-view';
 
@@ -39,7 +39,7 @@ function state(projects: readonly Project[], status: AppState['sync']['status'] 
     projects,
     syncedAt: '2026-07-29T08:00:00Z',
   };
-  return { catalogue: { filter: 'all', query: '' }, sync: { status, snapshot } };
+  return { ...INITIAL_STATE, sync: { status, snapshot } };
 }
 
 afterEach(() => {
@@ -89,7 +89,7 @@ describe('renderDashboard', () => {
 
   it('shows a useful first-load error with a retry action', () => {
     const view = renderDashboard({
-      catalogue: { filter: 'all', query: '' },
+      ...INITIAL_STATE,
       sync: { status: 'error', error: new Error('API indisponible') },
     });
 
