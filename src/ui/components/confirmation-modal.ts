@@ -78,15 +78,21 @@ export function openConfirmationModal(
     }
   };
 
-  cancel.addEventListener('click', () => close(false));
+  cancel.addEventListener('click', () => {
+    close(false);
+  });
   overlay.addEventListener('click', (event) => {
-    if (event.target === overlay) close(false);
+    if (event.target === overlay) {
+      close(false);
+    }
   });
   confirm.addEventListener('click', () => {
     confirm.disabled = true;
     cancel.disabled = true;
     void Promise.resolve(options.onConfirm())
-      .then(() => close(true))
+      .then(() => {
+        close(true);
+      })
       .catch(() => {
         confirm.disabled = false;
         cancel.disabled = false;
