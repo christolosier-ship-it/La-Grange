@@ -2,13 +2,39 @@ import type { AppState } from '../../app/store';
 import { AppError } from '../../core/errors/app-error';
 import type { ProjectDetails } from '../../core/projects/details';
 import type { Project } from '../../core/projects/model';
-import { formatFullDate, formatRelativeDate } from '../../utils/date';
+import { formatFullDate, formatRelativeDate, parseDate } from '../../utils/date';
 import type { ViewActions } from '../view-actions';
 import { createProjectExternalLink } from './project-detail-elements';
+
+const MAX_TIMER_DELAY_MS = 60_000;
 
 function errorMessage(error: Error | undefined): string {
   if (!error) return 'Détail indisponible.';
   return error instanceof AppError ? error.userMessage : error.message;
+}
+
+function retryDate(error: Error | undefined): Date | undefined {
+  if (!(error instanceof AppError) || error.code !== 'rate-limit') return undefined;
+  return parseDate(error.retryAt);
+}
+
+function scheduleRetryUnlock(
+  button: HTMLButtonElement,
+  notice: HTMLElement,
+  retryAt: Date,
+  readyLabel: string,
+): void {
+  const update = (): void => {
+    const remaining = retryAt.getTime() - Date.now();
+    if (remaining <= 0) {
+      button.disabled = false;
+      button.textContent = readyLabel;
+      notice.remove();
+      return;
+    }
+    window.setTimeout(update, Math.min(remaining, MAX_TIMER_DELAY_MS));
+  };
+  update();
 }
 
 function createCommitList(details: ProjectDetails, offline: boolean): HTMLElement {
@@ -156,16 +182,38 @@ export function createOnDemandDetails(
     section.append(warning);
   }
 
-  const canRequest = !offline && detail?.status !== 'loading' && detail?.status !== 'loading-cache';
+  const readyLabel = detail?.details ? 'Actualiser les détails' : 'Charger les détails récents';
+  const retryAt = retryDate(detail?.error);
+  const coolingDown = retryAt !== undefined && retryAt.getTime() > Date.now();
+  let retryNotice: HTMLElement | undefined;
+  if (coolingDown && retryAt) {
+    retryNotice = document.createElement('p');
+    retryNotice.className = 'project-detail__notice project-detail__retry';
+    retryNotice.setAttribute('role', 'status');
+    const time = document.createElement('time');
+    time.dateTime = retryAt.toISOString();
+    time.textContent = formatFullDate(retryAt.toISOString());
+    retryNotice.append('Nouvelle tentative possible à ', time, '.');
+    section.append(retryNotice);
+  }
+
+  const canRequest = !offline
+    && detail?.status !== 'loading'
+    && detail?.status !== 'loading-cache'
+    && !coolingDown;
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'project-detail__load';
   button.disabled = !canRequest;
   button.dataset.focusKey = `project-details-${String(project.id)}`;
-  button.textContent = detail?.details ? 'Actualiser les détails' : 'Charger les détails récents';
+  button.textContent = coolingDown ? 'Limite GitHub en cours' : readyLabel;
   button.addEventListener('click', () => {
     actions.onProjectDetailsRequest?.(project, Boolean(detail?.details));
   });
   section.append(button);
+
+  if (coolingDown && retryAt && retryNotice) {
+    scheduleRetryUnlock(button, retryNotice, retryAt, readyLabel);
+  }
   return section;
 }
