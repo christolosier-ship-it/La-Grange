@@ -1,5 +1,6 @@
 import type { RouteMatch } from '../app/routes';
 import type { AppState } from '../app/store';
+import { renderActivity } from './activity/activity-view';
 import { renderCatalogue } from './catalogue/catalogue-view';
 import { renderDashboard } from './dashboard/dashboard-view';
 import { renderProjectDetail } from './project-detail/project-detail-view';
@@ -11,17 +12,10 @@ interface ViewContent {
   readonly description: string;
 }
 
-const PLACEHOLDERS: Record<'activity' | 'settings', ViewContent> = {
-  activity: {
-    eyebrow: 'Journal',
-    title: 'Activité récente',
-    description: 'Les événements sont enregistrés localement. Leur mise en scène arrivera dans une phase ultérieure.',
-  },
-  settings: {
-    eyebrow: 'Préférences',
-    title: 'Paramètres',
-    description: 'Les réglages locaux et les informations détaillées du cache seront disponibles ici.',
-  },
+const SETTINGS_PLACEHOLDER: ViewContent = {
+  eyebrow: 'Préférences',
+  title: 'Paramètres',
+  description: 'Les réglages locaux et les informations détaillées du cache seront disponibles ici.',
 };
 
 function createPanel(content: ViewContent): HTMLElement {
@@ -62,6 +56,7 @@ export function renderView(
   if (route.name === 'projects') return renderCatalogue(state, actions);
   if (route.name === 'project') return renderProjectDetail(route, state, actions);
   if (route.name === 'dashboard') return renderDashboard(state);
-  if (route.name === 'not-found') return renderNotFound();
-  return createPanel(PLACEHOLDERS[route.name]);
+  if (route.name === 'activity') return renderActivity(state);
+  if (route.name === 'settings') return createPanel(SETTINGS_PLACEHOLDER);
+  return renderNotFound();
 }
