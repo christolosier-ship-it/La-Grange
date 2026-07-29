@@ -2,6 +2,7 @@ import type { AppState } from '../../app/store';
 import type { Project } from '../../core/projects/model';
 import { createProjectCard } from '../../ui/components/project-card';
 import type { ViewActions } from '../view-actions';
+import { createCatalogueControls } from './catalogue-controls';
 import {
   DEFAULT_CATALOGUE_STATE,
   catalogueFacets,
@@ -9,7 +10,6 @@ import {
   selectCatalogueProjects,
   type CatalogueState,
 } from './catalogue-model';
-import { createCatalogueControls } from './catalogue-controls';
 
 function projectDetailHref(project: Project, catalogue: CatalogueState): string {
   const query = new URLSearchParams({ from: catalogueHash(catalogue) });
@@ -64,6 +64,7 @@ export function renderCatalogue(
   }
 
   let current = state.catalogue ?? DEFAULT_CATALOGUE_STATE;
+  let synchronizeControls: (next: CatalogueState) => void = () => undefined;
   const facets = catalogueFacets(projects);
   const resultsSection = document.createElement('section');
   resultsSection.className = 'catalogue-results';
@@ -81,8 +82,6 @@ export function renderCatalogue(
   const results = document.createElement('div');
   results.className = 'catalogue-grid';
   resultsSection.append(resultsHeader, results);
-
-  let controls: ReturnType<typeof createCatalogueControls>;
 
   const updateResults = (): void => {
     const selected = selectCatalogueProjects(projects, current, state.favoriteIds);
@@ -104,7 +103,7 @@ export function renderCatalogue(
       reset.textContent = 'Réinitialiser';
       reset.addEventListener('click', () => {
         current = { ...DEFAULT_CATALOGUE_STATE, view: current.view };
-        controls.sync(current);
+        synchronizeControls(current);
         actions.onCatalogueChange?.(current);
         updateResults();
       });
@@ -124,11 +123,12 @@ export function renderCatalogue(
     }
   };
 
-  controls = createCatalogueControls(current, facets, (next) => {
+  const controls = createCatalogueControls(current, facets, (next) => {
     current = next;
     actions.onCatalogueChange?.(next);
     updateResults();
   });
+  synchronizeControls = controls.sync;
 
   view.append(controls.element, resultsSection);
   updateResults();
