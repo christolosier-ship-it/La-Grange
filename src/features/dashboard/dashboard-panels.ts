@@ -1,21 +1,11 @@
-import type { ActivityState, Project } from '../../core/projects/model';
+import type { Project } from '../../core/projects/model';
 import { createProjectCard } from '../../ui/components/project-card';
+import {
+  PLURAL_ACTIVITY_STATE_LABELS,
+  SINGULAR_ACTIVITY_STATE_LABELS,
+} from '../../ui/text/activity-state-labels';
 import { formatFullDate, formatRelativeDate } from '../../utils/date';
 import { selectDashboard } from './dashboard-selectors';
-
-const SINGULAR_STATE_LABELS: Record<ActivityState, string> = {
-  active: 'Actif',
-  maintenance: 'Maintenance',
-  sleeping: 'En sommeil',
-  archived: 'Archivé',
-};
-
-const PLURAL_STATE_LABELS: Record<ActivityState, string> = {
-  active: 'Actifs',
-  maintenance: 'Maintenance',
-  sleeping: 'En sommeil',
-  archived: 'Archivés',
-};
 
 function createSectionHeader(titleText: string, descriptionText: string, linkLabel?: string): HTMLElement {
   const header = document.createElement('header');
@@ -56,6 +46,7 @@ export function createProjectSection(
   variant: 'standard' | 'compact',
   emptyMessage: string,
   linkLabel?: string,
+  offline = false,
 ): HTMLElement {
   const section = document.createElement('section');
   section.className = `dashboard-section dashboard-section--${variant}`;
@@ -68,12 +59,12 @@ export function createProjectSection(
 
   const grid = document.createElement('div');
   grid.className = `project-card-grid project-card-grid--${variant}`;
-  for (const project of projects) grid.append(createProjectCard(project, { variant }));
+  for (const project of projects) grid.append(createProjectCard(project, { variant, offline }));
   section.append(grid);
   return section;
 }
 
-export function createNewArrivalPanel(project: Project | undefined): HTMLElement {
+export function createNewArrivalPanel(project: Project | undefined, offline = false): HTMLElement {
   const panel = document.createElement('section');
   panel.className = 'rail-panel rail-panel--arrival';
   const title = document.createElement('h2');
@@ -87,7 +78,7 @@ export function createNewArrivalPanel(project: Project | undefined): HTMLElement
 
   const description = document.createElement('p');
   description.textContent = 'Ce dépôt vient d’entrer dans l’inventaire.';
-  panel.append(description, createProjectCard(project, { variant: 'featured' }));
+  panel.append(description, createProjectCard(project, { variant: 'featured', offline }));
   return panel;
 }
 
@@ -113,7 +104,7 @@ export function createActivityPanel(projects: readonly Project[]): HTMLElement {
     link.href = `#/project/${encodeURIComponent(project.repositoryName)}`;
     link.textContent = project.displayName;
     const meta = document.createElement('span');
-    meta.textContent = SINGULAR_STATE_LABELS[project.activityState];
+    meta.textContent = SINGULAR_ACTIVITY_STATE_LABELS[project.activityState];
     const value = project.pushedAt ?? project.updatedAt;
     const completeDate = formatFullDate(value);
     const time = document.createElement('time');
@@ -164,7 +155,7 @@ export function createDistributionPanel(projects: readonly Project[]): HTMLEleme
     const item = document.createElement('li');
     item.dataset.state = state;
     const label = document.createElement('span');
-    label.textContent = PLURAL_STATE_LABELS[state];
+    label.textContent = PLURAL_ACTIVITY_STATE_LABELS[state];
     const count = document.createElement('strong');
     count.textContent = String(distribution[state]);
     item.append(label, count);
