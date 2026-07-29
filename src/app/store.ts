@@ -94,12 +94,12 @@ export function createStore(initialState: AppState = INITIAL_STATE) {
       };
       publish();
     },
-    resetProfileState: (): void => {
+    resetProfileState: (preserveSettings = false): void => {
       state = {
         ...state,
         activity: INITIAL_ACTIVITY_STATE,
         projectDetails: {},
-        settings: INITIAL_SETTINGS_STATE,
+        settings: preserveSettings ? state.settings : INITIAL_SETTINGS_STATE,
         sync: { status: 'idle' },
       };
       publish();
