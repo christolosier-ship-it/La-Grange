@@ -9,6 +9,11 @@ function response(body: unknown, status = 200, headers: Record<string, string> =
   });
 }
 
+function requestUrl(value: RequestInfo | URL): string {
+  if (typeof value === 'string') return value;
+  return value instanceof URL ? value.href : value.url;
+}
+
 const commit = {
   sha: 'abc',
   html_url: 'https://github.com/example/repo/commit/abc',
@@ -41,7 +46,7 @@ describe('GitHubDetailClient', () => {
 
     expect(result).toEqual({ commits: [commit], release, readme });
     expect(fetcher).toHaveBeenCalledTimes(3);
-    expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([
+    expect(fetcher.mock.calls.map(([url]) => requestUrl(url))).toEqual([
       'https://api.github.com/repos/example/repo/commits?per_page=3',
       'https://api.github.com/repos/example/repo/releases/latest',
       'https://api.github.com/repos/example/repo/readme',
@@ -74,10 +79,11 @@ describe('GitHubDetailClient', () => {
     }));
     const client = new GitHubDetailClient(fetcher);
 
-    await expect(client.fetchProjectDetails('example', 'repo')).rejects.toMatchObject({
-      code: 'rate-limit',
-      retryAt: expect.any(String),
-    } satisfies Partial<AppError>);
+    const failure: unknown = await client.fetchProjectDetails('example', 'repo').catch((error: unknown) => error);
+    expect(failure).toBeInstanceOf(AppError);
+    if (!(failure instanceof AppError)) throw new Error('Expected an AppError');
+    expect(failure.code).toBe('rate-limit');
+    expect(failure.retryAt).toEqual(expect.any(String));
     expect(fetcher).toHaveBeenCalledOnce();
   });
 
