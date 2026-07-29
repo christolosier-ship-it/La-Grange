@@ -21,6 +21,7 @@ const TITLES = {
 export interface RouterActions extends ViewActions {
   readonly onProjectOpened?: (repositoryName: string) => Promise<void> | void;
   readonly onProjectRoute?: (project: Project) => Promise<void> | void;
+  readonly onProjectRouteLeave?: (projectId: number) => void;
 }
 
 interface FocusSnapshot {
@@ -102,7 +103,7 @@ export function createRouter(
 
   let unsubscribe: (() => void) | undefined;
   let started = false;
-  let notifiedProjectKey = '';
+  let notifiedProject: Project | undefined;
 
   const render = (focusHeading: boolean): void => {
     const focus = focusHeading ? undefined : captureFocus(main);
@@ -128,8 +129,11 @@ export function createRouter(
       ? `${project.displayName} · La Grange`
       : `${TITLES[route.name]} · La Grange`;
 
-    const currentProjectKey = project ? `${String(project.id)}:${project.repositoryName}` : '';
-    if (project && currentProjectKey !== notifiedProjectKey) {
+    if (notifiedProject && (!project || project.id !== notifiedProject.id)) {
+      actions.onProjectRouteLeave?.(notifiedProject.id);
+      notifiedProject = undefined;
+    }
+    if (project && (!notifiedProject || project.id !== notifiedProject.id)) {
       if (actions.onProjectOpened) {
         const onProjectOpened = actions.onProjectOpened;
         invokeSafely(() => onProjectOpened(project.repositoryName));
@@ -138,8 +142,8 @@ export function createRouter(
         const onProjectRoute = actions.onProjectRoute;
         invokeSafely(() => onProjectRoute(project));
       }
+      notifiedProject = project;
     }
-    notifiedProjectKey = currentProjectKey;
 
     if (focusHeading) view.querySelector<HTMLHeadingElement>('h1')?.focus({ preventScroll: true });
     else restoreFocus(main, focus);
@@ -165,7 +169,8 @@ export function createRouter(
       windowObject.removeEventListener('hashchange', handleRouteChange);
       unsubscribe?.();
       unsubscribe = undefined;
-      notifiedProjectKey = '';
+      if (notifiedProject) actions.onProjectRouteLeave?.(notifiedProject.id);
+      notifiedProject = undefined;
     },
     render: (): void => {
       render(false);
