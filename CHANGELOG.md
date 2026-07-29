@@ -49,7 +49,11 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - signalement des liens externes nécessitant une connexion en mode hors ligne ;
 - centralisation des libellés d’état utilisés par les cartes et le panneau d’activité ;
 - conservation d’une ancienne URL de fiche après renommage du dépôt, avec redirection locale vers le nom courant ;
-- maintien des détails locaux et de la fiche de base lors d’une erreur GitHub ou IndexedDB.
+- maintien des détails locaux et de la fiche de base lors d’une erreur GitHub ou IndexedDB ;
+- prévention des rendus réentrants lors de l’ouverture d’une fiche projet ;
+- affichage du message utilisateur localisé lors d’un échec initial du catalogue ;
+- conservation du focus clavier pendant le chargement et les délais de reprise des détails GitHub ;
+- reconnaissance des limites secondaires GitHub signalées par `403` et `Retry-After`.
 
 ## Versionnement prévu
 
