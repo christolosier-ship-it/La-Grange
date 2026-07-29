@@ -92,7 +92,8 @@ function validProject(value: unknown): value is Project {
     && typeof item.updatedAt === 'string'
     && Number.isFinite(Date.parse(item.updatedAt))
     && optionalString(item.pushedAt)
-    && (item.pushedAt === undefined || Number.isFinite(Date.parse(item.pushedAt)))
+    && (item.pushedAt === undefined
+      || (typeof item.pushedAt === 'string' && Number.isFinite(Date.parse(item.pushedAt))))
     && typeof item.openIssuesCount === 'number'
     && Number.isInteger(item.openIssuesCount)
     && typeof item.archived === 'boolean'
@@ -101,12 +102,14 @@ function validProject(value: unknown): value is Project {
     && PROJECT_CATEGORIES.has(item.category as ProjectCategory)
     && typeof item.activityState === 'string'
     && ACTIVITY_STATES.has(item.activityState as ActivityState)
+    && optionalString(item.nodeId)
     && optionalString(item.cover)
     && optionalString(item.logo)
     && optionalString(item.accent)
     && typeof item.featured === 'boolean'
     && typeof item.isNew === 'boolean'
-    && (item.sortOrder === undefined || typeof item.sortOrder === 'number');
+    && (item.sortOrder === undefined
+      || (typeof item.sortOrder === 'number' && Number.isFinite(item.sortOrder)));
 }
 
 function validSnapshot(value: unknown, username: string): value is SyncSnapshot {
