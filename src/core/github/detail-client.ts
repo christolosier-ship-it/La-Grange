@@ -1,3 +1,4 @@
+import { isAbortError } from '../../utils/errors';
 import { AppError } from '../errors/app-error';
 import type {
   GitHubCommitDto,
@@ -49,10 +50,6 @@ function isReadme(value: unknown): value is GitHubReadmeDto {
     && typeof value === 'object'
     && !Array.isArray(value)
     && typeof (value as Record<string, unknown>).html_url === 'string';
-}
-
-function isAbortError(error: unknown): boolean {
-  return error instanceof Error && error.name === 'AbortError';
 }
 
 function browserFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
