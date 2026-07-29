@@ -28,6 +28,7 @@ export function renderDashboard(state: AppState | undefined): HTMLElement {
   }
 
   const model = selectDashboard(projects);
+  const offline = state?.sync.status === 'offline';
   dashboard.append(createDashboardStats(projects));
 
   const layout = document.createElement('div');
@@ -43,6 +44,7 @@ export function renderDashboard(state: AppState | undefined): HTMLElement {
       'standard',
       'Aucun projet actif n’attend sur l’établi.',
       'Voir tout l’inventaire',
+      offline,
     ),
     createProjectSection(
       'Prêts à partir',
@@ -50,6 +52,8 @@ export function renderDashboard(state: AppState | undefined): HTMLElement {
       model.readyToLaunch,
       'compact',
       'Aucune autre application lançable n’est disponible dans cette sélection.',
+      undefined,
+      offline,
     ),
   );
 
@@ -57,7 +61,7 @@ export function renderDashboard(state: AppState | undefined): HTMLElement {
   rail.className = 'dashboard-rail';
   rail.setAttribute('aria-label', 'Informations complémentaires du dashboard');
   rail.append(
-    createNewArrivalPanel(model.newArrival),
+    createNewArrivalPanel(model.newArrival, offline),
     createActivityPanel(model.recentActivity),
     createDistributionPanel(projects),
   );
