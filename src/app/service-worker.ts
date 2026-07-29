@@ -1,9 +1,13 @@
+import { APP_VERSION } from './version';
+
 export function registerServiceWorker(): void {
   if (!import.meta.env.PROD || !('serviceWorker' in navigator)) return;
 
   window.addEventListener('load', () => {
-    void navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`, {
+    const scriptUrl = `${import.meta.env.BASE_URL}sw.js?v=${encodeURIComponent(APP_VERSION)}`;
+    void navigator.serviceWorker.register(scriptUrl, {
       scope: import.meta.env.BASE_URL,
+      updateViaCache: 'none',
     }).then((registration) => {
       registration.addEventListener('updatefound', () => {
         const worker = registration.installing;
@@ -13,6 +17,7 @@ export function registerServiceWorker(): void {
           }
         });
       });
+      void registration.update();
     }).catch(() => {
       // The application remains usable online if service-worker registration fails.
     });
