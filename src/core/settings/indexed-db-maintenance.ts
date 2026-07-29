@@ -135,7 +135,7 @@ export class IndexedDbMaintenance implements CacheMaintenanceApi {
       const snapshotRequest = readTransaction.objectStore('snapshots').get(username) as IDBRequest<unknown>;
       const activityKeysRequest = readTransaction.objectStore('activityEvents')
         .index('byUsername')
-        .getAllKeys(IDBKeyRange.only(username)) as IDBRequest<IDBValidKey[]>;
+        .getAllKeys(IDBKeyRange.only(username));
       const rawSnapshot = await requestResult(snapshotRequest);
       const activityKeys = await requestResult(activityKeysRequest);
       const snapshot = isSnapshotForUser(rawSnapshot, username) ? rawSnapshot : undefined;
