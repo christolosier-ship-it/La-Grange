@@ -9,6 +9,7 @@ afterEach(() => {
 describe('openConfirmationModal', () => {
   it('focuses cancel, traps Tab, makes the background inert and restores it after Escape', () => {
     const shell = document.createElement('main');
+    const initialInert = shell.inert;
     const trigger = document.createElement('button');
     trigger.textContent = 'Ouvrir';
     shell.append(trigger);
@@ -34,7 +35,7 @@ describe('openConfirmationModal', () => {
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     expect(document.querySelector('.modal-overlay')).toBeNull();
-    expect(shell.inert).toBe(false);
+    expect(shell.inert).toBe(initialInert);
     expect(shell.hasAttribute('aria-hidden')).toBe(false);
     expect(document.activeElement).toBe(trigger);
     expect(onCancel).toHaveBeenCalledOnce();
