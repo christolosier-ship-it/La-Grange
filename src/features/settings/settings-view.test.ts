@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { INITIAL_STATE, type AppState } from '../../app/store';
+import { APP_VERSION } from '../../app/version';
 import type { Project } from '../../core/projects/model';
 import { renderSettings } from './settings-view';
 
@@ -73,7 +74,7 @@ describe('renderSettings', () => {
     expect(view.querySelector('h1')?.textContent).toBe('Paramètres');
     expect(view.textContent).toContain('christolosier-ship-it');
     expect(view.textContent).toContain('Événements locaux');
-    expect(view.textContent).toContain('0.1.7-activity');
+    expect(view.textContent).toContain(APP_VERSION);
     expect(view.querySelector('input[name="token"]')).toBeNull();
     expect(view.querySelector('input[type="password"]')).toBeNull();
   });
