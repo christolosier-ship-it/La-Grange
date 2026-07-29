@@ -18,7 +18,9 @@ export function createDisplayPreferenceController(
     root.dataset.density = current.density;
     root.dataset.reduceMotion = String(effectiveReducedMotion(current.reduceMotion, mediaQuery.matches));
   };
-  const onSystemMotionChange = (): void => render();
+  const onSystemMotionChange = (): void => {
+    render();
+  };
   mediaQuery.addEventListener('change', onSystemMotionChange);
 
   return {
