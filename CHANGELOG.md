@@ -30,7 +30,8 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - sécurisation de l’avis de mise à jour PWA et couverture de tests associée ;
 - suppression de tous les en-têtes conditionnels côté navigateur afin de garantir une requête CORS simple sur Safari/iOS ;
 - amélioration des messages de diagnostic réseau, HTTP et de format de données du client GitHub ;
-- renouvellement automatique du service worker et du cache applicatif avec affichage de la version exécutée.
+- renouvellement automatique du service worker et du cache applicatif avec affichage de la version exécutée ;
+- conservation du récepteur natif `Window` lors de l’appel à `fetch`, requise par Safari/iOS.
 
 ## Versionnement prévu
 
