@@ -95,10 +95,10 @@ Décisions prises : recherche locale sans requête GitHub ; état utile dans le 
 
 Tests exécutés : tests purs de recherche, filtres, tri, URL et alias ; tests de composants catalogue et fiche ; tests du client, du mapper et du service de détails ; tests du store et du routeur ; TypeScript strict ; ESLint ; suite Vitest ; smoke test réel de l’inventaire et de la fiche `La-Grange` ; build Vite production.
 
-Résultats : une première chaîne complète a été obtenue avant la finalisation documentaire et le refactor de maintenabilité. Une validation finale du head exact reste obligatoire avant fusion.
+Résultats : tous les contrôles sont verts sur le head fonctionnel `48c3e8a0778c0a9e01dd11819284ce5aa25ae912`. L’audit final a en plus verrouillé le cooldown des détails GitHub, la validation profonde de `projectDetails`, les préférences corrompues et l’activation d’une fiche directe lorsque le snapshot arrive après le démarrage.
 
 Limites ou tests non exécutés : aucune capture navigateur automatisée n’est produite par le pipeline actuel. Le contrôle responsive et des états est consigné dans `docs/04-qualite/11-controle-visuel-phase-4.md`.
 
 Dette créée : aucune dette fonctionnelle volontaire. Les images éditoriales et textures finales restent planifiées en Phase 6 ; un futur navigateur E2E automatisé améliorerait encore la preuve visuelle.
 
-Prochaine étape : audit du diff final, résolution de toute revue P1/P2, CI verte sur le SHA final, fusion, puis contrôle post-merge avant Phase 5.
+Prochaine étape : faire passer ce dernier commit documentaire par la CI, vérifier l’absence de P1/P2, fusionner la PR #10, puis contrôler `main` avant Phase 5.
