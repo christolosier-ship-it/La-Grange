@@ -43,6 +43,7 @@ export function buildLocalDiagnostics(input: LocalDiagnosticsInput): string {
       status: input.settings.status,
       available: cache?.available ?? false,
       snapshotPresent: cache?.snapshotPresent ?? false,
+      projectCount: cache?.projectCount ?? 0,
       activityCount: cache?.activityCount ?? 0,
       invalidActivityCount: cache?.invalidActivityCount ?? 0,
       detailCount: cache?.detailCount ?? 0,
