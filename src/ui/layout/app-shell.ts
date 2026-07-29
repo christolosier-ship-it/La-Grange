@@ -1,4 +1,5 @@
 import type { RouteName } from '../../app/routes';
+import { APP_VERSION } from '../../app/version';
 import { AppError } from '../../core/errors/app-error';
 import type { SyncState } from '../../core/sync/sync-service';
 
@@ -17,7 +18,7 @@ export function createAppShell(): HTMLElement {
     <nav class="primary-nav" aria-label="Navigation principale"><ul></ul></nav>
     <main id="main-content" tabindex="-1"></main>
     <aside class="workbench-note" aria-label="État de l’atelier" aria-live="polite" data-sync-panel></aside>
-    <footer><small>La Grange · lecture seule</small></footer>`;
+    <footer><small>La Grange · lecture seule · v${APP_VERSION}</small></footer>`;
 
   const list = shell.querySelector('ul');
   if (!list) throw new Error('La navigation principale est introuvable.');
