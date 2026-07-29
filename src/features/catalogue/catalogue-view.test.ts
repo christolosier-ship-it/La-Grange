@@ -65,6 +65,7 @@ describe('renderCatalogue', () => {
     expect(search).not.toBeNull();
     if (!search) throw new Error('Catalogue search field missing');
 
+    search.focus();
     search.value = 'energie';
     search.dispatchEvent(new Event('input', { bubbles: true }));
 
@@ -98,7 +99,10 @@ describe('renderCatalogue', () => {
       states: ['active'] as const,
       view: 'list' as const,
     };
-    const view = renderCatalogue({ ...state([project(1)]), catalogue: current });
+    const view = renderCatalogue({
+      ...state([project(1, { displayName: 'Luma' })]),
+      catalogue: current,
+    });
     const link = view.querySelector<HTMLAnchorElement>('.project-card__title a');
 
     expect(link?.hash).toContain('#/project/repo-1?');
