@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { SnapshotCache } from '../cache/indexed-db';
 import type { GitHubRepositoryDto, RepositoryFetchResult } from '../github/types';
 import type { SyncSnapshot } from '../projects/model';
+import { overridesSignature } from '../projects/override-signature';
 import type { ProjectOverrides } from '../projects/overrides';
 import type { RepositoryClient } from './sync-service';
 import { SyncService } from './sync-service';
@@ -23,12 +24,14 @@ const repository: GitHubRepositoryDto = {
   pushed_at: null,
 };
 
+const emptyOverridesSignature = overridesSignature({});
 const cached: SyncSnapshot = {
   schemaVersion: 1,
   username: 'me',
   projects: [],
   syncedAt: '2025-01-01T00:00:00.000Z',
   etag: 'old',
+  overridesSignature: emptyOverridesSignature,
 };
 
 interface TestContext {
@@ -86,6 +89,7 @@ describe('SyncService', () => {
       (call[0] as { status: string }).status
     ))).toEqual(['loading-cache', 'ready', 'syncing', 'ready']);
     expect(context.saveSnapshot).toHaveBeenCalledOnce();
+    expect(context.fetchAllRepositories).toHaveBeenCalledWith('me', 'old', expect.any(AbortSignal));
     expect(state.snapshot?.projects).toHaveLength(1);
   });
 
@@ -101,19 +105,45 @@ describe('SyncService', () => {
     expect(offline.fetchAllRepositories).not.toHaveBeenCalled();
   });
 
-  it('refreshes snapshot freshness after a 304 response', async () => {
+  it('refreshes snapshot freshness after a compatible 304 response', async () => {
     const context = setup(cached, { status: 'not-modified', etag: 'new' });
     const state = await context.run();
 
     expect(state).toMatchObject({
       status: 'ready',
-      snapshot: { syncedAt: '2026-01-01T00:00:00.000Z', etag: 'new' },
+      snapshot: {
+        syncedAt: '2026-01-01T00:00:00.000Z',
+        etag: 'new',
+        overridesSignature: emptyOverridesSignature,
+      },
     });
     expect(context.saveSnapshot).toHaveBeenCalledWith(
       expect.objectContaining({ syncedAt: '2026-01-01T00:00:00.000Z' }),
       [],
       [],
     );
+  });
+
+  it('forces a complete GitHub response when overrides changed', async () => {
+    const changedOverrides: ProjectOverrides = {
+      one: { displayName: 'One Workshop' },
+    };
+    const context = setup(
+      cached,
+      { status: 'success', repositories: [repository], etag: 'new' },
+      () => Promise.resolve(changedOverrides),
+    );
+
+    const state = await context.run();
+    expect(context.fetchAllRepositories).toHaveBeenCalledWith(
+      'me',
+      undefined,
+      expect.any(AbortSignal),
+    );
+    expect(state.snapshot).toMatchObject({
+      overridesSignature: overridesSignature(changedOverrides),
+      projects: [{ displayName: 'One Workshop' }],
+    });
   });
 
   it('continues with GitHub data when overrides are invalid', async () => {
