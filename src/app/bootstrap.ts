@@ -48,9 +48,16 @@ export function startApplication(root: HTMLElement | null): void {
       store.setSettings(state);
     },
   );
-  const createSession = (username: string, freshnessMs: number): ProfileSession => {
+
+  let coordinator: ProfileCoordinator;
+  const createSession = (
+    username: string,
+    freshnessMs: number,
+    generation: number,
+  ): ProfileSession => {
+    const isCurrent = (): boolean => coordinator.isCurrentGeneration(generation);
     const activity = new ActivityService(cache, (state) => {
-      store.setActivity(state);
+      if (isCurrent()) store.setActivity(state);
     });
     const sync = new SyncService(
       username,
@@ -58,22 +65,24 @@ export function startApplication(root: HTMLElement | null): void {
       cache,
       () => loadOverrides(),
       (state) => {
-        store.setSync(state);
+        if (isCurrent()) store.setSync(state);
       },
       undefined,
       freshnessMs,
+      isCurrent,
     );
     const details = new ProjectDetailService(
       username,
       new GitHubDetailClient(),
       cache,
       (state) => {
-        store.setProjectDetail(state);
+        if (isCurrent()) store.setProjectDetail(state);
       },
     );
     return { username, activity, sync, details };
   };
-  const coordinator = new ProfileCoordinator(
+
+  coordinator = new ProfileCoordinator(
     preferences.username,
     freshnessMilliseconds(preferences.freshnessMinutes),
     createSession,
@@ -145,19 +154,19 @@ export function startApplication(root: HTMLElement | null): void {
         freshnessMilliseconds(next.freshnessMinutes),
         navigator.onLine,
       );
-      if (result.status === 'error' && !result.snapshot) {
-        const failure = result.error ?? new Error('Profile synchronization failed');
+      if (!result.snapshot) {
+        const failure = result.error ?? new Error(
+          result.status === 'offline'
+            ? 'Aucun cache local disponible pour ce profil hors ligne.'
+            : 'Profile synchronization failed',
+        );
         persistPreferences(previous);
         await coordinator.switchProfile(
           previous.username,
           freshnessMilliseconds(previous.freshnessMinutes),
           navigator.onLine,
         );
-        store.setSettings({
-          status: 'error',
-          username: previous.username,
-          error: failure,
-        });
+        await maintenance.inspect(previous.username);
         throw failure;
       }
     },
