@@ -62,6 +62,8 @@ describe('renderDashboard', () => {
     expect(view.textContent).toContain('L’établi');
     expect(view.textContent).toContain('Prêts à partir');
     expect(view.textContent).toContain('Répartition');
+    expect(view.querySelector('.activity-list span')?.textContent).toBe('Archivé');
+    expect(view.querySelector('.activity-list time')?.getAttribute('aria-label')).toContain('Dernière activité détectée');
   });
 
   it('makes a new repository immediately identifiable', () => {
