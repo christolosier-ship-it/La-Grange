@@ -27,9 +27,11 @@ function scheduleRetryUnlock(
   const update = (): void => {
     const remaining = retryAt.getTime() - Date.now();
     if (remaining <= 0) {
+      const restoreFocus = document.activeElement === notice;
       button.disabled = false;
       button.textContent = readyLabel;
       notice.remove();
+      if (restoreFocus) button.focus({ preventScroll: true });
       return;
     }
     window.setTimeout(update, Math.min(remaining, MAX_TIMER_DELAY_MS));
