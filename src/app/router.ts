@@ -59,6 +59,7 @@ function restoreFocus(main: HTMLElement, snapshot: FocusSnapshot | undefined): v
 function projectForRoute(route: RouteMatch, state: AppState | undefined): Project | undefined {
   if (route.name !== 'project') return undefined;
   const repositoryName = route.params.repositoryName;
+  if (!repositoryName) return undefined;
   return state?.sync.snapshot?.projects.find((project) => project.repositoryName === repositoryName);
 }
 
@@ -69,6 +70,7 @@ function canonicalProjectRoute(
 ): RouteMatch {
   if (route.name !== 'project' || projectForRoute(route, state)) return route;
   const repositoryName = route.params.repositoryName;
+  if (!repositoryName) return route;
   const projectId = state?.sync.snapshot?.aliases?.[repositoryName];
   const project = state?.sync.snapshot?.projects.find((candidate) => candidate.id === projectId);
   if (!project) return route;
