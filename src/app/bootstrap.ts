@@ -4,109 +4,179 @@ import { ProjectDetailService } from '../core/details/project-detail-service';
 import { GitHubClient } from '../core/github/client';
 import { GitHubDetailClient } from '../core/github/detail-client';
 import {
-  loadCataloguePreferences,
-  saveCataloguePreferences,
-} from '../core/preferences/catalogue-preferences';
+  freshnessMilliseconds,
+  loadAppPreferences,
+  saveAppPreferences,
+  type AppPreferences,
+} from '../core/preferences/app-preferences';
+import {
+  ProfileCoordinator,
+  type ProfileSession,
+} from '../core/profile/profile-coordinator';
 import { loadOverrides } from '../core/projects/overrides';
+import { CacheMaintenanceService } from '../core/settings/cache-maintenance';
+import { IndexedDbMaintenance } from '../core/settings/indexed-db-maintenance';
 import { SyncService } from '../core/sync/sync-service';
 import { catalogueHash, DEFAULT_CATALOGUE_STATE } from '../features/catalogue/catalogue-model';
 import { createAppShell } from '../ui/layout/app-shell';
+import { createDisplayPreferenceController } from '../ui/preferences/display-preferences';
 import { SYNC_REQUEST_EVENT } from './events';
 import { createRouter } from './router';
 import { createStore, INITIAL_STATE } from './store';
 import { registerServiceWorker } from './service-worker';
 
-const GITHUB_USERNAME = 'christolosier-ship-it';
-
 export function startApplication(root: HTMLElement | null): void {
   if (!root) throw new Error('Élément racine #app introuvable.');
 
-  const preferences = loadCataloguePreferences();
+  const loaded = loadAppPreferences();
+  const preferences = loaded.preferences;
   const store = createStore({
     ...INITIAL_STATE,
-    catalogue: { ...DEFAULT_CATALOGUE_STATE, view: preferences.view },
+    preferences,
+    catalogue: { ...DEFAULT_CATALOGUE_STATE, view: preferences.catalogueView },
     favoriteIds: preferences.favoriteIds,
   });
+  const display = createDisplayPreferenceController();
+  display.apply(preferences);
   const shell = createAppShell();
   root.replaceChildren(shell);
 
   const cache = new IndexedDbCache();
-  const activity = new ActivityService(cache, (state) => {
-    store.setActivity(state);
-  });
-  const sync = new SyncService(
-    GITHUB_USERNAME,
-    new GitHubClient(),
-    cache,
-    () => loadOverrides(),
-    (state) => {
-      store.setSync(state);
-    },
+  const maintenance = new CacheMaintenanceService(
+    new IndexedDbMaintenance(),
+    (state) => store.setSettings(state),
   );
-  const details = new ProjectDetailService(
-    GITHUB_USERNAME,
-    new GitHubDetailClient(),
-    cache,
-    (state) => {
-      store.setProjectDetail(state);
+  const createSession = (username: string, freshnessMs: number): ProfileSession => {
+    const activity = new ActivityService(cache, (state) => store.setActivity(state));
+    const sync = new SyncService(
+      username,
+      new GitHubClient(),
+      cache,
+      () => loadOverrides(),
+      (state) => store.setSync(state),
+      undefined,
+      freshnessMs,
+    );
+    const details = new ProjectDetailService(
+      username,
+      new GitHubDetailClient(),
+      cache,
+      (state) => store.setProjectDetail(state),
+    );
+    return { username, activity, sync, details };
+  };
+  const coordinator = new ProfileCoordinator(
+    preferences.username,
+    freshnessMilliseconds(preferences.freshnessMinutes),
+    createSession,
+    {
+      beforeProfileChange: () => store.resetProfileState(),
+      afterSynchronization: async (username) => {
+        await maintenance.inspect(username);
+      },
     },
   );
 
-  const savePreferences = (): void => {
-    const state = store.getState();
-    saveCataloguePreferences({
-      favoriteIds: state.favoriteIds,
-      view: state.catalogue.view,
-    });
+  const persistPreferences = (next: AppPreferences): void => {
+    saveAppPreferences(next);
+    store.setPreferences(next);
+    display.apply(next);
   };
 
   const router = createRouter(shell, window, store, {
     onProjectOpened: async (repositoryName) => {
-      await sync.acknowledgeProject(repositoryName);
+      await coordinator.acknowledgeProject(repositoryName);
     },
     onProjectRoute: async (project) => {
-      await details.loadCached(project);
+      await coordinator.loadProjectDetails(project);
     },
     onProjectRouteLeave: (projectId) => {
-      details.cancel(projectId);
+      coordinator.cancelProjectDetails(projectId);
     },
     onProjectDetailsRequest: (project, force) => {
-      void details.refresh(project, { online: navigator.onLine, force });
+      void coordinator.refreshProjectDetails(project, { online: navigator.onLine, force });
     },
     onCatalogueChange: (catalogue) => {
       store.setCatalogue(catalogue, false);
       window.history.replaceState(null, '', catalogueHash(catalogue));
-      savePreferences();
+      persistPreferences({
+        ...store.getState().preferences,
+        catalogueView: catalogue.view,
+      });
     },
     onToggleFavorite: (projectId) => {
       store.toggleFavorite(projectId);
-      savePreferences();
+      saveAppPreferences(store.getState().preferences);
+    },
+    onRemoveFavorite: (projectId) => {
+      store.removeFavorite(projectId);
+      saveAppPreferences(store.getState().preferences);
+    },
+    onClearFavorites: () => {
+      store.clearFavorites();
+      saveAppPreferences(store.getState().preferences);
+    },
+    onPreferencesChange: (next) => {
+      const previous = store.getState().preferences;
+      persistPreferences(next);
+      if (next.freshnessMinutes !== previous.freshnessMinutes) {
+        void coordinator.updateFreshness(
+          freshnessMilliseconds(next.freshnessMinutes),
+          navigator.onLine,
+        );
+      }
+    },
+    onProfileChange: async (username) => {
+      const previous = store.getState().preferences;
+      const next = { ...previous, username };
+      persistPreferences(next);
+      const result = await coordinator.switchProfile(
+        username,
+        freshnessMilliseconds(next.freshnessMinutes),
+        navigator.onLine,
+      );
+      if (result.status === 'error' && !result.snapshot) {
+        const failure = result.error ?? new Error('Profile synchronization failed');
+        persistPreferences(previous);
+        await coordinator.switchProfile(
+          previous.username,
+          freshnessMilliseconds(previous.freshnessMinutes),
+          navigator.onLine,
+        );
+        store.setSettings({
+          status: 'error',
+          username: previous.username,
+          error: failure,
+        });
+        throw failure;
+      }
+    },
+    onResetCache: async () => {
+      coordinator.cancelCurrent();
+      await maintenance.reset(store.getState().preferences.username);
+      store.resetProfileState(true);
+    },
+    onRefreshCacheInfo: async () => {
+      await maintenance.inspect(store.getState().preferences.username);
     },
   });
 
-  void activity.load(GITHUB_USERNAME);
   router.start();
   registerServiceWorker();
+  void maintenance.inspect(preferences.username);
+  void coordinator.start(navigator.onLine);
 
   const synchronize = (force = false): void => {
-    void sync.synchronize({ online: navigator.onLine, force }).then(() => (
-      activity.load(GITHUB_USERNAME)
-    ));
+    void coordinator.synchronize({ online: navigator.onLine, force });
   };
 
-  window.addEventListener(SYNC_REQUEST_EVENT, () => {
-    synchronize(true);
-  });
-  window.addEventListener('online', () => {
-    synchronize(true);
-  });
+  window.addEventListener(SYNC_REQUEST_EVENT, () => synchronize(true));
+  window.addEventListener('online', () => synchronize(true));
   window.addEventListener('offline', () => {
-    details.cancel();
+    coordinator.cancelProjectDetails();
     synchronize(true);
   });
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') synchronize();
   });
-
-  synchronize();
 }
