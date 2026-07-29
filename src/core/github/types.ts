@@ -18,4 +18,8 @@ export interface GitHubRepositoryDto {
 
 export type RepositoryFetchResult =
   | { readonly status: 'not-modified'; readonly etag?: string }
-  | { readonly status: 'success'; readonly repositories: readonly GitHubRepositoryDto[]; readonly etag?: string };
+  | {
+      readonly status: 'success';
+      readonly repositories: readonly GitHubRepositoryDto[];
+      readonly etag?: string;
+    };
