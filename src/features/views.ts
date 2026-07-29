@@ -3,6 +3,7 @@ import type { RouteMatch } from '../app/routes';
 import { AppError } from '../core/errors/app-error';
 import type { Project } from '../core/projects/model';
 import type { SyncState } from '../core/sync/sync-service';
+import { renderDashboard } from './dashboard/dashboard-view';
 
 interface ViewContent {
   readonly eyebrow: string;
@@ -10,12 +11,7 @@ interface ViewContent {
   readonly description: string;
 }
 
-const PLACEHOLDERS: Record<Exclude<RouteMatch['name'], 'project' | 'projects' | 'not-found'>, ViewContent> = {
-  dashboard: {
-    eyebrow: 'Vue d’ensemble',
-    title: 'Bienvenue dans l’atelier',
-    description: 'Le tableau de bord illustré sera construit lors de la phase 3.',
-  },
+const PLACEHOLDERS: Record<'activity' | 'settings', ViewContent> = {
   activity: {
     eyebrow: 'Journal',
     title: 'Activité récente',
@@ -215,18 +211,6 @@ function renderProject(route: RouteMatch, state: AppState | undefined): HTMLElem
   if (project.appUrl) appendExternalLink(actions, project.appUrl, 'Ouvrir l’application');
 
   panel.append(details, actions);
-  return panel;
-}
-
-function renderDashboard(state: AppState | undefined): HTMLElement {
-  const count = state?.sync.snapshot?.projects.length;
-  const panel = createPanel({
-    ...PLACEHOLDERS.dashboard,
-    description: count === undefined
-      ? PLACEHOLDERS.dashboard.description
-      : `${String(count)} projet(s) sont actuellement connus de La Grange. Le dashboard visuel arrive en phase 3.`,
-  });
-  appendSyncFeedback(panel, state?.sync);
   return panel;
 }
 
