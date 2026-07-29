@@ -102,9 +102,9 @@ export function createRouter(
 
   let unsubscribe: (() => void) | undefined;
   let started = false;
-  let lastRouteKey = '';
+  let notifiedProjectKey = '';
 
-  const render = (focusHeading: boolean, notifyRoute: boolean): void => {
+  const render = (focusHeading: boolean): void => {
     const focus = focusHeading ? undefined : captureFocus(main);
     let route = matchRoute(windowObject.location.hash);
     let state = store?.getState();
@@ -128,8 +128,8 @@ export function createRouter(
       ? `${project.displayName} · La Grange`
       : `${TITLES[route.name]} · La Grange`;
 
-    const routeKey = `${route.name}:${route.params.repositoryName ?? ''}`;
-    if (notifyRoute && routeKey !== lastRouteKey && project) {
+    const currentProjectKey = project ? `${String(project.id)}:${project.repositoryName}` : '';
+    if (project && currentProjectKey !== notifiedProjectKey) {
       if (actions.onProjectOpened) {
         const onProjectOpened = actions.onProjectOpened;
         invokeSafely(() => onProjectOpened(project.repositoryName));
@@ -139,14 +139,14 @@ export function createRouter(
         invokeSafely(() => onProjectRoute(project));
       }
     }
-    lastRouteKey = routeKey;
+    notifiedProjectKey = currentProjectKey;
 
     if (focusHeading) view.querySelector<HTMLHeadingElement>('h1')?.focus({ preventScroll: true });
     else restoreFocus(main, focus);
   };
 
   const handleRouteChange = (): void => {
-    render(true, true);
+    render(true);
   };
 
   return {
@@ -155,9 +155,9 @@ export function createRouter(
       started = true;
       windowObject.addEventListener('hashchange', handleRouteChange);
       unsubscribe = store?.subscribe(() => {
-        render(false, false);
+        render(false);
       });
-      render(true, true);
+      render(true);
     },
     stop: (): void => {
       if (!started) return;
@@ -165,10 +165,10 @@ export function createRouter(
       windowObject.removeEventListener('hashchange', handleRouteChange);
       unsubscribe?.();
       unsubscribe = undefined;
-      lastRouteKey = '';
+      notifiedProjectKey = '';
     },
     render: (): void => {
-      render(false, false);
+      render(false);
     },
   };
 }
