@@ -1,3 +1,4 @@
+import { isAbortError } from '../../utils/errors';
 import type { ProjectDetailsClient } from '../github/detail-client';
 import { mapProjectDetails } from '../projects/detail-mapper';
 import type { ProjectDetails } from '../projects/details';
@@ -29,10 +30,6 @@ export const PROJECT_DETAILS_FRESHNESS_MS = 45 * 60 * 1_000;
 
 function normalizeError(error: unknown, fallback: string): Error {
   return error instanceof Error ? error : new Error(fallback);
-}
-
-function isAbortError(error: unknown): boolean {
-  return error instanceof Error && error.name === 'AbortError';
 }
 
 export class ProjectDetailService {
