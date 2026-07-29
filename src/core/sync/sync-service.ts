@@ -160,7 +160,7 @@ export class SyncService {
           syncedAt: checkedAt,
           etag: result.etag ?? cached.etag,
         };
-        return this.saveRefreshedSnapshot(refreshed, warning);
+        return await this.saveRefreshedSnapshot(refreshed, warning);
       }
 
       const mapped = result.repositories.map((repository) => (
