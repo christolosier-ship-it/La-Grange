@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import { AppError } from '../errors/app-error';
-import { CacheMaintenanceService } from './cache-maintenance';
+import {
+  CacheMaintenanceService,
+  type SettingsState,
+} from './cache-maintenance';
 
 const diagnostics = {
   username: 'example',
@@ -14,17 +17,19 @@ const diagnostics = {
 
 describe('CacheMaintenanceService', () => {
   it('publishes real cache diagnostics', async () => {
-    const publish = vi.fn();
+    const states: SettingsState[] = [];
     const cache = {
       inspectProfileCache: vi.fn().mockResolvedValue(diagnostics),
       resetProfileCache: vi.fn(),
     };
-    const service = new CacheMaintenanceService(cache, publish);
+    const service = new CacheMaintenanceService(cache, (state) => {
+      states.push(state);
+    });
 
     const state = await service.inspect(' example ');
 
     expect(cache.inspectProfileCache).toHaveBeenCalledWith('example');
-    expect(publish.mock.calls[0]?.[0]).toMatchObject({ status: 'loading' });
+    expect(states[0]).toMatchObject({ status: 'loading' });
     expect(state).toEqual({ status: 'ready', username: 'example', cache: diagnostics });
   });
 
@@ -44,17 +49,17 @@ describe('CacheMaintenanceService', () => {
         detailsDeleted: 3,
       }),
     };
-    const publish = vi.fn();
-    const service = new CacheMaintenanceService(cache, publish);
+    const states: SettingsState[] = [];
+    const service = new CacheMaintenanceService(cache, (state) => {
+      states.push(state);
+    });
 
     const result = await service.reset('example');
 
     expect(result).toMatchObject({ snapshotDeleted: true, activityDeleted: 7, detailsDeleted: 3 });
     expect(cache.resetProfileCache).toHaveBeenCalledOnce();
-    expect(publish.mock.lastCall?.[0]).toMatchObject({
-      status: 'ready',
-      message: expect.stringContaining('préférences sont conservées'),
-    });
+    expect(states.at(-1)?.status).toBe('ready');
+    expect(states.at(-1)?.message).toContain('préférences sont conservées');
   });
 
   it('keeps a user-facing cache error without claiming success', async () => {
