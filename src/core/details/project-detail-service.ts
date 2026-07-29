@@ -1,4 +1,3 @@
-import { AppError } from '../errors/app-error';
 import type { ProjectDetailsClient } from '../github/detail-client';
 import { mapProjectDetails } from '../projects/detail-mapper';
 import type { ProjectDetails } from '../projects/details';
@@ -150,12 +149,11 @@ export class ProjectDetailService {
           details: cached,
         });
       }
-      const normalized = normalizeError(error, 'Project detail request failed');
       return this.emit({
         projectId: project.id,
         status: 'error',
         details: cached,
-        error: normalized instanceof AppError ? normalized : normalized,
+        error: normalizeError(error, 'Project detail request failed'),
       });
     }
   }
