@@ -17,7 +17,7 @@ export function compareProjects(
   const oldById = new Map(previous?.map((project) => [project.id, project]));
   const firstImport = previous === undefined;
   const events: ActivityEvent[] = [];
-  const aliases: Record<string, number> = { ...previousAliases };
+  const aliasCandidates: Record<string, number> = { ...previousAliases };
 
   const projects = incoming.map((project) => {
     const old = oldById.get(project.id);
@@ -33,7 +33,7 @@ export function compareProjects(
         occurredAt: now,
         detail: `${old.repositoryName} → ${project.repositoryName}`,
       });
-      aliases[old.repositoryName] = project.id;
+      aliasCandidates[old.repositoryName] = project.id;
     }
     if (old && !old.archived && project.archived) {
       events.push({ username, projectId: project.id, type: 'archived', occurredAt: now });
@@ -49,6 +49,12 @@ export function compareProjects(
   });
 
   const incomingIds = new Set(incoming.map(({ id }) => id));
+  const canonicalNames = new Set(projects.map(({ repositoryName }) => repositoryName));
+  const aliases = Object.fromEntries(
+    Object.entries(aliasCandidates).filter(([name, projectId]) => (
+      incomingIds.has(projectId) && !canonicalNames.has(name)
+    )),
+  );
   const removed = previous?.filter(({ id }) => !incomingIds.has(id)) ?? [];
 
   for (const project of removed) {
@@ -60,11 +66,6 @@ export function compareProjects(
       detail: project.repositoryName,
     });
   }
-
-  for (const [name, projectId] of Object.entries(aliases)) {
-    if (!incomingIds.has(projectId)) delete aliases[name];
-  }
-  for (const project of projects) delete aliases[project.repositoryName];
 
   return {
     projects,
