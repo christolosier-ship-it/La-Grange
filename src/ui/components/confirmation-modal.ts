@@ -31,6 +31,26 @@ function restoreFocus(trigger: HTMLElement, documentObject: Document): void {
   target?.focus({ preventScroll: true });
 }
 
+function makeBackgroundInert(documentObject: Document, overlay: HTMLElement): () => void {
+  const siblings = [...documentObject.body.children].filter((element) => element !== overlay);
+  const previous = siblings.map((element) => ({
+    element,
+    inert: element instanceof HTMLElement ? element.inert : false,
+    ariaHidden: element.getAttribute('aria-hidden'),
+  }));
+  for (const element of siblings) {
+    if (element instanceof HTMLElement) element.inert = true;
+    element.setAttribute('aria-hidden', 'true');
+  }
+  return () => {
+    for (const item of previous) {
+      if (item.element instanceof HTMLElement) item.element.inert = item.inert;
+      if (item.ariaHidden === null) item.element.removeAttribute('aria-hidden');
+      else item.element.setAttribute('aria-hidden', item.ariaHidden);
+    }
+  };
+}
+
 export function openConfirmationModal(
   trigger: HTMLElement,
   options: ConfirmationModalOptions,
@@ -69,6 +89,7 @@ export function openConfirmationModal(
   dialog.append(title, description, error, actions);
   overlay.append(dialog);
   documentObject.body.append(overlay);
+  const restoreBackground = makeBackgroundInert(documentObject, overlay);
 
   let closed = false;
   let pending = false;
@@ -77,6 +98,7 @@ export function openConfirmationModal(
     closed = true;
     documentObject.removeEventListener('keydown', onKeyDown);
     overlay.remove();
+    restoreBackground();
     restoreFocus(trigger, documentObject);
     if (!confirmed) options.onCancel?.();
   };
