@@ -45,6 +45,7 @@ export interface SyncSnapshot {
   readonly projects: readonly Project[];
   readonly syncedAt: string;
   readonly etag?: string;
+  readonly overridesSignature?: string;
 }
 
 export interface ActivityEvent {
