@@ -105,18 +105,24 @@ function isAbortError(error: unknown): boolean {
   return error instanceof Error && error.name === 'AbortError';
 }
 
+function browserFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+  return globalThis.fetch(input, init);
+}
+
 export class GitHubClient {
   private readonly apiRoot: string;
   private readonly apiOrigin: string;
+  private readonly fetcher: typeof fetch;
 
   constructor(
-    private readonly fetcher: typeof fetch = fetch,
+    fetcher: typeof fetch | undefined = undefined,
     apiRoot = 'https://api.github.com',
   ) {
     const root = new URL(apiRoot);
     if (root.protocol !== 'https:') throw new Error('GitHub API root must use HTTPS.');
     this.apiRoot = root.href.replace(/\/$/u, '');
     this.apiOrigin = root.origin;
+    this.fetcher = fetcher ?? browserFetch;
   }
 
   async fetchAllRepositories(
