@@ -47,6 +47,7 @@ function isAbortError(error: unknown): boolean {
 export class SyncService {
   private active?: Promise<SyncState>;
   private controller?: AbortController;
+  private currentState: SyncState = { status: 'idle' };
 
   constructor(
     private readonly username: string,
@@ -72,7 +73,33 @@ export class SyncService {
     this.controller?.abort();
   }
 
+  async acknowledgeProject(repositoryName: string): Promise<SyncState> {
+    if (this.active) await this.active;
+
+    const snapshot = this.currentState.snapshot;
+    const project = snapshot?.projects.find((candidate) => candidate.repositoryName === repositoryName);
+    if (!snapshot || !project?.isNew) return this.currentState;
+
+    const updatedSnapshot: SyncSnapshot = {
+      ...snapshot,
+      projects: snapshot.projects.map((candidate) => (
+        candidate.id === project.id ? { ...candidate, isNew: false } : candidate
+      )),
+    };
+
+    try {
+      await this.cache.saveSnapshot(updatedSnapshot, [], []);
+      return this.emit({ ...this.currentState, snapshot: updatedSnapshot });
+    } catch (error) {
+      return this.emit({
+        ...this.currentState,
+        warning: normalizeError(error, 'Project acknowledgement failed'),
+      });
+    }
+  }
+
   private emit(state: SyncState): SyncState {
+    this.currentState = state;
     this.publish(state);
     return state;
   }
@@ -100,13 +127,15 @@ export class SyncService {
   }
 
   private async run(options: SyncOptions): Promise<SyncState> {
-    this.emit({ status: 'loading-cache' });
+    const displayedSnapshot = this.currentState.snapshot;
+    this.emit({ status: 'loading-cache', snapshot: displayedSnapshot });
 
-    let cached: SyncSnapshot | undefined;
+    let cached = displayedSnapshot;
     let warning: Error | undefined;
 
     try {
-      cached = await this.cache.getSnapshot(this.username);
+      const persisted = await this.cache.getSnapshot(this.username);
+      if (persisted) cached = persisted;
     } catch (error) {
       warning = normalizeError(error, 'Cache failure');
     }
