@@ -215,7 +215,13 @@ export class SyncService {
         mapRepository(repository, this.now())
       ));
       const enriched = enrichProjects(mapped, overrides);
-      const comparison = compareProjects(cached?.projects, enriched, this.username, checkedAt);
+      const comparison = compareProjects(
+        cached?.projects,
+        enriched,
+        this.username,
+        checkedAt,
+        cached?.aliases,
+      );
       const snapshot: SyncSnapshot = {
         schemaVersion: SCHEMA_VERSION,
         username: this.username,
@@ -223,6 +229,7 @@ export class SyncService {
         syncedAt: checkedAt,
         etag: result.etag,
         overridesSignature: currentOverridesSignature,
+        aliases: comparison.aliases,
       };
 
       try {
