@@ -17,10 +17,6 @@ export function startApplication(root: HTMLElement | null): void {
   const shell = createAppShell();
   root.replaceChildren(shell);
 
-  const router = createRouter(shell, window, store);
-  router.start();
-  registerServiceWorker();
-
   const sync = new SyncService(
     GITHUB_USERNAME,
     new GitHubClient(),
@@ -30,6 +26,12 @@ export function startApplication(root: HTMLElement | null): void {
       store.setSync(state);
     },
   );
+
+  const router = createRouter(shell, window, store, async (repositoryName) => {
+    await sync.acknowledgeProject(repositoryName);
+  });
+  router.start();
+  registerServiceWorker();
 
   const synchronize = (force = false): void => {
     void sync.synchronize({ online: navigator.onLine, force });
