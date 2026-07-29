@@ -40,9 +40,10 @@ Avant tout prototype ou changement visuel, lire dans cet ordre :
 10. [`03-technique/11-performance.md`](03-technique/11-performance.md) ;
 11. [`04-qualite/14-checklist-phase-6.md`](04-qualite/14-checklist-phase-6.md) ;
 12. [`05-realisation/08-phase-6-polissage-visuel.md`](05-realisation/08-phase-6-polissage-visuel.md) ;
-13. [`07-decisions/ADR-009-github-source-verite-prototypage-visuel.md`](07-decisions/ADR-009-github-source-verite-prototypage-visuel.md) ;
-14. [`08-generation-ia/08-prompt-phase-6.md`](08-generation-ia/08-prompt-phase-6.md) ;
-15. [`08-generation-ia/13-protocole-lovable-phase-6.md`](08-generation-ia/13-protocole-lovable-phase-6.md).
+13. [`05-realisation/10-suivi-production-assets-phase-6.md`](05-realisation/10-suivi-production-assets-phase-6.md) ;
+14. [`07-decisions/ADR-009-github-source-verite-prototypage-visuel.md`](07-decisions/ADR-009-github-source-verite-prototypage-visuel.md) ;
+15. [`08-generation-ia/08-prompt-phase-6.md`](08-generation-ia/08-prompt-phase-6.md) ;
+16. [`08-generation-ia/13-protocole-lovable-phase-6.md`](08-generation-ia/13-protocole-lovable-phase-6.md).
 
 Référence visuelle :
 
