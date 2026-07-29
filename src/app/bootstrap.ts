@@ -1,3 +1,4 @@
+import { ActivityService } from '../core/activity/activity-service';
 import { IndexedDbCache } from '../core/cache/indexed-db';
 import { ProjectDetailService } from '../core/details/project-detail-service';
 import { GitHubClient } from '../core/github/client';
@@ -30,6 +31,9 @@ export function startApplication(root: HTMLElement | null): void {
   root.replaceChildren(shell);
 
   const cache = new IndexedDbCache();
+  const activity = new ActivityService(cache, (state) => {
+    store.setActivity(state);
+  });
   const sync = new SyncService(
     GITHUB_USERNAME,
     new GitHubClient(),
@@ -79,11 +83,15 @@ export function startApplication(root: HTMLElement | null): void {
       savePreferences();
     },
   });
+
+  void activity.load(GITHUB_USERNAME);
   router.start();
   registerServiceWorker();
 
   const synchronize = (force = false): void => {
-    void sync.synchronize({ online: navigator.onLine, force });
+    void sync.synchronize({ online: navigator.onLine, force }).then(() => (
+      activity.load(GITHUB_USERNAME)
+    ));
   };
 
   window.addEventListener(SYNC_REQUEST_EVENT, () => {
