@@ -153,7 +153,7 @@ function validAliases(value: unknown): boolean {
   ));
 }
 
-function validSnapshot(value: unknown, username: string): value is SyncSnapshot {
+export function isValidSyncSnapshot(value: unknown, username: string): value is SyncSnapshot {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
   const item = value as Record<string, unknown>;
 
@@ -296,7 +296,7 @@ export class IndexedDbCache implements SnapshotCache, ProjectDetailsCache, Activ
       const value: unknown = await requestResult(
         transaction.objectStore('snapshots').get(username),
       );
-      return validSnapshot(value, username) ? value : undefined;
+      return isValidSyncSnapshot(value, username) ? value : undefined;
     } catch (error) {
       throw new AppError(
         'cache',
