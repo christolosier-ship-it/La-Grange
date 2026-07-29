@@ -14,49 +14,38 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - routeur hash accessible, store minimal et placeholders des cinq vues ;
 - manifest, icônes PWA provisoires et service worker natif pour le shell hors ligne ;
 - tests unitaires et d’intégration du routage et du store ;
-- couche de données de phase 2 : client GitHub public paginé avec ETag et limites, modèle et mapping des projets, overrides validés, détection des changements, synchronisation cache-first et cache IndexedDB transactionnel ;
-- tests unitaires et d’intégration couvrant pagination, mapping, enrichissement, nouveaux dépôts, renommage, mode hors ligne, erreurs réseau et flux de synchronisation unique ;
-- smoke test dynamique exécutant le véritable client de production contre les dépôts publics réels avant fusion et déploiement ;
-- dashboard de phase 3 avec quatre statistiques réelles, L’établi, Prêts à partir, activité synthétique, répartition et nouvelle arrivée ;
-- cartes projets accessibles avec variantes, couverture chargée paresseusement et fallback déterministe ;
-- états complets du dashboard pour cache, synchronisation, hors ligne, avertissement, erreur et inventaire vide ;
-- tests de composants et sélecteurs couvrant les données, les images absentes, les sections vides et le déclenchement de synchronisation ;
-- catalogue de phase 4 avec recherche locale insensible aux accents et à la casse, filtres combinables, tris stables, favoris et modes grille/liste ;
-- contexte utile du catalogue conservé dans le hash et préférences légères enregistrées localement ;
-- fiches projets responsive avec illustration, actions sûres, métadonnées, topics et retour contextualisé ;
-- détails GitHub chargés uniquement à la demande pour le dépôt ouvert : trois commits, dernière release et existence du README ;
-- cache IndexedDB séparé de 45 minutes pour les détails projets et alias locaux des dépôts renommés ;
-- tests unitaires, d’intégration et smoke test réel couvrant le catalogue, les fiches et les détails ciblés ;
+- couche de données de phase 2 : client GitHub public paginé, modèle, overrides, détection des changements, synchronisation cache-first et cache IndexedDB transactionnel ;
+- smoke test dynamique du véritable client de production contre les dépôts publics réels ;
+- dashboard de phase 3 avec statistiques réelles, L’établi, Prêts à partir, activité synthétique, répartition et nouvelle arrivée ;
+- catalogue de phase 4 avec recherche locale, filtres combinables, favoris et modes grille/liste ;
+- fiches projets responsive et détails GitHub ciblés à la demande avec cache séparé ;
 - journal d’activité local de phase 5A, regroupé par semaine et par jour à partir des changements réellement détectés ;
-- lecture IndexedDB des événements isolée par utilisateur, validée profondément et résistante aux entrées locales corrompues ;
-- états accessibles du journal pour chargement, vide, hors ligne, erreur de cache et données partiellement invalides.
+- lecture IndexedDB des événements isolée par utilisateur, validée profondément et résistante aux entrées corrompues ;
+- préférences versionnées de phase 5B avec profil GitHub, visibilité, fraîcheur, densité, mouvement, favoris et mode catalogue ;
+- migration automatique de l’ancien stockage Phase 4 sans perte des favoris ni du mode d’affichage ;
+- coordinateur de sessions isolant synchronisation, détails et activité pour chaque profil ;
+- écran Paramètres responsive avec confirmations accessibles, informations réelles du cache et version ;
+- inspection et reset ciblés du snapshot, du journal et des détails du profil actif ;
+- diagnostic local copiable limité aux états, compteurs et préférences effectives.
 
 ### Corrigé
 
 - ajout du `package-lock.json` requis pour rendre `npm ci` et le cache GitHub Actions reproductibles ;
 - remise en état des workflows CI et GitHub Pages sous Node.js 22 ;
-- isolation du cache du service worker afin de ne jamais supprimer les caches d’autres applications du domaine ;
-- suppression du chemin GitHub Pages codé en dur dans le service worker ;
-- ajout des icônes PNG 192, 512, maskable et Apple Touch ;
-- correction de la configuration TypeScript et ESLint ;
-- normalisation des routes, navigation active des fiches projet et retour accessible depuis la page introuvable ;
-- sécurisation de l’avis de mise à jour PWA et couverture de tests associée ;
-- suppression de tous les en-têtes conditionnels côté navigateur afin de garantir une requête CORS simple sur Safari/iOS ;
-- amélioration des messages de diagnostic réseau, HTTP et de format de données du client GitHub ;
-- renouvellement automatique du service worker et du cache applicatif avec affichage de la version exécutée ;
-- conservation du récepteur natif `Window` lors de l’appel à `fetch`, requise par Safari/iOS ;
-- navigation principale restructurée pour un rail latéral sur tablette et bureau et une barre basse sur mobile ;
-- acquittement persistant du marqueur « Nouvelle arrivée » lors de l’ouverture d’une fiche ;
-- conservation du snapshot mémoire pendant les rafraîchissements manuels et en cas d’échec IndexedDB ;
-- respect du délai de reprise GitHub après une limite API, avec heure affichée et bouton temporairement désactivé ;
-- signalement des liens externes nécessitant une connexion en mode hors ligne ;
-- centralisation des libellés d’état utilisés par les cartes et le panneau d’activité ;
-- conservation d’une ancienne URL de fiche après renommage du dépôt, avec redirection locale vers le nom courant ;
-- maintien des détails locaux et de la fiche de base lors d’une erreur GitHub ou IndexedDB ;
-- prévention des rendus réentrants lors de l’ouverture d’une fiche projet ;
-- affichage du message utilisateur localisé lors d’un échec initial du catalogue ;
-- conservation du focus clavier pendant le chargement et les délais de reprise des détails GitHub ;
-- reconnaissance des limites secondaires GitHub signalées par `403` et `Retry-After`.
+- isolation du cache du service worker et suppression du chemin GitHub Pages codé en dur ;
+- ajout des icônes PWA requises ;
+- normalisation des routes et amélioration de l’accessibilité ;
+- requêtes GitHub navigateur simplifiées et liaison correcte de `Window.fetch` sur Safari/iOS ;
+- conservation du snapshot mémoire pendant les erreurs et rafraîchissements ;
+- respect des limites GitHub principales et secondaires ;
+- acquittement persistant des nouveaux projets ;
+- redirection des anciennes URL après renommage ;
+- prévention des rendus réentrants et conservation du focus clavier ;
+- réparation individuelle des préférences invalides ;
+- filtrage des forks et archives sans altérer le snapshot ni bloquer les fiches directes ;
+- restauration de l’ancien profil lorsqu’un changement échoue sans cache utilisable ;
+- reconstruction de la session après reset afin d’empêcher la réapparition d’un snapshot supprimé en mémoire ;
+- comptage des seuls détails réellement supprimés pendant la maintenance.
 
 ## Versionnement prévu
 
