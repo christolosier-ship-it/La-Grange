@@ -1,6 +1,6 @@
 /* La Grange shell service worker: application data remains managed by IndexedDB. */
 const CACHE_PREFIX = 'la-grange-';
-const CACHE_NAME = `${CACHE_PREFIX}shell-v9`;
+const CACHE_NAME = `${CACHE_PREFIX}shell-v10`;
 const SCOPE_URL = new URL(self.registration.scope);
 const BASE_URL = SCOPE_URL.href;
 const SHELL_URLS = [

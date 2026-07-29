@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { DEFAULT_APP_PREFERENCES } from '../core/preferences/app-preferences';
 import { DEFAULT_CATALOGUE_STATE } from '../features/catalogue/catalogue-model';
 import { createStore } from './store';
 
@@ -45,12 +46,45 @@ describe('store', () => {
     expect(listener).toHaveBeenCalledOnce();
   });
 
-  it('toggles favorites deterministically', () => {
+  it('keeps favorites synchronized with versioned preferences', () => {
     const store = createStore();
     store.toggleFavorite(8);
     store.toggleFavorite(3);
     expect(store.getState().favoriteIds).toEqual([3, 8]);
-    store.toggleFavorite(8);
+    expect(store.getState().preferences.favoriteIds).toEqual([3, 8]);
+    store.removeFavorite(8);
     expect(store.getState().favoriteIds).toEqual([3]);
+    store.clearFavorites();
+    expect(store.getState().preferences.favoriteIds).toEqual([]);
+  });
+
+  it('applies preferences and preserves catalogue context while changing view', () => {
+    const store = createStore();
+    store.setCatalogue({ ...DEFAULT_CATALOGUE_STATE, query: 'luma' }, false);
+    store.setPreferences({
+      ...DEFAULT_APP_PREFERENCES,
+      density: 'compact',
+      catalogueView: 'list',
+      favoriteIds: [42],
+    });
+
+    expect(store.getState().preferences.density).toBe('compact');
+    expect(store.getState().favoriteIds).toEqual([42]);
+    expect(store.getState().catalogue).toMatchObject({ query: 'luma', view: 'list' });
+  });
+
+  it('clears remote memory on profile change and can preserve reset feedback', () => {
+    const store = createStore();
+    store.setSettings({ status: 'ready', message: 'Cache réinitialisé.' });
+    store.setSync({ status: 'error', error: new Error('network') });
+    store.setProjectDetail({ projectId: 42, status: 'ready' });
+
+    store.resetProfileState(true);
+
+    expect(store.getState().sync.status).toBe('idle');
+    expect(store.getState().projectDetails).toEqual({});
+    expect(store.getState().activity.status).toBe('idle');
+    expect(store.getState().settings.message).toBe('Cache réinitialisé.');
+    expect(store.getState().preferences).toEqual(DEFAULT_APP_PREFERENCES);
   });
 });

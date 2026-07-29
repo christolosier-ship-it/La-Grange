@@ -1,4 +1,5 @@
 import type { AppState } from '../../app/store';
+import { selectVisibleProjects } from '../../core/preferences/project-visibility';
 import {
   createDashboardFeedback,
   createDashboardHero,
@@ -21,12 +22,13 @@ export function renderDashboard(state: AppState | undefined): HTMLElement {
   const feedback = createDashboardFeedback(state?.sync);
   if (feedback) dashboard.append(feedback);
 
-  const projects = state?.sync.snapshot?.projects;
-  if (!projects) {
+  const inventory = state?.sync.snapshot?.projects;
+  if (!inventory) {
     dashboard.append(createDashboardLoadingState(state?.sync));
     return dashboard;
   }
 
+  const projects = selectVisibleProjects(inventory, state.preferences);
   const model = selectDashboard(projects);
   const offline = state.sync.status === 'offline';
   dashboard.append(createDashboardStats(projects));
@@ -42,13 +44,13 @@ export function renderDashboard(state: AppState | undefined): HTMLElement {
       'Les projets dont une activité a été détectée au cours des trente derniers jours.',
       model.workbench,
       'standard',
-      'Aucun projet actif n’attend sur l’établi.',
+      'Aucun projet actif visible n’attend sur l’établi.',
       'Voir tout l’inventaire',
       offline,
     ),
     createProjectSection(
       'Prêts à partir',
-      'Des applications disposant d’une adresse HTTPS directement exploitable.',
+      'Des applications visibles disposant d’une adresse HTTPS directement exploitable.',
       model.readyToLaunch,
       'compact',
       'Aucune autre application lançable n’est disponible dans cette sélection.',

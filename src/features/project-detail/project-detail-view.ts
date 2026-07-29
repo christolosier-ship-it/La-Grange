@@ -1,5 +1,6 @@
 import { matchRoute, type RouteMatch } from '../../app/routes';
 import type { AppState } from '../../app/store';
+import { projectHiddenReason } from '../../core/preferences/project-visibility';
 import type { Project } from '../../core/projects/model';
 import { SINGULAR_ACTIVITY_STATE_LABELS } from '../../ui/text/activity-state-labels';
 import { PROJECT_CATEGORY_LABELS } from '../../ui/text/project-labels';
@@ -24,6 +25,18 @@ function createRenamedNotice(route: RouteMatch): HTMLElement | undefined {
   notice.className = 'project-detail__rename-notice';
   notice.setAttribute('role', 'status');
   notice.textContent = `Ce dépôt était auparavant accessible sous le nom ${previousName}. L’adresse a été mise à jour.`;
+  return notice;
+}
+
+function createVisibilityNotice(project: Project, state: AppState): HTMLElement | undefined {
+  const reason = projectHiddenReason(project, state.preferences);
+  if (!reason) return undefined;
+  const notice = document.createElement('p');
+  notice.className = 'project-detail__rename-notice';
+  notice.setAttribute('role', 'status');
+  notice.textContent = reason === 'archived'
+    ? 'Ce projet est accessible directement, mais il est masqué dans les listes par la préférence « Masquer les archives ».'
+    : 'Ce projet est accessible directement, mais il est masqué dans les listes par la préférence « Masquer les forks ».';
   return notice;
 }
 
@@ -148,6 +161,8 @@ export function renderProjectDetail(
 
   const renamedNotice = createRenamedNotice(route);
   if (renamedNotice) view.append(renamedNotice);
+  const visibilityNotice = createVisibilityNotice(project, state);
+  if (visibilityNotice) view.append(visibilityNotice);
   view.append(createProjectHero(project, state, actions));
 
   const layout = document.createElement('div');

@@ -2,12 +2,12 @@
 
 ## Base
 
-Nom : `la-grange-db`.
+Nom : `la-grange-db`. Version : 2.
 
 ## Stores actifs
 
 - `snapshots` : instantané principal par utilisateur ;
-- `projectDetails` : détails chargés à la demande ;
+- `projectDetails` : détails chargés à la demande, indexés par identifiant GitHub stable ;
 - `activityEvents` : événements locaux récents ;
 - `metadata` : emplacement réservé aux informations de migration futures.
 
@@ -20,32 +20,46 @@ Nom : `la-grange-db`.
 
 ## Durées de fraîcheur
 
-- liste des repos : 15 minutes ;
+- liste des repos : 5, 15, 30 ou 60 minutes selon la préférence, 15 minutes par défaut ;
 - détails projet : 45 minutes ;
-- activité : pas de durée de fraîcheur réseau, le journal reflète les événements locaux écrits après synchronisation complète ;
+- activité : pas de durée réseau, le journal reflète les événements locaux ;
 - assets : stratégie service worker versionnée.
-
-Les commits, la release et l’existence du README forment une seule entrée `ProjectDetails`. Ils sont donc validés et rafraîchis ensemble, uniquement après ouverture de la fiche et action explicite de l’utilisateur.
 
 ## Lecture du journal
 
-`activityEvents` est lu par l’index `byUsername`. Les entrées du profil actif sont validées individuellement, triées par `occurredAt` décroissant puis par clé décroissante en cas d’égalité. Une entrée invalide est ignorée sans invalider les autres et son exclusion est signalée à l’interface.
+`activityEvents` est lu par l’index `byUsername`. Les entrées du profil actif sont validées individuellement, triées par date décroissante puis par clé. Une entrée invalide est ignorée sans invalider les autres et son exclusion est signalée.
 
-La lecture ne déclenche aucun appel GitHub. Elle est effectuée au démarrage puis après chaque tentative de synchronisation afin de refléter immédiatement les événements éventuellement ajoutés par une écriture transactionnelle réussie. Une lecture plus ancienne terminant après une requête plus récente ne peut pas remplacer le résultat courant.
+La lecture ne déclenche aucun appel GitHub. Une réponse ancienne ne peut pas remplacer une lecture plus récente grâce à l’identifiant de requête du service.
+
+## Inspection du profil actif
+
+`IndexedDbMaintenance` ouvre une connexion courte à la même base et calcule des compteurs réels : présence du snapshot, nombre de projets, événements valides et invalides, et détails réellement rattachés aux identifiants du snapshot actif.
+
+L’inspection est indépendante de la synchronisation. Son échec produit un état local non bloquant et ne retire jamais le snapshot déjà affiché.
+
+## Reset ciblé
+
+Après confirmation, le reset supprime uniquement :
+
+- la clé du snapshot correspondant au `username` actif ;
+- les clés d’événements obtenues par l’index `byUsername` ;
+- les clés de détails qui existent réellement et appartiennent aux identifiants du snapshot actif.
+
+Le résultat annonce le nombre réel d’entrées supprimées. Les préférences `localStorage`, les snapshots des autres utilisateurs et les détails qui ne peuvent pas être rattachés avec certitude restent intacts.
+
+Après la transaction, les services de la session active sont reconstruits sans appel GitHub automatique afin qu’aucune copie mémoire de l’ancien snapshot ne réapparaisse.
 
 ## Garanties
 
 - écriture transactionnelle du snapshot, des événements et du nettoyage des détails disparus ;
-- lecture isolée des événements par utilisateur ;
-- écriture dédiée des détails projets ;
+- lecture et suppression des événements isolées par utilisateur ;
 - ancienne valeur conservée à l’écran en cas d’échec ;
 - dates stockées en ISO UTC ;
-- validation profonde du schéma à la lecture ;
+- validation profonde à la lecture ;
 - URL de détails limitées au protocole HTTPS ;
-- aucune migration nécessaire pour la Phase 5A, l’object store `activityEvents` et ses index existant déjà en version 2.
+- aucune migration IndexedDB en Phase 5, les stores et index existaient déjà en version 2 ;
+- migration des préférences effectuée dans `localStorage`, séparément de la base.
 
-## Nettoyage
+## Rétention
 
-Le journal d’activité est limité aux 500 événements les plus récents par utilisateur. Les clés auto-incrémentées les plus anciennes sont supprimées après chaque écriture du snapshot. Les détails d’un dépôt sont supprimés dans la même transaction que le snapshot lorsque ce dépôt disparaît. Une entrée dont le nom ne correspond plus au dépôt courant est ignorée après un renommage et remplacée lors du prochain chargement à la demande.
-
-Le futur bouton « Réinitialiser le cache » de la Phase 5B supprimera les données distantes mises en cache pour le profil actif, mais préservera par défaut les préférences légères. Une confirmation expliquera les conséquences.
+Le journal est limité aux 500 événements les plus récents par utilisateur. Les détails d’un dépôt disparu sont supprimés dans la transaction du snapshot. Une entrée de détail devenue obsolète après renommage est ignorée et remplacée lors du prochain chargement à la demande.

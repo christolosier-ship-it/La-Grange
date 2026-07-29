@@ -2,7 +2,7 @@
 
 > L’atelier où vivent mes projets.
 
-La Grange est une PWA personnelle, en lecture seule, qui récupère automatiquement les dépôts publics du compte GitHub `christolosier-ship-it`, les enrichit avec une identité visuelle locale et les présente comme une galerie d’applications chaleureuse et installable.
+La Grange est une PWA personnelle, en lecture seule, qui récupère automatiquement les dépôts publics d’un profil GitHub configurable, les enrichit avec une identité visuelle locale et les présente comme une galerie d’applications chaleureuse et installable.
 
 ## Objectif
 
@@ -25,8 +25,8 @@ La Grange n’est ni une GMAO du code, ni un clone de GitHub, ni un outil de pil
 - HTML sémantique et CSS natif ;
 - routeur par hash compatible GitHub Pages ;
 - API REST publique GitHub ;
-- IndexedDB pour les données ;
-- localStorage pour les préférences légères ;
+- IndexedDB pour les snapshots, détails et événements ;
+- localStorage pour les préférences versionnées ;
 - service worker et manifest PWA ;
 - configuration éditoriale centralisée dans `public/data/project-overrides.json`.
 
@@ -62,4 +62,4 @@ Documents majeurs :
 
 ## État
 
-Les phases 1 à 4 et la Phase 5A sont implémentées : socle PWA, synchronisation GitHub cache-first, dashboard responsive, catalogue complet, fiches projets détaillées, détails GitHub ciblés à la demande et journal local factuel regroupé par semaine et par jour. La Phase 5B ajoutera les paramètres, profils, diagnostics et actions de maintenance du cache.
+Les phases 1 à 5 sont implémentées : socle PWA, synchronisation GitHub cache-first, dashboard responsive, catalogue complet, fiches détaillées, journal local factuel et paramètres. Le profil GitHub public, la visibilité des forks et archives, la fréquence de fraîcheur, la densité, le mouvement, les favoris, le diagnostic local et le reset ciblé du cache sont configurables sans token ni backend. La Phase 6 est réservée au polissage visuel.
