@@ -92,4 +92,20 @@ describe('GitHubClient', () => {
     ).rejects.toMatchObject({ code: 'invalid-response' });
     expect(untrusted).toHaveBeenCalledOnce();
   });
+
+  it('preserves cancellation while decoding a response body', async () => {
+    const abortError = new Error('aborted');
+    abortError.name = 'AbortError';
+    const response = {
+      ok: true,
+      status: 200,
+      headers: new Headers(),
+      json: vi.fn().mockRejectedValue(abortError),
+    } as unknown as Response;
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(response);
+
+    await expect(
+      new GitHubClient(fetcher).fetchAllRepositories('me'),
+    ).rejects.toMatchObject({ name: 'AbortError' });
+  });
 });
