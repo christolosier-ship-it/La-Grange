@@ -22,6 +22,29 @@ describe('store', () => {
     expect(listener).toHaveBeenCalledOnce();
   });
 
+  it('publishes local activity state', () => {
+    const store = createStore();
+    const listener = vi.fn();
+    store.subscribe(listener);
+    const activity = {
+      status: 'ready' as const,
+      username: 'example',
+      events: [{
+        id: 1,
+        username: 'example',
+        projectId: 42,
+        type: 'added' as const,
+        occurredAt: '2026-07-29T10:00:00.000Z',
+      }],
+      invalidCount: 0,
+    };
+
+    store.setActivity(activity);
+
+    expect(store.getState().activity).toEqual(activity);
+    expect(listener).toHaveBeenCalledOnce();
+  });
+
   it('toggles favorites deterministically', () => {
     const store = createStore();
     store.toggleFavorite(8);
