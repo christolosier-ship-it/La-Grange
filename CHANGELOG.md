@@ -36,7 +36,12 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - amélioration des messages de diagnostic réseau, HTTP et de format de données du client GitHub ;
 - renouvellement automatique du service worker et du cache applicatif avec affichage de la version exécutée ;
 - conservation du récepteur natif `Window` lors de l’appel à `fetch`, requise par Safari/iOS ;
-- navigation principale restructurée pour un rail latéral sur tablette et bureau et une barre basse sur mobile.
+- navigation principale restructurée pour un rail latéral sur tablette et bureau et une barre basse sur mobile ;
+- acquittement persistant du marqueur « Nouvelle arrivée » lors de l’ouverture d’une fiche ;
+- conservation du snapshot mémoire pendant les rafraîchissements manuels et en cas d’échec IndexedDB ;
+- respect du délai de reprise GitHub après une limite API, avec heure affichée et bouton temporairement désactivé ;
+- signalement des liens externes nécessitant une connexion en mode hors ligne ;
+- centralisation des libellés d’état utilisés par les cartes et le panneau d’activité.
 
 ## Versionnement prévu
 
