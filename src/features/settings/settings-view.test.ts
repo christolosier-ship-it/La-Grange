@@ -121,7 +121,10 @@ describe('renderSettings', () => {
     const view = renderSettings(state(), { onPreferencesChange });
     const hideForks = view.querySelector<HTMLInputElement>('#settings-hide-forks');
     const density = view.querySelector<HTMLSelectElement>('#settings-density');
-    hideForks?.click();
+    if (hideForks) {
+      hideForks.checked = true;
+      hideForks.dispatchEvent(new Event('change', { bubbles: true }));
+    }
     if (density) {
       density.value = 'compact';
       density.dispatchEvent(new Event('change', { bubbles: true }));
