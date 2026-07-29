@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { AppError } from '../../core/errors/app-error';
 import { openConfirmationModal } from './confirmation-modal';
 
 afterEach(() => {
@@ -33,24 +34,59 @@ describe('openConfirmationModal', () => {
     expect(onCancel).toHaveBeenCalledOnce();
   });
 
-  it('runs confirmation once and closes after success', async () => {
+  it('ignores dismissal while confirmation is pending and restores a recreated control', async () => {
+    let resolveConfirmation: (() => void) | undefined;
     const trigger = document.createElement('button');
+    trigger.dataset.focusKey = 'reset-control';
     document.body.append(trigger);
-    const onConfirm = vi.fn().mockResolvedValue(undefined);
+    const onConfirm = vi.fn(() => new Promise<void>((resolve) => {
+      resolveConfirmation = resolve;
+    }));
     const overlay = openConfirmationModal(trigger, {
       title: 'Vider',
       description: 'Supprimer le cache actif.',
       confirmLabel: 'Réinitialiser',
-      destructive: true,
       onConfirm,
+    });
+
+    overlay.querySelectorAll<HTMLButtonElement>('button')[1]?.click();
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    overlay.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(document.querySelector('.modal-overlay')).not.toBeNull();
+
+    trigger.remove();
+    const replacement = document.createElement('button');
+    replacement.dataset.focusKey = 'reset-control';
+    document.body.append(replacement);
+    resolveConfirmation?.();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(document.querySelector('.modal-overlay')).toBeNull();
+    expect(document.activeElement).toBe(replacement);
+  });
+
+  it('announces a user-facing confirmation failure inside the modal', async () => {
+    const trigger = document.createElement('button');
+    document.body.append(trigger);
+    const overlay = openConfirmationModal(trigger, {
+      title: 'Changer',
+      description: 'Changer de profil.',
+      confirmLabel: 'Continuer',
+      onConfirm: () => Promise.reject(new AppError(
+        'network',
+        'technical details',
+        'Connexion à GitHub impossible.',
+        true,
+      )),
     });
 
     overlay.querySelectorAll<HTMLButtonElement>('button')[1]?.click();
     await Promise.resolve();
     await Promise.resolve();
 
-    expect(onConfirm).toHaveBeenCalledOnce();
-    expect(document.querySelector('.modal-overlay')).toBeNull();
-    expect(document.activeElement).toBe(trigger);
+    expect(overlay.querySelector('[role="alert"]')?.textContent)
+      .toBe('Connexion à GitHub impossible.');
+    expect(overlay.querySelectorAll<HTMLButtonElement>('button')[1]?.disabled).toBe(false);
   });
 });
