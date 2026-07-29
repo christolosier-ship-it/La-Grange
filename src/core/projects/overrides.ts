@@ -157,7 +157,8 @@ export function enrichProjects(
     if (!override) return [project];
     if (override.hidden === true) return [];
 
-    const { hidden: _hidden, ...presentation } = override;
+    const presentation = { ...override };
+    delete presentation.hidden;
     return [{
       ...project,
       ...presentation,
