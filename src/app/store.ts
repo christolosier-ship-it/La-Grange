@@ -1,34 +1,59 @@
+import type { ProjectDetailState } from '../core/details/project-detail-service';
 import type { SyncState } from '../core/sync/sync-service';
-
-export interface CatalogueState {
-  readonly filter: string;
-  readonly query: string;
-}
+import {
+  DEFAULT_CATALOGUE_STATE,
+  type CatalogueState,
+} from '../features/catalogue/catalogue-model';
 
 export interface AppState {
   readonly catalogue: CatalogueState;
+  readonly favoriteIds: readonly number[];
+  readonly projectDetails: Readonly<Record<number, ProjectDetailState>>;
   readonly sync: SyncState;
 }
 
 type Listener = (state: AppState) => void;
 
-const INITIAL_STATE: AppState = { catalogue: { filter: 'all', query: '' }, sync: { status: 'idle' } };
+export const INITIAL_STATE: AppState = {
+  catalogue: DEFAULT_CATALOGUE_STATE,
+  favoriteIds: [],
+  projectDetails: {},
+  sync: { status: 'idle' },
+};
 
 export function createStore(initialState: AppState = INITIAL_STATE) {
   let state = initialState;
   const listeners = new Set<Listener>();
 
+  const publish = (): void => {
+    listeners.forEach((listener) => {
+      listener(state);
+    });
+  };
+
   return {
     getState: (): AppState => state,
-    setCatalogue: (catalogue: CatalogueState): void => {
+    setCatalogue: (catalogue: CatalogueState, notify = true): void => {
       state = { ...state, catalogue };
-      listeners.forEach((listener) => {
-        listener(state);
-      });
+      if (notify) publish();
     },
     setSync: (sync: SyncState): void => {
       state = { ...state, sync };
-      listeners.forEach((listener) => { listener(state); });
+      publish();
+    },
+    setProjectDetail: (detail: ProjectDetailState): void => {
+      state = {
+        ...state,
+        projectDetails: { ...state.projectDetails, [detail.projectId]: detail },
+      };
+      publish();
+    },
+    toggleFavorite: (projectId: number): void => {
+      const favorites = new Set(state.favoriteIds);
+      if (favorites.has(projectId)) favorites.delete(projectId);
+      else favorites.add(projectId);
+      state = { ...state, favoriteIds: [...favorites].sort((left, right) => left - right) };
+      publish();
     },
     subscribe: (listener: Listener): (() => void) => {
       listeners.add(listener);
