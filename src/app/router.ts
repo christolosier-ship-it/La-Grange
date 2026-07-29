@@ -81,8 +81,7 @@ function canonicalProjectRoute(
   return matchRoute(hash);
 }
 
-function invokeSafely(callback: (() => Promise<void> | void) | undefined): void {
-  if (!callback) return;
+function invokeSafely(callback: () => Promise<void> | void): void {
   try {
     void Promise.resolve(callback()).catch(() => undefined);
   } catch {
@@ -129,10 +128,14 @@ export function createRouter(
 
     const routeKey = `${route.name}:${route.params.repositoryName ?? ''}`;
     if (notifyRoute && routeKey !== lastRouteKey && project) {
-      invokeSafely(actions.onProjectOpened
-        ? () => actions.onProjectOpened?.(project.repositoryName)
-        : undefined);
-      invokeSafely(actions.onProjectRoute ? () => actions.onProjectRoute?.(project) : undefined);
+      if (actions.onProjectOpened) {
+        const onProjectOpened = actions.onProjectOpened;
+        invokeSafely(() => onProjectOpened(project.repositoryName));
+      }
+      if (actions.onProjectRoute) {
+        const onProjectRoute = actions.onProjectRoute;
+        invokeSafely(() => onProjectRoute(project));
+      }
     }
     lastRouteKey = routeKey;
 
