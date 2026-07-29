@@ -102,3 +102,25 @@ Limites ou tests non exécutés : aucune capture navigateur automatisée n’est
 Dette créée : aucune dette fonctionnelle volontaire. Les images éditoriales et textures finales restent planifiées en Phase 6 ; un futur navigateur E2E automatisé améliorerait encore la preuve visuelle.
 
 Prochaine étape : faire passer ce dernier commit documentaire par la CI, vérifier l’absence de P1/P2, fusionner la PR #10, puis contrôler `main` avant Phase 5.
+
+## Correctif post-Phase 4 — fils P1 et P2
+
+Date : 2026-07-29
+
+Branche / PR : `fix/pr10-p1-p2` / PR #11
+
+Objectif : corriger les quatre fils P1/P2 restés ouverts après la fusion de la PR #10.
+
+Fichiers modifiés : routeur, rendu du catalogue, client de détails GitHub, gestion du focus des détails à la demande, tests d’intégration et de composants, changelog, version visible et cache PWA.
+
+Décisions prises : enregistrer la fiche active avant tout callback susceptible de publier dans le store ; réserver `AppError.message` au diagnostic et afficher `userMessage` dans l’interface ; relayer le focus avec une clé stable vers les statuts temporaires ; considérer un `403` accompagné de `Retry-After` comme une limite secondaire GitHub.
+
+Tests exécutés : publication synchrone du store pendant l’entrée de route ; cycle de focus bouton, statut de chargement, bouton réactivé ; expiration d’un cooldown avec restitution du focus ; message utilisateur sans fuite du diagnostic ; limite secondaire avec quota principal non épuisé ; TypeScript strict ; ESLint ; suite Vitest ; smoke test GitHub réel ; build Vite production.
+
+Résultats : première chaîne complète verte avant finalisation documentaire. Validation finale requise sur le head exact après revue de la PR #11.
+
+Limites ou tests non exécutés : aucune capture navigateur automatisée supplémentaire ; les changements visuels se limitent aux états de focus et messages déjà couverts par les tests DOM.
+
+Dette créée : aucune dette volontaire.
+
+Prochaine étape : publier la PR #11 pour revue, résoudre les quatre fils historiques et toute nouvelle remarque P1/P2, puis fusionner après CI finale verte.
