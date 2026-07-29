@@ -31,12 +31,15 @@ interface Project {
   accent?: string;
   featured: boolean;
   isNew: boolean;
+  sortOrder?: number;
 }
 ```
 
 ## ProjectOverride
 
 Champs facultatifs : `displayName`, `description`, `category`, `cover`, `logo`, `accent`, `featured`, `appUrl`, `hidden`, `sortOrder`.
+
+Une signature déterministe de la configuration valide est conservée dans le snapshot. Lorsque cette signature change, l’ETag GitHub n’est pas envoyé afin de récupérer une liste technique complète avant de réappliquer les overrides. Cela permet notamment de faire réapparaître un projet précédemment masqué sans attendre une modification côté GitHub.
 
 ## SyncSnapshot
 
@@ -47,8 +50,13 @@ interface SyncSnapshot {
   projects: Project[];
   syncedAt: string;
   etag?: string;
+  overridesSignature?: string;
 }
 ```
+
+## ActivityEvent
+
+Le journal local enregistre les ajouts, renommages, disparitions, archivages et changements d’URL d’application. Il est indexé par utilisateur et par date. La rétention est bornée aux 500 événements les plus récents par utilisateur afin d’éviter une croissance illimitée d’IndexedDB.
 
 ## Preferences
 
@@ -56,4 +64,4 @@ Filtres d’affichage persistants, densité, favoris, animations réduites, masq
 
 ## Versionnement
 
-Toute modification incompatible du stockage augmente `schemaVersion` et fournit une migration testée. Une migration échouée conserve une copie de l’ancien instantané avant réinitialisation contrôlée.
+Toute modification incompatible du stockage augmente `schemaVersion` et fournit une migration testée. La version de la base IndexedDB est distincte du schéma de snapshot : elle évolue lors de l’ajout d’index ou d’object stores sans invalider inutilement les projets déjà enregistrés. Une migration échouée doit préserver le dernier snapshot lisible avant toute réinitialisation contrôlée.

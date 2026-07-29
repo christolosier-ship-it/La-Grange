@@ -62,4 +62,4 @@ Documents majeurs :
 
 ## État
 
-La phase 1 est implémentée : le socle Vite, le shell responsive, la navigation hash et les fondations PWA sont en place. L’intégration des données GitHub appartient à la phase 2.
+Les phases 1 et 2 sont implémentées : le socle applicatif et PWA est complété par le client GitHub paginé, le modèle métier, les overrides, la synchronisation cache-first et le stockage IndexedDB atomique.
