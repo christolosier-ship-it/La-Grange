@@ -2,7 +2,6 @@ import { AppError } from '../errors/app-error';
 import type { GitHubRepositoryDto, RepositoryFetchResult } from './types';
 
 const ACCEPT = 'application/vnd.github+json';
-const API_VERSION = '2022-11-28';
 const MAX_PAGES = 100;
 
 function isNullableString(value: unknown): value is string | null {
@@ -98,7 +97,7 @@ function responseError(response: Response): AppError {
   return new AppError(
     'network',
     `GitHub HTTP ${status}`,
-    'GitHub est momentanément indisponible.',
+    `GitHub a répondu avec le statut ${status}.`,
     response.status >= 500 || response.status === 403,
   );
 }
@@ -151,17 +150,17 @@ export class GitHubClient {
         response = await this.fetcher(url, {
           headers: {
             Accept: ACCEPT,
-            'X-GitHub-Api-Version': API_VERSION,
             ...(firstPage && etag ? { 'If-None-Match': etag } : {}),
           },
           signal,
         });
       } catch (error) {
         if (isAbortError(error)) throw error;
+        const technicalMessage = error instanceof Error ? error.message : 'Network failure';
         throw new AppError(
           'network',
-          error instanceof Error ? error.message : 'Network failure',
-          'Connexion à GitHub impossible.',
+          `GitHub fetch failed: ${technicalMessage}`,
+          'Connexion à GitHub impossible depuis le navigateur.',
           true,
         );
       }
