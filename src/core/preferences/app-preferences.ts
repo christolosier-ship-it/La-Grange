@@ -127,6 +127,14 @@ function parseStored(raw: string | null): unknown {
   }
 }
 
+function safeGet(storage: Pick<Storage, 'getItem'>, key: string): string | null {
+  try {
+    return storage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
 function migrateLegacy(value: unknown): AppPreferences {
   const legacy = isRecord(value) ? value : {};
   return {
@@ -154,14 +162,14 @@ export function saveAppPreferences(
 export function loadAppPreferences(
   storage: PreferenceStorage = localStorage,
 ): PreferencesLoadResult {
-  const currentRaw = storage.getItem(STORAGE_KEY);
+  const currentRaw = safeGet(storage, STORAGE_KEY);
   if (currentRaw) {
     const result = repairAppPreferences(parseStored(currentRaw));
     if (result.repairedFields.length > 0) saveAppPreferences(result.preferences, storage);
     return result;
   }
 
-  const legacyRaw = storage.getItem(LEGACY_STORAGE_KEY);
+  const legacyRaw = safeGet(storage, LEGACY_STORAGE_KEY);
   if (legacyRaw) {
     const preferences = migrateLegacy(parseStored(legacyRaw));
     const stored = saveAppPreferences(preferences, storage);
