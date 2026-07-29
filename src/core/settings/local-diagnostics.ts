@@ -66,7 +66,7 @@ export async function copyText(
   text: string,
   clipboard?: Pick<Clipboard, 'writeText'>,
 ): Promise<boolean> {
-  const browserClipboard = (navigator as Navigator & { clipboard?: Clipboard }).clipboard;
+  const browserClipboard = (navigator as unknown as { clipboard?: Clipboard }).clipboard;
   const target = clipboard ?? browserClipboard;
   if (!target) return false;
   try {
