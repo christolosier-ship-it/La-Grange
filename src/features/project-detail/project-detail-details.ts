@@ -184,9 +184,10 @@ export function createOnDemandDetails(
 
   const readyLabel = detail?.details ? 'Actualiser les détails' : 'Charger les détails récents';
   const retryAt = retryDate(detail?.error);
-  const coolingDown = retryAt !== undefined && retryAt.getTime() > Date.now();
+  let coolingDown = false;
   let retryNotice: HTMLElement | undefined;
-  if (coolingDown && retryAt) {
+  if (retryAt && retryAt.getTime() > Date.now()) {
+    coolingDown = true;
     retryNotice = document.createElement('p');
     retryNotice.className = 'project-detail__notice project-detail__retry';
     retryNotice.setAttribute('role', 'status');
@@ -212,7 +213,7 @@ export function createOnDemandDetails(
   });
   section.append(button);
 
-  if (coolingDown && retryAt && retryNotice) {
+  if (retryAt && retryNotice) {
     scheduleRetryUnlock(button, retryNotice, retryAt, readyLabel);
   }
   return section;
