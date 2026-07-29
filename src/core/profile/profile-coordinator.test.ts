@@ -1,23 +1,44 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, type Mock } from 'vitest';
 import type { ProfileSession } from './profile-coordinator';
 import { ProfileCoordinator } from './profile-coordinator';
 
-function session(username: string): ProfileSession {
+interface SessionFixture {
+  readonly value: ProfileSession;
+  readonly synchronize: Mock;
+  readonly cancelSync: Mock;
+  readonly cancelDetails: Mock;
+  readonly loadActivity: Mock;
+  readonly resetActivity: Mock;
+}
+
+function session(username: string): SessionFixture {
+  const synchronize = vi.fn().mockResolvedValue({ status: 'ready' });
+  const cancelSync = vi.fn();
+  const cancelDetails = vi.fn();
+  const loadActivity = vi.fn().mockResolvedValue(undefined);
+  const resetActivity = vi.fn();
   return {
-    username,
-    sync: {
-      synchronize: vi.fn().mockResolvedValue({ status: 'ready' }),
-      acknowledgeProject: vi.fn().mockResolvedValue({ status: 'ready' }),
-      cancel: vi.fn(),
-    },
-    details: {
-      loadCached: vi.fn(),
-      refresh: vi.fn(),
-      cancel: vi.fn(),
-    },
-    activity: {
-      load: vi.fn().mockResolvedValue(undefined),
-      reset: vi.fn(),
+    synchronize,
+    cancelSync,
+    cancelDetails,
+    loadActivity,
+    resetActivity,
+    value: {
+      username,
+      sync: {
+        synchronize,
+        acknowledgeProject: vi.fn().mockResolvedValue({ status: 'ready' }),
+        cancel: cancelSync,
+      },
+      details: {
+        loadCached: vi.fn(),
+        refresh: vi.fn(),
+        cancel: cancelDetails,
+      },
+      activity: {
+        load: loadActivity,
+        reset: resetActivity,
+      },
     },
   };
 }
@@ -25,7 +46,7 @@ function session(username: string): ProfileSession {
 describe('ProfileCoordinator', () => {
   it('loads local data then synchronizes the initial profile', async () => {
     const current = session('first-user');
-    const factory = vi.fn().mockReturnValue(current);
+    const factory = vi.fn().mockReturnValue(current.value);
     const afterSynchronization = vi.fn();
     const coordinator = new ProfileCoordinator('first-user', 900_000, factory, {
       beforeProfileChange: vi.fn(),
@@ -34,9 +55,9 @@ describe('ProfileCoordinator', () => {
 
     await coordinator.start(false);
 
-    expect(current.activity.load).toHaveBeenNthCalledWith(1, 'first-user');
-    expect(current.sync.synchronize).toHaveBeenCalledWith({ online: false });
-    expect(current.activity.load).toHaveBeenCalledTimes(2);
+    expect(current.loadActivity).toHaveBeenNthCalledWith(1, 'first-user');
+    expect(current.synchronize).toHaveBeenCalledWith({ online: false });
+    expect(current.loadActivity).toHaveBeenCalledTimes(2);
     expect(afterSynchronization).toHaveBeenCalledWith('first-user');
   });
 
@@ -44,8 +65,8 @@ describe('ProfileCoordinator', () => {
     const first = session('first-user');
     const second = session('second-user');
     const factory = vi.fn()
-      .mockReturnValueOnce(first)
-      .mockReturnValueOnce(second);
+      .mockReturnValueOnce(first.value)
+      .mockReturnValueOnce(second.value);
     const beforeProfileChange = vi.fn();
     const coordinator = new ProfileCoordinator('first-user', 900_000, factory, {
       beforeProfileChange,
@@ -53,13 +74,13 @@ describe('ProfileCoordinator', () => {
 
     await coordinator.switchProfile('second-user', 1_800_000, true);
 
-    expect(first.sync.cancel).toHaveBeenCalledOnce();
-    expect(first.details.cancel).toHaveBeenCalledOnce();
-    expect(first.activity.reset).toHaveBeenCalledOnce();
+    expect(first.cancelSync).toHaveBeenCalledOnce();
+    expect(first.cancelDetails).toHaveBeenCalledOnce();
+    expect(first.resetActivity).toHaveBeenCalledOnce();
     expect(beforeProfileChange).toHaveBeenCalledWith('second-user');
     expect(factory).toHaveBeenLastCalledWith('second-user', 1_800_000);
-    expect(second.activity.load).toHaveBeenNthCalledWith(1, 'second-user');
-    expect(second.sync.synchronize).toHaveBeenCalledWith({ online: true, force: true });
+    expect(second.loadActivity).toHaveBeenNthCalledWith(1, 'second-user');
+    expect(second.synchronize).toHaveBeenCalledWith({ online: true, force: true });
     expect(coordinator.username).toBe('second-user');
   });
 
@@ -67,8 +88,8 @@ describe('ProfileCoordinator', () => {
     const first = session('same-user');
     const rebuilt = session('same-user');
     const factory = vi.fn()
-      .mockReturnValueOnce(first)
-      .mockReturnValueOnce(rebuilt);
+      .mockReturnValueOnce(first.value)
+      .mockReturnValueOnce(rebuilt.value);
     const beforeProfileChange = vi.fn();
     const coordinator = new ProfileCoordinator('same-user', 900_000, factory, {
       beforeProfileChange,
@@ -76,9 +97,9 @@ describe('ProfileCoordinator', () => {
 
     await coordinator.updateFreshness(3_600_000, true);
 
-    expect(first.sync.cancel).toHaveBeenCalledOnce();
-    expect(first.details.cancel).toHaveBeenCalledOnce();
+    expect(first.cancelSync).toHaveBeenCalledOnce();
+    expect(first.cancelDetails).toHaveBeenCalledOnce();
     expect(beforeProfileChange).not.toHaveBeenCalled();
-    expect(rebuilt.sync.synchronize).toHaveBeenCalledWith({ online: true });
+    expect(rebuilt.synchronize).toHaveBeenCalledWith({ online: true });
   });
 });
