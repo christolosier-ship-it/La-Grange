@@ -162,8 +162,10 @@ export function startApplication(root: HTMLElement | null): void {
       }
     },
     onResetCache: async () => {
+      const current = store.getState().preferences;
       coordinator.cancelCurrent();
-      await maintenance.reset(store.getState().preferences.username);
+      await maintenance.reset(current.username);
+      coordinator.resetCurrent(freshnessMilliseconds(current.freshnessMinutes));
       store.resetProfileState(true);
     },
     onRefreshCacheInfo: async () => {
