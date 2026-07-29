@@ -1,15 +1,14 @@
-import type { ActivityState, ProjectCategory } from '../../core/projects/model';
+import type { ActivityState } from '../../core/projects/model';
 import { PLURAL_ACTIVITY_STATE_LABELS } from '../../ui/text/activity-state-labels';
+import { PROJECT_CATEGORY_LABELS } from '../../ui/text/project-labels';
 import type { CatalogueFacets, CatalogueState } from './catalogue-model';
 
-const CATEGORY_LABELS: Record<ProjectCategory, string> = {
-  games: 'Jeux',
-  applications: 'Applications',
-  'professional-tools': 'Outils professionnels',
-  experiments: 'Expériences',
-  learning: 'Apprentissage',
-  uncategorized: 'Sans catégorie',
-};
+const ACTIVITY_STATE_ORDER: readonly ActivityState[] = [
+  'active',
+  'maintenance',
+  'sleeping',
+  'archived',
+];
 
 const SORT_LABELS = {
   'activity-desc': 'Activité récente',
@@ -97,7 +96,7 @@ export function createCatalogueControls(
   const stateButtons = new Map<ActivityState, HTMLButtonElement>();
   const stateRow = document.createElement('div');
   stateRow.className = 'catalogue-chips';
-  for (const state of ['active', 'maintenance', 'sleeping', 'archived'] as const) {
+  for (const state of ACTIVITY_STATE_ORDER) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'filter-chip';
@@ -109,9 +108,7 @@ export function createCatalogueControls(
       else selected.add(state);
       current = {
         ...current,
-        states: ['active', 'maintenance', 'sleeping', 'archived'].filter((value): value is ActivityState => (
-          selected.has(value as ActivityState)
-        )),
+        states: ACTIVITY_STATE_ORDER.filter((value) => selected.has(value)),
       };
       button.setAttribute('aria-pressed', String(current.states.includes(state)));
       onChange(current);
@@ -126,7 +123,7 @@ export function createCatalogueControls(
     'catalogue-category',
     [
       ['all', 'Toutes les catégories'],
-      ...facets.categories.map((category) => [category, CATEGORY_LABELS[category]] as const),
+      ...facets.categories.map((category) => [category, PROJECT_CATEGORY_LABELS[category]] as const),
     ],
     (value) => {
       current = { ...current, category: value as CatalogueState['category'] };
@@ -198,20 +195,6 @@ export function createCatalogueControls(
   reset.className = 'catalogue-reset';
   reset.textContent = 'Réinitialiser les filtres';
   reset.dataset.focusKey = 'catalogue-reset';
-  reset.addEventListener('click', () => {
-    current = {
-      query: '',
-      states: [],
-      category: 'all',
-      language: 'all',
-      favoritesOnly: false,
-      sort: 'activity-desc',
-      view: current.view,
-    };
-    sync(current);
-    onChange(current);
-    search.focus();
-  });
 
   const secondary = document.createElement('div');
   secondary.className = 'catalogue-controls__secondary';
@@ -239,6 +222,21 @@ export function createCatalogueControls(
     grid.setAttribute('aria-pressed', String(state.view === 'grid'));
     list.setAttribute('aria-pressed', String(state.view === 'list'));
   };
+
+  reset.addEventListener('click', () => {
+    current = {
+      query: '',
+      states: [],
+      category: 'all',
+      language: 'all',
+      favoritesOnly: false,
+      sort: 'activity-desc',
+      view: current.view,
+    };
+    sync(current);
+    onChange(current);
+    search.focus();
+  });
 
   sync(initialState);
   return { element: controls, sync };
