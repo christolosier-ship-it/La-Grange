@@ -5,9 +5,24 @@ import type { SyncState } from '../../core/sync/sync-service';
 import { formatFullDate, formatRelativeDate } from '../../utils/date';
 import { selectDashboard } from './dashboard-selectors';
 
+const MAX_TIMEOUT_MS = 2_147_483_647;
+
 function readableError(error: Error | undefined): string {
   if (!error) return 'Erreur inconnue.';
   return error instanceof AppError ? error.userMessage : error.message;
+}
+
+function retryDate(error: Error | undefined, now: Date): Date | undefined {
+  if (!(error instanceof AppError) || error.code !== 'rate-limit' || !error.retryAt) return undefined;
+  const date = new Date(error.retryAt);
+  return Number.isFinite(date.getTime()) && date.getTime() > now.getTime() ? date : undefined;
+}
+
+function retryLabel(date: Date): string {
+  return new Intl.DateTimeFormat('fr-FR', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(date);
 }
 
 function createEyebrow(text: string): HTMLParagraphElement {
@@ -17,16 +32,35 @@ function createEyebrow(text: string): HTMLParagraphElement {
   return eyebrow;
 }
 
-export function createSyncButton(sync: SyncState | undefined): HTMLButtonElement {
+export function createSyncButton(sync: SyncState | undefined, now = new Date()): HTMLButtonElement {
   const button = document.createElement('button');
   const busy = sync?.status === 'syncing' || sync?.status === 'loading-cache';
+  const retryAt = retryDate(sync?.error, now);
+  const coolingDown = retryAt !== undefined;
+
   button.type = 'button';
   button.className = 'sync-button';
-  button.disabled = busy;
+  button.disabled = busy || coolingDown;
   button.setAttribute('aria-busy', String(busy));
-  button.textContent = busy ? 'Inventaire en cours…' : 'Actualiser l’inventaire';
+
+  if (busy) {
+    button.textContent = 'Inventaire en cours…';
+  } else if (retryAt) {
+    const label = retryLabel(retryAt);
+    button.textContent = `Réessayer après ${label}`;
+    button.title = `GitHub autorisera une nouvelle tentative après ${label}.`;
+    const delay = Math.min(retryAt.getTime() - now.getTime(), MAX_TIMEOUT_MS);
+    window.setTimeout(() => {
+      button.disabled = false;
+      button.textContent = 'Actualiser l’inventaire';
+      button.removeAttribute('title');
+    }, delay);
+  } else {
+    button.textContent = 'Actualiser l’inventaire';
+  }
+
   button.addEventListener('click', () => {
-    window.dispatchEvent(new Event(SYNC_REQUEST_EVENT));
+    if (!button.disabled) window.dispatchEvent(new Event(SYNC_REQUEST_EVENT));
   });
   return button;
 }
@@ -73,7 +107,9 @@ export function createDashboardFeedback(sync: SyncState | undefined): HTMLElemen
 
   if (sync.status === 'loading-cache') {
     feedback.dataset.tone = 'neutral';
-    feedback.textContent = 'Ouverture des réserves locales…';
+    feedback.textContent = sync.snapshot
+      ? 'Vérification des réserves locales, le dernier inventaire reste affiché.'
+      : 'Ouverture des réserves locales…';
   } else if (sync.status === 'syncing') {
     feedback.dataset.tone = 'syncing';
     feedback.textContent = sync.snapshot
@@ -89,6 +125,9 @@ export function createDashboardFeedback(sync: SyncState | undefined): HTMLElemen
     feedback.textContent = sync.snapshot
       ? `Le dernier inventaire est conservé. ${readableError(sync.error)}`
       : readableError(sync.error);
+
+    const retryAt = retryDate(sync.error, new Date());
+    if (retryAt) feedback.textContent += ` Nouvelle tentative possible après ${retryLabel(retryAt)}.`;
   }
 
   if (sync.warning) {

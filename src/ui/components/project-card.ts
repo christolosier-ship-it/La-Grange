@@ -1,4 +1,5 @@
-import type { ActivityState, Project } from '../../core/projects/model';
+import type { Project } from '../../core/projects/model';
+import { SINGULAR_ACTIVITY_STATE_LABELS } from '../text/activity-state-labels';
 import { formatFullDate, formatRelativeDate } from '../../utils/date';
 
 export type ProjectCardVariant = 'standard' | 'compact' | 'featured';
@@ -6,14 +7,8 @@ export type ProjectCardVariant = 'standard' | 'compact' | 'featured';
 export interface ProjectCardOptions {
   readonly variant?: ProjectCardVariant;
   readonly now?: Date;
+  readonly offline?: boolean;
 }
-
-const STATUS_LABELS: Record<ActivityState, string> = {
-  active: 'Actif',
-  maintenance: 'Maintenance',
-  sleeping: 'En sommeil',
-  archived: 'Archivé',
-};
 
 function projectInitials(name: string): string {
   const words = name.trim().split(/[\s_-]+/u).filter(Boolean);
@@ -96,10 +91,10 @@ function createVisual(project: Project): HTMLElement {
   return visual;
 }
 
-function createStatusBadge(state: ActivityState): HTMLElement {
+function createStatusBadge(project: Project): HTMLElement {
   const badge = document.createElement('span');
-  badge.className = `status-badge status-badge--${state}`;
-  badge.textContent = STATUS_LABELS[state];
+  badge.className = `status-badge status-badge--${project.activityState}`;
+  badge.textContent = SINGULAR_ACTIVITY_STATE_LABELS[project.activityState];
   return badge;
 }
 
@@ -128,7 +123,7 @@ export function createProjectCard(project: Project, options: ProjectCardOptions 
 
   const badges = document.createElement('div');
   badges.className = 'project-card__badges';
-  badges.append(createStatusBadge(project.activityState));
+  badges.append(createStatusBadge(project));
   if (project.isNew) {
     const newBadge = document.createElement('span');
     newBadge.className = 'new-badge';
@@ -161,8 +156,19 @@ export function createProjectCard(project: Project, options: ProjectCardOptions 
     action.href = project.appUrl;
     action.target = '_blank';
     action.rel = 'noopener noreferrer';
-    action.textContent = 'Ouvrir l’application';
-    action.setAttribute('aria-label', `Ouvrir l’application ${project.displayName} dans un nouvel onglet`);
+    action.textContent = options.offline
+      ? 'Ouvrir l’application · connexion requise'
+      : 'Ouvrir l’application';
+    action.setAttribute(
+      'aria-label',
+      options.offline
+        ? `Ouvrir l’application ${project.displayName} dans un nouvel onglet, connexion requise`
+        : `Ouvrir l’application ${project.displayName} dans un nouvel onglet`,
+    );
+    if (options.offline) {
+      action.classList.add('requires-connection');
+      action.title = 'Cette action nécessite une connexion internet.';
+    }
     body.append(action);
   }
 

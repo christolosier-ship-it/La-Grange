@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { SnapshotCache } from '../cache/indexed-db';
 import type { GitHubRepositoryDto, RepositoryFetchResult } from '../github/types';
-import type { SyncSnapshot } from '../projects/model';
+import type { Project, SyncSnapshot } from '../projects/model';
 import { overridesSignature } from '../projects/override-signature';
 import type { ProjectOverrides } from '../projects/overrides';
 import type { RepositoryClient } from './sync-service';
@@ -22,6 +22,29 @@ const repository: GitHubRepositoryDto = {
   created_at: '2025-01-01T00:00:00Z',
   updated_at: '2025-01-01T00:00:00Z',
   pushed_at: null,
+};
+
+const cachedProject: Project = {
+  id: 1,
+  repositoryName: 'one',
+  slug: 'one',
+  displayName: 'One',
+  description: '',
+  githubUrl: 'https://github.com/me/one',
+  readmeUrl: 'https://github.com/me/one#readme',
+  releasesUrl: 'https://github.com/me/one/releases',
+  issuesUrl: 'https://github.com/me/one/issues',
+  defaultBranch: 'main',
+  topics: [],
+  createdAt: '2025-01-01T00:00:00Z',
+  updatedAt: '2025-01-01T00:00:00Z',
+  openIssuesCount: 0,
+  archived: false,
+  fork: false,
+  category: 'uncategorized',
+  activityState: 'sleeping',
+  featured: false,
+  isNew: false,
 };
 
 const emptyOverridesSignature = overridesSignature({});
@@ -103,6 +126,41 @@ describe('SyncService', () => {
     const offline = setup(cached, { status: 'success', repositories: [] });
     await expect(offline.run(false)).resolves.toMatchObject({ status: 'offline', snapshot: cached });
     expect(offline.fetchAllRepositories).not.toHaveBeenCalled();
+  });
+
+  it('keeps the in-memory snapshot visible when a forced refresh cannot read the cache', async () => {
+    const context = setup(undefined, { status: 'success', repositories: [repository] });
+    await context.service.synchronize({ online: true, force: true });
+
+    context.states.mockClear();
+    context.getSnapshot.mockRejectedValue(new Error('cache unavailable'));
+    context.fetchAllRepositories.mockRejectedValue(new Error('network unavailable'));
+
+    const state = await context.service.synchronize({ online: true, force: true });
+    const loadingState = context.states.mock.calls[0]?.[0] as { snapshot?: SyncSnapshot };
+
+    expect(loadingState.snapshot?.projects).toHaveLength(1);
+    expect(state).toMatchObject({ status: 'error' });
+    expect(state.snapshot?.projects).toHaveLength(1);
+  });
+
+  it('persists the acknowledgement of a newly opened project', async () => {
+    const newSnapshot: SyncSnapshot = {
+      ...cached,
+      projects: [{ ...cachedProject, isNew: true }],
+    };
+    const context = setup(newSnapshot, { status: 'success', repositories: [] });
+    await context.run(false);
+    context.saveSnapshot.mockClear();
+
+    const state = await context.service.acknowledgeProject('one');
+
+    expect(state.snapshot?.projects[0]?.isNew).toBe(false);
+    expect(context.saveSnapshot).toHaveBeenCalledWith(
+      expect.objectContaining({ projects: [expect.objectContaining({ id: 1, isNew: false })] }),
+      [],
+      [],
+    );
   });
 
   it('refreshes snapshot freshness after a compatible 304 response', async () => {

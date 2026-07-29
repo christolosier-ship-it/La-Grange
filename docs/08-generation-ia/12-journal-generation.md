@@ -56,3 +56,25 @@ Limites ou tests non exécutés : aucune capture navigateur automatisée n’a �
 Dette créée : aucune dette fonctionnelle volontaire ; la finition graphique détaillée reste planifiée en phase 6.
 
 Prochaine étape : phase 4, catalogue complet et fiches projets, sans modifier les sélecteurs ni les composants stables du dashboard hors besoin démontré.
+
+## Correctif post-Phase 3 — P1 et P2
+
+Date : 2026-07-29
+
+Branche / PR : `fix/phase-3-p1-p2` / PR #9
+
+Objectif : résoudre les cinq fils P1/P2 laissés ouverts après la fusion de la PR #8 avant tout démarrage de la phase 4.
+
+Fichiers modifiés : synchronisation, routeur, bootstrap, contrôles du dashboard, cartes projets, textes UI centralisés, styles, tests, changelog, version et cache PWA.
+
+Décisions prises : la consultation d’une fiche acquitte et persiste `isNew` ; le snapshot mémoire le plus récent prime sur un cache plus ancien ; une limite GitHub désactive les relances forcées jusqu’à `retryAt` ; les actions externes restent visibles hors ligne mais annoncent la connexion requise ; les libellés d’activité possèdent une source unique.
+
+Tests exécutés : tests ciblés des cinq fils, TypeScript strict, ESLint, suite Vitest complète, smoke test GitHub réel et build Vite production.
+
+Résultats : première passe complète verte avant finalisation documentaire ; validation finale requise sur le head exact avant fusion.
+
+Limites ou tests non exécutés : le comportement d’ouverture hors ligne d’une URL externe dépend du navigateur ; La Grange fournit désormais l’information nécessaire avant l’action.
+
+Dette créée : aucune dette volontaire.
+
+Prochaine étape : résoudre les fils de la PR #8, fusionner la PR #9 après CI finale verte, puis seulement engager la phase 4.
