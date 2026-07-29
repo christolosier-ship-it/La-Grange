@@ -29,6 +29,7 @@ export interface ProfileSession {
 export type ProfileSessionFactory = (
   username: string,
   freshnessMs: number,
+  generation: number,
 ) => ProfileSession;
 
 export interface ProfileCoordinatorHooks {
@@ -38,6 +39,7 @@ export interface ProfileCoordinatorHooks {
 
 export class ProfileCoordinator {
   private session: ProfileSession;
+  private generation = 0;
 
   constructor(
     username: string,
@@ -45,17 +47,22 @@ export class ProfileCoordinator {
     private readonly createSession: ProfileSessionFactory,
     private readonly hooks: ProfileCoordinatorHooks,
   ) {
-    this.session = createSession(username, freshnessMs);
+    this.session = createSession(username, freshnessMs, this.generation);
   }
 
   get username(): string {
     return this.session.username;
   }
 
+  isCurrentGeneration(generation: number): boolean {
+    return generation === this.generation;
+  }
+
   async start(online: boolean): Promise<SyncState> {
+    const generation = this.generation;
     await this.session.activity.load(this.session.username);
     const state = await this.session.sync.synchronize({ online });
-    await this.refreshActivity();
+    if (this.isCurrentGeneration(generation)) await this.refreshActivity(generation);
     return state;
   }
 
@@ -65,35 +72,31 @@ export class ProfileCoordinator {
     online: boolean,
   ): Promise<SyncState> {
     const cleanUsername = username.trim();
-    this.cancelCurrent();
-    this.session.activity.reset();
-    this.hooks.beforeProfileChange(cleanUsername);
-    this.session = this.createSession(cleanUsername, freshnessMs);
+    this.replaceSession(cleanUsername, freshnessMs, true);
+    const generation = this.generation;
     await this.session.activity.load(cleanUsername);
     const state = await this.session.sync.synchronize({ online, force: true });
-    await this.refreshActivity();
+    if (this.isCurrentGeneration(generation)) await this.refreshActivity(generation);
     return state;
   }
 
   async updateFreshness(freshnessMs: number, online: boolean): Promise<SyncState> {
     const username = this.session.username;
-    this.cancelCurrent();
-    this.session = this.createSession(username, freshnessMs);
+    this.replaceSession(username, freshnessMs, false);
+    const generation = this.generation;
     const state = await this.session.sync.synchronize({ online });
-    await this.refreshActivity();
+    if (this.isCurrentGeneration(generation)) await this.refreshActivity(generation);
     return state;
   }
 
   resetCurrent(freshnessMs: number): void {
-    const username = this.session.username;
-    this.cancelCurrent();
-    this.session.activity.reset();
-    this.session = this.createSession(username, freshnessMs);
+    this.replaceSession(this.session.username, freshnessMs, false);
   }
 
   async synchronize(options: SyncOptions = {}): Promise<SyncState> {
+    const generation = this.generation;
     const state = await this.session.sync.synchronize(options);
-    await this.refreshActivity();
+    if (this.isCurrentGeneration(generation)) await this.refreshActivity(generation);
     return state;
   }
 
@@ -121,8 +124,18 @@ export class ProfileCoordinator {
     this.session.details.cancel();
   }
 
-  private async refreshActivity(): Promise<void> {
+  private replaceSession(username: string, freshnessMs: number, clearProfile: boolean): void {
+    this.cancelCurrent();
+    this.session.activity.reset();
+    this.generation += 1;
+    if (clearProfile) this.hooks.beforeProfileChange(username);
+    this.session = this.createSession(username, freshnessMs, this.generation);
+  }
+
+  private async refreshActivity(generation: number): Promise<void> {
+    if (!this.isCurrentGeneration(generation)) return;
     await this.session.activity.load(this.session.username);
+    if (!this.isCurrentGeneration(generation)) return;
     await this.hooks.afterSynchronization?.(this.session.username);
   }
 }
