@@ -57,6 +57,7 @@ Documents majeurs :
 - [`docs/00-fondations/`](docs/00-fondations/) : vision et périmètre ;
 - [`docs/01-produit/`](docs/01-produit/) : besoins et règles métier ;
 - [`docs/02-ux-ui/`](docs/02-ux-ui/) : vues et design system ;
+- [`docs/03-technique/`](docs/03-technique/) : conception détaillée ;
 - [`docs/05-realisation/`](docs/05-realisation/) : phases de construction.
 
 Cadrage Phase 6 :
