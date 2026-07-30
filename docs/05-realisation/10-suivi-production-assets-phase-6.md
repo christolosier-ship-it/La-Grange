@@ -60,14 +60,17 @@ Les sous-dossiers hérités `brand/`, `components/`, `panels/`, `projects/` et `
 
 ### Intégration ultérieure
 
-L’intégration ne suit pas immédiatement la validation. Elle commence uniquement lorsque la matrice des lots ci-dessous est satisfaite.
+L’intégration ne suit pas immédiatement la validation. Elle commence uniquement lorsque les sources, assets et contrôles CSS d’entrée du lot concerné sont satisfaits dans la matrice ci-dessous.
+
+Les planches G ne sont pas des prérequis de démarrage. Elles sont produites à partir de l’application modifiée **dans la PR du lot**, puis validées avant la fusion de cette PR.
 
 Dans la PR 6A à 6E :
 
 1. raccorder les fichiers déjà présents à la racine du dossier ;
 2. raccorder les fallbacks ;
 3. contrôler responsive, hors ligne, performance et accessibilité ;
-4. cocher I uniquement lorsque l’application consomme réellement le fichier.
+4. produire et valider les planches d’acceptation du lot ;
+5. cocher I uniquement lorsque l’application consomme réellement le fichier.
 
 La production en masse sans validation intermédiaire est interdite.
 
@@ -115,8 +118,8 @@ Une couverture et un logo possèdent des sources séparées. Les lignes F ne peu
 | S01c | P0 | Gargotte Adventure, master logo | `p6-s01c-gargotte-adventure-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | M04 + adaptation interne, droits projet à confirmer avant R | 1 Mo | [x] | [ ] |
 | S02a | P0 | Les Petites Quêtes, master couverture | `p6-s02a-les-petites-quetes-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | direction du projet à approuver, droits à confirmer avant R | 1,5 Mo | [ ] | [ ] |
 | S02c | P0 | Les Petites Quêtes, master logo | `p6-s02c-les-petites-quetes-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | identité du projet à approuver, droits à confirmer avant R | 1 Mo | [ ] | [ ] |
-| S03a | P0 | BibiLeaf, master couverture | `p6-s03a-bibilleaf-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | direction du projet à approuver, droits à confirmer avant R | 1,5 Mo | [ ] | [ ] |
-| S03c | P0 | BibiLeaf, master logo | `p6-s03c-bibilleaf-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | identité du projet à approuver, droits à confirmer avant R | 1 Mo | [ ] | [ ] |
+| S03a | P0 | BibiLeaf, master couverture | `p6-s03a-bibileaf-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | direction du projet à approuver, droits à confirmer avant R | 1,5 Mo | [ ] | [ ] |
+| S03c | P0 | BibiLeaf, master logo | `p6-s03c-bibileaf-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | identité du projet à approuver, droits à confirmer avant R | 1 Mo | [ ] | [ ] |
 | S04a | P0 | Agripine, master couverture | `p6-s04a-agripine-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | direction du projet à approuver, droits à confirmer avant R | 1,5 Mo | [ ] | [ ] |
 | S04c | P0 | Agripine, master logo | `p6-s04c-agripine-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | identité du projet à approuver, droits à confirmer avant R | 1 Mo | [ ] | [ ] |
 | S05a | P0 | Luma, master couverture | `p6-s05a-luma-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | direction du projet à approuver, droits à confirmer avant R | 1,5 Mo | [ ] | [ ] |
@@ -303,6 +306,8 @@ Règles communes : SVG local, `viewBox 0 0 24 24`, trait 1,75 à 2 px, `currentC
 | E11 | P3 | `p6-e11-laboratory-vial-512x768.webp` | WebP | 512 × 768 | oui | Fiole décorative | absence tolérée | création interne, méthode et droits à renseigner précisément avant P | 40 Ko | [ ] | [ ] | [ ] |
 | E12 | P3 | `p6-e12-workbench-tool-512x512.webp` | WebP | 512 × 512 | oui | Outil d’établi sans marque | absence tolérée | création interne, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
 
+Les ornements E05 à E12 restent optionnels. Ils peuvent être produits après 6E, ne bloquent aucun lot et ne sont jamais nécessaires à la compréhension.
+
 ---
 
 # 7. Couvertures et identités de projets
@@ -317,9 +322,9 @@ Une ligne correspond à un seul fichier. Les droits sont hérités de la source 
 | F02a | P0 | Les Petites Quêtes, couverture catalogue | `p6-f02a-les-petites-quetes-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + nom HTML | S02a / droits renseignés sur S02a | 80 Ko | [ ] | [ ] | [ ] |
 | F02b | P0 | Les Petites Quêtes, couverture fiche | `p6-f02b-les-petites-quetes-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F02a agrandie ou C18 | S02a / droits renseignés sur S02a | 130 Ko | [ ] | [ ] | [ ] |
 | F02c | P0 | Les Petites Quêtes, logo | `p6-f02c-les-petites-quetes-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / nom HTML | S02c / droits renseignés sur S02c | 30 Ko | [ ] | [ ] | [ ] |
-| F03a | P0 | BibiLeaf, couverture catalogue | `p6-f03a-bibilleaf-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + nom HTML | S03a / droits renseignés sur S03a | 80 Ko | [ ] | [ ] | [ ] |
-| F03b | P0 | BibiLeaf, couverture fiche | `p6-f03b-bibilleaf-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F03a agrandie ou C18 | S03a / droits renseignés sur S03a | 130 Ko | [ ] | [ ] | [ ] |
-| F03c | P0 | BibiLeaf, logo | `p6-f03c-bibilleaf-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / nom HTML | S03c / droits renseignés sur S03c | 30 Ko | [ ] | [ ] | [ ] |
+| F03a | P0 | BibiLeaf, couverture catalogue | `p6-f03a-bibileaf-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + nom HTML | S03a / droits renseignés sur S03a | 80 Ko | [ ] | [ ] | [ ] |
+| F03b | P0 | BibiLeaf, couverture fiche | `p6-f03b-bibileaf-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F03a agrandie ou C18 | S03a / droits renseignés sur S03a | 130 Ko | [ ] | [ ] | [ ] |
+| F03c | P0 | BibiLeaf, logo | `p6-f03c-bibileaf-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / nom HTML | S03c / droits renseignés sur S03c | 30 Ko | [ ] | [ ] | [ ] |
 | F04a | P0 | Agripine, couverture catalogue | `p6-f04a-agripine-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + nom HTML | S04a / droits renseignés sur S04a | 80 Ko | [ ] | [ ] | [ ] |
 | F04b | P0 | Agripine, couverture fiche | `p6-f04b-agripine-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F04a agrandie ou C18 | S04a / droits renseignés sur S04a | 130 Ko | [ ] | [ ] | [ ] |
 | F04c | P0 | Agripine, logo | `p6-f04c-agripine-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / nom HTML | S04c / droits renseignés sur S04c | 30 Ko | [ ] | [ ] | [ ] |
@@ -370,7 +375,7 @@ Une ligne correspond à un seul fichier. Les droits sont hérités de la source 
 
 # 8. Planches de validation documentaire
 
-Ces PNG sont placés à plat dans `docs/assets/phase-6/`, n’entrent pas dans le runtime et utilisent uniquement des assets P et V.
+Ces PNG sont produits dans la PR d’intégration qui rend leur contenu observable. Ils sont placés à plat dans `docs/assets/phase-6/`, n’entrent pas dans le runtime et utilisent uniquement l’application et les assets du lot concerné.
 
 | ID | P | Nom final | Dimensions | Usage | Source / droits | Budget max | P | V |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -405,15 +410,15 @@ Aucun fichier de police n’est produit avant validation explicite de sa licence
 
 # 10. Matrice exacte des lots d’intégration
 
-Un lot ne démarre que lorsque toutes les lignes indiquées sont P et V, toutes ses sources sont R et toutes ses planches sont V.
+Un lot peut démarrer lorsque toutes ses sources R, ses assets P/V et ses contrôles CSS d’entrée sont satisfaits. Les planches listées sont des **preuves d’acceptation à produire et valider dans la PR avant fusion**, pas des prérequis de démarrage.
 
-| Lot | Sources R requises | Assets P/V requis | Contrôles CSS | Planches V requises | Périmètre |
+| Lot | Sources R requises au démarrage | Assets P/V requis au démarrage | Contrôles CSS d’entrée | Planches d’acceptation dans la PR | Périmètre |
 | --- | --- | --- | --- | --- | --- |
 | 6A | M01, M02 | A01, A02, A03, A04, B01, B02, B03, B04, B07, B12, D01, D02, D03, D04, D05, D21, D22, D23, D24, D25, D26 | B06, C29 | G01, G02, G03 | Shell, marque, fonds, navigation, états réseau et focus |
-| 6B | M03, M05, S01a, S01c, S02a, S02c, S03a, S03c, S04a, S04c, S05a, S05c, S06a, S06c, S07a, S07c, S08a, S08c | C01, C02, C03, C04, C06, C07, C08, C09, C10, C11, C12, C13, C14, C15, C16, C17, C18, C20, F01a, F01b, F01c, F02a, F02b, F02c, F03a, F03b, F03c, F04a, F04b, F04c, F05a, F05b, F05c, F06a, F06b, F06c, F07a, F07b, F07c, F08a, F08b, F08c | C05 | G08, G09, G10a, G10b | Cartes, statistiques, panneaux, fallbacks et huit projets P0 |
+| 6B | M03, M04, M05, S01a, S01c, S02a, S02c, S03a, S03c, S04a, S04c, S05a, S05c, S06a, S06c, S07a, S07c, S08a, S08c | C01, C02, C03, C04, C06, C07, C08, C09, C10, C11, C12, C13, C14, C15, C16, C17, C18, C20, F01a, F01b, F01c, F02a, F02b, F02c, F03a, F03b, F03c, F04a, F04b, F04c, F05a, F05b, F05c, F06a, F06b, F06c, F07a, F07b, F07c, F08a, F08b, F08c | C05 | G08, G09, G10a, G10b | Cartes, statistiques, panneaux, fallbacks et huit projets P0 |
 | 6C | sources déjà validées par 6A et 6B | C25, C26, D09, D10, D11, D12, D13, D14, D27, D28, D29, D30, D31, D33, D34, D35, D36 | aucun | G04a, G04b, G12 | Dashboard et catalogue, recherche, filtres, tri et densité |
 | 6D | sources déjà validées | C19, C21, C22, C23, C24, C27, C28, D06, D07, D08, D15, D16, D17, D18, D19, D20, D32, D37, D38, D39, D40, D41 | aucun | G05a, G05b, G06a, G06b, G07a, G07b | Fiches, activité, paramètres, diagnostics et modales |
-| 6E | S09a, S09c, S10a, S10c, S11a, S11c, S12a, S12c, S13a, S13c, S14a, S14c, S15a, S15c, S16a, S16c, S17a, S17c, S18a, S18c | A05, A06, A07, A08, A09, A10, A11, A12, B05, B08, B09, B10, B11, B13, B14, B15, E01a, E01b, E02a, E02b, E03, E04, E05, E06, E07, E08, E09, E10, E11, E12, F09a, F09b, F09c, F10a, F10b, F10c, F11a, F11b, F11c, F12a, F12b, F12c, F13a, F13b, F13c, F14a, F14b, F14c, F15a, F15b, F15c, F16a, F16b, F16c, F17a, F17b, F17c, F18a, F18b, F18c | aucun | G11, G13, G14a, G14b | Finitions, projets P1/P2, mouvement, lumière et optimisation |
+| 6E | S09a, S09c, S10a, S10c, S11a, S11c, S12a, S12c, S13a, S13c, S14a, S14c, S15a, S15c, S16a, S16c, S17a, S17c, S18a, S18c | A05, A06, A07, A08, A09, A10, A11, A12, B05, B08, B09, B10, B11, B13, B14, B15, E01a, E01b, E02a, E02b, E03, E04, F09a, F09b, F09c, F10a, F10b, F10c, F11a, F11b, F11c, F12a, F12b, F12c, F13a, F13b, F13c, F14a, F14b, F14c, F15a, F15b, F15c, F16a, F16b, F16c, F17a, F17b, F17c, F18a, F18b, F18c | aucun | G11, G13, G14a, G14b | Finitions, projets P1/P2, mouvement, lumière et optimisation |
 
 ---
 
@@ -445,17 +450,19 @@ Un lot ne démarre que lorsque toutes les lignes indiquées sont P et V, toutes 
 1. versionner M01, puis produire A01 ;
 2. versionner M02, puis produire B01 ;
 3. versionner M03, puis produire C01 ;
-4. versionner S01a, produire F01a, puis F01b ;
-5. versionner S01c, puis produire F01c ;
-6. versionner M05, puis produire C16 ;
-7. variantes strictement enregistrées ;
-8. matières et lumière P0 ;
-9. iconographie P0 ;
-10. cadres et panneaux P0 ;
-11. sources S02a et S02c à S08a et S08c, puis F02a à F08c fichier par fichier ;
-12. planches requises par le lot concerné ;
-13. P1 ;
-14. P2 et P3 après validation de la composition.
+4. versionner M04 ;
+5. versionner S01a, produire F01a, puis F01b ;
+6. versionner S01c, puis produire F01c ;
+7. versionner M05, puis produire C16 ;
+8. variantes strictement enregistrées ;
+9. matières et lumière P0 ;
+10. iconographie P0 ;
+11. cadres et panneaux P0 ;
+12. sources S02a et S02c à S08a et S08c, puis F02a à F08c fichier par fichier ;
+13. démarrer le lot autorisé puis produire ses planches d’acceptation dans sa PR ;
+14. P1 ;
+15. P2 ;
+16. P3 uniquement sur décision explicite, sans bloquer 6E.
 
 ## Prochain élément autorisé
 
