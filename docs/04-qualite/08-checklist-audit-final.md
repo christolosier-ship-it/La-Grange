@@ -7,7 +7,7 @@
 - [ ] ajout automatique démontré ;
 - [ ] toutes les données ont une provenance claire ;
 - [ ] aucune métrique décorative ;
-- [ ] aucune donnée de prototype Lovable dans le chemin de production ;
+- [ ] aucune donnée de démonstration ou de prototype dans le chemin de production ;
 - [ ] aucune progression, release, branche ou conflit inventé pour reproduire la référence.
 
 ## Architecture
@@ -18,8 +18,8 @@
 - [ ] pagination et annulation ;
 - [ ] migrations de données ;
 - [ ] routeur compatible Pages ;
-- [ ] GitHub reste la source de vérité ;
-- [ ] aucune architecture Lovable parallèle requise au runtime ;
+- [ ] GitHub et la documentation restent la source de vérité ;
+- [ ] aucune architecture parallèle requise au runtime ;
 - [ ] aucune dépendance visuelle lourde non justifiée.
 
 ## Sécurité
@@ -36,7 +36,7 @@
 
 ## UX
 
-- [ ] prototype respecté dans l’esprit ;
+- [ ] référence et planches validées respectées dans l’esprit ;
 - [ ] rendu stylisé, ni photoréaliste ni cartoon ;
 - [ ] lisibilité supérieure au décor ;
 - [ ] tablette confortable ;
@@ -52,15 +52,21 @@
 
 ## Assets
 
-- [ ] manifest ou inventaire final à jour ;
-- [ ] dimensions explicites ;
+- [ ] `10-suivi-production-assets-phase-6.md` est le registre final exact ;
+- [ ] chaque fichier possède un identifiant, un nom final et un statut exacts ;
+- [ ] dimensions explicites et décodées ;
 - [ ] poids publiés ;
 - [ ] formats optimisés ;
+- [ ] transparence contrôlée ;
+- [ ] dossier runtime `public/assets/phase-6/` strictement plat ;
+- [ ] aucun sous-dossier par famille ou projet ;
+- [ ] aucun ZIP, Base64, fragment ou workflow de reconstruction ;
 - [ ] lazy loading ;
 - [ ] aucun texte fonctionnel rasterisé ;
 - [ ] fallbacks CSS ou SVG ;
 - [ ] aucune sortie IA brute intégrée ;
-- [ ] assets inutilisés supprimés ;
+- [ ] prototypes hérités non comptés comme validés ;
+- [ ] fichiers remplacés supprimés seulement après contrôle des références ;
 - [ ] référence documentaire non servie dans le runtime.
 
 ## Performance et PWA
@@ -83,10 +89,10 @@
 - [ ] changelog ;
 - [ ] architecture réelle conforme ;
 - [ ] bible visuelle conforme aux composants finaux ;
-- [ ] inventaire d’assets conforme aux fichiers finaux ;
+- [ ] inventaire d’assets conforme au registre et aux fichiers finaux ;
 - [ ] instructions de déploiement testées ;
 - [ ] journal de génération clôturé ;
-- [ ] écarts au prototype documentés ;
+- [ ] écarts aux masters et planches documentés ;
 - [ ] PR et SHA de chaque lot consignés.
 
 ## Revue
