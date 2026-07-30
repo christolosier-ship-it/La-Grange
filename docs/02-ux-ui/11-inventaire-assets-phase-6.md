@@ -8,14 +8,15 @@ Le catalogue précis des fichiers est :
 
 `docs/05-realisation/10-suivi-production-assets-phase-6.md`
 
-Ce registre est l’unique source de vérité pour les identifiants, noms, formats, dimensions et statuts.
+Ce registre est l’unique source de vérité pour les identifiants, noms, formats, dimensions, transparences, usages, fallbacks, provenances et statuts.
 
 ## Principes
 
 - aucun asset distant requis au runtime ;
-- chaque asset possède un usage documenté ;
+- chaque asset possède un usage et un fallback documentés ;
 - chaque raster possède des dimensions exactes ;
 - chaque SVG possède un `viewBox` exact ;
+- une ligne du registre correspond à un seul fichier ;
 - le chargement initial ne télécharge pas tout le décor ;
 - une image manquante ne casse jamais la mise en page ;
 - les textes fonctionnels restent en HTML ;
@@ -31,6 +32,8 @@ Ce registre est l’unique source de vérité pour les identifiants, noms, forma
 
 Cette référence ne doit pas être servie par l’application.
 
+Les masters M01 à M05 sont enregistrés séparément sous les noms canoniques du registre avant toute production dérivée.
+
 ## Arborescence cible
 
 ```text
@@ -41,7 +44,7 @@ public/
       p6-b01-background-workshop-2048x1152.webp
       p6-c01-project-card-frame-standard.svg
       p6-d01-icon-overview.svg
-      p6-f01-gargotte-adventure-cover-640x400.webp
+      p6-f01a-gargotte-adventure-cover-640x400.webp
 ```
 
 Le dossier `public/assets/phase-6/` reste volontairement plat.
@@ -55,7 +58,7 @@ Interdictions :
 - aucun fichier temporaire ;
 - aucun workflow de reconstruction d’assets.
 
-Les références et planches de contrôle restent également à plat dans `docs/assets/phase-6/`.
+Les masters et planches de contrôle restent également à plat dans `docs/assets/phase-6/`.
 
 ## Convention de nommage
 
@@ -75,10 +78,23 @@ Les références et planches de contrôle restent également à plat dans `docs/
 - identifiant du registre obligatoire ;
 - dimensions dans tous les noms raster ;
 - suffixes sémantiques explicites ;
+- une variante possède son propre identifiant ;
 - aucune variante non inscrite dans le registre ;
 - aucun renommage après intégration sans mise à jour préalable du registre.
 
 ## Familles
+
+### M. Masters
+
+Références artistiques canoniques, approuvées puis versionnées dans `docs/assets/phase-6/`.
+
+Contraintes :
+
+- une case A confirme la direction ;
+- une case R confirme la présence du fichier canonique ;
+- aucun dérivé n’est produit tant que R n’est pas cochée ;
+- le master n’est jamais servi par l’application ;
+- sa provenance et ses droits sont documentés.
 
 ### A. Identité de marque
 
@@ -90,7 +106,8 @@ Contraintes :
 - WebP transparent autorisé pour l’enseigne illustrée ;
 - aucun fichier de police ajouté pour reproduire le lettrage ;
 - lisibilité contrôlée à petite taille ;
-- safe area contrôlée pour les icônes maskables.
+- safe area contrôlée pour les icônes maskables ;
+- fallback texte pour la marque.
 
 ### B. Fond, matières et lumière
 
@@ -115,7 +132,8 @@ Contraintes :
 - texte, icônes, états et hitboxes hors de l’asset ;
 - focus géré en CSS ;
 - variantes archivées ou désactivées dérivées par CSS lorsqu’un nouveau fichier n’est pas nécessaire ;
-- aucune image différente pour une simple couleur d’accent.
+- aucune image différente pour une simple couleur d’accent ;
+- fallback CSS ou composant indiqué dans le registre.
 
 ### D. Iconographie
 
@@ -138,24 +156,30 @@ Lampe, corde, attaches, tasse, plante, outils et notes décoratives.
 Contraintes :
 
 - facultatifs ;
+- alpha explicite dans le registre ;
 - `aria-hidden` ;
 - sans pointer event ;
 - chargement différé ;
 - suppression possible sur mobile ;
 - aucun texte lisible ;
-- aucun objet ressemblant à un contrôle.
+- aucun objet ressemblant à un contrôle ;
+- absence tolérée comme fallback général.
 
 ### F. Couvertures et logos de projets
 
-Pour chaque projet retenu :
+Pour chaque projet retenu, trois fichiers indépendants :
 
-- couverture catalogue 640 × 400 ;
-- couverture fiche 960 × 600 ;
-- logo transparent 512 × 160 ;
-- accent déterministe ;
-- fallback C18 + nom HTML.
+- ligne `Fa` : couverture catalogue 640 × 400 ;
+- ligne `Fb` : couverture fiche 960 × 600 ;
+- ligne `Fc` : logo transparent 512 × 160.
 
-Une couverture ne contient jamais de version, progression, statut, branche, release, conflit ou bouton.
+Chaque fichier possède ses propres statuts P, V et I. Une couverture ne contient jamais de version, progression, statut, branche, release, conflit ou bouton.
+
+Fallbacks :
+
+- couverture catalogue : C18, initiales et nom HTML ;
+- couverture fiche : ligne `Fa` agrandie de manière maîtrisée ou C18 ;
+- logo : nom HTML.
 
 ## Dimensions
 
@@ -163,6 +187,7 @@ Les dimensions exactes sont définies dans le registre. Les règles générales 
 
 | Famille | Dimension de référence | Format privilégié |
 | --- | --- | --- |
+| master enseigne | 1600 × 720 | WebP documentaire |
 | fond desktop | 2048 × 1152 | WebP |
 | fond tablette paysage | 1366 × 1024 | WebP |
 | fond tablette portrait | 1024 × 1366 | WebP |
@@ -215,22 +240,36 @@ Réservé aux halos, masques et planches documentaires lorsque WebP ou SVG ne co
 
 Non retenu comme format principal de la production manuelle Phase 6. Il pourra être réévalué via un ADR si le gain justifie une double chaîne d’exports.
 
+## Provenance et droits
+
+La colonne `Source / droits` du registre est la source officielle. Elle est renseignée avant P avec :
+
+- master ou source ;
+- auteur, outil ou méthode ;
+- statut des droits ;
+- licence et référence lorsqu’elles existent.
+
+Aucun manifeste runtime ne porte cette information documentaire.
+
 ## Production et validation
 
-Chaque asset suit le protocole :
+Chaque fichier suit le protocole :
 
 `docs/08-generation-ia/13-protocole-production-assets-phase-6.md`
 
 Étapes minimales :
 
-1. contrat lu dans le registre ;
-2. production d’un seul asset ;
-3. export exact ;
-4. contrôle technique ;
-5. validation humaine ;
-6. intégration manuelle ;
-7. test du fallback ;
-8. mise à jour du registre.
+1. master ou source canonique disponible ;
+2. contrat lu dans le registre ;
+3. production d’un seul fichier ;
+4. export exact ;
+5. provenance renseignée ;
+6. contrôle technique et P ;
+7. validation humaine et V ;
+8. conservation du livrable validé pour le futur lot d’intégration ;
+9. mise à jour du prochain élément autorisé.
+
+L’intégration manuelle et le statut I interviennent plus tard, lorsque les assets, fallbacks et planches du lot 6A à 6E sont réunis.
 
 Aucune sortie brute n’est intégrée directement.
 
@@ -259,6 +298,7 @@ Ils sont :
 
 | Élément absent | Fallback |
 | --- | --- |
+| enseigne | texte « La Grange » |
 | fond d’atelier | gradients et couleurs du design system |
 | texture bois | surface unie sombre |
 | cadre SVG | bordure CSS |
@@ -266,13 +306,15 @@ Ils sont :
 | logo projet | nom texte |
 | icône | libellé textuel |
 | police décorative | pile système |
+| ornement | absence tolérée |
 
 ## Critères d’acceptation
 
 - le fichier est présent dans le registre ;
-- son nom, son format et ses dimensions sont exacts ;
+- sa source canonique est disponible ;
+- son nom, son format, ses dimensions et son alpha sont exacts ;
 - le poids est publié ;
-- la provenance est documentée ;
+- la provenance et les droits sont documentés ;
 - aucun texte fonctionnel n’est rasterisé ;
 - le fallback est testé ;
 - le dossier runtime reste plat ;
