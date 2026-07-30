@@ -9,8 +9,15 @@ Ce dossier reçoit uniquement des fichiers graphiques validés et lisibles par l
 - le manifeste décrit uniquement les fichiers réellement présents ;
 - `integratedInUi` reste à `false` tant que le code applicatif ne consomme pas l’asset.
 
-## État actuel
+## Lot de fondation présent
 
-- enseigne principale : présente et validée ;
-- autres exports du lot 01 : en cours de réintégration individuelle ;
-- aucune modification du rendu applicatif dans cette PR d’assets.
+- `brand/brand-sign.svg` : enseigne vectorielle accessible ;
+- `shell/background-workshop.webp` : fond d’atelier 800 × 450 ;
+- `components/project-card-frame.webp` : cadre de carte transparent 280 × 416 ;
+- `panels/welcome-panel.webp` : panneau décoratif transparent 80 × 124 ;
+- `projects/gargotte/cover.webp` : couverture Gargotte 480 × 300 ;
+- `projects/gargotte/logo.webp` : logo Gargotte transparent 260 × 78.
+
+## Périmètre
+
+Cette PR ajoute les assets au dépôt sans encore modifier le rendu applicatif. Leur consommation par le shell, les cartes et les overrides fera l’objet d’une PR d’intégration séparée, avec tests responsive et contrôle des fallbacks.
