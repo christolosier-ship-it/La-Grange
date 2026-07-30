@@ -67,13 +67,13 @@ Le registre fixe chaque asset. Aucune production n’est autorisée à partir d�
 
 1. lire le prochain élément autorisé dans le registre ;
 2. s’il s’agit d’une source M/S, vérifier sa source amont, obtenir A et versionner le fichier canonique avant R ;
-3. s’il s’agit d’un asset, vérifier la source ou le dérivé requis par sa ligne, puis produire uniquement ce fichier ;
+3. s’il s’agit d’un asset, exiger R pour toute source M/S citée, P/V pour tout asset de dépendance ou de fallback cité, ou renseigner directement la provenance d’une création interne ;
 4. exporter exactement au nom, format, dimensions, alpha et budget prévus ;
 5. contrôler puis versionner l’asset à la racine de `public/assets/phase-6/` avant P ;
 6. obtenir la validation humaine avant V, avec I encore décoché ;
 7. mettre à jour le registre et passer au suivant ;
-8. produire les planches de validation ;
-9. raccorder les assets au code et cocher I dans les lots 6A à 6E.
+8. dans le lot 6A à 6E autorisé, raccorder les assets et fallbacks, intégrer les contrôles CSS et cocher I uniquement pour les fichiers consommés ;
+9. produire et valider les planches à partir de l’application modifiée avant de fusionner le lot.
 
 Ne lance jamais plusieurs assets simultanément sans validation intermédiaire.
 

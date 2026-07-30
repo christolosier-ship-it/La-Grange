@@ -105,8 +105,8 @@ Toute modification fonctionnelle découverte pendant la Phase 6 est isolée dans
 La Phase 6 est découpée en trois temps :
 
 1. cadrage et registre ;
-2. production et validation manuelles des masters, assets et planches ;
-3. intégration progressive par lots fonctionnels.
+2. production et validation manuelles des masters et assets ;
+3. intégration progressive par lots fonctionnels, puis planches d’acceptation produites dans chaque PR avant fusion.
 
 Une PR unique mêlant tous les assets et toutes les vues est interdite.
 
@@ -147,13 +147,13 @@ Règles :
 - aucun nouveau sous-dossier runtime ;
 - aucun ZIP, Base64 ou workflow de reconstruction.
 
-Le premier ordre est : versionner M01, produire A01, versionner M02, produire B01, versionner M03, produire C01, versionner M04, versionner S01a puis produire F01a et F01b, versionner S01c puis produire F01c, versionner M05, produire C16.
+Le premier ordre est : versionner M01 puis produire A01 ; versionner M02 puis produire B01 ; versionner M03 puis produire C01 ; versionner M04 ; produire C18 avant F01a ; versionner S01a puis produire F01a et F01b ; versionner S01c puis produire F01c ; versionner M05 ; produire C15 avant C16.
 
 Les statuts P et V clôturent la production d’un fichier. Le statut I reste décoché jusqu’à la PR d’intégration concernée.
 
-## Étape 6.2 - Planches de validation
+## Étape 6.2 - Planches d’acceptation dans les PR
 
-Les assets validés sont assemblés dans les planches G01 à G14b définies dans le registre.
+Après les changements de chaque PR 6A à 6E, les assets validés et l’application modifiée sont assemblés dans les planches G01 à G15c définies dans le registre.
 
 Les planches :
 
@@ -162,9 +162,9 @@ Les planches :
 - contrôlent desktop, tablette et mobile ;
 - montrent les fallbacks ;
 - n’introduisent aucune donnée de production fictive ;
-- servent de preuve avant l’intégration d’un lot.
+- servent de preuve après l’intégration des changements et avant la fusion du lot.
 
-Une PR d’intégration ne démarre que lorsque les fichiers, fallbacks et planches nécessaires à son périmètre sont validés.
+Une PR d’intégration démarre lorsque ses sources et assets d’entrée sont validés et ses contrôles CSS spécifiés. Elle n’est fusionnée qu’après intégration des contrôles CSS et validation des planches de son périmètre.
 
 ## Dossier runtime
 
@@ -257,13 +257,13 @@ Une PR corrective séparée est recommandée si les revues laissent des P1 ou P2
 
 ## Ordre de production des familles
 
-1. versionnement et dérivés prioritaires M01/A01, M02/B01, M03/C01, M04/S01a/F01a-F01b, M04/S01c/F01c et M05/C16 ;
+1. versionnement et dérivés prioritaires M01/A01, M02/B01, M03/C01, M04, C18, S01a/F01a-F01b, S01c/F01c, M05 puis C15/C16 ;
 2. variantes de marque et fonds ;
 3. matières et lumière P0 ;
 4. iconographie P0 ;
 5. cadres et panneaux P0 ;
 6. F02a à F08c, fichier par fichier ;
-7. planches G01 à G03 ;
+7. démarrage du lot autorisé, application de ses changements, puis planches d’acceptation correspondantes ;
 8. P1 ;
 9. P2 et P3 seulement après validation globale.
 

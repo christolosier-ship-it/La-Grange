@@ -203,7 +203,8 @@ Il est supprimé s’il ressemble à un contrôle, réduit le contraste, se rép
 - aucun asset distant ;
 - un seul asset produit et validé à la fois ;
 - nom, format et dimensions issus du registre ;
-- source M/S approuvée A et versionnée R avant tout dérivé ;
+- source M/S citée approuvée A et versionnée R avant tout dérivé ;
+- asset de dépendance ou de fallback cité déjà P/V, ou provenance interne renseignée en l’absence de source canonique ;
 - asset contrôlé et versionné à la racine du dossier runtime avec P, puis validé avec V ;
 - raccord manuel au code et statut I uniquement dans le lot 6A à 6E concerné ;
 - aucun nouveau sous-dossier ; l’exception héritée reste gelée ;
@@ -212,6 +213,6 @@ Il est supprimé s’il ressemble à un contrôle, réduit le contraste, se rép
 
 ## Validation de la bible
 
-La validation s’appuie sur les planches G01 à G14b du registre. Elles démontrent le shell, la navigation, les statistiques, les cartes, les panneaux, les fallbacks, le focus et les formats desktop, tablette et mobile.
+La validation s’appuie sur les planches G01 à G15c du registre, produites après les changements de leur lot. Elles démontrent séparément le shell, le dashboard final, la navigation, les statistiques, les cartes, les panneaux, les fallbacks, le focus et les formats desktop, tablette et mobile.
 
 La bible est validée seulement après comparaison des planches avec la référence, l’application actuelle et les contraintes d’accessibilité.

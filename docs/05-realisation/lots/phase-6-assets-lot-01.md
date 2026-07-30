@@ -59,17 +59,18 @@ Une approbation artistique ne valide aucun export runtime.
 
 Chaque remplacement suit désormais exclusivement le registre et le protocole actifs :
 
-1. approbation A puis versionnement R du master ou de la source canonique ;
-2. vérification de la source amont R lorsqu’une source S est dérivée ;
+1. lorsqu’une source M ou S est citée, approbation A puis versionnement R de son fichier canonique ;
+2. lorsqu’une source S est dérivée, vérification préalable de sa source amont R ;
 3. sélection d’une seule ligne exacte du registre ;
-4. nom, format, dimensions, alpha, usage, fallback et budget définis avant production ;
+4. vérification de toute source M/S citée avec R et de tout asset de dépendance ou de fallback cité avec P/V ;
 5. provenance et droits renseignés ;
-6. production d’un seul fichier ;
-7. versionnement à la racine de `public/assets/phase-6/`, contrôle technique et statut P ;
-8. validation humaine et statut V, avec I encore décoché ;
-9. attente des prérequis d’entrée du lot 6A à 6E concerné ;
-10. raccord manuel au code dans la PR du lot, production des planches d’acceptation et statut I seulement si le fichier est consommé ;
-11. suppression manuelle du prototype remplacé après contrôle des références.
+6. nom, format, dimensions, alpha, usage, fallback et budget définis avant production ;
+7. production d’un seul fichier ;
+8. versionnement à la racine de `public/assets/phase-6/`, contrôle technique et statut P ;
+9. validation humaine et statut V, avec I encore décoché ;
+10. attente des prérequis d’entrée du lot 6A à 6E concerné ;
+11. raccord manuel au code et intégration des contrôles CSS dans la PR du lot, puis production des planches d’acceptation et statut I seulement si le fichier est consommé ;
+12. suppression manuelle du prototype remplacé après contrôle des références.
 
 ## Ordre de remplacement initial
 
@@ -77,8 +78,10 @@ Chaque remplacement suit désormais exclusivement le registre et le protocole ac
 2. versionner M02, puis produire B01 ;
 3. versionner M03, puis produire C01 ;
 4. versionner M04 ;
-5. versionner S01a à partir de M04, puis produire séparément F01a et F01b ;
-6. versionner S01c à partir de M04, puis produire F01c ;
-7. versionner M05, puis produire C16.
+5. produire et valider C18 ;
+6. versionner S01a à partir de M04, puis produire séparément F01a et F01b ;
+7. versionner S01c à partir de M04, puis produire F01c ;
+8. versionner M05 ;
+9. produire et valider C15, puis produire C16.
 
 Les noms, dimensions, transparences, usages, fallbacks, budgets et provenances à utiliser sont exclusivement ceux du registre actif.

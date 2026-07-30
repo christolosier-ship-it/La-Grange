@@ -58,8 +58,11 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - adoption d’une cible runtime plate `public/assets/phase-6/` et d’une convention de nommage unique ;
 - distinction du cycle A/R/P/V/I entre source approuvée et versionnée, fichier produit et validé, puis fichier réellement consommé par l’application ;
 - correction de la chaîne M04 vers S01a et S01c avant la production de F01 ;
+- ordonnancement des fallbacks C18 et C15 avant leurs assets dépendants ;
 - clarification du budget du shell en séparant le fond responsive actif du plafond global de 250 Ko ;
 - déplacement des planches G dans les critères d’acceptation des PR afin de supprimer les dépendances circulaires ;
+- séparation des preuves du shell 6A et du dashboard final 6C, avec trois planches dédiées au shell ;
+- distinction entre contrôle CSS spécifié à l’entrée d’un lot et intégré dans sa PR ;
 - formalisation de l’exception transitoire gelée pour les sous-dossiers de prototypes hérités ;
 - retrait des ornements P3 facultatifs de la porte d’entrée du lot 6E ;
 - neutralisation de la procédure historique du lot 01.

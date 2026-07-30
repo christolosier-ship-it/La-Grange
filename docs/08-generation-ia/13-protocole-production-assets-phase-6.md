@@ -56,11 +56,13 @@ Avant de produire :
 
 1. lire sa ligne dans le registre ;
 2. vérifier son identifiant ;
-3. confirmer que la source M, S ou l’asset dérivé est versionné ;
-4. copier le nom final exact ;
-5. relever format, dimensions, alpha, usage, fallback et budget ;
-6. vérifier que l’élément précédent est validé ;
-7. vérifier que le champ « Prochain élément autorisé » désigne cette production.
+3. si elle cite une source M ou S, confirmer son statut R ;
+4. si elle cite un asset de dépendance ou de fallback, confirmer ses statuts P et V ;
+5. si elle indique une création interne, vérifier que méthode, provenance et droits sont renseignés sans exiger R ;
+6. copier le nom final exact ;
+7. relever format, dimensions, alpha, usage, fallback et budget ;
+8. vérifier que l’élément précédent est validé ;
+9. vérifier que le champ « Prochain élément autorisé » désigne cette production.
 
 ## Production
 
@@ -149,10 +151,10 @@ La matrice exacte du registre distingue pour chaque lot :
 
 - les sources R requises **avant le démarrage** ;
 - les assets P et V requis **avant le démarrage** ;
-- les contrôles CSS d’entrée ;
-- les planches à produire et valider **dans la PR avant fusion**.
+- les contrôles CSS qui doivent être `Spécifié` **avant le démarrage** puis `Intégré` **dans la PR** ;
+- les planches à produire et valider **après les changements de la PR et avant fusion**.
 
-Un lot ne démarre pas tant qu’une source, un asset ou un contrôle CSS d’entrée manque. L’absence d’une planche n’empêche pas le démarrage, mais empêche la fusion.
+Un lot ne démarre pas tant qu’une source, un asset ou la spécification d’un contrôle CSS d’entrée manque. Un contrôle CSS non intégré ou une planche absente n’empêche pas le démarrage, mais empêche la fusion.
 
 Les ornements P3 E05 à E12 sont facultatifs, ne figurent dans aucune porte d’entrée et peuvent rester non produits à la fin de 6E.
 
@@ -163,16 +165,17 @@ Dans la PR autorisée :
 1. vérifier que les fichiers sont déjà présents à la racine de `public/assets/phase-6/` ;
 2. ne créer aucun nouveau sous-dossier ;
 3. raccorder les fichiers et leurs fallbacks ;
-4. contrôler les images bloquées ;
-5. mesurer les performances ;
-6. tester responsive, hors ligne et accessibilité ;
-7. produire et valider les planches d’acceptation du lot ;
+4. intégrer les contrôles CSS du lot et cocher `Intégré` ;
+5. contrôler les images bloquées ;
+6. mesurer les performances ;
+7. tester responsive, hors ligne et accessibilité ;
 8. cocher I uniquement pour les fichiers réellement consommés ;
-9. lancer la CI et la revue Codex.
+9. produire et valider les planches d’acceptation à partir de l’application modifiée ;
+10. lancer la CI et la revue Codex.
 
 ## Contrôles CSS sans fichier
 
-B06, C05 et C29 sont des tâches CSS, pas des assets. Ils ne reçoivent ni P ni V. Leur état est suivi dans la table dédiée du registre et dans le lot d’intégration correspondant.
+B06, C05 et C29 sont des tâches CSS, pas des assets. Ils ne reçoivent ni P ni V. Leur état est suivi dans la table dédiée du registre : `Spécifié` autorise le démarrage du lot et `Intégré` est obligatoire avant sa fusion.
 
 ## Interdictions
 
@@ -194,7 +197,9 @@ B06, C05 et C29 sont des tâches CSS, pas des assets. Ils ne reçoivent ni P ni 
 
 Un asset est produit et validé lorsque :
 
-- sa source canonique est R ;
+- toute source M ou S explicitement citée par sa ligne est R ;
+- tout asset explicitement cité comme dépendance ou fallback possède P et V ;
+- une création interne sans source canonique possède une méthode, une provenance et des droits renseignés sans statut R artificiel ;
 - sa provenance et ses droits sont renseignés ;
 - son budget est respecté ou approuvé ;
 - P et V sont cochés ;
@@ -206,4 +211,4 @@ I reste décoché jusqu’à la PR d’intégration concernée.
 
 ## Ordre de production
 
-L’ordre autorisé est celui de la section finale du registre. Pour Gargotte, la chaîne est obligatoirement M04 avec R, puis S01a avec R avant F01a et F01b, et S01c avec R avant F01c. Le champ « Prochain élément autorisé » est mis à jour après chaque validation.
+L’ordre autorisé est celui de la section finale du registre. Un asset de dépendance ou de fallback reçoit toujours P et V avant son dépendant, même si son étiquette de priorité est plus basse. Pour Gargotte, C18 est donc validé avant F01a ; la chaîne de sources reste obligatoirement M04 avec R, puis S01a avec R avant F01a et F01b, et S01c avec R avant F01c. C15 est validé avant C16. Le champ « Prochain élément autorisé » est mis à jour après chaque validation.

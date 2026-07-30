@@ -62,9 +62,12 @@ Le registre `10-suivi-production-assets-phase-6.md` est l’unique source de vé
 - le cycle de preuve est A puis R pour une source M/S, P puis V pour un asset versionné, et I uniquement lors de sa consommation réelle ;
 - une source M ou S doit être approuvée et versionnée avant tout dérivé ;
 - une source S dérivée d’une autre source ne peut recevoir R que lorsque sa source amont est elle-même R ;
+- un asset exige R seulement pour une source M/S explicitement citée, P/V pour un asset de dépendance ou de fallback cité, et une provenance renseignée sans R artificiel pour une création interne ;
 - le fichier final respecte exactement le nom, le format, les dimensions, l’alpha et le budget du registre ;
 - les assets P et V sont versionnés à la racine de `public/assets/phase-6/`, même avant leur consommation ;
 - I n’est coché que lorsque l’application consomme réellement le fichier ;
+- un contrôle CSS doit être spécifié avant le lot puis intégré dans sa PR ;
+- les planches d’acceptation sont produites après les changements du lot et avant sa fusion ;
 - les anciens sous-dossiers restent une exception transitoire gelée jusqu’au remplacement manuel ;
 - le `README.md` et le `manifest.json` historiques du dossier d’assets n’attribuent aucun statut et ne priment jamais sur le registre ;
 - le décor ne modifie ni le rôle, ni les données, ni les états d’un composant ;

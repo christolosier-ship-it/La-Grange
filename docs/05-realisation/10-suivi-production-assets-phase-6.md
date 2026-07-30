@@ -51,19 +51,21 @@ Le `README.md` et le `manifest.json` historiques présents dans `public/assets/p
 ### Assets
 
 1. sélectionner une seule ligne A à F ;
-2. vérifier que la source M, S ou asset dérivé est versionnée ;
-3. produire uniquement ce fichier ;
-4. exporter exactement au nom, format, dimensions et budget indiqués ;
-5. contrôler signature, dimensions, alpha, poids et absence de texte fonctionnel ;
-6. renseigner précisément la provenance et les droits ;
-7. placer le fichier à plat dans `public/assets/phase-6/` ;
-8. cocher P après contrôle technique et présence versionnée ;
-9. obtenir la validation humaine puis cocher V ;
-10. mettre à jour le champ « Prochain élément autorisé ».
+2. si la ligne cite une source M ou S, vérifier son statut R ;
+3. si la ligne cite un asset dérivé ou un asset de fallback, vérifier ses statuts P et V ;
+4. si la ligne indique une création interne sans source canonique, renseigner directement sa méthode, sa provenance et ses droits sans inventer de statut R ;
+5. produire uniquement ce fichier ;
+6. exporter exactement au nom, format, dimensions et budget indiqués ;
+7. contrôler signature, dimensions, alpha, poids et absence de texte fonctionnel ;
+8. renseigner précisément la provenance et les droits ;
+9. placer le fichier à plat dans `public/assets/phase-6/` ;
+10. cocher P après contrôle technique et présence versionnée ;
+11. obtenir la validation humaine puis cocher V ;
+12. mettre à jour le champ « Prochain élément autorisé ».
 
 ### Intégration ultérieure
 
-L’intégration ne suit pas immédiatement la validation. Elle commence uniquement lorsque les sources, assets et contrôles CSS d’entrée du lot concerné sont satisfaits dans la matrice ci-dessous.
+L’intégration ne suit pas immédiatement la validation. Elle commence uniquement lorsque les sources et assets d’entrée du lot concerné sont satisfaits et que chaque contrôle CSS listé possède `Spécifié` dans la matrice ci-dessous.
 
 Les planches G ne sont pas des prérequis de démarrage. Elles sont produites à partir de l’application modifiée **dans la PR du lot**, puis validées avant la fusion de cette PR.
 
@@ -71,9 +73,10 @@ Dans la PR 6A à 6E :
 
 1. raccorder les fichiers déjà présents à la racine du dossier ;
 2. raccorder les fallbacks ;
-3. contrôler responsive, hors ligne, performance et accessibilité ;
-4. produire et valider les planches d’acceptation du lot ;
-5. cocher I uniquement lorsque l’application consomme réellement le fichier.
+3. intégrer les contrôles CSS du lot et cocher `Intégré` ;
+4. contrôler responsive, hors ligne, performance et accessibilité ;
+5. cocher I uniquement lorsque l’application consomme réellement le fichier ;
+6. produire et valider les planches d’acceptation à partir de l’application ainsi modifiée.
 
 La production en masse sans validation intermédiaire est interdite.
 
@@ -240,7 +243,7 @@ Une couverture et un logo possèdent des sources séparées. Les lignes F ne peu
 
 ## 4.2 Contrôles CSS sans fichier
 
-Ces lignes ne sont pas des assets et ne possèdent pas P ou V.
+Ces lignes ne sont pas des assets et ne possèdent pas P ou V. `Spécifié` confirme que leur contrat est défini avant le lot ; `Intégré` est coché après leur implémentation et leur contrôle dans la PR affectée.
 
 | ID | Lot | Contrôle | Critère | Spécifié | Intégré |
 | --- | --- | --- | --- | --- | --- |
@@ -412,6 +415,9 @@ Ces PNG sont produits dans la PR d’intégration qui rend leur contenu observab
 | G13 | P1 | `p6-g13-reduced-motion-1440x1024.png` | 1440 × 1024 | Mouvement réduit | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
 | G14a | P2 | `p6-g14a-low-light-1440x1024.png` | 1440 × 1024 | Lumière faible | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
 | G14b | P2 | `p6-g14b-bright-light-1440x1024.png` | 1440 × 1024 | Lumière forte | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
+| G15a | P0 | `p6-g15a-shell-desktop-1440x1024.png` | 1440 × 1024 | Shell et navigation desktop avant composition du dashboard | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
+| G15b | P0 | `p6-g15b-shell-tablet-1024x1366.png` | 1024 × 1366 | Shell et navigation tablette avant composition du dashboard | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
+| G15c | P0 | `p6-g15c-shell-mobile-390x844.png` | 390 × 844 | Shell et navigation mobile avant composition du dashboard | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
 
 ---
 
@@ -423,13 +429,13 @@ Aucun fichier de police n’est produit avant validation explicite de sa licence
 
 # 10. Matrice exacte des lots d’intégration
 
-Un lot peut démarrer lorsque toutes ses sources R, ses assets P/V et ses contrôles CSS d’entrée sont satisfaits. Les planches listées sont des **preuves d’acceptation à produire et valider dans la PR avant fusion**, pas des prérequis de démarrage.
+Un lot peut démarrer lorsque toutes ses sources R et ses assets P/V sont satisfaits. Pour chaque contrôle CSS listé, `Spécifié` est le prérequis d’entrée et `Intégré` est un critère d’acceptation à cocher dans la PR. Les planches listées sont des **preuves d’acceptation à produire et valider après les changements de la PR et avant sa fusion**, pas des prérequis de démarrage.
 
-| Lot | Sources R requises au démarrage | Assets P/V requis au démarrage | Contrôles CSS d’entrée | Planches d’acceptation dans la PR | Périmètre |
+| Lot | Sources R requises au démarrage | Assets P/V requis au démarrage | Contrôles CSS spécifiés à l’entrée et intégrés dans la PR | Planches d’acceptation après changements | Périmètre |
 | --- | --- | --- | --- | --- | --- |
-| 6A | M01, M02 | A01, A02, A03, A04, B01, B02, B03, B04, B07, B12, D01, D02, D03, D04, D05, D21, D22, D23, D24, D25, D26 | B06, C29 | G01, G02, G03 | Shell, marque, fonds, navigation, états réseau et focus |
+| 6A | M01, M02 | A01, A02, A03, A04, B01, B02, B03, B04, B07, B12, D01, D02, D03, D04, D05, D21, D22, D23, D24, D25, D26 | B06, C29 | G15a, G15b, G15c | Shell, marque, fonds, navigation, états réseau et focus |
 | 6B | M03, M04, M05, S01a, S01c, S02a, S02c, S03a, S03c, S04a, S04c, S05a, S05c, S06a, S06c, S07a, S07c, S08a, S08c | C01, C02, C03, C04, C06, C07, C08, C09, C10, C11, C12, C13, C14, C15, C16, C17, C18, C20, F01a, F01b, F01c, F02a, F02b, F02c, F03a, F03b, F03c, F04a, F04b, F04c, F05a, F05b, F05c, F06a, F06b, F06c, F07a, F07b, F07c, F08a, F08b, F08c | C05 | G08, G09, G10a, G10b | Cartes, statistiques, panneaux, fallbacks et huit projets P0 |
-| 6C | sources déjà validées par 6A et 6B | C25, C26, D09, D10, D11, D12, D13, D14, D27, D28, D29, D30, D31, D33, D34, D35, D36 | aucun | G04a, G04b, G12 | Dashboard et catalogue, recherche, filtres, tri et densité |
+| 6C | sources déjà validées par 6A et 6B | C25, C26, D09, D10, D11, D12, D13, D14, D27, D28, D29, D30, D31, D33, D34, D35, D36 | aucun | G01, G02, G03, G04a, G04b, G12 | Dashboard et catalogue, recherche, filtres, tri et densité |
 | 6D | sources déjà validées | C19, C21, C22, C23, C24, C27, C28, D06, D07, D08, D15, D16, D17, D18, D19, D20, D32, D37, D38, D39, D40, D41 | aucun | G05a, G05b, G06a, G06b, G07a, G07b | Fiches, activité, paramètres, diagnostics et modales |
 | 6E | S09a, S09c, S10a, S10c, S11a, S11c, S12a, S12c, S13a, S13c, S14a, S14c, S15a, S15c, S16a, S16c, S17a, S17c, S18a, S18c | A05, A06, A07, A08, A09, A10, A11, A12, B05, B08, B09, B10, B11, B13, B14, B15, E01a, E01b, E02a, E02b, E03, E04, F09a, F09b, F09c, F10a, F10b, F10c, F11a, F11b, F11c, F12a, F12b, F12c, F13a, F13b, F13c, F14a, F14b, F14c, F15a, F15b, F15c, F16a, F16b, F16c, F17a, F17b, F17c, F18a, F18b, F18c | aucun | G11, G13, G14a, G14b | Finitions, projets P1/P2, mouvement, lumière et optimisation |
 
@@ -464,18 +470,22 @@ Un lot peut démarrer lorsque toutes ses sources R, ses assets P/V et ses contr�
 2. versionner M02, puis produire B01 ;
 3. versionner M03, puis produire C01 ;
 4. versionner M04 ;
-5. versionner S01a à partir de M04, produire F01a, puis F01b ;
-6. versionner S01c à partir de M04, puis produire F01c ;
-7. versionner M05, puis produire C16 ;
-8. variantes strictement enregistrées ;
-9. matières et lumière P0 ;
-10. iconographie P0 ;
-11. cadres et panneaux P0 ;
-12. sources S02a et S02c à S08a et S08c, puis F02a à F08c fichier par fichier ;
-13. démarrer le lot autorisé puis produire ses planches d’acceptation dans sa PR ;
-14. P1 ;
-15. P2 ;
-16. P3 uniquement sur décision explicite, sans bloquer 6E.
+5. produire et valider C18, fallback requis par F01a ;
+6. versionner S01a à partir de M04, produire F01a, puis F01b ;
+7. versionner S01c à partir de M04, puis produire F01c ;
+8. versionner M05 ;
+9. produire et valider C15, puis produire C16 ;
+10. variantes strictement enregistrées ;
+11. matières et lumière P0 ;
+12. iconographie P0 ;
+13. cadres et panneaux P0 ;
+14. sources S02a et S02c à S08a et S08c, puis F02a à F08c fichier par fichier ;
+15. démarrer le lot autorisé, appliquer ses changements, puis produire ses planches d’acceptation dans sa PR ;
+16. P1 ;
+17. P2 ;
+18. P3 uniquement sur décision explicite, sans bloquer 6E.
+
+Un asset cité comme dépendance ou fallback reçoit toujours P et V avant l’asset qui en dépend ; cette règle de dépendance prime sur l’étiquette de priorité.
 
 ## Prochain élément autorisé
 

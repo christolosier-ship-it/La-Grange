@@ -30,6 +30,8 @@ Cette checklist est complétée dans chaque PR visuelle avec les éléments appl
 - [ ] les dimensions décodées correspondent ;
 - [ ] la transparence correspond ;
 - [ ] toute source M/S requise possède A et R, y compris sa source amont lorsqu’elle est dérivée ;
+- [ ] tout asset cité comme dépendance ou fallback possède P et V avant son dépendant ;
+- [ ] une création interne sans source canonique possède méthode, provenance et droits sans statut R artificiel ;
 - [ ] un seul asset a été produit avant validation ;
 - [ ] P correspond à un fichier contrôlé et versionné à la racine du dossier runtime ;
 - [ ] la validation humaine est tracée ;
@@ -40,6 +42,8 @@ Cette checklist est complétée dans chaque PR visuelle avec les éléments appl
 - [ ] aucun ZIP, Base64, fragment ou workflow de reconstruction ;
 - [ ] les prototypes hérités ne sont pas comptés comme validés ;
 - [ ] aucun prototype remplacé n’est supprimé avant contrôle des références.
+- [ ] chaque contrôle CSS requis était spécifié avant le lot et est intégré avant fusion ;
+- [ ] les planches du lot ont été produites après ses changements et validées avant fusion.
 
 ## Direction artistique
 

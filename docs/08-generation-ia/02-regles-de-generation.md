@@ -33,7 +33,7 @@
 
 Tout asset généré doit :
 
-1. respecter la source inscrite au registre et, lorsqu’il s’agit d’une M/S, vérifier A et R avant tout dérivé ;
+1. respecter la source inscrite au registre : vérifier A/R pour une M/S citée, P/V pour un asset de dépendance ou de fallback cité, ou renseigner la provenance d’une création interne ;
 2. suivre la bible visuelle ;
 3. correspondre à une ligne du registre ;
 4. utiliser le nom final prévu ;

@@ -262,17 +262,18 @@ Chaque fichier suit le protocole :
 
 Étapes minimales :
 
-1. master ou source canonique approuvé A et versionné R ;
-2. source amont R vérifiée lorsqu’une source S est dérivée ;
-3. contrat lu dans le registre ;
-4. production d’un seul fichier ;
-5. export exact et provenance renseignée ;
-6. versionnement à la racine de `public/assets/phase-6/`, contrôle technique et P ;
-7. validation humaine et V ;
-8. conservation du fichier à la racine avec I décoché jusqu’au futur lot d’intégration ;
-9. mise à jour du prochain élément autorisé.
+1. contrat et dépendances lus dans le registre ;
+2. source M/S citée approuvée A et versionnée R ;
+3. asset de dépendance ou de fallback cité déjà P/V, ou provenance interne renseignée lorsqu’aucune source canonique n’existe ;
+4. source amont R vérifiée lorsqu’une source S est dérivée ;
+5. production d’un seul fichier ;
+6. export exact et provenance renseignée ;
+7. versionnement à la racine de `public/assets/phase-6/`, contrôle technique et P ;
+8. validation humaine et V ;
+9. conservation du fichier à la racine avec I décoché jusqu’au futur lot d’intégration ;
+10. mise à jour du prochain élément autorisé.
 
-L’intégration manuelle et le statut I interviennent plus tard, lorsque les assets, fallbacks et planches du lot 6A à 6E sont réunis.
+L’intégration manuelle et le statut I interviennent plus tard, lorsque les sources et assets d’entrée du lot 6A à 6E sont réunis. Les contrôles CSS sont alors intégrés et les planches sont produites à partir de l’application modifiée avant la fusion.
 
 Aucune sortie brute n’est intégrée directement.
 

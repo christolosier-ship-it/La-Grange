@@ -59,6 +59,8 @@
 - [ ] formats optimisés ;
 - [ ] transparence contrôlée ;
 - [ ] sources M/S requises approuvées A et versionnées R avant leurs dérivés ;
+- [ ] assets de dépendance et de fallback P/V avant leurs dépendants ;
+- [ ] créations internes tracées sans statut R artificiel ;
 - [ ] assets contrôlés et versionnés à la racine avec P, validés avec V puis consommés avec I ;
 - [ ] aucun nouveau sous-dossier par famille ou projet ;
 - [ ] sous-dossiers hérités gelés, sans nouveau fichier ni statut canonique ;
@@ -67,6 +69,8 @@
 - [ ] lazy loading ;
 - [ ] aucun texte fonctionnel rasterisé ;
 - [ ] fallbacks CSS ou SVG ;
+- [ ] contrôles CSS spécifiés avant leur lot puis intégrés avant fusion ;
+- [ ] planches produites après les changements de leur lot ;
 - [ ] aucune sortie IA brute intégrée ;
 - [ ] prototypes hérités non comptés comme validés ;
 - [ ] fichiers remplacés supprimés seulement après contrôle des références ;
