@@ -16,8 +16,8 @@ Compléter les données publiques GitHub avec une présentation éditoriale prop
     "displayName": "Luma",
     "description": "Suivi de traitements",
     "category": "applications",
-    "cover": "projects/luma/cover.webp",
-    "logo": "projects/luma/logo.webp",
+    "cover": "assets/phase-6/p6-f05-luma-cover-640x400.webp",
+    "logo": "assets/phase-6/p6-f05-luma-logo-512x160.webp",
     "accent": "firefly",
     "featured": true,
     "appUrl": "https://example.github.io/Luma/",
@@ -57,11 +57,13 @@ La Phase 6 enrichit les visuels sans transformer les overrides en manifest compl
 - un chemin invalide ne bloque pas la synchronisation ;
 - aucune donnée métier ne doit être encodée dans le nom ou l’image ;
 - les assets sont locaux et servis sous le `base` de l’application ;
-- les chemins ne doivent pas pointer vers Lovable, un CDN ou un service externe.
+- les chemins Phase 6 pointent exclusivement vers le dossier plat `assets/phase-6/` ;
+- le nom du fichier doit correspondre exactement au registre `docs/05-realisation/10-suivi-production-assets-phase-6.md` ;
+- aucun chemin ne pointe vers un CDN, une URL temporaire ou un service externe.
 
 ### Variantes de taille
 
-L’inventaire Phase 6 recommande des variantes 640 et 960 px. Cette recommandation n’approuve pas automatiquement un changement de schéma JSON.
+Le registre Phase 6 définit les variantes 640 × 400 et 960 × 600. Cette convention n’approuve pas automatiquement un changement de schéma JSON.
 
 Trois stratégies sont possibles, dans cet ordre de préférence :
 
@@ -79,7 +81,7 @@ Une valeur d’accent inconnue retombe sur l’accent par défaut et produit au 
 
 ### Provenance
 
-Les overrides ne stockent pas la provenance ou la licence de l’asset. Ces informations sont conservées dans le manifest documentaire ou généré prévu par `docs/02-ux-ui/11-inventaire-assets-phase-6.md`.
+Les overrides ne stockent pas la provenance ou la licence de l’asset. Ces informations sont conservées dans le registre et dans le manifest final prévu par `docs/02-ux-ui/11-inventaire-assets-phase-6.md`.
 
 ## Robustesse
 
