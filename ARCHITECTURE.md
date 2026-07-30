@@ -67,6 +67,28 @@ Le schéma `la-grange-preferences-v2` conserve le profil, la visibilité des for
 
 Masquer un fork ou une archive ne modifie jamais le snapshot. Un sélecteur commun filtre uniquement les listes du dashboard et du catalogue. Une fiche ouverte directement reste accessible et explique pourquoi elle est absente des listes.
 
+## Assets visuels Phase 6
+
+Le catalogue des assets est défini dans :
+
+`docs/05-realisation/10-suivi-production-assets-phase-6.md`
+
+Les règles d’architecture sont :
+
+- tous les assets runtime Phase 6 sont placés à plat dans `public/assets/phase-6/` ;
+- aucun sous-dossier par famille ou projet ;
+- chaque raster porte son identifiant et ses dimensions dans le nom ;
+- chaque SVG porte son identifiant et possède un `viewBox` exact ;
+- les overrides référencent uniquement des noms inscrits dans le registre ;
+- le code réserve les ratios avant chargement ;
+- les couvertures sont chargées paresseusement ;
+- les éléments critiques possèdent un fallback CSS ou SVG ;
+- aucun asset distant n’est requis ;
+- aucun ZIP, contenu Base64, fragment ou workflow de reconstruction ;
+- les prototypes hérités sont remplacés puis supprimés manuellement.
+
+La production, la validation et l’intégration sont trois états distincts. La présence d’un fichier dans `public/` ne signifie pas qu’il est consommé par l’interface.
+
 ## Maintenance locale
 
 L’adaptateur `IndexedDbMaintenance` inspecte les données du profil actif et peut supprimer uniquement :
@@ -86,7 +108,8 @@ Les préférences et les autres profils restent intacts. Les diagnostics copiabl
 - les informations détaillées sont chargées uniquement lors de l’ouverture d’une fiche ;
 - un échec réseau ne doit jamais supprimer le dernier cache valide ;
 - les préférences de visibilité ne doivent jamais supprimer des projets du cache ;
-- le réglage système de mouvement réduit prime toujours sur le choix utilisateur.
+- le réglage système de mouvement réduit prime toujours sur le choix utilisateur ;
+- aucune donnée métier n’est dessinée dans un asset.
 
 ## Décisions
 
