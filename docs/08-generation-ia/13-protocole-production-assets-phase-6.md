@@ -33,17 +33,20 @@ Les sous-dossiers historiques `brand/`, `components/`, `panels/`, `projects/` et
 - ils ne valident aucun statut ;
 - leur suppression reste manuelle après remplacement et contrôle des références.
 
+Cette exception est définie par l’ADR-009 révisé et ne remet pas en cause la cible plate pour tous les nouveaux fichiers.
+
 ## Préparation d’un master ou d’une source
 
 Avant de cocher R :
 
 1. lire la ligne M ou S ;
-2. utiliser le nom final exact ;
-3. respecter format, dimensions, alpha et budget ;
-4. renseigner auteur, outil ou méthode, droits et licence éventuelle ;
-5. placer le fichier à plat dans `docs/assets/phase-6/` ;
-6. obtenir l’approbation humaine A ;
-7. vérifier la présence versionnée puis cocher R.
+2. vérifier que toute source amont citée est elle-même R, notamment M04 avant S01a et S01c ;
+3. utiliser le nom final exact ;
+4. respecter format, dimensions, alpha et budget ;
+5. renseigner auteur, outil ou méthode, droits et licence éventuelle ;
+6. placer le fichier à plat dans `docs/assets/phase-6/` ;
+7. obtenir l’approbation humaine A ;
+8. vérifier la présence versionnée puis cocher R.
 
 Une valeur `à confirmer avant R` est bloquante.
 
@@ -134,20 +137,24 @@ Après validation, cocher V et mettre à jour le prochain élément autorisé. I
 
 ## Planches documentaires
 
-Les planches G utilisent uniquement des assets P et V. Elles sont placées à plat dans `docs/assets/phase-6/` et ne sont jamais servies par l’application.
+Les planches G sont des **preuves d’acceptation produites dans la PR d’intégration** qui rend leur contenu observable. Elles ne sont pas des prérequis de démarrage du lot.
 
-Elles vérifient les formats, les fallbacks, les contenus longs, le zoom, la densité, le mouvement réduit et la lumière selon le registre.
+Elles sont placées à plat dans `docs/assets/phase-6/`, ne sont jamais servies par l’application et vérifient les formats, les fallbacks, les contenus longs, le zoom, la densité, le mouvement réduit et la lumière.
+
+Une PR de lot ne peut pas être fusionnée tant que ses planches listées dans la matrice ne sont pas produites et validées V.
 
 ## Autorisation des lots 6A à 6E
 
-La matrice exacte du registre énumère pour chaque lot :
+La matrice exacte du registre distingue pour chaque lot :
 
-- les sources R requises ;
-- les assets P et V requis ;
-- les contrôles CSS ;
-- les planches V requises.
+- les sources R requises **avant le démarrage** ;
+- les assets P et V requis **avant le démarrage** ;
+- les contrôles CSS d’entrée ;
+- les planches à produire et valider **dans la PR avant fusion**.
 
-Un lot ne démarre pas tant qu’une seule ligne requise manque.
+Un lot ne démarre pas tant qu’une source, un asset ou un contrôle CSS d’entrée manque. L’absence d’une planche n’empêche pas le démarrage, mais empêche la fusion.
+
+Les ornements P3 E05 à E12 sont facultatifs, ne figurent dans aucune porte d’entrée et peuvent rester non produits à la fin de 6E.
 
 ## Intégration manuelle par lot
 
@@ -159,8 +166,9 @@ Dans la PR autorisée :
 4. contrôler les images bloquées ;
 5. mesurer les performances ;
 6. tester responsive, hors ligne et accessibilité ;
-7. cocher I uniquement pour les fichiers réellement consommés ;
-8. lancer la CI et la revue Codex.
+7. produire et valider les planches d’acceptation du lot ;
+8. cocher I uniquement pour les fichiers réellement consommés ;
+9. lancer la CI et la revue Codex.
 
 ## Contrôles CSS sans fichier
 
@@ -178,7 +186,8 @@ B06, C05 et C29 sont des tâches CSS, pas des assets. Ils ne reçoivent ni P ni 
 - décider le nom après génération ;
 - intégrer une sortie brute ;
 - rasteriser du texte fonctionnel ;
-- démarrer un lot avant sa matrice de prérequis ;
+- démarrer un lot avant ses prérequis d’entrée ;
+- fusionner un lot avant ses planches d’acceptation ;
 - supprimer un prototype avant remplacement.
 
 ## Fin d’un fichier
