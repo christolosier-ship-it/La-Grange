@@ -2,25 +2,26 @@
 
 ## Objectif
 
-Définir les assets nécessaires à l’identité visuelle sans rendre l’application dépendante d’images lourdes, fragiles ou impossibles à maintenir.
+Définir les familles, formats, budgets, fallbacks et règles techniques des assets sans dupliquer le catalogue détaillé.
 
-Ce document distingue :
+Le catalogue précis des fichiers est :
 
-- les assets structurants, partagés par plusieurs vues ;
-- les assets éditoriaux propres aux projets ;
-- les ornements facultatifs ;
-- les fallbacks CSS ou SVG obligatoires.
+`docs/05-realisation/10-suivi-production-assets-phase-6.md`
+
+Ce registre est l’unique source de vérité pour les identifiants, noms, formats, dimensions et statuts.
 
 ## Principes
 
 - aucun asset distant requis au runtime ;
 - chaque asset possède un usage documenté ;
-- chaque image possède des dimensions explicites ;
-- le chargement initial ne doit pas télécharger tout le décor ;
+- chaque raster possède des dimensions exactes ;
+- chaque SVG possède un `viewBox` exact ;
+- le chargement initial ne télécharge pas tout le décor ;
 - une image manquante ne casse jamais la mise en page ;
 - les textes fonctionnels restent en HTML ;
 - les textures sont discrètes et répétables ;
-- les assets inutilisés sont supprimés avant fusion.
+- les assets inutilisés sont supprimés après remplacement et contrôle ;
+- la présence d’un fichier dans le dépôt ne constitue pas une validation.
 
 ## Référence de cadrage
 
@@ -35,285 +36,223 @@ Cette référence ne doit pas être servie par l’application.
 ```text
 public/
   assets/
-    shell/
-      background-workshop.webp
-      wood-structure.webp
-      paper-grain.webp
-      metal-edge.svg
-      brand-sign.svg
-    components/
-      crate-frame.svg
-      panel-frame.svg
-      tag-frame.svg
-      paper-note.svg
-      empty-slot.svg
-    icons/
-      navigation/
-      actions/
-      states/
-    projects/
-      <slug>/
-        cover-640.webp
-        cover-960.webp
-        logo.svg
-        logo.webp
+    phase-6/
+      p6-a01-brand-sign-1600x720.webp
+      p6-b01-background-workshop-2048x1152.webp
+      p6-c01-project-card-frame-standard.svg
+      p6-d01-icon-overview.svg
+      p6-f01-gargotte-adventure-cover-640x400.webp
 ```
 
-L’arborescence finale peut être adaptée à l’existant, mais les familles doivent rester séparées.
+Le dossier `public/assets/phase-6/` reste volontairement plat.
 
-## Lots d’assets
+Interdictions :
+
+- aucun sous-dossier par famille ;
+- aucun sous-dossier par projet ;
+- aucun ZIP ;
+- aucun fragment Base64 ;
+- aucun fichier temporaire ;
+- aucun workflow de reconstruction d’assets.
+
+Les références et planches de contrôle restent également à plat dans `docs/assets/phase-6/`.
+
+## Convention de nommage
+
+### Raster
+
+`p6-<id>-<nom-semantique>-<largeur>x<hauteur>.<extension>`
+
+### SVG
+
+`p6-<id>-<nom-semantique>.svg`
+
+### Règles
+
+- minuscules ;
+- tirets simples ;
+- aucun espace, accent ou date ;
+- identifiant du registre obligatoire ;
+- dimensions dans tous les noms raster ;
+- suffixes sémantiques explicites ;
+- aucune variante non inscrite dans le registre ;
+- aucun renommage après intégration sans mise à jour préalable du registre.
+
+## Familles
 
 ### A. Identité de marque
 
-Priorité : critique.
-
-À produire :
-
-- enseigne La Grange ;
-- symbole compact pour la navigation et la PWA ;
-- variante monochrome ;
-- variante lisible sur fond sombre ;
-- favicon et icônes PWA finales si la marque évolue.
+Enseigne, symbole compact, variantes monochromes, favicon et icônes PWA.
 
 Contraintes :
 
-- SVG préféré ;
-- aucun texte rasterisé sauf justification ;
-- lisible à 32 px ;
-- contraste suffisant sans halo ;
-- aucun fichier de police intégré dans le dépôt sans licence vérifiée.
+- SVG préféré pour les symboles ;
+- WebP transparent autorisé pour l’enseigne illustrée ;
+- aucun fichier de police ajouté pour reproduire le lettrage ;
+- lisibilité contrôlée à petite taille ;
+- safe area contrôlée pour les icônes maskables.
 
-### B. Fond et structure du shell
+### B. Fond, matières et lumière
 
-Priorité : critique.
-
-À produire :
-
-- fond d’atelier très discret ;
-- texture de bois structurel ;
-- cadre ou bordure de panneau réutilisable ;
-- papier calme ;
-- petite texture métallique ou bordure SVG ;
-- masque de lumière ou gradient de référence.
+Fond responsive, textures de bois, papier, métal, verre, halos et ombres.
 
 Contraintes :
 
-- le fond doit supporter un recadrage important ;
-- aucune information indispensable dans le fond ;
-- répétition ou extension sans raccord visible ;
+- aucun texte ou élément fonctionnel ;
+- recadrages séparés lorsque le ratio change ;
+- textures raccordables ;
+- centre de lecture calme ;
 - intensité contrôlable par CSS ;
-- version simplifiée possible en économie de données ou faible largeur.
+- fallback par gradients et surfaces unies.
 
-### C. Composants réutilisables
+### C. Cadres, panneaux et contrôles
 
-Priorité : critique.
-
-À produire :
-
-- cadre de carte standard ;
-- cadre de carte compacte ;
-- étiquette ou ruban d’état ;
-- plaque de statistique ;
-- panneau secondaire ;
-- note papier ;
-- emplacement vide ;
-- attaches ou vis réutilisables.
+Cadres de cartes, rubans, rails, panneaux, notes, modales et plaques.
 
 Contraintes :
 
-- privilégier SVG et CSS ;
-- ne pas créer une image différente pour chaque taille ;
-- permettre la couleur d’accent ;
-- préserver le focus visible ;
-- ne pas inclure de texte dans l’asset.
+- SVG et CSS privilégiés ;
+- texte, icônes, états et hitboxes hors de l’asset ;
+- focus géré en CSS ;
+- variantes archivées ou désactivées dérivées par CSS lorsqu’un nouveau fichier n’est pas nécessaire ;
+- aucune image différente pour une simple couleur d’accent.
 
 ### D. Iconographie
 
-Priorité : critique.
-
-À produire :
-
-- navigation ;
-- lancement d’application ;
-- GitHub et lien externe ;
-- synchronisation ;
-- états ;
-- favoris ;
-- recherche, filtre et tri ;
-- cache, diagnostic et maintenance.
+Navigation, actions, états et données.
 
 Contraintes :
 
 - SVG local ;
-- `currentColor` lorsque possible ;
-- taille optique cohérente ;
-- zone de dessin stable ;
+- `viewBox 0 0 24 24` ;
+- `currentColor` ;
+- trait homogène ;
+- aucune police d’icônes ;
 - absence d’emoji fonctionnel ;
-- marques externes utilisées conformément à leurs règles.
+- libellé textuel conservé comme fallback.
 
-### E. Couvertures de projets
+### E. Ornements
 
-Priorité : progressive.
+Lampe, corde, attaches, tasse, plante, outils et notes décoratives.
 
-À produire d’abord pour :
+Contraintes :
 
-1. projets mis en avant sur le dashboard ;
-2. applications lançables ;
-3. favoris ;
-4. autres projets selon usage.
+- facultatifs ;
+- `aria-hidden` ;
+- sans pointer event ;
+- chargement différé ;
+- suppression possible sur mobile ;
+- aucun texte lisible ;
+- aucun objet ressemblant à un contrôle.
 
-Chaque projet peut disposer de :
+### F. Couvertures et logos de projets
 
-- couverture 640 px ;
-- couverture 960 px si la fiche l’exige ;
-- logo SVG ou WebP ;
-- couleur d’accent ;
-- fallback déterministe obligatoire.
+Pour chaque projet retenu :
 
-Une couverture ne doit pas afficher une fausse version, un faux pourcentage, un faux statut ou une action.
+- couverture catalogue 640 × 400 ;
+- couverture fiche 960 × 600 ;
+- logo transparent 512 × 160 ;
+- accent déterministe ;
+- fallback C18 + nom HTML.
 
-### F. Ornements
+Une couverture ne contient jamais de version, progression, statut, branche, release, conflit ou bouton.
 
-Priorité : facultative.
+## Dimensions
 
-Exemples :
+Les dimensions exactes sont définies dans le registre. Les règles générales sont :
 
-- petite lampe ;
-- corde ;
-- vis ;
-- outil posé ;
-- feuille ou plante ;
-- tache de lumière ;
-- étiquette vide.
+| Famille | Dimension de référence | Format privilégié |
+| --- | --- | --- |
+| fond desktop | 2048 × 1152 | WebP |
+| fond tablette paysage | 1366 × 1024 | WebP |
+| fond tablette portrait | 1024 × 1366 | WebP |
+| fond mobile | 780 × 1386 | WebP |
+| texture grande | 1024 × 1024 | WebP |
+| texture moyenne | 512 × 512 | WebP |
+| couverture catalogue | 640 × 400 | WebP |
+| couverture fiche | 960 × 600 | WebP |
+| logo projet | 512 × 160 | WebP transparent |
+| icône fonctionnelle | viewBox 24 × 24 | SVG |
+| planche desktop | 1440 × 1024 | PNG documentaire |
+| planche mobile | 390 × 844 | PNG documentaire |
 
-Règles :
-
-- aucun ornement nécessaire à la compréhension ;
-- nombre limité par vue ;
-- `aria-hidden` ou image décorative ;
-- aucun pointer event ;
-- pas de chargement prioritaire ;
-- suppression sur mobile si la densité devient excessive.
-
-## Dimensions recommandées
-
-| Asset | Dimensions de production | Ratio | Format privilégié |
-| --- | --- | --- | --- |
-| Fond d’atelier | 1600 à 2048 px de large | libre, recadrable | AVIF puis WebP |
-| Texture répétable | 512 ou 1024 px | carré | WebP |
-| Couverture catalogue | 640 x 400 px environ | 8:5 | AVIF ou WebP |
-| Couverture fiche | 960 x 600 px environ | 8:5 | AVIF ou WebP |
-| Logo projet | 256 à 512 px | libre | SVG, sinon WebP |
-| Cadre de composant | vectoriel | adaptable | SVG ou CSS |
-| Icône | viewBox cohérent | carré | SVG |
-| Note papier | vectoriel ou 512 px | adaptable | SVG ou WebP |
-
-Les ratios existants du composant priment si leur modification provoque un layout shift ou une régression.
+Aucune dimension approximative n’est utilisée au moment de l’export.
 
 ## Budgets
 
-### Budget initial de shell
+### Shell initial
 
-- décor critique supplémentaire au premier affichage : cible inférieure à 250 Ko compressés ;
-- fond principal : cible inférieure à 140 Ko en AVIF ou 190 Ko en WebP ;
+- décor critique supplémentaire : cible inférieure à 250 Ko compressés ;
+- fond principal : cible inférieure à 190 Ko en WebP ;
 - textures et cadres critiques : cible cumulée inférieure à 100 Ko ;
 - icônes critiques : cible cumulée inférieure à 30 Ko ;
-- aucune police décorative supérieure à 80 Ko par graisse sans justification.
+- aucune police décorative sans licence et justification.
 
-### Budget par carte
+### Carte
 
-- miniature 640 px : cible de 35 à 80 Ko ;
+- couverture 640 × 400 : cible 35 à 80 Ko ;
+- couverture 960 × 600 : chargée uniquement sur la fiche ;
 - logo : cible inférieure à 30 Ko ;
-- aucune image 960 px téléchargée dans une carte compacte ;
 - couvertures sous la ligne de flottaison en lazy loading.
 
-### Budget par vue
-
-Le premier affichage d’une vue ne doit pas charger les couvertures d’autres vues. Un asset partagé déjà présent dans le cache peut être réutilisé.
-
-Les budgets sont des cibles. Tout dépassement doit être mesuré, justifié et approuvé dans la PR concernée.
+Tout dépassement est mesuré et approuvé dans la PR concernée.
 
 ## Formats
 
-### AVIF
-
-À privilégier pour les grandes illustrations lorsque le pipeline et les navigateurs cibles sont validés. Prévoir un fallback WebP si nécessaire.
-
 ### WebP
 
-Format standard pour les couvertures et textures raster.
+Format raster standard pour fonds, couvertures, textures et transparences illustrées.
 
 ### SVG
 
-Format standard pour cadres, icônes, plaques et logos vectoriels. Le SVG doit être local, optimisé et dépourvu de script.
+Format standard pour cadres, icônes, plaques et formes adaptables. Le SVG est local, optimisé, sans script, ressource distante ou style global dangereux.
 
 ### PNG
 
-Réservé aux cas où une transparence raster de qualité est nécessaire et où WebP ne convient pas.
+Réservé aux halos, masques et planches documentaires lorsque WebP ou SVG ne conviennent pas.
 
-### JPEG
+### AVIF
 
-À éviter dans les assets finaux sauf source documentaire. Il ne doit pas devenir le format principal du shell.
+Non retenu comme format principal de la production manuelle Phase 6. Il pourra être réévalué via un ADR si le gain justifie une double chaîne d’exports.
 
-## Convention de nommage
+## Production et validation
 
-- minuscules ;
-- tirets ;
-- aucun espace ;
-- aucune date dans le nom stable ;
-- dimensions dans le nom uniquement pour les variantes raster ;
-- suffixes explicites : `cover`, `logo`, `frame`, `texture`, `icon` ;
-- noms de projets basés sur un slug stable.
+Chaque asset suit le protocole :
 
-Exemples :
+`docs/08-generation-ia/13-protocole-production-assets-phase-6.md`
 
-- `background-workshop-1600.avif` ;
-- `wood-structure-1024.webp` ;
-- `crate-frame.svg` ;
-- `projects/luma/cover-640.webp` ;
-- `projects/luma/logo.svg`.
+Étapes minimales :
 
-## Manifest d’assets
+1. contrat lu dans le registre ;
+2. production d’un seul asset ;
+3. export exact ;
+4. contrôle technique ;
+5. validation humaine ;
+6. intégration manuelle ;
+7. test du fallback ;
+8. mise à jour du registre.
 
-Avant l’intégration finale, un manifest documentaire ou généré doit recenser pour chaque asset :
+Aucune sortie brute n’est intégrée directement.
 
-- chemin ;
-- rôle ;
-- dimensions ;
-- poids ;
-- format ;
-- source ;
-- licence ou statut de génération ;
-- vues consommatrices ;
-- fallback ;
-- stratégie de chargement.
+## Prototypes hérités
 
-Un simple tableau Markdown est suffisant au MVP si le nombre d’assets reste raisonnable.
+Les fichiers des premières tentatives peuvent présenter des noms, dimensions ou chemins non conformes.
 
-## Assets générés par IA
+Ils sont :
 
-Chaque asset généré doit être :
-
-1. comparé à la bible visuelle ;
-2. nettoyé des textes ou symboles indésirables ;
-3. recadré ;
-4. redimensionné ;
-5. compressé ;
-6. nommé ;
-7. associé à une provenance ;
-8. testé avec son fallback ;
-9. validé sur écran sombre et lumineux.
-
-Aucun asset généré ne doit être intégré directement depuis une sortie brute.
+- non canoniques ;
+- exclus des statuts P, V et I ;
+- conservés jusqu’à leur remplacement ;
+- supprimés manuellement après contrôle des références ;
+- jamais renommés artificiellement pour valider une ligne.
 
 ## Stratégie de chargement
 
 - shell critique préchargé avec parcimonie ;
 - décor non critique différé ;
 - couvertures lazy loaded ;
-- dimensions ou `aspect-ratio` réservés avant chargement ;
-- `srcset` ou variantes explicites lorsque le gain est réel ;
-- aucune image encodée en base64 dans le CSS de production sans justification ;
+- dimensions ou `aspect-ratio` réservés ;
+- aucune image encodée en Base64 dans le CSS ;
 - aucune requête vers un CDN externe.
 
 ## Fallbacks obligatoires
@@ -323,18 +262,19 @@ Aucun asset généré ne doit être intégré directement depuis une sortie brut
 | fond d’atelier | gradients et couleurs du design system |
 | texture bois | surface unie sombre |
 | cadre SVG | bordure CSS |
-| couverture projet | fond déterministe, initiales et caisse SVG |
+| couverture projet | C18, initiales et nom HTML |
 | logo projet | nom texte |
-| icône | libellé textuel conservé |
-| police décorative | serif ou sans-serif système documentée |
+| icône | libellé textuel |
+| police décorative | pile système |
 
 ## Critères d’acceptation
 
-- les assets du shell sont inventoriés ;
-- les poids réels sont publiés dans la PR ;
-- aucune image fonctionnelle ne contient de texte obligatoire ;
-- les dimensions sont réservées ;
-- les fallbacks sont visibles et cohérents ;
-- le premier affichage reste interactif depuis le cache ;
-- l’application reste compréhensible lorsque toutes les images sont bloquées ;
-- aucun asset externe ou secret n’est introduit.
+- le fichier est présent dans le registre ;
+- son nom, son format et ses dimensions sont exacts ;
+- le poids est publié ;
+- la provenance est documentée ;
+- aucun texte fonctionnel n’est rasterisé ;
+- le fallback est testé ;
+- le dossier runtime reste plat ;
+- aucun asset externe ou secret n’est introduit ;
+- l’application reste compréhensible avec toutes les images bloquées.
