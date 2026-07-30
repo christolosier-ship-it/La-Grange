@@ -14,26 +14,29 @@ Le seul registre actif est :
 
 Les éléments de ce lot sont traités comme des prototypes hérités :
 
-- ils ne valident aucune case P, V ou I du registre ;
+- ils ne valident aucune case R, P, V ou I du registre ;
 - ils ne doivent pas être renommés pour sembler conformes ;
-- ils ne doivent pas être utilisés comme preuve de dimensions ou de poids ;
+- ils ne doivent pas être utilisés comme preuve de dimensions, de poids ou de droits ;
 - ils restent disponibles uniquement jusqu’à leur remplacement ;
 - ils seront supprimés manuellement après intégration et contrôle du fichier conforme ;
 - aucune suppression automatique n’est autorisée.
 
 ## Écarts connus
 
+- masters approuvés mais non versionnés sous des noms canoniques ;
 - dimensions finales non systématiquement fixées avant production ;
 - conventions de nommage incomplètes ;
+- plusieurs exports regroupés sous un même identifiant ;
+- provenance et droits non renseignés ;
 - variantes de formats trop nombreuses ;
 - arborescence avec sous-dossiers ;
 - production de plusieurs assets avant validation intermédiaire ;
 - tentative de transfert binaire trop complexe ;
-- confusion entre master, export produit et asset intégré.
+- confusion entre master, export produit, validation et intégration.
 
-## Masters conservés
+## Directions artistiques conservées
 
-Les cinq masters artistiques M01 à M05 restent validés comme références de direction :
+Les cinq directions M01 à M05 restent approuvées par le propriétaire :
 
 - enseigne La Grange ;
 - fond d’atelier ;
@@ -41,27 +44,31 @@ Les cinq masters artistiques M01 à M05 restent validés comme références de d
 - carte Gargotte complète ;
 - panneau de bienvenue.
 
-Leur validation artistique ne valide aucun export runtime.
+Leur case A est validée, mais leur case R reste ouverte tant que les masters ne sont pas versionnés sous les noms canoniques du registre.
+
+Une approbation artistique ne valide aucun export runtime.
 
 ## Nouvelle méthode
 
 Chaque remplacement suit désormais :
 
-1. la ligne exacte du registre ;
-2. le nom final défini avant production ;
-3. le format et les dimensions exacts ;
-4. la production d’un seul asset ;
-5. le contrôle technique ;
-6. la validation humaine ;
-7. l’intégration manuelle dans le dossier plat `public/assets/phase-6/` ;
-8. la suppression manuelle du prototype remplacé.
+1. versionnement du master canonique lorsque requis ;
+2. ligne exacte du registre ;
+3. nom, format, dimensions, alpha, usage et fallback définis avant production ;
+4. provenance et droits renseignés ;
+5. production d’un seul fichier ;
+6. contrôle technique et statut P ;
+7. validation humaine et statut V ;
+8. constitution des planches et du lot d’intégration ;
+9. intégration manuelle dans le dossier plat `public/assets/phase-6/` et statut I ;
+10. suppression manuelle du prototype remplacé.
 
 ## Ordre de remplacement
 
-1. A01 enseigne large ;
-2. B01 fond desktop ;
-3. C01 cadre standard ;
-4. F01 couverture et logo Gargotte ;
-5. C16 panneau de bienvenue.
+1. versionner M01, puis produire A01 ;
+2. versionner M02, puis produire B01 ;
+3. versionner M03, puis produire C01 ;
+4. versionner M04, puis produire séparément F01a, F01b et F01c ;
+5. versionner M05, puis produire C16.
 
-Les noms et dimensions à utiliser sont exclusivement ceux du registre actif.
+Les noms, dimensions, transparences, usages, fallbacks et provenances à utiliser sont exclusivement ceux du registre actif.
