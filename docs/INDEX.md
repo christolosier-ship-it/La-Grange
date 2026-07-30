@@ -22,11 +22,13 @@ Cette documentation est la source de vérité de La Grange.
 4. document de phase ;
 5. README.
 
+Exception Phase 6 : `05-realisation/10-suivi-production-assets-phase-6.md` prime pour les identifiants, noms de fichiers, formats, dimensions et statuts des assets.
+
 Un conflit documentaire doit être corrigé avant d’implémenter. Il ne doit pas être arbitré silencieusement dans le code.
 
 ## Dossier de cadrage Phase 6
 
-Avant tout prototype ou changement visuel, lire dans cet ordre :
+Avant toute production ou modification visuelle, lire dans cet ordre :
 
 1. [`02-ux-ui/01-direction-artistique.md`](02-ux-ui/01-direction-artistique.md) ;
 2. [`02-ux-ui/03-specification-vues.md`](02-ux-ui/03-specification-vues.md) ;
@@ -41,9 +43,9 @@ Avant tout prototype ou changement visuel, lire dans cet ordre :
 11. [`04-qualite/14-checklist-phase-6.md`](04-qualite/14-checklist-phase-6.md) ;
 12. [`05-realisation/08-phase-6-polissage-visuel.md`](05-realisation/08-phase-6-polissage-visuel.md) ;
 13. [`05-realisation/10-suivi-production-assets-phase-6.md`](05-realisation/10-suivi-production-assets-phase-6.md) ;
-14. [`07-decisions/ADR-009-github-source-verite-prototypage-visuel.md`](07-decisions/ADR-009-github-source-verite-prototypage-visuel.md) ;
+14. [`07-decisions/ADR-009-github-source-verite-production-assets.md`](07-decisions/ADR-009-github-source-verite-production-assets.md) ;
 15. [`08-generation-ia/08-prompt-phase-6.md`](08-generation-ia/08-prompt-phase-6.md) ;
-16. [`08-generation-ia/13-protocole-lovable-phase-6.md`](08-generation-ia/13-protocole-lovable-phase-6.md).
+16. [`08-generation-ia/13-protocole-production-assets-phase-6.md`](08-generation-ia/13-protocole-production-assets-phase-6.md).
 
 Référence visuelle :
 
@@ -51,13 +53,17 @@ Référence visuelle :
 
 ## Gouvernance de la Phase 6
 
-- GitHub reste la source de vérité ;
-- Lovable sert au plan et au prototype isolé ;
-- le prototype ne remplace jamais le code de production ;
-- aucune implémentation globale avant validation humaine de la direction ;
-- une branche et une PR par lot ;
+- GitHub et la documentation restent les sources de vérité ;
+- le registre `10-suivi-production-assets-phase-6.md` est l’unique catalogue autorisé ;
+- un seul asset est produit, contrôlé et validé à la fois ;
+- aucune production en masse sans validation intermédiaire ;
+- les assets runtime sont intégrés manuellement dans le dossier plat `public/assets/phase-6/` ;
+- aucun sous-dossier n’est autorisé dans ce répertoire ;
+- les prototypes hérités ne sont pas canoniques ;
+- aucun fichier hérité n’est supprimé automatiquement avant son remplacement ;
+- une branche et une PR par lot d’intégration ;
 - budgets, fallbacks, responsive et accessibilité documentés ;
-- aucune donnée fictive pour reproduire la référence ;
+- aucune donnée fictive ;
 - aucun P1 ou P2 ouvert avant fusion.
 
 ## Gouvernance générale
