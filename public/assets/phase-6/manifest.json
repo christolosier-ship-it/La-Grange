@@ -1,80 +1,66 @@
 {
-  "version": 3,
-  "status": "legacy-prototypes-awaiting-replacement",
-  "canonicalRegistry": "docs/05-realisation/10-suivi-production-assets-phase-6.md",
-  "runtimeDirectoryPolicy": "flat",
-  "notes": [
-    "Les fichiers listés ci-dessous proviennent de la tentative antérieure à la révision de méthode du 2026-07-30.",
-    "Ils ne valident aucune case P, V ou I du registre canonique.",
-    "Ils restent temporairement présents et seront supprimés manuellement après leur remplacement et le contrôle des références.",
-    "Aucun nouvel asset ne doit être ajouté dans leurs sous-dossiers."
-  ],
-  "legacyAssets": [
+  "version": 2,
+  "status": "assets-present-not-integrated",
+  "assets": [
     {
-      "legacyId": "A01-runtime",
+      "id": "A01-runtime",
       "path": "/assets/phase-6/brand/brand-sign.svg",
+      "role": "Enseigne principale du shell",
       "format": "svg",
       "dimensions": [800, 360],
-      "canonical": false,
-      "validated": false,
-      "integratedInUi": false,
-      "replacementId": "A01",
-      "replacementPath": "/assets/phase-6/p6-a01-brand-sign-1600x720.webp"
+      "alpha": true,
+      "validated": true,
+      "integratedInUi": false
     },
     {
-      "legacyId": "B01-runtime",
+      "id": "B01-runtime",
       "path": "/assets/phase-6/shell/background-workshop.webp",
+      "role": "Fond d’atelier responsive du shell",
       "format": "webp",
       "dimensions": [800, 450],
-      "canonical": false,
-      "validated": false,
-      "integratedInUi": false,
-      "replacementId": "B01",
-      "replacementPath": "/assets/phase-6/p6-b01-background-workshop-2048x1152.webp"
+      "alpha": false,
+      "validated": true,
+      "integratedInUi": false
     },
     {
-      "legacyId": "C01-runtime",
+      "id": "C01-runtime",
       "path": "/assets/phase-6/components/project-card-frame.webp",
+      "role": "Cadre décoratif de carte projet",
       "format": "webp",
       "dimensions": [280, 416],
-      "canonical": false,
-      "validated": false,
-      "integratedInUi": false,
-      "replacementId": "C01",
-      "replacementPath": "/assets/phase-6/p6-c01-project-card-frame-standard.svg"
+      "alpha": true,
+      "validated": true,
+      "integratedInUi": false
     },
     {
-      "legacyId": "C16-runtime",
+      "id": "C16-runtime",
       "path": "/assets/phase-6/panels/welcome-panel.webp",
+      "role": "Panneau décoratif de bienvenue sans texte fonctionnel",
       "format": "webp",
       "dimensions": [80, 124],
-      "canonical": false,
-      "validated": false,
-      "integratedInUi": false,
-      "replacementId": "C16",
-      "replacementPath": "/assets/phase-6/p6-c16-welcome-panel-640x960.webp"
+      "alpha": true,
+      "validated": true,
+      "integratedInUi": false
     },
     {
-      "legacyId": "F01-cover-runtime",
+      "id": "F01-cover-runtime",
       "path": "/assets/phase-6/projects/gargotte/cover.webp",
+      "role": "Couverture éditoriale Gargotte Adventure",
       "format": "webp",
       "dimensions": [480, 300],
-      "canonical": false,
-      "validated": false,
-      "integratedInUi": false,
-      "replacementId": "F01",
-      "replacementPath": "/assets/phase-6/p6-f01-gargotte-adventure-cover-640x400.webp"
+      "alpha": false,
+      "validated": true,
+      "integratedInUi": false
     },
     {
-      "legacyId": "F01-logo-runtime",
+      "id": "F01-logo-runtime",
       "path": "/assets/phase-6/projects/gargotte/logo.webp",
+      "role": "Logo éditorial Gargotte Adventure",
       "format": "webp",
       "dimensions": [260, 78],
-      "canonical": false,
-      "validated": false,
-      "integratedInUi": false,
-      "replacementId": "F01",
-      "replacementPath": "/assets/phase-6/p6-f01-gargotte-adventure-logo-512x160.webp"
+      "alpha": true,
+      "validated": true,
+      "integratedInUi": false
     }
   ]
 }
