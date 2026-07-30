@@ -15,7 +15,7 @@
 | Lecture seule | aucune mutation | toutes | revue architecture et sécurité |
 | Responsive | layouts adaptatifs | toutes | E2E viewport et contrôle appareil |
 | Atelier stylisé reconnaissable | direction artistique et bible Phase 6 | toutes | captures comparatives, checklist Phase 6, validation humaine |
-| Cohérence des matières | design system sémantique et inventaire d’assets | shell, cartes, panneaux | planche de composants, contraste final, revue visuelle |
+| Cohérence des matières | design system sémantique et registre d’assets | shell, cartes, panneaux | planche de composants, contraste final, revue visuelle |
 | Fonctionnement sans assets | fallbacks CSS et SVG obligatoires | shell, cartes, fiches | images bloquées, chemins cassés, tests de fallback |
 | Carte projet tactile et lisible | spécification `ProjectCard` Phase 6 | dashboard, catalogue | états normal, focus, pressé, archivé, noms longs |
 | Aucune donnée dessinée | textes HTML et données issues du modèle | toutes | inspection des assets, audit produit et bundle |
@@ -26,9 +26,10 @@
 | Décor inerte | ornements hors arbre d’accessibilité et sans événement | toutes | clavier, VoiceOver, inspection DOM |
 | Mobile conçu spécifiquement | établi compact et navigation basse | toutes | 320 px, 390 px, zoom 200 %, tactile |
 | Tablette comme cible de confort | composition paysage avec rail compact | dashboard, catalogue, fiche | 1024 px, iPad réel, orientation |
-| Prototypage contrôlé | ADR-009 et protocole Lovable | prototype et handoff | audit du diff, contrôle dépendances, CI GitHub |
-| Source de vérité unique | GitHub canonique, Lovable isolé | processus de réalisation | historique PR, SHA verrouillé, contrôle de `main` |
-| Assets traçables | manifest, provenance, licence et poids | toutes | audit inventaire, suppression des fichiers inutilisés |
+| Production contrôlée | ADR-009, registre canonique et protocole asset par asset | production et intégration | contrôle du nom, format, dimensions, alpha, poids et validation humaine |
+| Source de vérité unique | GitHub canonique et registre `10-suivi-production-assets-phase-6.md` | processus de réalisation | historique PR, SHA verrouillé, contrôle de `main` |
+| Dossier runtime plat | aucun sous-dossier sous `public/assets/phase-6/` | assets | inspection du diff, test de chemins, audit du manifest |
+| Assets traçables | identifiant, provenance, licence, dimensions, poids et statuts P/V/I | toutes | audit du registre, suppression des fichiers remplacés après contrôle |
 | Cohérence sans texture | couches de matière avec couleur de fallback | toutes | blocage d’images, contraste, hors ligne |
 | Densité compacte | réduction des espacements sans perte tactile | toutes | préférence persistée, 44 px, captures comparatives |
 | Phase 6 réversible | PR courtes et lots indépendants | dépôt | comparaison des commits, rollback, absence de migration métier |
