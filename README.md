@@ -57,7 +57,6 @@ Documents majeurs :
 - [`docs/00-fondations/`](docs/00-fondations/) : vision et périmètre ;
 - [`docs/01-produit/`](docs/01-produit/) : besoins et règles métier ;
 - [`docs/02-ux-ui/`](docs/02-ux-ui/) : vues et design system ;
-- [`docs/03-technique/`](docs/03-technique/) : conception détaillée ;
 - [`docs/05-realisation/`](docs/05-realisation/) : phases de construction.
 
 Cadrage Phase 6 :
@@ -65,10 +64,11 @@ Cadrage Phase 6 :
 - [`docs/02-ux-ui/10-bible-visuelle-phase-6.md`](docs/02-ux-ui/10-bible-visuelle-phase-6.md) ;
 - [`docs/02-ux-ui/11-inventaire-assets-phase-6.md`](docs/02-ux-ui/11-inventaire-assets-phase-6.md) ;
 - [`docs/05-realisation/08-phase-6-polissage-visuel.md`](docs/05-realisation/08-phase-6-polissage-visuel.md) ;
-- [`docs/08-generation-ia/13-protocole-lovable-phase-6.md`](docs/08-generation-ia/13-protocole-lovable-phase-6.md).
+- [`docs/05-realisation/10-suivi-production-assets-phase-6.md`](docs/05-realisation/10-suivi-production-assets-phase-6.md) ;
+- [`docs/08-generation-ia/13-protocole-production-assets-phase-6.md`](docs/08-generation-ia/13-protocole-production-assets-phase-6.md).
 
 ## État
 
-Les phases 1 à 5 sont implémentées : socle PWA, synchronisation GitHub cache-first, dashboard responsive, catalogue complet, fiches détaillées, journal local factuel et paramètres. Le profil GitHub public, la visibilité des forks et archives, la fréquence de fraîcheur, la densité, le mouvement, les favoris, le diagnostic local et le reset ciblé du cache sont configurables sans token ni backend.
+Les Phases 1 à 5 sont implémentées : socle PWA, synchronisation GitHub cache-first, dashboard responsive, catalogue complet, fiches détaillées, journal local factuel et paramètres.
 
-La Phase 6 commence par un cadrage documentaire et un prototype visuel isolé. Son objectif est de rapprocher l’application de la référence d’atelier stylisé sans modifier le fonctionnel ni introduire de données fictives. GitHub reste la source de vérité et Lovable sert uniquement au plan et au prototypage contrôlé.
+La Phase 6 suit désormais une méthode séquentielle : le registre `10-suivi-production-assets-phase-6.md` fixe chaque nom, format et dimension ; les assets sont produits et validés un par un ; les fichiers approuvés sont ensuite intégrés manuellement dans le dossier plat `public/assets/phase-6/`. Les prototypes hérités ne sont pas canoniques et seront retirés après leur remplacement.
