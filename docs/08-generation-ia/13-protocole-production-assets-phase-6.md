@@ -86,7 +86,7 @@ L’export respecte exactement :
 
 - le nom ;
 - le format ;
-- les dimensions ou le `viewBox` ;
+- les dimensions ou le `viewBox` complet à quatre valeurs numériques ;
 - le ratio ;
 - la transparence ;
 - l’usage ;
@@ -102,6 +102,8 @@ Avant P, la colonne `Source / droits` précise :
 - l’auteur, l’outil ou la méthode ;
 - le statut des droits d’utilisation ;
 - la licence et sa référence lorsqu’elle existe.
+
+Pour un export dérivé, notamment chaque fichier F, la ligne conserve aussi sa propre méthode d’export, son outil et son auteur ; l’héritage des droits de la source ne remplace pas cette provenance de transformation.
 
 La valeur `à renseigner avant P` est bloquante. Les icônes, y compris les marques externes, possèdent leur propre champ de provenance.
 

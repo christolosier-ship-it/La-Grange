@@ -66,6 +66,8 @@ Le registre `10-suivi-production-assets-phase-6.md` est l’unique source de vé
 - un fallback HTML, CSS, système ou runtime hors registre n’est autorisé que si la ligne du registre décrit son implémentation exacte — et son chemin versionné s’il s’agit d’un fichier ; il doit être présent et testé sans recevoir de faux statut P/V ;
 - une création interne renseigne sa méthode, sa provenance et ses droits sans R artificiel ;
 - le fichier final respecte exactement le nom, le format, les dimensions, l’alpha et le budget du registre ;
+- tout SVG respecte un `viewBox` canonique complet à quatre valeurs numériques ;
+- tout export dérivé, y compris chaque fichier F, renseigne sa propre méthode d’export, son outil et son auteur avant P ;
 - les assets P et V sont versionnés à la racine de `public/assets/phase-6/`, même avant leur consommation ;
 - I n’est coché que lorsque l’application consomme réellement le fichier ;
 - un contrôle CSS doit être spécifié avant le lot puis intégré dans sa PR ;

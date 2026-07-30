@@ -15,7 +15,7 @@ Ce registre est l’unique source de vérité pour les identifiants, noms, forma
 - aucun asset distant requis au runtime ;
 - chaque asset possède un usage et un fallback documentés ;
 - chaque raster possède des dimensions exactes ;
-- chaque SVG possède un `viewBox` exact ;
+- chaque SVG possède un `viewBox` exact à quatre valeurs numériques ;
 - une ligne du registre correspond à un seul fichier ;
 - le chargement initial ne télécharge pas tout le décor ;
 - une image manquante ne casse jamais la mise en page ;
@@ -199,7 +199,7 @@ Les dimensions exactes sont définies dans le registre. Les règles générales 
 | couverture catalogue | 640 × 400 | WebP |
 | couverture fiche | 960 × 600 | WebP |
 | logo projet | 512 × 160 | WebP transparent |
-| icône fonctionnelle | viewBox 24 × 24 | SVG |
+| icône fonctionnelle | viewBox 0 0 24 24 | SVG |
 | planche desktop | 1440 × 1024 | PNG documentaire |
 | planche mobile | 390 × 844 | PNG documentaire |
 
@@ -252,6 +252,8 @@ La colonne `Source / droits` du registre est la source officielle. Elle est rens
 - statut des droits ;
 - licence et référence lorsqu’elles existent.
 
+Chaque export dérivé conserve en plus sa propre méthode d’export, son outil et son auteur sur sa ligne, même lorsque les droits artistiques sont hérités de la source.
+
 Aucun manifeste runtime ne porte cette information documentaire.
 
 ## Production et validation
@@ -302,15 +304,15 @@ Ils sont :
 
 | Élément absent | Fallback |
 | --- | --- |
-| enseigne | texte « La Grange » |
-| fond d’atelier | gradients et couleurs du design system |
-| texture bois | surface unie sombre |
-| cadre SVG | bordure CSS |
-| couverture projet | C18, initiales et nom HTML |
-| logo projet | nom texte |
-| icône | libellé textuel |
+| enseigne | `FB-BRAND-NAME` ou `FB-BRAND-MARK` |
+| fond d’atelier | `FB-BG` |
+| texture bois | `FB-WOOD` |
+| cadre SVG | contrat `FB-*` exact de sa ligne |
+| couverture projet | C18 et `FB-PROJECT` |
+| logo projet | `FB-PROJECT` |
+| icône | `FB-LABEL` |
 | police décorative | pile système |
-| ornement | absence tolérée |
+| ornement | `FB-NONE` |
 
 ## Critères d’acceptation
 
