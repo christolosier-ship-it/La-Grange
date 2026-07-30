@@ -2,24 +2,31 @@
 
 ## Statut
 
-**Tentative historique non canonique.**
+**Tentative historique non canonique. Procédure obsolète.**
 
-Ce lot a été produit le 2026-07-29 avant la révision de méthode du 2026-07-30. Il a permis de valider la direction générale, mais ses exports, dimensions, formats, noms et chemins ne constituent plus une source de vérité.
+Ce lot a été produit le 2026-07-29 avant la révision de méthode du 2026-07-30. Il a permis de valider la direction générale, mais ses exports, dimensions, formats, noms, chemins et étapes ne constituent plus une source de vérité.
 
 Le seul registre actif est :
 
 `docs/05-realisation/10-suivi-production-assets-phase-6.md`
 
+Le protocole actif est :
+
+`docs/08-generation-ia/13-protocole-production-assets-phase-6.md`
+
+Aucune procédure décrite historiquement dans ce fichier ne doit être exécutée. Les sections suivantes documentent uniquement les écarts et les décisions de remplacement.
+
 ## Décision
 
 Les éléments de ce lot sont traités comme des prototypes hérités :
 
-- ils ne valident aucune case R, P, V ou I du registre ;
+- ils ne valident aucune case A, R, P, V ou I du registre ;
 - ils ne doivent pas être renommés pour sembler conformes ;
-- ils ne doivent pas être utilisés comme preuve de dimensions, de poids ou de droits ;
+- ils ne doivent pas être utilisés comme preuve de dimensions, poids, droits ou budget ;
 - ils restent disponibles uniquement jusqu’à leur remplacement ;
-- ils seront supprimés manuellement après intégration et contrôle du fichier conforme ;
-- aucune suppression automatique n’est autorisée.
+- ils seront supprimés manuellement après remplacement et contrôle des références ;
+- aucune suppression automatique n’est autorisée ;
+- aucun nouveau fichier n’est ajouté dans leurs sous-dossiers.
 
 ## Écarts connus
 
@@ -27,12 +34,12 @@ Les éléments de ce lot sont traités comme des prototypes hérités :
 - dimensions finales non systématiquement fixées avant production ;
 - conventions de nommage incomplètes ;
 - plusieurs exports regroupés sous un même identifiant ;
-- provenance et droits non renseignés ;
+- provenance, droits et budgets individuels non renseignés ;
 - variantes de formats trop nombreuses ;
 - arborescence avec sous-dossiers ;
 - production de plusieurs assets avant validation intermédiaire ;
 - tentative de transfert binaire trop complexe ;
-- confusion entre master, export produit, validation et intégration.
+- confusion entre master, export produit, validation, présence dans le dépôt et consommation par l’application.
 
 ## Directions artistiques conservées
 
@@ -48,27 +55,29 @@ Leur case A est validée, mais leur case R reste ouverte tant que les masters ne
 
 Une approbation artistique ne valide aucun export runtime.
 
-## Nouvelle méthode
+## Méthode active de remplacement
 
-Chaque remplacement suit désormais :
+Chaque remplacement suit désormais exclusivement le registre et le protocole actifs :
 
-1. versionnement du master canonique lorsque requis ;
-2. ligne exacte du registre ;
-3. nom, format, dimensions, alpha, usage et fallback définis avant production ;
-4. provenance et droits renseignés ;
-5. production d’un seul fichier ;
-6. contrôle technique et statut P ;
-7. validation humaine et statut V ;
-8. constitution des planches et du lot d’intégration ;
-9. intégration manuelle dans le dossier plat `public/assets/phase-6/` et statut I ;
-10. suppression manuelle du prototype remplacé.
+1. versionner la source M ou S canonique lorsque requise ;
+2. sélectionner une seule ligne de fichier ;
+3. respecter nom, format, dimensions, alpha, usage, fallback et budget ;
+4. renseigner provenance et droits ;
+5. produire un seul fichier ;
+6. le contrôler et le versionner à la racine de `public/assets/phase-6/`, puis cocher P ;
+7. obtenir la validation humaine, puis cocher V ;
+8. attendre que les prérequis d’entrée du lot 6A à 6E soient satisfaits ;
+9. raccorder le fichier dans la PR du lot, produire les planches d’acceptation et cocher I seulement s’il est consommé ;
+10. supprimer manuellement le prototype remplacé après contrôle des références.
 
-## Ordre de remplacement
+## Ordre de remplacement initial
 
 1. versionner M01, puis produire A01 ;
 2. versionner M02, puis produire B01 ;
 3. versionner M03, puis produire C01 ;
-4. versionner M04, puis produire séparément F01a, F01b et F01c ;
-5. versionner M05, puis produire C16.
+4. versionner M04 ;
+5. versionner S01a, puis produire séparément F01a et F01b ;
+6. versionner S01c, puis produire F01c ;
+7. versionner M05, puis produire C16.
 
-Les noms, dimensions, transparences, usages, fallbacks et provenances à utiliser sont exclusivement ceux du registre actif.
+Les noms, dimensions, transparences, usages, fallbacks, budgets et provenances à utiliser sont exclusivement ceux du registre actif.
