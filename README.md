@@ -72,4 +72,4 @@ Cadrage Phase 6 :
 
 Les Phases 1 à 5 sont implémentées : socle PWA, synchronisation GitHub cache-first, dashboard responsive, catalogue complet, fiches détaillées, journal local factuel et paramètres.
 
-La Phase 6 suit désormais une méthode séquentielle : le registre `10-suivi-production-assets-phase-6.md` fixe chaque nom, format et dimension ; les assets sont produits et validés un par un ; les fichiers approuvés sont ensuite intégrés manuellement dans le dossier plat `public/assets/phase-6/`. Les prototypes hérités ne sont pas canoniques et seront retirés après leur remplacement.
+La Phase 6 suit désormais une méthode séquentielle pilotée par `10-suivi-production-assets-phase-6.md` : une source M/S est approuvée puis versionnée avec A/R ; chaque asset est ensuite contrôlé et versionné à la racine de `public/assets/phase-6/` avec P, validé humainement avec V, puis raccordé au code avec I dans le lot 6A à 6E concerné. Les sous-dossiers de prototypes hérités restent gelés, non canoniques et sont retirés fichier par fichier après leur remplacement.

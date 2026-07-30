@@ -6,7 +6,7 @@ Ce document traduit la direction artistique en règles concrètes de composition
 
 Il ne remplace pas les spécifications fonctionnelles. Lorsqu’une métaphore visuelle entre en conflit avec l’accessibilité, la performance ou la compréhension, la fonction prime.
 
-Le registre `docs/05-realisation/10-suivi-production-assets-phase-6.md` fixe les noms, dimensions, formats et statuts de production.
+Le registre `docs/05-realisation/10-suivi-production-assets-phase-6.md` fixe le contrat opérationnel complet : noms, formats, dimensions, transparences, usages, fallbacks, budgets, provenances, droits, dépendances, lots et statuts.
 
 ## Phrase de conception
 
@@ -203,7 +203,10 @@ Il est supprimé s’il ressemble à un contrôle, réduit le contraste, se rép
 - aucun asset distant ;
 - un seul asset produit et validé à la fois ;
 - nom, format et dimensions issus du registre ;
-- intégration manuelle dans le dossier runtime plat ;
+- source M/S approuvée A et versionnée R avant tout dérivé ;
+- asset contrôlé et versionné à la racine du dossier runtime avec P, puis validé avec V ;
+- raccord manuel au code et statut I uniquement dans le lot 6A à 6E concerné ;
+- aucun nouveau sous-dossier ; l’exception héritée reste gelée ;
 - aucune sortie brute intégrée ;
 - droits et provenance documentés.
 

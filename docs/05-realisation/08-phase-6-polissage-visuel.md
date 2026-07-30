@@ -41,7 +41,7 @@ Avant toute intervention, lire :
 8. le protocole de production des assets ;
 9. le README.
 
-Le registre prime pour les identifiants, noms, formats, dimensions, transparences, usages, fallbacks, provenances et statuts.
+Le registre prime pour les identifiants, noms, formats, dimensions, transparences, usages, fallbacks, budgets, provenances, droits, dépendances, affectations aux lots et statuts.
 
 ## Périmètre
 
@@ -137,16 +137,17 @@ Règles :
 - une ligne correspond à un seul fichier ;
 - un seul fichier est produit à la fois ;
 - le master ou la source canonique doit être versionné avant le dérivé ;
+- une source S dérivée ne reçoit R qu’après sa source amont M ou S ;
 - nom, format, dimensions, alpha, usage et fallback sont définis avant production ;
 - provenance et droits sont renseignés avant P ;
-- export contrôlé ;
+- export contrôlé et versionné à la racine de `public/assets/phase-6/` avant P ;
 - validation humaine obligatoire ;
 - aucun passage au suivant avant validation ;
 - aucun fichier intégré depuis une sortie brute ;
-- aucun sous-dossier runtime ;
+- aucun nouveau sous-dossier runtime ;
 - aucun ZIP, Base64 ou workflow de reconstruction.
 
-Le premier ordre est : versionner M01, produire A01, versionner M02, produire B01, versionner M03, produire C01, versionner M04, produire F01a puis F01b puis F01c, versionner M05, produire C16.
+Le premier ordre est : versionner M01, produire A01, versionner M02, produire B01, versionner M03, produire C01, versionner M04, versionner S01a puis produire F01a et F01b, versionner S01c puis produire F01c, versionner M05, produire C16.
 
 Les statuts P et V clôturent la production d’un fichier. Le statut I reste décoché jusqu’à la PR d’intégration concernée.
 
@@ -167,13 +168,13 @@ Une PR d’intégration ne démarre que lorsque les fichiers, fallbacks et planc
 
 ## Dossier runtime
 
-Tous les assets intégrés sont placés à plat dans :
+Tous les nouveaux assets canoniques P/V sont versionnés à la racine de :
 
 `public/assets/phase-6/`
 
-Aucun sous-dossier par famille ou projet n’est autorisé.
+Ils peuvent y rester avec I décoché jusqu’au raccord du lot 6A à 6E. Aucun nouveau sous-dossier par famille ou projet n’est autorisé.
 
-Les prototypes hérités déjà présents dans `main` restent non canoniques. Ils sont remplacés un par un puis supprimés manuellement après contrôle des références.
+Les sous-dossiers et prototypes hérités déjà présents dans `main` restent une exception gelée et non canonique. Ils sont remplacés un par un puis supprimés manuellement après contrôle des références. Leur `README.md` et leur `manifest.json` historiques n’attribuent aucun statut.
 
 ## PR 6A - Fondations visuelles
 
@@ -256,7 +257,7 @@ Une PR corrective séparée est recommandée si les revues laissent des P1 ou P2
 
 ## Ordre de production des familles
 
-1. versionnement et dérivés prioritaires M01/A01, M02/B01, M03/C01, M04/F01a à F01c et M05/C16 ;
+1. versionnement et dérivés prioritaires M01/A01, M02/B01, M03/C01, M04/S01a/F01a-F01b, M04/S01c/F01c et M05/C16 ;
 2. variantes de marque et fonds ;
 3. matières et lumière P0 ;
 4. iconographie P0 ;
@@ -287,7 +288,7 @@ Routes, recherche, filtres, favoris, synchronisation, détails, activité, param
 - alpha contrôlé ;
 - poids publié ;
 - fallback testé ;
-- dossier runtime plat ;
+- nouveaux fichiers canoniques à la racine du dossier runtime et exception héritée inchangée ;
 - aucun prototype utilisé comme preuve.
 
 ### Accessibilité

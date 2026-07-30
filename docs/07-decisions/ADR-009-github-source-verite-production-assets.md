@@ -16,25 +16,38 @@ La PR historique d’assets a toutefois déjà ajouté cinq sous-dossiers non ca
 
 GitHub reste l’unique source de vérité du code, des documents, des fichiers versionnés, de la CI et des décisions.
 
-Le fichier suivant est l’unique catalogue autorisé pour les assets :
+Le fichier suivant devient l’unique catalogue opérationnel autorisé pour les assets :
 
 `docs/05-realisation/10-suivi-production-assets-phase-6.md`
 
-Il fixe les identifiants, noms, formats, dimensions, transparences, usages, fallbacks, budgets, provenances, droits et statuts.
+Il fixe les identifiants, noms, formats, dimensions, `viewBox`, transparences, usages, fallbacks, budgets, sources, provenances, droits, dépendances, affectations aux lots, planches d’acceptation, priorités, statuts et ordre de production.
+
+Le cycle de preuve est :
+
+1. **A** : direction ou source M/S approuvée ;
+2. **R** : source M/S versionnée sous son nom canonique dans `docs/assets/phase-6/` ;
+3. **P** : asset contrôlé et versionné à la racine de `public/assets/phase-6/` ;
+4. **V** : asset validé humainement ;
+5. **I** : asset réellement consommé par l’application dans un lot 6A à 6E.
+
+La présence d’un asset P/V dans `public/` ne vaut pas intégration fonctionnelle.
+
+Les planches documentaires G utilisent également P/V, mais sont versionnées dans `docs/assets/phase-6/` et ne reçoivent jamais I.
 
 La production suit obligatoirement ces règles :
 
-1. un seul fichier est produit à la fois ;
-2. le nom, le format, les dimensions, l’alpha et le budget sont définis avant la génération ;
-3. une source canonique M ou S est approuvée et versionnée avant tout dérivé ;
-4. l’asset est contrôlé, versionné puis validé humainement ;
-5. les nouveaux assets canoniques sont placés à plat à la racine de `public/assets/phase-6/` ;
-6. aucun nouveau sous-dossier n’est autorisé ;
-7. aucun ZIP, fragment Base64 ou workflow de reconstruction n’est autorisé ;
-8. les prototypes hérités ne sont pas canoniques ;
-9. un prototype hérité n’est supprimé qu’après son remplacement validé et le contrôle des références ;
-10. le statut I est réservé à la consommation réelle du fichier par l’application ;
-11. les planches sont des preuves d’acceptation produites dans les PR d’intégration, pas des prérequis de démarrage.
+1. un seul fichier est produit, contrôlé puis validé à la fois ;
+2. le contrat complet est défini dans le registre avant la production ;
+3. une source S dérivée ne reçoit R que lorsque sa source amont M ou S est elle-même R ;
+4. l’asset est contrôlé, versionné à la racine du dossier public puis reçoit P ;
+5. la validation humaine donne V, sans donner I ;
+6. l’intégration manuelle raccorde ultérieurement le fichier au code et donne I ;
+7. tous les nouveaux assets canoniques sont placés à plat dans `public/assets/phase-6/` ;
+8. aucun nouveau sous-dossier n’est autorisé ;
+9. aucun ZIP, fragment Base64 ou workflow de reconstruction n’est autorisé ;
+10. les prototypes hérités ne sont pas canoniques ;
+11. un prototype hérité n’est supprimé qu’après son remplacement validé et le contrôle de ses références ;
+12. les planches sont des preuves d’acceptation produites dans les PR d’intégration et bloquent leur fusion, pas leur démarrage.
 
 ## Exception transitoire gelée
 
@@ -50,9 +63,11 @@ Cette exception est strictement transitoire :
 
 - aucun nouveau fichier n’y est ajouté ;
 - aucun fichier canonique n’y est produit ;
-- leur contenu ne valide aucun statut R, P, V ou I ;
-- ils sont supprimés manuellement, fichier par fichier, après remplacement ;
+- leur contenu ne valide aucun statut A, R, P, V ou I ;
+- ils sont supprimés manuellement, fichier par fichier, après remplacement et contrôle des références ;
 - tous les nouveaux fichiers suivent immédiatement la règle du dossier plat.
+
+Le `README.md` et le `manifest.json` présents dans `public/assets/phase-6/` sont des traces de la tentative historique : ils ne peuvent attribuer aucun statut A, R, P, V ou I et ne priment jamais sur le registre.
 
 L’existence temporaire de ces sous-dossiers n’autorise aucune nouvelle arborescence.
 
@@ -103,8 +118,8 @@ Rejetée car elle contredirait la décision du propriétaire et supprimerait des
 
 ### Intégration fonctionnelle avant validation
 
-Rejetée car la présence d’un fichier dans le dépôt ne constitue pas une preuve de qualité, et sa consommation par le code doit rester un état distinct.
+Rejetée car la présence seule d’un fichier dans le dépôt ne constitue pas une preuve de qualité. Un fichier peut être versionné pour recevoir P puis V, mais il ne reçoit I qu’après raccord réel au code et contrôles du lot.
 
 ## Réversibilité
 
-La règle du dossier plat pourra évoluer uniquement via un nouvel ADR, après la Phase 6 et avec un plan de migration explicite. L’exception transitoire disparaît automatiquement lorsque le dernier prototype hérité est remplacé et supprimé manuellement.
+La règle de la racine canonique plate pourra évoluer uniquement via un nouvel ADR, après la Phase 6 et avec un plan de migration explicite. L’exception héritée reste gelée et prend fin lorsque le dernier prototype est remplacé puis supprimé manuellement.

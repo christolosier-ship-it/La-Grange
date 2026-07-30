@@ -59,11 +59,14 @@ Le registre `10-suivi-production-assets-phase-6.md` est l’unique source de vé
 
 - GitHub et la documentation restent la source de vérité ;
 - un seul fichier est produit, contrôlé puis validé à la fois ;
+- le cycle de preuve est A puis R pour une source M/S, P puis V pour un asset versionné, et I uniquement lors de sa consommation réelle ;
 - une source M ou S doit être approuvée et versionnée avant tout dérivé ;
+- une source S dérivée d’une autre source ne peut recevoir R que lorsque sa source amont est elle-même R ;
 - le fichier final respecte exactement le nom, le format, les dimensions, l’alpha et le budget du registre ;
 - les assets P et V sont versionnés à la racine de `public/assets/phase-6/`, même avant leur consommation ;
 - I n’est coché que lorsque l’application consomme réellement le fichier ;
 - les anciens sous-dossiers restent une exception transitoire gelée jusqu’au remplacement manuel ;
+- le `README.md` et le `manifest.json` historiques du dossier d’assets n’attribuent aucun statut et ne priment jamais sur le registre ;
 - le décor ne modifie ni le rôle, ni les données, ni les états d’un composant ;
 - le texte reste en HTML ;
 - chaque asset critique possède un fallback CSS ou SVG ;

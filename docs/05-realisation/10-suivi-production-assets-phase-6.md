@@ -23,6 +23,8 @@ Les sous-dossiers hérités `brand/`, `components/`, `panels/`, `projects/` et `
 - ils sont retirés manuellement, fichier par fichier, après remplacement et contrôle des références ;
 - le contrôle de dossier plat porte sur tous les nouveaux fichiers canoniques.
 
+Le `README.md` et le `manifest.json` historiques présents dans `public/assets/phase-6/` décrivent uniquement cette tentative héritée. Ils ne confèrent aucun statut A, R, P, V ou I, ne prouvent aucune validation et ne priment jamais sur le présent registre.
+
 ## Nommage obligatoire
 
 - raster : `p6-<id>-<nom>-<largeur>x<hauteur>.<extension>` ;
@@ -39,11 +41,12 @@ Les sous-dossiers hérités `brand/`, `components/`, `panels/`, `projects/` et `
 ### Masters et sources
 
 1. sélectionner une seule ligne M ou S ;
-2. produire ou importer le fichier canonique ;
-3. contrôler nom, format, dimensions, alpha, budget, provenance et droits ;
-4. le placer à plat dans `docs/assets/phase-6/` ;
-5. obtenir l’approbation humaine A ;
-6. cocher R uniquement lorsque le fichier exact est versionné.
+2. lorsqu’une ligne S cite une source amont M ou S, vérifier que cette source amont possède déjà R ;
+3. produire ou importer le fichier canonique ;
+4. contrôler nom, format, dimensions, alpha, budget, provenance et droits ;
+5. le placer à plat dans `docs/assets/phase-6/` ;
+6. obtenir l’approbation humaine A ;
+7. cocher R uniquement lorsque le fichier exact est versionné.
 
 ### Assets
 
@@ -87,6 +90,12 @@ La production en masse sans validation intermédiaire est interdite.
 - **V** : export validé humainement ;
 - **I** : fichier réellement consommé par l’application.
 
+### Planches documentaires
+
+- **P** : planche conforme et versionnée sous son nom final dans `docs/assets/phase-6/` ;
+- **V** : planche validée humainement ;
+- aucune planche ne reçoit I.
+
 La valeur `à renseigner avant P` ou `à confirmer avant R` est bloquante.
 
 ## Priorités
@@ -95,6 +104,10 @@ La valeur `à renseigner avant P` ou `à confirmer avant R` est bloquante.
 - P1 : cartes, vues principales ou projets mis en avant ;
 - P2 : cohérence complète ;
 - P3 : ornement facultatif.
+
+## Budget composite du shell
+
+Le plafond de **250 Ko** concerne le décor critique supplémentaire chargé pour un viewport et exclut le fond responsive actif B01, B02, B03 ou B04, qui conserve son propre budget individuel. Une seule variante de fond et une seule variante d’enseigne sont chargées initialement pour un viewport. Sur desktop, le plafond d’images critiques Phase 6 est donc de 190 Ko pour B01 plus 250 Ko supplémentaires, soit 440 Ko maximum ; les plafonds individuels ne sont pas des invitations à charger toutes les variantes simultanément.
 
 ---
 
@@ -110,12 +123,12 @@ La valeur `à renseigner avant P` ou `à confirmer avant R` est bloquante.
 
 ## 1.2 Sources canoniques des projets
 
-Une couverture et un logo possèdent des sources séparées. Les lignes F ne peuvent pas recevoir P tant que leur source S n’a pas R coché.
+Une couverture et un logo possèdent des sources séparées. Les lignes F ne peuvent pas recevoir P tant que leur source S n’a pas R coché. S01a et S01c sont dérivées de M04 : elles ne peuvent recevoir R qu’après M04.
 
 | ID | P | Source | Fichier canonique | Dimensions | Alpha | Usage | Source / droits | Budget max | A | R |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| S01a | P0 | Gargotte Adventure, master couverture | `p6-s01a-gargotte-adventure-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | M04 + adaptation interne, droits projet à confirmer avant R | 1,5 Mo | [x] | [ ] |
-| S01c | P0 | Gargotte Adventure, master logo | `p6-s01c-gargotte-adventure-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | M04 + adaptation interne, droits projet à confirmer avant R | 1 Mo | [x] | [ ] |
+| S01a | P0 | Gargotte Adventure, master couverture | `p6-s01a-gargotte-adventure-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | M04 avec R + adaptation interne, droits projet à confirmer avant R | 1,5 Mo | [x] | [ ] |
+| S01c | P0 | Gargotte Adventure, master logo | `p6-s01c-gargotte-adventure-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | M04 avec R + adaptation interne, droits projet à confirmer avant R | 1 Mo | [x] | [ ] |
 | S02a | P0 | Les Petites Quêtes, master couverture | `p6-s02a-les-petites-quetes-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | direction du projet à approuver, droits à confirmer avant R | 1,5 Mo | [ ] | [ ] |
 | S02c | P0 | Les Petites Quêtes, master logo | `p6-s02c-les-petites-quetes-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | identité du projet à approuver, droits à confirmer avant R | 1 Mo | [ ] | [ ] |
 | S03a | P0 | BibiLeaf, master couverture | `p6-s03a-bibileaf-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | direction du projet à approuver, droits à confirmer avant R | 1,5 Mo | [ ] | [ ] |
@@ -451,8 +464,8 @@ Un lot peut démarrer lorsque toutes ses sources R, ses assets P/V et ses contr�
 2. versionner M02, puis produire B01 ;
 3. versionner M03, puis produire C01 ;
 4. versionner M04 ;
-5. versionner S01a, produire F01a, puis F01b ;
-6. versionner S01c, puis produire F01c ;
+5. versionner S01a à partir de M04, produire F01a, puis F01b ;
+6. versionner S01c à partir de M04, puis produire F01c ;
 7. versionner M05, puis produire C16 ;
 8. variantes strictement enregistrées ;
 9. matières et lumière P0 ;

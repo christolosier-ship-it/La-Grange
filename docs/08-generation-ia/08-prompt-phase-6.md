@@ -29,7 +29,7 @@ Avant toute modification, lis :
 - `docs/07-decisions/ADR-009-github-source-verite-production-assets.md` ;
 - `docs/08-generation-ia/13-protocole-production-assets-phase-6.md`.
 
-En cas de conflit, applique `docs/INDEX.md`. Pour les assets, le registre `10-suivi-production-assets-phase-6.md` prime sur les noms, formats, dimensions et statuts.
+En cas de conflit, applique `docs/INDEX.md`. Pour les assets, le registre `10-suivi-production-assets-phase-6.md` prime sur les identifiants, noms, formats, dimensions, transparences, usages, fallbacks, budgets, provenances, droits, dépendances, lots et statuts.
 
 ## Cible
 
@@ -65,15 +65,15 @@ Le registre fixe chaque asset. Aucune production n’est autorisée à partir d�
 
 ## Ordre obligatoire
 
-1. lire le prochain asset autorisé dans le registre ;
-2. produire uniquement cet asset ;
-3. exporter exactement au nom, format et dimensions prévus ;
-4. contrôler le fichier ;
-5. obtenir la validation humaine ;
-6. mettre à jour le registre ;
-7. passer au suivant ;
+1. lire le prochain élément autorisé dans le registre ;
+2. s’il s’agit d’une source M/S, vérifier sa source amont, obtenir A et versionner le fichier canonique avant R ;
+3. s’il s’agit d’un asset, vérifier la source ou le dérivé requis par sa ligne, puis produire uniquement ce fichier ;
+4. exporter exactement au nom, format, dimensions, alpha et budget prévus ;
+5. contrôler puis versionner l’asset à la racine de `public/assets/phase-6/` avant P ;
+6. obtenir la validation humaine avant V, avec I encore décoché ;
+7. mettre à jour le registre et passer au suivant ;
 8. produire les planches de validation ;
-9. intégrer les lots 6A à 6E.
+9. raccorder les assets au code et cocher I dans les lots 6A à 6E.
 
 Ne lance jamais plusieurs assets simultanément sans validation intermédiaire.
 
@@ -102,15 +102,15 @@ Interdictions :
 - nom décidé après génération ;
 - dimensions modifiées sans révision du registre ;
 - ZIP, Base64, fragments ou workflow de reconstruction ;
-- sous-dossier dans `public/assets/phase-6/`.
+- nouveau sous-dossier dans `public/assets/phase-6/` ou ajout dans un sous-dossier hérité.
 
 ## Dossier runtime
 
-Tous les fichiers validés sont intégrés manuellement à plat dans :
+Tous les nouveaux assets canoniques contrôlés sont versionnés à la racine de :
 
 `public/assets/phase-6/`
 
-Aucune famille ou projet ne possède son propre sous-dossier.
+Ils peuvent y conserver P/V avec I décoché jusqu’au raccord du lot concerné. Aucune famille ou projet ne reçoit de nouveau sous-dossier. Les sous-dossiers historiques restent une exception gelée sans statut.
 
 ## Prototypes hérités
 

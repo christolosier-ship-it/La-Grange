@@ -29,10 +29,14 @@ Cette checklist est complétée dans chaque PR visuelle avec les éléments appl
 - [ ] le format réel correspond ;
 - [ ] les dimensions décodées correspondent ;
 - [ ] la transparence correspond ;
+- [ ] toute source M/S requise possède A et R, y compris sa source amont lorsqu’elle est dérivée ;
 - [ ] un seul asset a été produit avant validation ;
+- [ ] P correspond à un fichier contrôlé et versionné à la racine du dossier runtime ;
 - [ ] la validation humaine est tracée ;
+- [ ] V est distinct de I, réservé à la consommation réelle par l’application ;
 - [ ] le prochain asset autorisé a été respecté ;
-- [ ] aucun sous-dossier n’a été créé dans `public/assets/phase-6/` ;
+- [ ] aucun nouveau sous-dossier n’a été créé dans `public/assets/phase-6/` ;
+- [ ] aucun fichier n’a été ajouté aux sous-dossiers hérités gelés ;
 - [ ] aucun ZIP, Base64, fragment ou workflow de reconstruction ;
 - [ ] les prototypes hérités ne sont pas comptés comme validés ;
 - [ ] aucun prototype remplacé n’est supprimé avant contrôle des références.
@@ -251,4 +255,4 @@ Pour chaque composant traité :
 
 ## No-Go final
 
-No-Go si : donnée fictive, contraste bloquant, fonction perdue, fallback cassé, hors ligne dégradé, focus perdu, scroll horizontal, asset distant, secret, animation obligatoire, budget non approuvé, nom ou dimensions non conformes, sous-dossier runtime, prototype hérité utilisé, P1/P2 ouvert, CI non verte ou vue majeure non traitée.
+No-Go si : donnée fictive, contraste bloquant, fonction perdue, fallback cassé, hors ligne dégradé, focus perdu, scroll horizontal, asset distant, secret, animation obligatoire, budget non approuvé, nom ou dimensions non conformes, nouveau sous-dossier runtime ou ajout dans l’exception héritée, prototype hérité utilisé, P1/P2 ouvert, CI non verte ou vue majeure non traitée.

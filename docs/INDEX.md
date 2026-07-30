@@ -22,7 +22,7 @@ Cette documentation est la source de vérité de La Grange.
 4. document de phase ;
 5. README.
 
-Exception Phase 6 : `05-realisation/10-suivi-production-assets-phase-6.md` prime pour tous les contrats d’assets, notamment les identifiants, noms de fichiers, formats, dimensions, `viewBox`, transparences, usages, fallbacks, budgets, sources, provenances, droits, priorités, statuts et ordre de production.
+Exception Phase 6 : l’ADR-009 fixe la gouvernance, puis `05-realisation/10-suivi-production-assets-phase-6.md` prime pour tous les contrats opérationnels d’assets, notamment les identifiants, noms de fichiers, formats, dimensions, `viewBox`, transparences, usages, fallbacks, budgets, sources, provenances, droits, dépendances, affectations aux lots, priorités, statuts et ordre de production.
 
 L’ADR-009 fixe la gouvernance et l’exception transitoire des prototypes hérités. Le registre fixe ensuite le contrat précis de chaque fichier. Un document secondaire ne peut ni créer une variante implicite, ni élargir un budget, ni valider un statut absent du registre.
 
@@ -57,13 +57,17 @@ Référence visuelle :
 
 - GitHub et la documentation restent les sources de vérité ;
 - le registre `10-suivi-production-assets-phase-6.md` est l’unique catalogue autorisé ;
+- le cycle est A/R pour les sources M/S, P/V pour les assets versionnés, puis I lors de leur consommation réelle ;
+- les planches G utilisent P/V dans `docs/assets/phase-6/`, ne reçoivent jamais I, sont produites dans les PR d’intégration et bloquent leur fusion, pas leur démarrage ;
 - un seul fichier est produit, contrôlé et validé à la fois ;
-- une source M ou S est versionnée avant tout dérivé ;
+- une source M ou S, y compris toute source amont, est versionnée avant tout dérivé ;
 - aucune production en masse sans validation intermédiaire ;
 - les nouveaux fichiers canoniques sont versionnés à plat dans `docs/assets/phase-6/` ou `public/assets/phase-6/` selon leur rôle ;
 - I est réservé à la consommation réelle par l’application ;
-- les cinq sous-dossiers historiques sont une exception transitoire gelée, sans nouvel ajout, jusqu’au remplacement manuel ;
-- les planches G sont produites dans les PR d’intégration et bloquent leur fusion, pas leur démarrage ;
+- aucun nouveau sous-dossier n’est autorisé dans `public/assets/phase-6/` ;
+- les cinq sous-dossiers historiques sont une exception transitoire gelée, sans nouvel ajout, jusqu’au remplacement manuel de leurs fichiers ;
+- les prototypes hérités ne sont pas canoniques et leur `README.md` et leur `manifest.json` historiques n’ont aucune autorité sur les statuts ;
+- aucun fichier hérité n’est supprimé automatiquement avant son remplacement et le contrôle de ses références ;
 - les ornements P3 restent facultatifs ;
 - une branche et une PR par lot d’intégration ;
 - budgets, fallbacks, provenances, droits, responsive et accessibilité sont documentés ;

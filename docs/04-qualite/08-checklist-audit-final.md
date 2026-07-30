@@ -58,8 +58,11 @@
 - [ ] poids publiés ;
 - [ ] formats optimisés ;
 - [ ] transparence contrôlée ;
-- [ ] dossier runtime `public/assets/phase-6/` strictement plat ;
-- [ ] aucun sous-dossier par famille ou projet ;
+- [ ] sources M/S requises approuvées A et versionnées R avant leurs dérivés ;
+- [ ] assets contrôlés et versionnés à la racine avec P, validés avec V puis consommés avec I ;
+- [ ] aucun nouveau sous-dossier par famille ou projet ;
+- [ ] sous-dossiers hérités gelés, sans nouveau fichier ni statut canonique ;
+- [ ] `README.md` et `manifest.json` hérités sans autorité sur le registre ;
 - [ ] aucun ZIP, Base64, fragment ou workflow de reconstruction ;
 - [ ] lazy loading ;
 - [ ] aucun texte fonctionnel rasterisé ;

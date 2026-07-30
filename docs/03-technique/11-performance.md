@@ -4,7 +4,7 @@
 
 La Phase 6 augmente la richesse perçue sans transformer le chargement initial en téléchargement d’illustrations. L’application reste interactive dès l’affichage du cache et les assets arrivent selon leur priorité réelle.
 
-Le registre `docs/05-realisation/10-suivi-production-assets-phase-6.md` fixe les dimensions et formats de chaque fichier.
+Le registre `docs/05-realisation/10-suivi-production-assets-phase-6.md` fixe les dimensions, formats et budgets individuels de chaque fichier ainsi que leur affectation aux lots.
 
 ## Budgets applicatifs
 
@@ -19,11 +19,14 @@ Le registre `docs/05-realisation/10-suivi-production-assets-phase-6.md` fixe les
 
 ### Shell critique
 
-- décor critique supplémentaire : cible inférieure à 250 Ko compressés ;
-- B01 fond principal WebP 2048 × 1152 : cible inférieure à 190 Ko ;
+- décor critique supplémentaire chargé pour un viewport, hors variante de fond active : cible inférieure à 250 Ko compressés ;
+- une seule variante de fond B01 à B04 est chargée initialement ; B01 desktop WebP 2048 × 1152 : cible inférieure à 190 Ko ;
+- plafond desktop d’images critiques Phase 6 : B01 à 190 Ko maximum + décor supplémentaire à 250 Ko maximum, soit 440 Ko ;
 - textures et cadres critiques : cible cumulée inférieure à 100 Ko ;
 - icônes critiques : cible cumulée inférieure à 30 Ko ;
 - aucune police décorative sans licence, mesure et justification.
+
+Les variantes responsive non retenues pour le viewport ne sont ni préchargées ni additionnées au poids du shell initial.
 
 ### Cartes projets
 
@@ -49,7 +52,7 @@ Chaque asset mesuré doit :
 - être inscrit dans le registre ;
 - porter son nom final exact ;
 - présenter les dimensions décodées attendues ;
-- être stocké à plat dans `public/assets/phase-6/` ;
+- être stocké à la racine de `public/assets/phase-6/`, même si I reste décoché ;
 - posséder un fallback ;
 - être absent du chargement initial s’il n’est pas critique.
 

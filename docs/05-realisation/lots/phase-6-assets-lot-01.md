@@ -59,16 +59,17 @@ Une approbation artistique ne valide aucun export runtime.
 
 Chaque remplacement suit désormais exclusivement le registre et le protocole actifs :
 
-1. versionner la source M ou S canonique lorsque requise ;
-2. sélectionner une seule ligne de fichier ;
-3. respecter nom, format, dimensions, alpha, usage, fallback et budget ;
-4. renseigner provenance et droits ;
-5. produire un seul fichier ;
-6. le contrôler et le versionner à la racine de `public/assets/phase-6/`, puis cocher P ;
-7. obtenir la validation humaine, puis cocher V ;
-8. attendre que les prérequis d’entrée du lot 6A à 6E soient satisfaits ;
-9. raccorder le fichier dans la PR du lot, produire les planches d’acceptation et cocher I seulement s’il est consommé ;
-10. supprimer manuellement le prototype remplacé après contrôle des références.
+1. approbation A puis versionnement R du master ou de la source canonique ;
+2. vérification de la source amont R lorsqu’une source S est dérivée ;
+3. sélection d’une seule ligne exacte du registre ;
+4. nom, format, dimensions, alpha, usage, fallback et budget définis avant production ;
+5. provenance et droits renseignés ;
+6. production d’un seul fichier ;
+7. versionnement à la racine de `public/assets/phase-6/`, contrôle technique et statut P ;
+8. validation humaine et statut V, avec I encore décoché ;
+9. attente des prérequis d’entrée du lot 6A à 6E concerné ;
+10. raccord manuel au code dans la PR du lot, production des planches d’acceptation et statut I seulement si le fichier est consommé ;
+11. suppression manuelle du prototype remplacé après contrôle des références.
 
 ## Ordre de remplacement initial
 
@@ -76,8 +77,8 @@ Chaque remplacement suit désormais exclusivement le registre et le protocole ac
 2. versionner M02, puis produire B01 ;
 3. versionner M03, puis produire C01 ;
 4. versionner M04 ;
-5. versionner S01a, puis produire séparément F01a et F01b ;
-6. versionner S01c, puis produire F01c ;
+5. versionner S01a à partir de M04, puis produire séparément F01a et F01b ;
+6. versionner S01c à partir de M04, puis produire F01c ;
 7. versionner M05, puis produire C16.
 
 Les noms, dimensions, transparences, usages, fallbacks, budgets et provenances à utiliser sont exclusivement ceux du registre actif.

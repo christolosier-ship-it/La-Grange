@@ -75,8 +75,9 @@ Le catalogue des assets est défini dans :
 
 Les règles d’architecture sont :
 
-- tous les assets runtime Phase 6 sont placés à plat dans `public/assets/phase-6/` ;
-- aucun sous-dossier par famille ou projet ;
+- tous les nouveaux assets canoniques Phase 6 sont placés à la racine de `public/assets/phase-6/` ;
+- aucun nouveau sous-dossier par famille ou projet ;
+- les sous-dossiers hérités restent gelés et non canoniques jusqu’au remplacement manuel de leurs fichiers ;
 - chaque raster porte son identifiant et ses dimensions dans le nom ;
 - chaque SVG porte son identifiant et possède un `viewBox` exact ;
 - les overrides référencent uniquement des noms inscrits dans le registre ;
@@ -87,7 +88,7 @@ Les règles d’architecture sont :
 - aucun ZIP, contenu Base64, fragment ou workflow de reconstruction ;
 - les prototypes hérités sont remplacés puis supprimés manuellement.
 
-La production, la validation et l’intégration sont trois états distincts. La présence d’un fichier dans `public/` ne signifie pas qu’il est consommé par l’interface.
+Le cycle de preuve distingue A/R pour une source M/S, P/V pour un asset contrôlé et versionné, puis I pour sa consommation réelle. La présence d’un fichier dans `public/` ne signifie donc pas qu’il est consommé par l’interface.
 
 ## Maintenance locale
 

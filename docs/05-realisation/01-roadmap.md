@@ -63,7 +63,7 @@ No-Go vers la production si :
 - le registre ne précise pas le nom et les dimensions du prochain asset ;
 - le protocole de production n’est pas à jour ;
 - les budgets ne sont pas définis ;
-- le dossier runtime plat n’est pas la règle commune ;
+- la racine runtime pour les nouveaux assets et l’exception héritée gelée ne sont pas des règles communes ;
 - une proposition exige un framework ou un backend ;
 - les fallbacks ne sont pas prévus ;
 - l’accessibilité est traitée comme une finition.
@@ -71,7 +71,9 @@ No-Go vers la production si :
 No-Go vers l’intégration si :
 
 - l’asset n’est pas inscrit au registre ;
+- sa source M/S requise ou sa source amont n’est pas versionnée R ;
 - son nom, son format ou ses dimensions diffèrent ;
+- il n’est pas contrôlé et versionné P à la racine du dossier runtime ;
 - sa validation humaine manque ;
 - son fallback n’est pas testé ;
 - il provient d’un prototype hérité non remplacé ;

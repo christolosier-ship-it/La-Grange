@@ -58,7 +58,7 @@ La Phase 6 enrichit les visuels sans transformer les overrides en catalogue d’
 - un chemin invalide ne bloque pas la synchronisation ;
 - aucune donnée métier ne doit être encodée dans le nom ou l’image ;
 - les assets sont locaux et servis sous le `base` de l’application ;
-- les chemins Phase 6 pointent exclusivement vers le dossier plat `assets/phase-6/` ;
+- les chemins Phase 6 pointent exclusivement vers la racine canonique `assets/phase-6/`, jamais vers un sous-dossier hérité ;
 - le nom du fichier doit correspondre exactement au registre `docs/05-realisation/10-suivi-production-assets-phase-6.md` ;
 - aucun chemin ne pointe vers un CDN, une URL temporaire ou un service externe ;
 - aucun override ne référence un prototype hérité.

@@ -29,10 +29,10 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - diagnostic local copiable limité aux états, compteurs et préférences effectives ;
 - cadrage documentaire complet de la Phase 6 avec bible visuelle, inventaire et budgets d’assets, responsive artistique, grammaire de mouvement et checklist qualité ;
 - référence visuelle Phase 6 conservée dans le dépôt en WebP documentaire ;
-- registre canonique des assets avec noms, formats, dimensions, transparences, usages, fallbacks, budgets, provenances, droits et statuts ;
+- registre canonique des assets avec noms, formats, dimensions, transparences, usages, fallbacks, budgets, provenances, droits, dépendances, lots et statuts ;
 - sources canoniques M et S séparant directions artistiques, couvertures et logos avant tout dérivé ;
 - budgets individuels et contrats fichier par fichier pour les familles A à G ;
-- matrice exacte des prérequis d’entrée et des planches d’acceptation pour les PR 6A à 6E ;
+- matrice exacte des prérequis d’entrée, affectations aux lots et planches d’acceptation pour les PR 6A à 6E ;
 - protocole de production manuelle asset par asset et ADR maintenant GitHub comme source de vérité ;
 - découpage de la Phase 6 en production validée puis PR 6A à 6E.
 
@@ -56,7 +56,9 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - comptage des seuls détails réellement supprimés pendant la maintenance ;
 - remplacement de l’ancienne méthode de prototypage externe par une production manuelle pilotée par le registre ;
 - adoption d’une cible runtime plate `public/assets/phase-6/` et d’une convention de nommage unique ;
-- distinction entre fichier P/V versionné et fichier I réellement consommé par l’application ;
+- distinction du cycle A/R/P/V/I entre source approuvée et versionnée, fichier produit et validé, puis fichier réellement consommé par l’application ;
+- correction de la chaîne M04 vers S01a et S01c avant la production de F01 ;
+- clarification du budget du shell en séparant le fond responsive actif du plafond global de 250 Ko ;
 - déplacement des planches G dans les critères d’acceptation des PR afin de supprimer les dépendances circulaires ;
 - formalisation de l’exception transitoire gelée pour les sous-dossiers de prototypes hérités ;
 - retrait des ornements P3 facultatifs de la porte d’entrée du lot 6E ;

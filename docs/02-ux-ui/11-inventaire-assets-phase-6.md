@@ -8,7 +8,7 @@ Le catalogue précis des fichiers est :
 
 `docs/05-realisation/10-suivi-production-assets-phase-6.md`
 
-Ce registre est l’unique source de vérité pour les identifiants, noms, formats, dimensions, transparences, usages, fallbacks, provenances et statuts.
+Ce registre est l’unique source de vérité pour les identifiants, noms, formats, dimensions, transparences, usages, fallbacks, budgets, provenances, droits, dépendances, affectations aux lots et statuts.
 
 ## Principes
 
@@ -22,7 +22,7 @@ Ce registre est l’unique source de vérité pour les identifiants, noms, forma
 - les textes fonctionnels restent en HTML ;
 - les textures sont discrètes et répétables ;
 - les assets inutilisés sont supprimés après remplacement et contrôle ;
-- la présence d’un fichier dans le dépôt ne constitue pas une validation.
+- la présence seule d’un fichier dans le dépôt ne constitue pas une validation.
 
 ## Référence de cadrage
 
@@ -32,7 +32,7 @@ Ce registre est l’unique source de vérité pour les identifiants, noms, forma
 
 Cette référence ne doit pas être servie par l’application.
 
-Les masters M01 à M05 sont enregistrés séparément sous les noms canoniques du registre avant toute production dérivée.
+Les masters M01 à M05 et les sources projet S sont enregistrés séparément sous les noms canoniques du registre avant toute production dérivée. S01a et S01c ne peuvent recevoir R qu’après M04.
 
 ## Arborescence cible
 
@@ -47,18 +47,20 @@ public/
       p6-f01a-gargotte-adventure-cover-640x400.webp
 ```
 
-Le dossier `public/assets/phase-6/` reste volontairement plat.
+Tous les nouveaux assets canoniques sont versionnés à la racine de `public/assets/phase-6/`, y compris avec P/V cochés et I décoché.
 
 Interdictions :
 
-- aucun sous-dossier par famille ;
-- aucun sous-dossier par projet ;
+- aucun nouveau sous-dossier par famille ;
+- aucun nouveau sous-dossier par projet ;
 - aucun ZIP ;
 - aucun fragment Base64 ;
 - aucun fichier temporaire ;
 - aucun workflow de reconstruction d’assets.
 
 Les masters et planches de contrôle restent également à plat dans `docs/assets/phase-6/`.
+
+Les sous-dossiers historiques `brand/`, `components/`, `panels/`, `projects/` et `shell/` restent une exception transitoire gelée : aucun fichier n’y est ajouté et aucun de leurs fichiers ne reçoit P, V ou I. Leur `README.md` et leur `manifest.json` historiques n’ont aucune autorité sur le registre.
 
 ## Convention de nommage
 
@@ -207,8 +209,9 @@ Aucune dimension approximative n’est utilisée au moment de l’export.
 
 ### Shell initial
 
-- décor critique supplémentaire : cible inférieure à 250 Ko compressés ;
-- fond principal : cible inférieure à 190 Ko en WebP ;
+- décor critique supplémentaire par viewport, hors fond responsive actif : cible inférieure à 250 Ko compressés ;
+- une seule variante de fond B01 à B04 chargée initialement ; B01 desktop : cible inférieure à 190 Ko en WebP ;
+- plafond desktop d’images critiques Phase 6 : 190 Ko pour B01 + 250 Ko supplémentaires, soit 440 Ko maximum ;
 - textures et cadres critiques : cible cumulée inférieure à 100 Ko ;
 - icônes critiques : cible cumulée inférieure à 30 Ko ;
 - aucune police décorative sans licence et justification.
@@ -259,14 +262,14 @@ Chaque fichier suit le protocole :
 
 Étapes minimales :
 
-1. master ou source canonique disponible ;
-2. contrat lu dans le registre ;
-3. production d’un seul fichier ;
-4. export exact ;
-5. provenance renseignée ;
-6. contrôle technique et P ;
+1. master ou source canonique approuvé A et versionné R ;
+2. source amont R vérifiée lorsqu’une source S est dérivée ;
+3. contrat lu dans le registre ;
+4. production d’un seul fichier ;
+5. export exact et provenance renseignée ;
+6. versionnement à la racine de `public/assets/phase-6/`, contrôle technique et P ;
 7. validation humaine et V ;
-8. conservation du livrable validé pour le futur lot d’intégration ;
+8. conservation du fichier à la racine avec I décoché jusqu’au futur lot d’intégration ;
 9. mise à jour du prochain élément autorisé.
 
 L’intégration manuelle et le statut I interviennent plus tard, lorsque les assets, fallbacks et planches du lot 6A à 6E sont réunis.
@@ -317,6 +320,7 @@ Ils sont :
 - la provenance et les droits sont documentés ;
 - aucun texte fonctionnel n’est rasterisé ;
 - le fallback est testé ;
-- le dossier runtime reste plat ;
+- le fichier canonique est à la racine du dossier runtime ;
+- aucun nouveau sous-dossier n’est créé et l’exception héritée reste gelée ;
 - aucun asset externe ou secret n’est introduit ;
 - l’application reste compréhensible avec toutes les images bloquées.

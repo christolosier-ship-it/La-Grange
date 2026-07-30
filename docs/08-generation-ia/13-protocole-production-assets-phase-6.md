@@ -206,4 +206,4 @@ I reste décoché jusqu’à la PR d’intégration concernée.
 
 ## Ordre de production
 
-L’ordre autorisé est celui de la section finale du registre. Le champ « Prochain élément autorisé » est mis à jour après chaque validation.
+L’ordre autorisé est celui de la section finale du registre. Pour Gargotte, la chaîne est obligatoirement M04 avec R, puis S01a avec R avant F01a et F01b, et S01c avec R avant F01c. Le champ « Prochain élément autorisé » est mis à jour après chaque validation.
