@@ -29,8 +29,9 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - diagnostic local copiable limité aux états, compteurs et préférences effectives ;
 - cadrage documentaire complet de la Phase 6 avec bible visuelle, inventaire et budgets d’assets, responsive artistique, grammaire de mouvement et checklist qualité ;
 - référence visuelle Phase 6 conservée dans le dépôt en WebP documentaire ;
-- protocole Lovable et ADR maintenant GitHub comme source de vérité du prototypage visuel ;
-- découpage de la Phase 6 en prototype isolé puis PR 6A à 6E.
+- registre canonique des assets avec noms, formats, dimensions et statuts ;
+- protocole de production manuelle asset par asset et ADR maintenant GitHub comme source de vérité ;
+- découpage de la Phase 6 en production validée puis PR 6A à 6E.
 
 ### Corrigé
 
@@ -49,7 +50,9 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - filtrage des forks et archives sans altérer le snapshot ni bloquer les fiches directes ;
 - restauration de l’ancien profil lorsqu’un changement échoue sans cache utilisable ;
 - reconstruction de la session après reset afin d’empêcher la réapparition d’un snapshot supprimé en mémoire ;
-- comptage des seuls détails réellement supprimés pendant la maintenance.
+- comptage des seuls détails réellement supprimés pendant la maintenance ;
+- remplacement de l’ancienne méthode de prototypage externe par une production manuelle pilotée par le registre ;
+- adoption d’un dossier runtime plat `public/assets/phase-6/` et d’une convention de nommage unique.
 
 ## Versionnement prévu
 
