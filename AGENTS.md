@@ -21,7 +21,7 @@ Pour toute intervention Phase 6, lire également :
 - `docs/08-generation-ia/13-protocole-production-assets-phase-6.md` ;
 - la performance et la checklist Phase 6 référencées dans `docs/INDEX.md`.
 
-Le registre `10-suivi-production-assets-phase-6.md` est l’unique source de vérité pour les noms, formats, dimensions et statuts des assets.
+Le registre `10-suivi-production-assets-phase-6.md` est l’unique source de vérité pour les noms, formats, dimensions, transparences, budgets, provenances, droits et statuts des assets.
 
 ## Interdictions
 
@@ -38,8 +38,9 @@ Le registre `10-suivi-production-assets-phase-6.md` est l’unique source de vé
 - ne pas utiliser une animation permanente pour créer de l’ambiance ;
 - ne pas masquer une modification métier dans une PR visuelle ;
 - ne pas produire plusieurs assets sans validation intermédiaire ;
-- ne pas inventer un nom, un format ou une dimension absent du registre ;
-- ne pas créer de sous-dossier dans `public/assets/phase-6/` ;
+- ne pas inventer un nom, un format, une dimension ou un budget absent du registre ;
+- ne pas créer de nouveau sous-dossier dans `public/assets/phase-6/` ;
+- ne pas ajouter de fichier dans les sous-dossiers hérités gelés ;
 - ne pas intégrer de ZIP, Base64, fragment ou workflow de reconstruction ;
 - ne pas considérer un prototype hérité comme un asset validé.
 
@@ -57,9 +58,12 @@ Le registre `10-suivi-production-assets-phase-6.md` est l’unique source de vé
 ## Règles visuelles Phase 6
 
 - GitHub et la documentation restent la source de vérité ;
-- un seul asset est produit, contrôlé puis validé à la fois ;
-- le fichier final respecte exactement le nom, le format et les dimensions du registre ;
-- les assets runtime sont intégrés manuellement dans le dossier plat `public/assets/phase-6/` ;
+- un seul fichier est produit, contrôlé puis validé à la fois ;
+- une source M ou S doit être approuvée et versionnée avant tout dérivé ;
+- le fichier final respecte exactement le nom, le format, les dimensions, l’alpha et le budget du registre ;
+- les assets P et V sont versionnés à la racine de `public/assets/phase-6/`, même avant leur consommation ;
+- I n’est coché que lorsque l’application consomme réellement le fichier ;
+- les anciens sous-dossiers restent une exception transitoire gelée jusqu’au remplacement manuel ;
 - le décor ne modifie ni le rôle, ni les données, ni les états d’un composant ;
 - le texte reste en HTML ;
 - chaque asset critique possède un fallback CSS ou SVG ;
@@ -67,7 +71,7 @@ Le registre `10-suivi-production-assets-phase-6.md` est l’unique source de vé
 - les budgets d’assets sont mesurés et publiés ;
 - le mobile, la tablette et le bureau sont conçus comme des compositions distinctes ;
 - le mouvement réduit conserve l’état final sans animation décorative ;
-- une sortie IA brute est nettoyée, renommée, dimensionnée, compressée et validée avant intégration ;
+- une sortie IA brute est nettoyée, renommée, dimensionnée, compressée et validée avant production ;
 - les objets décoratifs sont inertes et hors de l’arbre d’accessibilité.
 
 ## Qualité obligatoire
@@ -100,4 +104,4 @@ Pour une PR Phase 6, ajouter :
 
 Une tâche n’est terminée que si son comportement nominal, ses erreurs, son état vide, son responsive et son accessibilité sont couverts.
 
-Une tâche Phase 6 n’est pas terminée si elle dépend d’un prototype non canonique, si le registre n’est pas à jour, si le fichier n’a pas son nom ou ses dimensions finales, si elle dégrade le hors ligne, si elle invente une donnée, si elle dépasse les budgets sans justification ou si un P1 ou P2 reste ouvert.
+Une tâche Phase 6 n’est pas terminée si elle dépend d’un prototype non canonique, si le registre n’est pas exact, si une source manque, si le fichier n’a pas son nom, ses dimensions, son alpha ou son budget final, si elle dégrade le hors ligne, si elle invente une donnée ou si un P1 ou P2 reste ouvert.
