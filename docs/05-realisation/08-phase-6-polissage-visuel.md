@@ -2,7 +2,7 @@
 
 ## Statut
 
-Cadrage documentaire révisé le 2026-07-30. La production graphique suit désormais une méthode séquentielle, asset par asset.
+Cadrage documentaire révisé le 2026-07-30. La production graphique suit désormais une méthode séquentielle, fichier par fichier.
 
 Aucune intégration visuelle ne commence à partir d’un prototype hérité. Seuls les fichiers conformes au registre peuvent être utilisés.
 
@@ -41,7 +41,7 @@ Avant toute intervention, lire :
 8. le protocole de production des assets ;
 9. le README.
 
-Le registre prime pour les identifiants, noms, formats, dimensions et statuts.
+Le registre prime pour les identifiants, noms, formats, dimensions, transparences, usages, fallbacks, provenances et statuts.
 
 ## Périmètre
 
@@ -105,7 +105,7 @@ Toute modification fonctionnelle découverte pendant la Phase 6 est isolée dans
 La Phase 6 est découpée en trois temps :
 
 1. cadrage et registre ;
-2. production et validation manuelles des assets ;
+2. production et validation manuelles des masters, assets et planches ;
 3. intégration progressive par lots fonctionnels.
 
 Une PR unique mêlant tous les assets et toutes les vues est interdite.
@@ -124,7 +124,7 @@ Livrables :
 - checklist qualité ;
 - plan de PR.
 
-Critère de sortie : documents cohérents, référence disponible et prochain asset autorisé explicitement identifié.
+Critère de sortie : documents cohérents, références disponibles, masters canoniques identifiés et prochain élément autorisé explicitement indiqué.
 
 ## Étape 6.1 - Production manuelle des assets
 
@@ -134,8 +134,11 @@ La production suit le registre :
 
 Règles :
 
-- un seul asset à la fois ;
-- nom, format et dimensions définis avant production ;
+- une ligne correspond à un seul fichier ;
+- un seul fichier est produit à la fois ;
+- le master ou la source canonique doit être versionné avant le dérivé ;
+- nom, format, dimensions, alpha, usage et fallback sont définis avant production ;
+- provenance et droits sont renseignés avant P ;
 - export contrôlé ;
 - validation humaine obligatoire ;
 - aucun passage au suivant avant validation ;
@@ -143,7 +146,9 @@ Règles :
 - aucun sous-dossier runtime ;
 - aucun ZIP, Base64 ou workflow de reconstruction.
 
-Le premier ordre est : A01, B01, C01, F01 puis C16.
+Le premier ordre est : versionner M01, produire A01, versionner M02, produire B01, versionner M03, produire C01, versionner M04, produire F01a puis F01b puis F01c, versionner M05, produire C16.
+
+Les statuts P et V clôturent la production d’un fichier. Le statut I reste décoché jusqu’à la PR d’intégration concernée.
 
 ## Étape 6.2 - Planches de validation
 
@@ -157,6 +162,8 @@ Les planches :
 - montrent les fallbacks ;
 - n’introduisent aucune donnée de production fictive ;
 - servent de preuve avant l’intégration d’un lot.
+
+Une PR d’intégration ne démarre que lorsque les fichiers, fallbacks et planches nécessaires à son périmètre sont validés.
 
 ## Dossier runtime
 
@@ -249,12 +256,12 @@ Une PR corrective séparée est recommandée si les revues laissent des P1 ou P2
 
 ## Ordre de production des familles
 
-1. cinq dérivés prioritaires du registre ;
+1. versionnement et dérivés prioritaires M01/A01, M02/B01, M03/C01, M04/F01a à F01c et M05/C16 ;
 2. variantes de marque et fonds ;
 3. matières et lumière P0 ;
 4. iconographie P0 ;
 5. cadres et panneaux P0 ;
-6. F02 à F08 ;
+6. F02a à F08c, fichier par fichier ;
 7. planches G01 à G03 ;
 8. P1 ;
 9. P2 et P3 seulement après validation globale.
@@ -271,6 +278,8 @@ Routes, recherche, filtres, favoris, synchronisation, détails, activité, param
 
 ### Assets
 
+- source canonique disponible ;
+- provenance et droits renseignés ;
 - fichier présent dans le registre ;
 - nom exact ;
 - dimensions décodées exactes ;
