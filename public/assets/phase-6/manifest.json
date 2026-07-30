@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "status": "integration-in-progress",
+  "assets": [
+    {
+      "id": "A01-runtime",
+      "path": "/assets/phase-6/brand/brand-sign.webp",
+      "role": "Enseigne principale du shell",
+      "format": "webp",
+      "dimensions": [440, 203],
+      "alpha": true,
+      "validated": true,
+      "integratedInUi": false
+    }
+  ]
+}
