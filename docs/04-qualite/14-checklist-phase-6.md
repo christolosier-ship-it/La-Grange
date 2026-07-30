@@ -2,17 +2,16 @@
 
 ## Usage
 
-Cette checklist est complétée dans chaque PR visuelle avec les éléments applicables. La dernière PR de Phase 6 fournit une synthèse consolidée.
-
-Un contrôle non exécuté est noté comme tel. Il ne doit jamais être marqué réussi par déduction.
+Cette checklist est complétée dans chaque PR visuelle avec les éléments applicables. Un contrôle non exécuté est noté comme tel et ne peut pas être déclaré réussi par déduction.
 
 ## Périmètre
 
-- [ ] la PR ne mélange pas une nouvelle fonction métier avec le visuel ;
-- [ ] le périmètre correspond au lot Phase 6 annoncé ;
+- [ ] la PR ne mélange pas fonction métier et visuel ;
+- [ ] le lot correspond au document Phase 6 ;
 - [ ] les documents concernés sont à jour ;
-- [ ] les écarts au prototype sont explicités ;
-- [ ] les idées hors périmètre sont consignées sans être implémentées.
+- [ ] le registre est à jour ;
+- [ ] les écarts aux planches validées sont explicités ;
+- [ ] les idées hors périmètre ne sont pas implémentées.
 
 ## Vérité des données
 
@@ -20,17 +19,32 @@ Un contrôle non exécuté est noté comme tel. Il ne doit jamais être marqué 
 - [ ] aucune progression inventée ;
 - [ ] aucune version, release, branche ou conflit dessiné dans un asset ;
 - [ ] aucune donnée réelle remplacée par une donnée de démonstration ;
-- [ ] les placeholders de prototype ne sont pas présents en production ;
+- [ ] aucun contenu de prototype hérité utilisé en production ;
 - [ ] les états sans donnée restent honnêtes.
+
+## Registre et méthode
+
+- [ ] chaque asset figure dans `10-suivi-production-assets-phase-6.md` ;
+- [ ] le nom final est strictement identique ;
+- [ ] le format réel correspond ;
+- [ ] les dimensions décodées correspondent ;
+- [ ] la transparence correspond ;
+- [ ] un seul asset a été produit avant validation ;
+- [ ] la validation humaine est tracée ;
+- [ ] le prochain asset autorisé a été respecté ;
+- [ ] aucun sous-dossier n’a été créé dans `public/assets/phase-6/` ;
+- [ ] aucun ZIP, Base64, fragment ou workflow de reconstruction ;
+- [ ] les prototypes hérités ne sont pas comptés comme validés ;
+- [ ] aucun prototype remplacé n’est supprimé avant contrôle des références.
 
 ## Direction artistique
 
-- [ ] l’univers de La Grange est immédiatement reconnaissable ;
+- [ ] l’univers est immédiatement reconnaissable ;
 - [ ] le rendu est stylisé, ni photoréaliste ni cartoon ;
-- [ ] le décor reste secondaire par rapport aux projets ;
-- [ ] les matériaux suivent la bible visuelle ;
+- [ ] le décor reste secondaire ;
+- [ ] les matériaux suivent la bible ;
 - [ ] la lumière reste cohérente ;
-- [ ] les identités de projet peuvent être plus colorées que le shell ;
+- [ ] les identités de projet sont plus colorées que le shell ;
 - [ ] les détails décoratifs ne ressemblent pas à des contrôles ;
 - [ ] aucune texture complexe sous un long texte ;
 - [ ] les irrégularités ne déforment ni texte ni hitbox ;
@@ -45,7 +59,7 @@ Un contrôle non exécuté est noté comme tel. Il ne doit jamais être marqué 
 - [ ] cartes compactes ;
 - [ ] cartes liste ;
 - [ ] badges ;
-- [ ] panneaux secondaires ;
+- [ ] panneaux ;
 - [ ] recherche ;
 - [ ] filtres ;
 - [ ] états vides ;
@@ -56,7 +70,7 @@ Un contrôle non exécuté est noté comme tel. Il ne doit jamais être marqué 
 
 Pour chaque composant traité :
 
-- [ ] état normal ;
+- [ ] normal ;
 - [ ] survol ;
 - [ ] focus ;
 - [ ] pressé ;
@@ -72,9 +86,9 @@ Pour chaque composant traité :
 ### 320 px
 
 - [ ] aucune fonction perdue ;
-- [ ] aucun scroll horizontal global ;
+- [ ] aucun scroll horizontal ;
 - [ ] aucun cadre coupé ;
-- [ ] cibles tactiles de 44 px minimum.
+- [ ] cibles tactiles de 44 px.
 
 ### 390 px
 
@@ -86,7 +100,7 @@ Pour chaque composant traité :
 ### 768 px
 
 - [ ] composition tablette portrait ;
-- [ ] deux colonnes seulement lorsque le contenu le permet ;
+- [ ] deux colonnes seulement lorsque possible ;
 - [ ] panneaux secondaires dans le flux ;
 - [ ] zoom 200 % sans perte.
 
@@ -99,61 +113,59 @@ Pour chaque composant traité :
 
 ### 1440 px
 
-- [ ] scène complète cohérente ;
+- [ ] scène complète ;
 - [ ] rail droit lisible ;
-- [ ] grille de cartes stable ;
-- [ ] lignes de texte limitées.
+- [ ] grille stable ;
+- [ ] longueurs de ligne limitées.
 
 ### 1920 px
 
 - [ ] scène centrée ;
-- [ ] fond prolongé sans agrandir excessivement le contenu ;
-- [ ] aucune carte supplémentaire ajoutée uniquement pour remplir ;
-- [ ] absence de répétition visible des textures.
+- [ ] fond prolongé sans étirer le contenu ;
+- [ ] aucune carte ajoutée pour remplir ;
+- [ ] aucune répétition visible.
 
 ## Accessibilité
 
 - [ ] landmarks conservés ;
-- [ ] un seul `h1` par vue ;
-- [ ] ordre de titres cohérent ;
-- [ ] lien d’évitement visible au focus ;
-- [ ] navigation clavier complète ;
-- [ ] focus visible sur toutes les textures ;
-- [ ] ordre de tabulation stable ;
+- [ ] un seul `h1` ;
+- [ ] titres cohérents ;
+- [ ] lien d’évitement ;
+- [ ] clavier complet ;
+- [ ] focus visible ;
+- [ ] tabulation stable ;
 - [ ] aucune zone cliquable imbriquée illégalement ;
-- [ ] textes normaux à 4,5:1 ;
-- [ ] grands textes à 3:1 ;
+- [ ] contrastes 4,5:1 et 3:1 ;
 - [ ] états avec texte et icône ;
 - [ ] images décoratives avec alt vide ;
-- [ ] couvertures informatives avec alt concis ;
+- [ ] couvertures avec alt concis ;
 - [ ] liens externes annoncés ;
 - [ ] dates relatives avec date complète accessible ;
-- [ ] VoiceOver iOS ou contrôle équivalent ;
+- [ ] VoiceOver ou équivalent ;
 - [ ] modale avec fond inerte ;
-- [ ] restauration du focus après fermeture ;
-- [ ] erreur annoncée dans la modale ;
+- [ ] restauration du focus ;
+- [ ] erreur annoncée ;
 - [ ] zoom 200 % ;
 - [ ] orientation libre ;
-- [ ] mode contraste accru contrôlé lorsque disponible.
+- [ ] contraste accru contrôlé.
 
 ## Mouvement
 
 - [ ] aucune animation permanente ;
 - [ ] aucune particule continue ;
 - [ ] aucun clignotement ;
-- [ ] aucune animation de grande surface ;
-- [ ] aucune animation bloque le clic ;
-- [ ] durée conforme aux tokens ;
-- [ ] propriétés privilégiées : `transform` et `opacity` ;
-- [ ] focus stable pendant les transitions ;
+- [ ] aucune grande surface animée ;
+- [ ] aucune animation ne bloque le clic ;
+- [ ] durées conformes ;
+- [ ] `transform` et `opacity` privilégiés ;
+- [ ] focus stable ;
 - [ ] mouvement réduit complet ;
-- [ ] nouvelle arrivée non rejouée sans cause ;
 - [ ] synchronisation compréhensible sans lueur.
 
 ## Assets
 
-- [ ] asset inventorié ;
-- [ ] chemin stable ;
+- [ ] identifiant documenté ;
+- [ ] chemin plat et stable ;
 - [ ] dimensions documentées ;
 - [ ] poids documenté ;
 - [ ] format justifié ;
@@ -162,42 +174,40 @@ Pour chaque composant traité :
 - [ ] aucun script dans le SVG ;
 - [ ] aucun texte fonctionnel rasterisé ;
 - [ ] fallback testé ;
-- [ ] lazy loading appliqué ;
+- [ ] lazy loading ;
 - [ ] ratio réservé ;
-- [ ] asset inutilisé supprimé ;
-- [ ] aucune requête vers un CDN externe.
+- [ ] asset inutilisé retiré après remplacement ;
+- [ ] aucune requête CDN.
 
 ## Performance
 
-- [ ] poids CSS avant et après ;
-- [ ] poids JavaScript avant et après ;
+- [ ] poids CSS et JavaScript avant/après ;
 - [ ] poids des nouveaux assets ;
 - [ ] poids du shell critique ;
-- [ ] nombre de requêtes initiales ;
-- [ ] LCP mesuré ;
-- [ ] CLS mesuré ;
-- [ ] interaction possible depuis le cache ;
-- [ ] cache froid ;
-- [ ] cache chaud ;
+- [ ] requêtes initiales ;
+- [ ] LCP ;
+- [ ] CLS ;
+- [ ] interaction depuis le cache ;
+- [ ] cache froid et chaud ;
 - [ ] réseau limité ;
 - [ ] images bloquées ;
-- [ ] lazy loading vérifié ;
-- [ ] aucune couverture 960 px dans une carte compacte ;
-- [ ] aucune police ou graisse inutile ;
-- [ ] test sur appareil moyen ;
-- [ ] test iPad réel lorsque disponible ;
-- [ ] écart de budget justifié.
+- [ ] lazy loading ;
+- [ ] aucune couverture 960 dans une carte compacte ;
+- [ ] aucune police inutile ;
+- [ ] appareil moyen ;
+- [ ] iPad réel lorsque disponible ;
+- [ ] écart de budget approuvé.
 
 ## PWA et hors ligne
 
-- [ ] shell disponible hors ligne ;
+- [ ] shell hors ligne ;
 - [ ] dernier snapshot visible ;
 - [ ] assets critiques mis en cache ;
 - [ ] absence d’asset non critique tolérée ;
-- [ ] mise à jour du service worker contrôlée ;
-- [ ] données IndexedDB préservées ;
-- [ ] installation iOS et navigateur compatible contrôlée ;
-- [ ] version visible mise à jour lorsque le lot est publié.
+- [ ] service worker contrôlé ;
+- [ ] IndexedDB préservé ;
+- [ ] installation iOS contrôlée ;
+- [ ] version visible mise à jour.
 
 ## Fonctionnel non régressé
 
@@ -210,55 +220,35 @@ Pour chaque composant traité :
 - [ ] filtres ;
 - [ ] favoris ;
 - [ ] fiche directe ;
-- [ ] détails à la demande ;
+- [ ] détails ;
 - [ ] activité ;
 - [ ] paramètres ;
 - [ ] diagnostic ;
 - [ ] reset ciblé ;
-- [ ] mode hors ligne ;
+- [ ] hors ligne ;
 - [ ] renommage et alias.
 
-## CI
+## CI et revue
 
 - [ ] `npm ci` ;
 - [ ] TypeScript strict ;
 - [ ] ESLint ;
-- [ ] suite Vitest complète ;
-- [ ] smoke test GitHub réel ;
-- [ ] build Vite production ;
-- [ ] aucun test désactivé pour faire passer la PR ;
-- [ ] aucun avertissement bloquant.
-
-## Revue
-
-- [ ] diff complet relu ;
+- [ ] Vitest complet ;
+- [ ] smoke test GitHub ;
+- [ ] build Vite ;
+- [ ] aucun test désactivé ;
+- [ ] diff relu ;
 - [ ] fichiers parasites absents ;
-- [ ] dépendances inchangées ou justifiées ;
-- [ ] review Codex demandée ;
-- [ ] review threads interrogés ;
-- [ ] chaque P1 corrigé avec test ;
-- [ ] chaque P2 corrigé avec test ;
-- [ ] fils résolus formellement ;
-- [ ] seconde interrogation des fils ;
+- [ ] dépendances justifiées ;
+- [ ] revue Codex demandée ;
+- [ ] fils interrogés ;
+- [ ] P1 et P2 corrigés avec tests ;
+- [ ] fils résolus ;
+- [ ] seconde interrogation ;
 - [ ] CI verte sur le SHA exact ;
-- [ ] fusion verrouillée sur ce SHA ;
-- [ ] `main` contrôlé après fusion.
+- [ ] fusion verrouillée ;
+- [ ] `main` contrôlé.
 
-## Go ou No-Go final
+## No-Go final
 
-No-Go si une seule condition suivante est vraie :
-
-- donnée fictive ;
-- contraste bloquant ;
-- fonction perdue ;
-- fallback cassé ;
-- mode hors ligne dégradé ;
-- focus perdu ;
-- scroll horizontal global ;
-- asset distant requis ;
-- secret ;
-- animation obligatoire ;
-- budget dépassé sans approbation ;
-- P1 ou P2 ouvert ;
-- CI non verte ;
-- vue majeure non traitée.
+No-Go si : donnée fictive, contraste bloquant, fonction perdue, fallback cassé, hors ligne dégradé, focus perdu, scroll horizontal, asset distant, secret, animation obligatoire, budget non approuvé, nom ou dimensions non conformes, sous-dossier runtime, prototype hérité utilisé, P1/P2 ouvert, CI non verte ou vue majeure non traitée.
