@@ -33,19 +33,19 @@
 
 Tout asset généré doit :
 
-1. suivre la bible visuelle ;
-2. correspondre à une ligne du registre ;
-3. utiliser le nom final prévu ;
-4. respecter le format et les dimensions exacts ;
-5. éviter textes, symboles et métriques inventés ;
-6. être nettoyé, recadré et compressé ;
-7. posséder une provenance ;
-8. posséder un fallback ;
+1. respecter la source inscrite au registre : vérifier A/R pour une M/S citée, P/V pour un asset canonique cité par identifiant, contrôler sans faux statut un fallback hors registre décrit exactement par sa ligne, ou renseigner la provenance d’une création interne ;
+2. suivre la bible visuelle ;
+3. correspondre à une ligne du registre ;
+4. utiliser le nom final prévu ;
+5. respecter le format et les dimensions exacts ;
+6. éviter textes, symboles et métriques inventés ;
+7. être nettoyé, recadré et compressé ;
+8. posséder une provenance et un fallback ;
 9. être testé à la taille CSS utile ;
 10. être comparé à la référence et au composant réel ;
-11. être validé humainement avant intégration ;
-12. être intégré manuellement dans le dossier plat ;
-13. mettre à jour les statuts P, V et I.
+11. être contrôlé, versionné à la racine de `public/assets/phase-6/` et recevoir P ;
+12. être validé humainement avec V ;
+13. recevoir I seulement lors de son raccord réel au code dans un lot 6A à 6E.
 
 La production de masse est interdite. Une proposition cohérente et contrôlée vaut mieux qu’une collection d’images incompatibles.
 
@@ -55,7 +55,8 @@ La production de masse est interdite. Une proposition cohérente et contrôlée 
 - ne pas décider du nom après génération ;
 - ne pas modifier les dimensions sans corriger d’abord le registre ;
 - ne pas créer de variante non inscrite ;
-- ne pas créer de sous-dossier dans `public/assets/phase-6/` ;
+- ne pas créer de nouveau sous-dossier dans `public/assets/phase-6/` ;
+- ne rien ajouter aux sous-dossiers hérités gelés ;
 - ne pas utiliser de ZIP, Base64, fragment ou workflow de reconstruction ;
 - ne pas utiliser un prototype hérité comme preuve de validation ;
 - ne pas supprimer un prototype avant remplacement et contrôle des références.

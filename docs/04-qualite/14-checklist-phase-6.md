@@ -28,14 +28,26 @@ Cette checklist est complétée dans chaque PR visuelle avec les éléments appl
 - [ ] le nom final est strictement identique ;
 - [ ] le format réel correspond ;
 - [ ] les dimensions décodées correspondent ;
+- [ ] tout SVG possède un `viewBox` complet à quatre valeurs numériques conforme au registre ;
 - [ ] la transparence correspond ;
+- [ ] toute source M/S requise possède A et R, y compris sa source amont lorsqu’elle est dérivée ;
+- [ ] tout asset canonique Phase 6 cité par identifiant comme dépendance ou fallback possède P et V avant son dépendant ;
+- [ ] tout fallback HTML, CSS, système ou runtime hors registre est décrit exactement par sa ligne du registre, avec sélecteurs consommateurs et feuilles versionnées pour le CSS ou chemin versionné pour un fichier, puis présent et testé sans faux statut P/V ;
+- [ ] les quatre fallbacks runtime distincts d’A09 à A12 existent à leur chemin déclaré et sont contrôlés dans leur usage manifeste ou HTML ;
+- [ ] une création interne sans source canonique possède méthode, provenance et droits sans statut R artificiel ;
+- [ ] tout export dérivé, y compris chaque fichier F et chaque planche G, possède sa propre méthode d’export ou de capture, son outil et son auteur avant P ;
 - [ ] un seul asset a été produit avant validation ;
+- [ ] P correspond à un fichier contrôlé et versionné à la racine du dossier runtime ;
 - [ ] la validation humaine est tracée ;
+- [ ] V est distinct de I, réservé à la consommation réelle par l’application ;
 - [ ] le prochain asset autorisé a été respecté ;
-- [ ] aucun sous-dossier n’a été créé dans `public/assets/phase-6/` ;
+- [ ] aucun nouveau sous-dossier n’a été créé dans `public/assets/phase-6/` ;
+- [ ] aucun fichier n’a été ajouté aux sous-dossiers hérités gelés ;
 - [ ] aucun ZIP, Base64, fragment ou workflow de reconstruction ;
 - [ ] les prototypes hérités ne sont pas comptés comme validés ;
 - [ ] aucun prototype remplacé n’est supprimé avant contrôle des références.
+- [ ] chaque contrôle CSS requis était spécifié avant le lot et est intégré avant fusion ;
+- [ ] les planches du lot ont été produites après ses changements et validées avant fusion.
 
 ## Direction artistique
 
@@ -251,4 +263,4 @@ Pour chaque composant traité :
 
 ## No-Go final
 
-No-Go si : donnée fictive, contraste bloquant, fonction perdue, fallback cassé, hors ligne dégradé, focus perdu, scroll horizontal, asset distant, secret, animation obligatoire, budget non approuvé, nom ou dimensions non conformes, sous-dossier runtime, prototype hérité utilisé, P1/P2 ouvert, CI non verte ou vue majeure non traitée.
+No-Go si : donnée fictive, contraste bloquant, fonction perdue, fallback cassé, hors ligne dégradé, focus perdu, scroll horizontal, asset distant, secret, animation obligatoire, budget non approuvé, nom ou dimensions non conformes, nouveau sous-dossier runtime ou ajout dans l’exception héritée, prototype hérité utilisé, P1/P2 ouvert, CI non verte ou vue majeure non traitée.

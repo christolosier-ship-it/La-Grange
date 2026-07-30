@@ -28,8 +28,8 @@
 | Tablette comme cible de confort | composition paysage avec rail compact | dashboard, catalogue, fiche | 1024 px, iPad réel, orientation |
 | Production contrôlée | ADR-009, registre canonique et protocole asset par asset | production et intégration | contrôle du nom, format, dimensions, alpha, poids et validation humaine |
 | Source de vérité unique | GitHub canonique et registre `10-suivi-production-assets-phase-6.md` | processus de réalisation | historique PR, SHA verrouillé, contrôle de `main` |
-| Dossier runtime plat | aucun sous-dossier sous `public/assets/phase-6/` | assets | inspection du diff, test de chemins, audit du manifest |
-| Assets traçables | identifiant, provenance, licence, dimensions, poids et statuts P/V/I | toutes | audit du registre, suppression des fichiers remplacés après contrôle |
+| Racine runtime canonique | nouveaux assets à la racine de `public/assets/phase-6/`, sous-dossiers hérités gelés | assets | inspection du diff, test de chemins, absence d’ajout dans l’exception héritée |
+| Assets traçables | identifiant, provenance, licence, dimensions, poids et cycle A/R/P/V/I | toutes | audit du registre, vérification des sources amont, suppression des fichiers remplacés après contrôle |
 | Cohérence sans texture | couches de matière avec couleur de fallback | toutes | blocage d’images, contraste, hors ligne |
 | Densité compacte | réduction des espacements sans perte tactile | toutes | préférence persistée, 44 px, captures comparatives |
 | Phase 6 réversible | PR courtes et lots indépendants | dépôt | comparaison des commits, rollback, absence de migration métier |

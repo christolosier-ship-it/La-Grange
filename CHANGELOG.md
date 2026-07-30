@@ -29,7 +29,10 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - diagnostic local copiable limité aux états, compteurs et préférences effectives ;
 - cadrage documentaire complet de la Phase 6 avec bible visuelle, inventaire et budgets d’assets, responsive artistique, grammaire de mouvement et checklist qualité ;
 - référence visuelle Phase 6 conservée dans le dépôt en WebP documentaire ;
-- registre canonique des assets avec noms, formats, dimensions et statuts ;
+- registre canonique des assets avec noms, formats, dimensions, transparences, usages, fallbacks, budgets, provenances, droits, dépendances, lots et statuts ;
+- sources canoniques M et S séparant directions artistiques, couvertures et logos avant tout dérivé ;
+- budgets individuels et contrats fichier par fichier pour les familles A à G ;
+- matrice exacte des prérequis d’entrée, affectations aux lots et planches d’acceptation pour les PR 6A à 6E ;
 - protocole de production manuelle asset par asset et ADR maintenant GitHub comme source de vérité ;
 - découpage de la Phase 6 en production validée puis PR 6A à 6E.
 
@@ -52,7 +55,19 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - reconstruction de la session après reset afin d’empêcher la réapparition d’un snapshot supprimé en mémoire ;
 - comptage des seuls détails réellement supprimés pendant la maintenance ;
 - remplacement de l’ancienne méthode de prototypage externe par une production manuelle pilotée par le registre ;
-- adoption d’un dossier runtime plat `public/assets/phase-6/` et d’une convention de nommage unique.
+- adoption d’une cible runtime plate `public/assets/phase-6/` et d’une convention de nommage unique ;
+- distinction du cycle A/R/P/V/I entre source approuvée et versionnée, fichier produit et validé, puis fichier réellement consommé par l’application ;
+- correction de la chaîne M04 vers S01a et S01c avant la production de F01 ;
+- ordonnancement des fallbacks C18 et C15 avant leurs assets dépendants ;
+- distinction entre dépendance canonique soumise à P/V et fallback runtime hors registre contrôlé sans faux statut ;
+- contrats exacts pour les fallbacks hors registre avec consommateurs et feuilles CSS versionnées, `viewBox` complets, fallbacks PWA opérationnels et provenance d’export bloquante sur chaque fichier projet F et chaque planche G ;
+- clarification du budget du shell en séparant le fond responsive actif du plafond global de 250 Ko ;
+- déplacement des planches G dans les critères d’acceptation des PR afin de supprimer les dépendances circulaires ;
+- séparation des preuves du shell 6A et du dashboard final 6C, avec trois planches dédiées au shell ;
+- distinction entre contrôle CSS spécifié à l’entrée d’un lot et intégré dans sa PR ;
+- formalisation de l’exception transitoire gelée pour les sous-dossiers de prototypes hérités ;
+- retrait des ornements P3 facultatifs de la porte d’entrée du lot 6E ;
+- neutralisation de la procédure historique du lot 01.
 
 ## Versionnement prévu
 

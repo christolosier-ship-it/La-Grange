@@ -22,7 +22,9 @@ Cette documentation est la source de vérité de La Grange.
 4. document de phase ;
 5. README.
 
-Exception Phase 6 : `05-realisation/10-suivi-production-assets-phase-6.md` prime pour les identifiants, noms de fichiers, formats, dimensions et statuts des assets.
+Exception Phase 6 : l’ADR-009 fixe la gouvernance, puis `05-realisation/10-suivi-production-assets-phase-6.md` prime pour tous les contrats opérationnels d’assets, notamment les identifiants, noms de fichiers, formats, dimensions, `viewBox`, transparences, usages, fallbacks, budgets, sources, provenances, droits, dépendances, affectations aux lots, priorités, statuts et ordre de production.
+
+L’ADR-009 fixe la gouvernance et l’exception transitoire des prototypes hérités. Le registre fixe ensuite le contrat précis de chaque fichier. Un document secondaire ne peut ni créer une variante implicite, ni élargir un budget, ni valider un statut absent du registre.
 
 Un conflit documentaire doit être corrigé avant d’implémenter. Il ne doit pas être arbitré silencieusement dans le code.
 
@@ -55,14 +57,23 @@ Référence visuelle :
 
 - GitHub et la documentation restent les sources de vérité ;
 - le registre `10-suivi-production-assets-phase-6.md` est l’unique catalogue autorisé ;
-- un seul asset est produit, contrôlé et validé à la fois ;
+- le cycle est A/R pour les sources M/S, P/V pour les assets versionnés, puis I lors de leur consommation réelle ;
+- les planches G utilisent P/V dans `docs/assets/phase-6/`, ne reçoivent jamais I, sont produites après les changements des PR d’intégration et bloquent leur fusion, pas leur démarrage ;
+- un seul fichier est produit, contrôlé et validé à la fois ;
+- une source M ou S, y compris toute source amont, est versionnée avant tout dérivé ;
+- un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback possède P/V avant son dépendant ;
+- un fallback HTML, CSS, système ou runtime hors registre est décrit exactement par sa ligne du registre puis présent et testé sans faux P/V ; une création interne documente sa provenance sans R artificiel ;
+- un contrôle CSS est spécifié avant le lot puis intégré dans sa PR avant fusion ;
 - aucune production en masse sans validation intermédiaire ;
-- les assets runtime sont intégrés manuellement dans le dossier plat `public/assets/phase-6/` ;
-- aucun sous-dossier n’est autorisé dans ce répertoire ;
-- les prototypes hérités ne sont pas canoniques ;
-- aucun fichier hérité n’est supprimé automatiquement avant son remplacement ;
+- les nouveaux fichiers canoniques sont versionnés à plat dans `docs/assets/phase-6/` ou `public/assets/phase-6/` selon leur rôle ;
+- I est réservé à la consommation réelle par l’application ;
+- aucun nouveau sous-dossier n’est autorisé dans `public/assets/phase-6/` ;
+- les cinq sous-dossiers historiques sont une exception transitoire gelée, sans nouvel ajout, jusqu’au remplacement manuel de leurs fichiers ;
+- les prototypes hérités ne sont pas canoniques et leur `README.md` et leur `manifest.json` historiques n’ont aucune autorité sur les statuts ;
+- aucun fichier hérité n’est supprimé automatiquement avant son remplacement et le contrôle de ses références ;
+- les ornements P3 restent facultatifs ;
 - une branche et une PR par lot d’intégration ;
-- budgets, fallbacks, responsive et accessibilité documentés ;
+- budgets, fallbacks, provenances, droits, responsive et accessibilité sont documentés ;
 - aucune donnée fictive ;
 - aucun P1 ou P2 ouvert avant fusion.
 
