@@ -19,7 +19,7 @@ Une fonction est terminée lorsque toutes les conditions applicables sont satisf
 - dépendances justifiées ;
 - aucun secret ;
 - composants fonctionnels existants conservés lorsqu’ils remplissent déjà leur rôle ;
-- aucun framework, backend ou service externe introduit par un prototype visuel.
+- aucun framework, backend ou service externe introduit par une proposition visuelle.
 
 ## Interface
 
@@ -48,11 +48,13 @@ Un lot visuel est terminé lorsque :
 - la cohérence avec les autres vues est contrôlée ;
 - les formats prévus par le lot possèdent des captures comparatives ;
 - les écarts à la référence sont explicités ;
-- la variante Lovable source, lorsqu’elle existe, est tracée sans devenir la source de vérité.
+- les masters, propositions et éléments rejetés sont tracés sans devenir la source de vérité.
 
 ## Assets
 
-- fichiers inventoriés ;
+- chaque asset possède un identifiant dans `docs/05-realisation/10-suivi-production-assets-phase-6.md` ;
+- le nom final, le format, les dimensions et la transparence correspondent exactement au registre ;
+- le fichier runtime est placé directement dans `public/assets/phase-6/`, sans sous-dossier ;
 - rôle et provenance documentés ;
 - licence vérifiée lorsque nécessaire ;
 - dimensions et poids publiés ;
@@ -63,7 +65,9 @@ Un lot visuel est terminé lorsque :
 - aucun asset distant requis ;
 - aucun script dans les SVG ;
 - aucune sortie IA brute intégrée ;
-- fichiers inutilisés supprimés ;
+- aucun ZIP, Base64, fragment ou workflow de reconstruction ;
+- les prototypes hérités ne valident aucun statut du registre ;
+- les fichiers remplacés sont supprimés seulement après contrôle des références ;
 - référence documentaire non incluse dans le runtime.
 
 ## Performance
@@ -97,9 +101,9 @@ Un lot visuel est terminé lorsque :
 - changelog complété ;
 - ADR créé si décision structurante ;
 - commande et procédure reproductibles ;
-- inventaire des assets à jour ;
+- registre et inventaire des assets à jour ;
 - captures et mesures jointes ou référencées ;
-- éléments repris et rejetés du prototype documentés.
+- éléments produits, validés, rejetés et remplacés documentés.
 
 ## Revue
 
@@ -117,4 +121,4 @@ Un lot visuel est terminé lorsque :
 
 ## Condition finale Phase 6
 
-Un résultat seulement esthétique ou seulement fonctionnel n’est pas acceptable. La Phase 6 n’est pas terminée si une vue majeure reste dans l’ancien langage, si le fonctionnement sans assets est cassé, si le mode hors ligne ou le mouvement réduit régresse, si un budget dépasse sans approbation ou si un P1 ou P2 reste ouvert.
+Un résultat seulement esthétique ou seulement fonctionnel n’est pas acceptable. La Phase 6 n’est pas terminée si une vue majeure reste dans l’ancien langage, si le fonctionnement sans assets est cassé, si le mode hors ligne ou le mouvement réduit régresse, si un budget dépasse sans approbation, si le registre n’est pas exact ou si un P1 ou P2 reste ouvert.
