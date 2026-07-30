@@ -1,13 +1,63 @@
 {
-  "version": 1,
-  "status": "integration-in-progress",
+  "version": 2,
+  "status": "assets-present-not-integrated",
   "assets": [
     {
       "id": "A01-runtime",
-      "path": "/assets/phase-6/brand/brand-sign.webp",
+      "path": "/assets/phase-6/brand/brand-sign.svg",
       "role": "Enseigne principale du shell",
+      "format": "svg",
+      "dimensions": [800, 360],
+      "alpha": true,
+      "validated": true,
+      "integratedInUi": false
+    },
+    {
+      "id": "B01-runtime",
+      "path": "/assets/phase-6/shell/background-workshop.webp",
+      "role": "Fond d’atelier responsive du shell",
       "format": "webp",
-      "dimensions": [440, 203],
+      "dimensions": [800, 450],
+      "alpha": false,
+      "validated": true,
+      "integratedInUi": false
+    },
+    {
+      "id": "C01-runtime",
+      "path": "/assets/phase-6/components/project-card-frame.webp",
+      "role": "Cadre décoratif de carte projet",
+      "format": "webp",
+      "dimensions": [280, 416],
+      "alpha": true,
+      "validated": true,
+      "integratedInUi": false
+    },
+    {
+      "id": "C16-runtime",
+      "path": "/assets/phase-6/panels/welcome-panel.webp",
+      "role": "Panneau décoratif de bienvenue sans texte fonctionnel",
+      "format": "webp",
+      "dimensions": [80, 124],
+      "alpha": true,
+      "validated": true,
+      "integratedInUi": false
+    },
+    {
+      "id": "F01-cover-runtime",
+      "path": "/assets/phase-6/projects/gargotte/cover.webp",
+      "role": "Couverture éditoriale Gargotte Adventure",
+      "format": "webp",
+      "dimensions": [480, 300],
+      "alpha": false,
+      "validated": true,
+      "integratedInUi": false
+    },
+    {
+      "id": "F01-logo-runtime",
+      "path": "/assets/phase-6/projects/gargotte/logo.webp",
+      "role": "Logo éditorial Gargotte Adventure",
+      "format": "webp",
+      "dimensions": [260, 78],
       "alpha": true,
       "validated": true,
       "integratedInUi": false
