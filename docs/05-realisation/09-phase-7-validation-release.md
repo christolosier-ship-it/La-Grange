@@ -11,6 +11,7 @@ La Phase 7 ne complète pas la direction artistique. Elle vérifie que la Phase 
 - toutes les PR Phase 6 fusionnées ;
 - checklist `docs/04-qualite/14-checklist-phase-6.md` clôturée ;
 - bible visuelle alignée avec l’implémentation finale ;
+- registre `docs/05-realisation/10-suivi-production-assets-phase-6.md` clôturé ;
 - inventaire ou manifest d’assets à jour ;
 - captures multi-écrans disponibles ;
 - budgets mesurés ;
@@ -35,10 +36,11 @@ La Phase 7 ne complète pas la direction artistique. Elle vérifie que la Phase 
 14. contrôle de cohérence entre toutes les vues ;
 15. fonctionnement avec images bloquées ;
 16. audit des fallbacks CSS et SVG ;
-17. vérification du manifest et des licences d’assets ;
+17. vérification du manifest, du registre et des licences d’assets ;
 18. comparaison des budgets avant et après Phase 6 ;
 19. contrôle du mouvement réduit et de la densité compacte ;
-20. validation des formats 320, 390, 768, 1024, 1440 et 1920 px.
+20. validation des formats 320, 390, 768, 1024, 1440 et 1920 px ;
+21. vérification que `public/assets/phase-6/` est plat et ne contient aucun prototype hérité consommé.
 
 ## Audit visuel final
 
@@ -69,7 +71,8 @@ Conserver ou référencer :
 - résultats de contraste ;
 - poids du shell et des assets ;
 - LCP et CLS ;
-- liste des écarts visuels acceptés.
+- liste des écarts visuels acceptés ;
+- export final du registre avec statuts P, V et I.
 
 ## Préparation release
 
@@ -82,7 +85,9 @@ Conserver ou référencer :
 - documenter le rollback ;
 - contrôler la version et le cache du service worker ;
 - confirmer que la référence documentaire n’est pas incluse dans le runtime ;
-- confirmer qu’aucun asset Lovable distant n’est requis.
+- confirmer qu’aucun asset distant, temporaire ou non enregistré n’est requis ;
+- confirmer l’absence de sous-dossier, ZIP, fragment Base64 et workflow de matérialisation ;
+- confirmer que les prototypes remplacés ont été supprimés après contrôle des références.
 
 ## Go ou No-Go
 
@@ -104,6 +109,9 @@ No-Go si :
 - scroll horizontal global ;
 - régression de performance non approuvée ;
 - provenance ou licence d’un asset non clarifiée ;
+- nom, format ou dimensions en conflit avec le registre ;
+- sous-dossier runtime ;
+- prototype hérité encore consommé ;
 - P1 ou P2 ouvert.
 
 ## Après publication

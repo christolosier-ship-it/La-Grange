@@ -2,13 +2,15 @@
 
 ## Statut
 
-Cadrage documentaire en cours. Aucune modification visuelle de production ne doit commencer avant validation de la bible, du prototype isolé et des budgets.
+Cadrage documentaire révisé le 2026-07-30. La production graphique suit désormais une méthode séquentielle, fichier par fichier.
+
+Aucune intégration visuelle ne commence à partir d’un prototype hérité. Seuls les fichiers conformes au registre peuvent être utilisés.
 
 ## Objectif
 
-Atteindre l’identité du prototype validé sans dégrader le MVP fonctionnel livré par les Phases 1 à 5.
+Atteindre l’identité de l’atelier stylisé sans dégrader le MVP fonctionnel livré par les Phases 1 à 5.
 
-La Phase 6 doit faire percevoir La Grange comme un atelier stylisé, cohérent et vivant, tout en conservant :
+La Phase 6 conserve :
 
 - les mêmes données réelles ;
 - les mêmes routes ;
@@ -19,39 +21,27 @@ La Phase 6 doit faire percevoir La Grange comme un atelier stylisé, cohérent e
 
 ## Référence
 
-La référence d’ambiance est conservée dans :
+La référence d’ambiance est :
 
 `docs/assets/phase-6/reference-dashboard-grange.webp`
 
-Elle fixe une intention de scène, de matière et de composition. Elle ne constitue pas une maquette pixel-perfect et ne justifie aucune métrique fictive.
+Elle fixe une intention de scène, de matière et de composition. Elle n’est pas une maquette pixel-perfect et ne justifie aucune métrique fictive.
 
 ## Sources de vérité
 
-Avant toute intervention, lire dans cet ordre :
+Avant toute intervention, lire :
 
-1. ADR acceptés ;
-2. règles métier ;
-3. spécifications des vues et composants ;
-4. bible visuelle de Phase 6 ;
-5. inventaire des assets ;
-6. présent document ;
-7. prototype Lovable validé ;
-8. README.
+1. les ADR acceptés ;
+2. les règles métier ;
+3. les spécifications des vues et composants ;
+4. la bible visuelle ;
+5. l’inventaire technique ;
+6. le présent document ;
+7. le registre `10-suivi-production-assets-phase-6.md` ;
+8. le protocole de production des assets ;
+9. le README.
 
-Documents obligatoires :
-
-- `docs/02-ux-ui/01-direction-artistique.md` ;
-- `docs/02-ux-ui/03-specification-vues.md` ;
-- `docs/02-ux-ui/04-specification-composants.md` ;
-- `docs/02-ux-ui/05-design-system.md` ;
-- `docs/02-ux-ui/06-responsive-design.md` ;
-- `docs/02-ux-ui/07-animations.md` ;
-- `docs/02-ux-ui/09-accessibilite.md` ;
-- `docs/02-ux-ui/10-bible-visuelle-phase-6.md` ;
-- `docs/02-ux-ui/11-inventaire-assets-phase-6.md` ;
-- `docs/03-technique/11-performance.md` ;
-- `docs/04-qualite/14-checklist-phase-6.md` ;
-- `docs/08-generation-ia/13-protocole-lovable-phase-6.md`.
+Le registre prime pour les identifiants, noms, formats, dimensions, transparences, usages, fallbacks, provenances et statuts.
 
 ## Périmètre
 
@@ -62,7 +52,7 @@ Documents obligatoires :
 - fond et structure du shell ;
 - navigation ;
 - poutre de statistiques ;
-- cartes projets et leurs variantes ;
+- cartes projets et variantes ;
 - panneaux secondaires ;
 - catalogue ;
 - fiches projets ;
@@ -74,32 +64,32 @@ Documents obligatoires :
 - animations autorisées ;
 - responsive artistique ;
 - optimisation des assets ;
-- contrôle visuel et accessibilité.
+- contrôles visuels et accessibilité.
 
 ### Exclus
 
 - nouvelle donnée GitHub ;
 - progression de projet ;
 - métrique décorative ;
-- fonction de gestion ou de pilotage ;
+- fonction de gestion ;
 - backend ;
 - authentification ;
 - token GitHub ;
-- modification de dépôt distant ;
-- bibliothèque UI ou framework ;
+- écriture distante ;
+- framework UI ;
 - refonte du modèle de données ;
-- nouveau système de routage ;
+- nouveau routage ;
 - son, vidéo ou animation permanente ;
-- reproduction pixel-perfect de l’image de référence.
+- reproduction pixel-perfect de la référence.
 
-Toute modification fonctionnelle découverte pendant la Phase 6 est isolée dans une PR distincte et justifiée. Elle ne doit pas être cachée dans une PR visuelle.
+Toute modification fonctionnelle découverte pendant la Phase 6 est isolée dans une PR distincte.
 
 ## Principes non négociables
 
 - le contenu prime sur le décor ;
 - aucune donnée fictive ;
 - aucun texte fonctionnel dans une image ;
-- aucun asset distant requis au runtime ;
+- aucun asset distant requis ;
 - fallback CSS ou SVG pour chaque élément critique ;
 - focus visible au-dessus des textures ;
 - contraste WCAG 2.2 AA autant que possible ;
@@ -107,114 +97,114 @@ Toute modification fonctionnelle découverte pendant la Phase 6 est isolée dans
 - aucune fonction perdue selon la taille ;
 - interaction possible dès l’affichage du cache ;
 - aucun scroll horizontal global ;
-- aucune rafale de requêtes GitHub ;
 - aucun secret ;
 - aucune dépendance visuelle lourde sans ADR et mesure.
 
-## Stratégie de réalisation
+## Nouvelle stratégie de réalisation
 
-La Phase 6 est découpée en une étape de conception puis plusieurs PR de production. Une PR unique est interdite.
+La Phase 6 est découpée en trois temps :
+
+1. cadrage et registre ;
+2. production et validation manuelles des masters, assets et planches ;
+3. intégration progressive par lots fonctionnels.
+
+Une PR unique mêlant tous les assets et toutes les vues est interdite.
 
 ## Étape 6.0 - Cadrage documentaire
 
 Livrables :
 
-- direction artistique complétée ;
+- direction artistique ;
 - bible visuelle ;
-- inventaire et budgets d’assets ;
-- responsive artistique ;
+- inventaire et budgets ;
+- responsive ;
 - grammaire de mouvement ;
-- protocole Lovable ;
+- registre complet ;
+- protocole de production ;
 - checklist qualité ;
 - plan de PR.
 
-Critère de sortie : documents cohérents, référence disponible et aucun conflit silencieux.
+Critère de sortie : documents cohérents, références disponibles, masters canoniques identifiés et prochain élément autorisé explicitement indiqué.
 
-## Étape 6.1 - Prototype Lovable isolé
+## Étape 6.1 - Production manuelle des assets
 
-Lovable travaille dans un projet ou une branche de prototype distincte. Il ne devient jamais la source de vérité du code.
+La production suit le registre :
 
-Périmètre du premier prototype :
+`docs/05-realisation/10-suivi-production-assets-phase-6.md`
 
-- shell ;
-- enseigne ;
-- navigation ;
-- poutre de quatre statistiques réelles ou représentées par des placeholders explicitement non destinés à la production ;
-- une carte standard ;
-- une carte compacte ;
-- un fallback sans image ;
-- un panneau secondaire ;
-- état focus ;
-- format 1440 px ;
-- format 390 px.
+Règles :
 
-Le prototype ne doit pas couvrir toutes les vues ni intégrer de logique GitHub.
+- une ligne correspond à un seul fichier ;
+- un seul fichier est produit à la fois ;
+- le master ou la source canonique doit être versionné avant le dérivé ;
+- nom, format, dimensions, alpha, usage et fallback sont définis avant production ;
+- provenance et droits sont renseignés avant P ;
+- export contrôlé ;
+- validation humaine obligatoire ;
+- aucun passage au suivant avant validation ;
+- aucun fichier intégré depuis une sortie brute ;
+- aucun sous-dossier runtime ;
+- aucun ZIP, Base64 ou workflow de reconstruction.
 
-Livrables attendus :
+Le premier ordre est : versionner M01, produire A01, versionner M02, produire B01, versionner M03, produire C01, versionner M04, produire F01a puis F01b puis F01c, versionner M05, produire C16.
 
-- captures desktop et mobile ;
-- structure de composants ;
-- tokens proposés ;
-- liste d’assets ;
-- CSS ou diff exportable ;
-- notes sur responsive et mouvement ;
-- écarts connus par rapport à la documentation.
+Les statuts P et V clôturent la production d’un fichier. Le statut I reste décoché jusqu’à la PR d’intégration concernée.
 
-Critère de sortie : validation explicite de la direction, des matières, de la densité, de la carte projet et du mobile.
+## Étape 6.2 - Planches de validation
+
+Les assets validés sont assemblés dans les planches G01 à G14b définies dans le registre.
+
+Les planches :
+
+- ne sont pas servies par l’application ;
+- utilisent uniquement des assets validés ;
+- contrôlent desktop, tablette et mobile ;
+- montrent les fallbacks ;
+- n’introduisent aucune donnée de production fictive ;
+- servent de preuve avant l’intégration d’un lot.
+
+Une PR d’intégration ne démarre que lorsque les fichiers, fallbacks et planches nécessaires à son périmètre sont validés.
+
+## Dossier runtime
+
+Tous les assets intégrés sont placés à plat dans :
+
+`public/assets/phase-6/`
+
+Aucun sous-dossier par famille ou projet n’est autorisé.
+
+Les prototypes hérités déjà présents dans `main` restent non canoniques. Ils sont remplacés un par un puis supprimés manuellement après contrôle des références.
 
 ## PR 6A - Fondations visuelles
 
 Périmètre :
 
 - tokens ;
-- typographie locale ;
-- iconographie de base ;
+- typographie autorisée ;
+- iconographie P0 ;
 - shell ;
 - fond ;
 - enseigne ;
 - navigation ;
 - focus ;
 - fallbacks ;
-- système de chargement des assets partagés.
+- chargement des assets partagés.
 
-Interdictions :
-
-- aucune refonte complète des cartes ;
-- aucune animation narrative ;
-- aucun changement métier.
-
-Critères :
-
-- shell utilisable sans asset ;
-- navigation complète ;
-- mobile, tablette et bureau ;
-- contraste mesuré ;
-- poids publiés ;
-- cache PWA contrôlé.
+Critères : shell utilisable sans image, navigation complète, responsive, contrastes, poids et cache PWA contrôlés.
 
 ## PR 6B - Cartes, statistiques et panneaux
 
 Périmètre :
 
-- `ProjectCard` standard, mise en avant, compacte et liste ;
-- fallback ;
+- cartes standard, mise en avant, compacte et liste ;
+- fallback C18 ;
 - badges ;
 - statistiques ;
-- panneaux secondaires ;
+- panneaux ;
 - états chargement, vide, erreur et hors ligne ;
-- premières couvertures prioritaires.
+- premières couvertures validées.
 
-Critères :
-
-- aucune donnée ajoutée ;
-- cartes avec et sans asset cohérentes ;
-- noms longs ;
-- descriptions longues ;
-- archives ;
-- favoris ;
-- densité compacte ;
-- focus et tactile ;
-- lazy loading.
+Critères : aucune donnée ajoutée, noms longs, archives, favoris, densité compacte, focus, tactile et lazy loading.
 
 ## PR 6C - Dashboard et catalogue
 
@@ -226,16 +216,9 @@ Périmètre :
 - activité synthétique ;
 - répartition ;
 - nouvelle arrivée ;
-- responsive artistique des listes.
+- responsive artistique.
 
-Critères :
-
-- aucun faux compteur ;
-- aucune progression ;
-- aucune carte dupliquée sans règle ;
-- recherche et filtres inchangés ;
-- retour de catalogue préservé ;
-- cache et hors ligne préservés.
+Critères : aucun faux compteur, aucune progression, recherche et filtres inchangés, cache et hors ligne préservés.
 
 ## PR 6D - Fiches, activité et paramètres
 
@@ -245,183 +228,88 @@ Périmètre :
 - hero ;
 - métadonnées ;
 - détails à la demande ;
-- chronologie d’activité ;
-- contrôles de paramètres ;
+- chronologie ;
+- paramètres ;
 - cache et diagnostics ;
 - modales.
 
-Critères :
+Critères : aucun appel GitHub supplémentaire, texte long lisible, modales accessibles, diagnostics copiables et hors ligne complet.
 
-- aucun appel GitHub supplémentaire hors des comportements existants ;
-- texte long lisible ;
-- modale accessible ;
-- arrière-plan inerte ;
-- diagnostics copiables ;
-- fiche directe accessible même si le projet est masqué ;
-- mode hors ligne complet.
-
-## PR 6E - Mouvement, assets finaux et optimisation
+## PR 6E - Mouvement et optimisation
 
 Périmètre :
 
 - micro-interactions ;
-- arrivée d’une nouvelle caisse ;
+- nouvelle arrivée ;
 - lueur de synchronisation ;
 - textures finales ;
 - couvertures supplémentaires ;
 - optimisation ;
-- suppression des assets inutilisés ;
-- revue visuelle globale.
+- suppression manuelle des prototypes remplacés ;
+- revue globale.
 
-Critères :
+Critères : mouvement réduit, aucune animation permanente, budgets, LCP, CLS, fonctionnement sans images et cache PWA renouvelé.
 
-- mouvement réduit ;
-- aucune animation permanente ;
-- aucune grande surface animée ;
-- budgets respectés ou justifiés ;
-- LCP et CLS contrôlés ;
-- fonctionnement sans images ;
-- cache PWA renouvelé proprement.
+## PR corrective
 
-## Option PR 6F - Corrections de revue
+Une PR corrective séparée est recommandée si les revues laissent des P1 ou P2. Elle n’ajoute aucune nouvelle direction artistique.
 
-Une PR corrective séparée est recommandée si les revues des lots précédents laissent des P1 ou P2. Elle ne doit pas mélanger de nouvelle direction artistique.
+## Ordre de production des familles
 
-## Assets prioritaires
-
-Ordre recommandé :
-
-1. enseigne et marque ;
-2. fond et structure du shell ;
-3. cadres réutilisables ;
-4. iconographie ;
-5. carte fallback ;
-6. couvertures des projets mis en avant ;
-7. couvertures des applications lançables ;
-8. ornements facultatifs.
-
-## Règles d’assets
-
-- dimensions documentées ;
-- AVIF ou WebP pour les couvertures ;
-- PNG uniquement si nécessaire ;
-- SVG local pour cadres et icônes ;
-- poids budgété ;
-- noms stables ;
-- provenance documentée ;
-- aucun script dans les SVG ;
-- fallback toujours fonctionnel ;
-- aucune donnée métier dessinée dans une image ;
-- aucun asset brut généré par IA intégré directement.
-
-## Règles Lovable
-
-- GitHub reste la source de vérité ;
-- Lovable sert au prototype et à l’exploration ;
-- aucune modification directe de `main` ;
-- aucune réécriture fonctionnelle non demandée ;
-- aucune dépendance ajoutée sans validation ;
-- les sorties sont comparées à la documentation ;
-- seuls les éléments approuvés sont reportés dans une branche GitHub ;
-- tous les diffs sont audités avant intégration.
+1. versionnement et dérivés prioritaires M01/A01, M02/B01, M03/C01, M04/F01a à F01c et M05/C16 ;
+2. variantes de marque et fonds ;
+3. matières et lumière P0 ;
+4. iconographie P0 ;
+5. cadres et panneaux P0 ;
+6. F02a à F08c, fichier par fichier ;
+7. planches G01 à G03 ;
+8. P1 ;
+9. P2 et P3 seulement après validation globale.
 
 ## Contrôles obligatoires par PR
 
 ### Fonctionnel
 
-- routes ;
-- recherche ;
-- filtres ;
-- favoris ;
-- synchronisation ;
-- détails ;
-- activité ;
-- paramètres ;
-- cache ;
-- hors ligne.
+Routes, recherche, filtres, favoris, synchronisation, détails, activité, paramètres, cache et hors ligne.
 
 ### Visuel
 
-- 320 px ;
-- 390 px ;
-- 768 px ;
-- 1024 px ;
-- 1440 px ;
-- 1920 px ;
-- densité compacte ;
-- zoom 200 % ;
-- noms longs ;
-- images absentes ;
-- lumière ambiante faible et forte.
+320, 390, 768, 1024, 1440 et 1920 px ; densité compacte ; zoom 200 % ; noms longs ; images absentes ; lumière faible et forte.
+
+### Assets
+
+- source canonique disponible ;
+- provenance et droits renseignés ;
+- fichier présent dans le registre ;
+- nom exact ;
+- dimensions décodées exactes ;
+- format réel ;
+- alpha contrôlé ;
+- poids publié ;
+- fallback testé ;
+- dossier runtime plat ;
+- aucun prototype utilisé comme preuve.
 
 ### Accessibilité
 
-- clavier ;
-- VoiceOver iOS ou contrôle équivalent ;
-- focus ;
-- contrastes ;
-- mouvement réduit ;
-- mode contraste accru lorsque disponible ;
-- images décoratives ;
-- texte alternatif ;
-- modales.
-
-### Performance
-
-- poids CSS ;
-- poids des assets ;
-- requêtes initiales ;
-- LCP ;
-- CLS ;
-- lazy loading ;
-- cache chaud et froid ;
-- iPad réel ou appareil comparable.
+Clavier, VoiceOver ou équivalent, focus, contrastes, mouvement réduit, images décoratives, texte alternatif et modales.
 
 ### Qualité
 
-- `npm ci` ;
-- TypeScript strict ;
-- ESLint ;
-- tests Vitest ;
-- smoke tests existants ;
-- build Vite ;
-- revue du diff ;
-- review threads interrogés ;
-- P1 et P2 corrigés et résolus.
+`npm ci`, TypeScript strict, ESLint, Vitest, smoke test, build Vite, audit du diff, revue Codex, lecture réelle des fils, correction et résolution des P1/P2.
 
-## Critères de sortie de la Phase 6
+## Critères de sortie
 
-- reconnaissance immédiate de La Grange ;
+- identité immédiatement reconnaissable ;
 - fidélité à l’esprit de la référence ;
-- rendu stylisé, ni photoréaliste ni cartoon ;
-- lisibilité supérieure ou égale à la version Phase 5 ;
+- lisibilité au moins égale à la Phase 5 ;
 - aucune donnée fictive ;
-- aucun texte sur texture incontrôlée ;
 - toutes les vues cohérentes ;
-- mobile, tablette et bureau aboutis ;
+- responsive complet ;
 - fallbacks complets ;
-- mouvement réduit complet ;
-- contrastes validés ;
-- budgets tenus ou écarts approuvés ;
+- mouvement réduit ;
+- budgets tenus ou approuvés ;
 - aucun secret ni asset distant ;
-- aucune régression fonctionnelle ;
-- aucune animation obligatoire ;
-- documentation et manifest d’assets à jour ;
-- aucun P1 ou P2 ouvert ;
-- `main` contrôlé après fusion du dernier lot.
-
-## Go ou No-Go vers la Phase 7
-
-No-Go si :
-
-- la référence n’est pas reconnaissable dans l’esprit ;
-- la lisibilité a baissé ;
-- un composant dépend de son asset pour fonctionner ;
-- le mode hors ligne est dégradé ;
-- le focus ou le zoom est cassé ;
-- les budgets présentent une régression non justifiée ;
-- des données fictives ont été ajoutées ;
-- une vue n’est pas traitée ;
-- un P1 ou P2 reste ouvert.
-
-La Phase 7 commence uniquement lorsque le dernier lot Phase 6 est fusionné et que la checklist visuelle est clôturée.
+- aucune régression ;
+- registre et documentation à jour ;
+- aucun P1 ou P2 ouvert.

@@ -12,7 +12,16 @@ Construire La Grange conformément à la documentation. L’application doit res
 4. le document de phase concerné dans `docs/05-realisation/` ;
 5. les ADR applicables dans `docs/07-decisions/`.
 
-Pour toute intervention Phase 6, lire également la bible visuelle, l’inventaire des assets, le responsive, les animations, la performance et la checklist Phase 6 référencés dans `docs/INDEX.md`.
+Pour toute intervention Phase 6, lire également :
+
+- `docs/02-ux-ui/10-bible-visuelle-phase-6.md` ;
+- `docs/02-ux-ui/11-inventaire-assets-phase-6.md` ;
+- `docs/05-realisation/08-phase-6-polissage-visuel.md` ;
+- `docs/05-realisation/10-suivi-production-assets-phase-6.md` ;
+- `docs/08-generation-ia/13-protocole-production-assets-phase-6.md` ;
+- la performance et la checklist Phase 6 référencées dans `docs/INDEX.md`.
+
+Le registre `10-suivi-production-assets-phase-6.md` est l’unique source de vérité pour les noms, formats, dimensions et statuts des assets.
 
 ## Interdictions
 
@@ -24,11 +33,15 @@ Pour toute intervention Phase 6, lire également la bible visuelle, l’inventai
 - ne pas transformer La Grange en outil de gestion de tâches ;
 - ne pas contourner les limites API par des rafales de requêtes ;
 - ne pas injecter du HTML distant non assaini ;
-- ne pas intégrer un prototype Lovable directement dans `main` ;
 - ne pas ajouter de texte fonctionnel dans un asset raster ;
 - ne pas charger une police, une texture ou un asset distant au runtime ;
 - ne pas utiliser une animation permanente pour créer de l’ambiance ;
-- ne pas masquer une modification métier dans une PR visuelle.
+- ne pas masquer une modification métier dans une PR visuelle ;
+- ne pas produire plusieurs assets sans validation intermédiaire ;
+- ne pas inventer un nom, un format ou une dimension absent du registre ;
+- ne pas créer de sous-dossier dans `public/assets/phase-6/` ;
+- ne pas intégrer de ZIP, Base64, fragment ou workflow de reconstruction ;
+- ne pas considérer un prototype hérité comme un asset validé.
 
 ## Règles de code
 
@@ -43,17 +56,18 @@ Pour toute intervention Phase 6, lire également la bible visuelle, l’inventai
 
 ## Règles visuelles Phase 6
 
-- GitHub reste la source de vérité ;
-- Lovable est un environnement de plan et de prototype isolé ;
+- GitHub et la documentation restent la source de vérité ;
+- un seul asset est produit, contrôlé puis validé à la fois ;
+- le fichier final respecte exactement le nom, le format et les dimensions du registre ;
+- les assets runtime sont intégrés manuellement dans le dossier plat `public/assets/phase-6/` ;
 - le décor ne modifie ni le rôle, ni les données, ni les états d’un composant ;
 - le texte reste en HTML ;
 - chaque asset critique possède un fallback CSS ou SVG ;
 - le focus reste visible au-dessus des textures ;
 - les budgets d’assets sont mesurés et publiés ;
 - le mobile, la tablette et le bureau sont conçus comme des compositions distinctes ;
-- le mouvement réduit conserve l’état final sans translation ni animation décorative ;
-- les données de démonstration de Lovable ne sont jamais copiées en production ;
-- une sortie IA brute est optimisée, inventoriée et validée avant intégration ;
+- le mouvement réduit conserve l’état final sans animation décorative ;
+- une sortie IA brute est nettoyée, renommée, dimensionnée, compressée et validée avant intégration ;
 - les objets décoratifs sont inertes et hors de l’arbre d’accessibilité.
 
 ## Qualité obligatoire
@@ -72,6 +86,7 @@ Pour une PR Phase 6, ajouter :
 
 - poids CSS avant et après ;
 - poids des nouveaux assets ;
+- contrôle des signatures, dimensions et transparences ;
 - contrôle des fallbacks ;
 - contrôle des contrastes sur les textures finales ;
 - contrôle 320, 390, 768, 1024, 1440 et 1920 px selon le lot ;
@@ -83,6 +98,6 @@ Pour une PR Phase 6, ajouter :
 
 ## Définition de terminé
 
-Une tâche n’est terminée que si son comportement nominal, ses erreurs, son état vide, son responsive et son accessibilité sont couverts. Un résultat seulement esthétique ou seulement fonctionnel n’est pas acceptable.
+Une tâche n’est terminée que si son comportement nominal, ses erreurs, son état vide, son responsive et son accessibilité sont couverts.
 
-Une tâche Phase 6 n’est pas terminée si elle fonctionne uniquement avec les assets présents, si elle dégrade le hors ligne, si elle invente une donnée, si elle dépasse les budgets sans justification ou si un P1 ou P2 reste ouvert.
+Une tâche Phase 6 n’est pas terminée si elle dépend d’un prototype non canonique, si le registre n’est pas à jour, si le fichier n’a pas son nom ou ses dimensions finales, si elle dégrade le hors ligne, si elle invente une donnée, si elle dépasse les budgets sans justification ou si un P1 ou P2 reste ouvert.

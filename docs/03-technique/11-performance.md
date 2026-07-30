@@ -2,69 +2,81 @@
 
 ## Objectif
 
-La Phase 6 doit augmenter la richesse perçue sans transformer le chargement initial en téléchargement d’illustration. L’application reste interactive dès l’affichage du cache et les assets visuels arrivent selon leur priorité réelle.
+La Phase 6 augmente la richesse perçue sans transformer le chargement initial en téléchargement d’illustrations. L’application reste interactive dès l’affichage du cache et les assets arrivent selon leur priorité réelle.
+
+Le registre `docs/05-realisation/10-suivi-production-assets-phase-6.md` fixe les dimensions et formats de chaque fichier.
 
 ## Budgets applicatifs
 
 - JavaScript initial compressé : viser moins de 150 Ko hors assets ;
 - CSS initial compressé : viser moins de 80 Ko ;
-- aucune couverture chargée en taille originale si elle n’est pas visible ;
-- interaction possible dès affichage du cache ;
-- score Lighthouse performance élevé sur appareil moyen ;
-- aucune dépendance lourde ajoutée uniquement pour le visuel ou le mouvement.
+- aucune couverture chargée en taille fiche si elle n’est pas nécessaire ;
+- interaction possible dès l’affichage du cache ;
+- performance Lighthouse élevée sur appareil moyen ;
+- aucune dépendance lourde ajoutée pour le visuel.
 
 ## Budgets Phase 6
 
 ### Shell critique
 
-- décor critique supplémentaire au premier affichage : cible inférieure à 250 Ko compressés ;
-- fond principal : cible inférieure à 140 Ko en AVIF ou 190 Ko en WebP ;
+- décor critique supplémentaire : cible inférieure à 250 Ko compressés ;
+- B01 fond principal WebP 2048 × 1152 : cible inférieure à 190 Ko ;
 - textures et cadres critiques : cible cumulée inférieure à 100 Ko ;
 - icônes critiques : cible cumulée inférieure à 30 Ko ;
-- police décorative : cible inférieure à 80 Ko par graisse ;
-- nombre de polices et graisses limité au strict nécessaire.
+- aucune police décorative sans licence, mesure et justification.
 
 ### Cartes projets
 
-- miniature 640 px : cible entre 35 et 80 Ko ;
-- logo : cible inférieure à 30 Ko ;
-- couverture 960 px chargée uniquement lorsque la fiche l’exige ;
-- aucune couverture d’une vue non visitée préchargée sans mesure justifiant le gain ;
+- couverture catalogue 640 × 400 : cible de 35 à 80 Ko ;
+- logo 512 × 160 : cible inférieure à 30 Ko ;
+- couverture fiche 960 × 600 chargée uniquement sur la fiche ;
+- aucune couverture d’une vue non visitée préchargée sans mesure ;
 - dimensions et ratio réservés avant téléchargement.
 
 ### Décor non critique
 
 - chargé après le contenu utile ou lors de l’inactivité ;
 - supprimé des formats où il n’apporte pas de valeur ;
-- absent du chemin critique hors ligne si le shell fonctionnel possède déjà un fallback ;
+- absent du chemin critique hors ligne si le fallback suffit ;
 - aucun ornement individuel supérieur à 50 Ko sans justification.
 
-Les budgets sont des cibles. Tout dépassement doit être mesuré et expliqué dans la PR.
+Les budgets sont des cibles. Tout dépassement est mesuré et expliqué dans la PR.
+
+## Contrat de fichier
+
+Chaque asset mesuré doit :
+
+- être inscrit dans le registre ;
+- porter son nom final exact ;
+- présenter les dimensions décodées attendues ;
+- être stocké à plat dans `public/assets/phase-6/` ;
+- posséder un fallback ;
+- être absent du chargement initial s’il n’est pas critique.
+
+Les prototypes hérités ne sont pas inclus dans le budget cible et ne constituent pas une référence de poids.
 
 ## Mesures
 
-- images AVIF ou WebP avec dimensions explicites ;
+- WebP avec dimensions explicites pour les rasters de production ;
+- SVG optimisés pour cadres et icônes ;
 - lazy loading sous la ligne de flottaison ;
-- miniatures dédiées plutôt que grandes images redimensionnées ;
+- miniatures dédiées ;
 - CSS critique léger ;
-- aucune bibliothèque de graphique pour un simple anneau de répartition ;
+- aucune bibliothèque de graphique pour un simple anneau ;
 - rendu par lots pour de nombreuses cartes ;
-- recherche locale indexée en mémoire ;
-- cache pour réduire les appels et rechargements ;
-- `aspect-ratio`, largeur et hauteur réservés pour éviter les layout shifts ;
-- SVG optimisés et dépourvus de script ;
-- textures répétables ou recadrables plutôt que plusieurs fonds proches ;
-- variantes responsive uniquement lorsque leur gain est mesurable ;
-- `font-display: swap` ou comportement équivalent ;
-- assets partagés mis en cache par le service worker sans gonfler inutilement le shell obligatoire.
+- cache pour réduire appels et rechargements ;
+- `aspect-ratio`, largeur et hauteur réservés ;
+- textures répétables ou recadrages explicitement inscrits au registre ;
+- variantes responsive uniquement lorsque prévues ;
+- assets partagés mis en cache sans gonfler inutilement le shell.
 
-## Stratégie de chargement visuel
+## Stratégie de chargement
 
 ### Priorité 1
 
 - couleur de fond ;
 - structure CSS ;
-- typographie système ou fallback ;
+- typographie système ;
 - contenu et contrôles ;
 - focus ;
 - fallback de carte.
@@ -72,9 +84,9 @@ Les budgets sont des cibles. Tout dépassement doit être mesuré et expliqué d
 ### Priorité 2
 
 - cadres critiques ;
-- icônes ;
+- icônes P0 ;
 - enseigne ;
-- fond principal optimisé ;
+- fond principal ;
 - couvertures visibles au-dessus de la ligne de flottaison.
 
 ### Priorité 3
@@ -83,48 +95,49 @@ Les budgets sont des cibles. Tout dépassement doit être mesuré et expliqué d
 - logos secondaires ;
 - textures de détail ;
 - ornements ;
-- grandes images de fiche.
+- images de fiche.
 
-Une erreur de priorité 3 ne doit jamais dégrader la priorité 1.
+Une erreur de priorité 3 ne dégrade jamais la priorité 1.
 
-## Éviter
+## À éviter
 
 - requête détaillée par dépôt au démarrage ;
 - animation de grandes surfaces ;
 - ombres floues multiples ;
-- écouteurs globaux non nettoyés ;
 - re-rendu complet à chaque frappe ;
-- calcul de dates répété sans nécessité ;
-- image en base64 volumineuse dans le CSS ;
+- image Base64 dans le CSS ;
+- archive ou fragment d’asset dans le dépôt ;
 - décor distant ;
-- texture différente par composant ;
-- grande image utilisée comme fond sur mobile sans variante ou recadrage ;
-- filtres CSS coûteux appliqués à de nombreuses cartes ;
+- texture différente par composant sans registre ;
+- grande image desktop utilisée sur mobile ;
+- filtres CSS coûteux sur de nombreuses cartes ;
 - particules ou canvas décoratif permanent ;
 - préchargement de toutes les couvertures ;
-- police avec de nombreux alphabets ou graisses inutilisés.
+- police avec des graisses inutilisées ;
+- double chaîne WebP/AVIF non approuvée.
 
 ## Layout shifts
 
-- réserver les ratios des images ;
-- ne pas modifier la hauteur des cartes après chargement d’une police ;
+- réserver les ratios ;
+- ne pas modifier la hauteur des cartes après chargement ;
 - ne pas injecter un cadre qui change la boîte ;
-- ne pas déplacer les cartes existantes lors de l’arrivée d’une nouvelle caisse ;
+- ne pas déplacer les cartes lors d’une nouvelle arrivée ;
 - conserver une largeur stable pour les compteurs ;
-- vérifier les valeurs longues et les noms de projets longs.
+- vérifier les valeurs et noms longs.
 
-## Mesures obligatoires en PR Phase 6
+## Mesures obligatoires en PR
 
 Chaque PR visuelle publie :
 
-- poids du CSS avant et après ;
-- poids des nouveaux assets par famille ;
+- poids CSS avant et après ;
+- nom, dimensions et poids de chaque nouvel asset ;
 - poids du shell critique ;
-- nombre de requêtes au premier affichage ;
+- nombre de requêtes initiales ;
 - LCP, CLS et interaction sur mobile simulé ;
-- comparaison avec et sans cache ;
+- comparaison cache froid et chaud ;
 - contrôle du lazy loading ;
 - contrôle du mouvement réduit ;
+- contrôle des images bloquées ;
 - justification des écarts.
 
 ## Scénarios de test
@@ -135,10 +148,10 @@ Chaque PR visuelle publie :
 - blocage des images ;
 - tablette paysage ;
 - smartphone 390 px ;
-- appareil moyen avec réduction de mouvement ;
-- liste proche du nombre maximal de projets actuel ;
+- appareil moyen avec mouvement réduit ;
+- liste proche du nombre maximal de projets ;
 - couvertures absentes ou en erreur.
 
 ## Suivi
 
-Mesurer sur mobile simulé et iPad réel. Toute régression significative doit être justifiée dans la PR. Le contrôle final de Phase 7 compare les mesures à la dernière version fonctionnelle validée avant la Phase 6.
+Mesurer sur mobile simulé et iPad réel lorsque disponible. Toute régression significative est justifiée dans la PR. Le contrôle final compare la Phase 6 à la dernière version fonctionnelle validée avant son démarrage.

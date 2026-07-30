@@ -25,14 +25,15 @@ Avant toute modification, lis :
 - `docs/03-technique/11-performance.md` ;
 - `docs/04-qualite/14-checklist-phase-6.md` ;
 - `docs/05-realisation/08-phase-6-polissage-visuel.md` ;
-- `docs/07-decisions/ADR-009-github-source-verite-prototypage-visuel.md` ;
-- `docs/08-generation-ia/13-protocole-lovable-phase-6.md`.
+- `docs/05-realisation/10-suivi-production-assets-phase-6.md` ;
+- `docs/07-decisions/ADR-009-github-source-verite-production-assets.md` ;
+- `docs/08-generation-ia/13-protocole-production-assets-phase-6.md`.
 
-En cas de conflit, applique l’ordre de priorité de `docs/INDEX.md`. Ne tranche jamais silencieusement.
+En cas de conflit, applique `docs/INDEX.md`. Pour les assets, le registre `10-suivi-production-assets-phase-6.md` prime sur les noms, formats, dimensions et statuts.
 
 ## Cible
 
-Transformer l’interface fonctionnelle actuelle en atelier stylisé :
+Transformer l’interface fonctionnelle en atelier stylisé :
 
 - bois sombre ;
 - métal patiné ;
@@ -42,58 +43,84 @@ Transformer l’interface fonctionnelle actuelle en atelier stylisé :
 - structure riche mais organisée ;
 - identités de projets plus colorées que le shell.
 
-Le rendu attendu est stylisé, illustré et tactile. Il n’est ni photoréaliste, ni cartoon.
+Le rendu est stylisé, illustré et tactile, ni photoréaliste ni cartoon.
 
-La référence visuelle est :
+Référence :
 
 `docs/assets/phase-6/reference-dashboard-grange.webp`
 
-Elle fixe l’ambiance et la composition générale. Elle n’est pas une maquette pixel-perfect.
+Elle fixe l’ambiance et la composition générale, pas une maquette pixel-perfect.
 
 ## Principe
 
 > L’utilisateur entre dans un atelier, mais il utilise toujours une interface.
 
-Le décor ne doit jamais réduire la lisibilité, masquer un état, modifier une donnée ou rendre une action ambiguë.
+Le décor ne réduit jamais la lisibilité, ne masque aucun état, ne modifie aucune donnée et ne rend aucune action ambiguë.
 
 ## Source de vérité
 
-GitHub reste l’unique source de vérité. Lovable peut être utilisé uniquement conformément au protocole documenté.
+GitHub et la documentation sont les sources de vérité.
 
-Aucune modification directe de `main` n’est autorisée. Toute implémentation utilise une branche dédiée, une PR, la CI et une fusion verrouillée sur le SHA validé.
+Le registre fixe chaque asset. Aucune production n’est autorisée à partir d’une convention implicite, d’un prototype hérité ou d’une dimension approximative.
 
-## Ordre de réalisation
+## Ordre obligatoire
 
-Respecte le découpage obligatoire :
+1. lire le prochain asset autorisé dans le registre ;
+2. produire uniquement cet asset ;
+3. exporter exactement au nom, format et dimensions prévus ;
+4. contrôler le fichier ;
+5. obtenir la validation humaine ;
+6. mettre à jour le registre ;
+7. passer au suivant ;
+8. produire les planches de validation ;
+9. intégrer les lots 6A à 6E.
 
-1. prototype Lovable isolé ;
-2. validation humaine de la direction ;
-3. PR 6A fondations visuelles ;
-4. PR 6B cartes, statistiques et panneaux ;
-5. PR 6C dashboard et catalogue ;
-6. PR 6D fiches, activité et paramètres ;
-7. PR 6E mouvement, assets finaux et optimisation ;
-8. PR corrective si nécessaire.
+Ne lance jamais plusieurs assets simultanément sans validation intermédiaire.
 
-Ne lance pas tous les lots simultanément.
+## Production des assets
 
-## Prototype Lovable
+Pour chaque asset :
 
-Le premier prototype couvre uniquement :
+- reprendre son identifiant ;
+- utiliser son nom final exact ;
+- respecter son format ;
+- respecter ses dimensions ou son `viewBox` ;
+- respecter la transparence attendue ;
+- conserver les textes fonctionnels hors image ;
+- documenter le poids ;
+- tester le fallback ;
+- conserver la provenance ;
+- vérifier le rendu sur fond sombre et clair.
 
-- shell ;
-- enseigne ;
-- navigation ;
-- poutre de statistiques ;
-- une carte standard ;
-- une carte compacte ;
-- un fallback ;
-- un panneau secondaire ;
-- un focus ;
-- 1440 px ;
-- 390 px.
+Interdictions :
 
-Deux variantes maximum. Le prototype ne contient aucune logique GitHub et n’est jamais fusionné directement.
+- sortie brute intégrée directement ;
+- texte fonctionnel rasterisé ;
+- version, progression, branche, release ou conflit fictif ;
+- filigrane ;
+- asset distant ;
+- nom décidé après génération ;
+- dimensions modifiées sans révision du registre ;
+- ZIP, Base64, fragments ou workflow de reconstruction ;
+- sous-dossier dans `public/assets/phase-6/`.
+
+## Dossier runtime
+
+Tous les fichiers validés sont intégrés manuellement à plat dans :
+
+`public/assets/phase-6/`
+
+Aucune famille ou projet ne possède son propre sous-dossier.
+
+## Prototypes hérités
+
+Les fichiers des premières tentatives ne sont pas canoniques lorsqu’ils ne respectent pas le registre.
+
+- ne pas les utiliser comme preuve ;
+- ne pas les renommer artificiellement ;
+- ne pas les supprimer automatiquement ;
+- les remplacer un par un ;
+- les supprimer manuellement après contrôle des références.
 
 ## Contraintes de production
 
@@ -103,13 +130,11 @@ Deux variantes maximum. Le prototype ne contient aucune logique GitHub et n’es
 - aucun framework ;
 - aucun backend ;
 - aucun token ;
-- aucune écriture GitHub ;
+- aucune écriture GitHub depuis l’application ;
 - aucun appel GitHub supplémentaire pour embellir ;
 - aucun HTML distant ;
-- aucun asset distant requis ;
+- aucun asset distant ;
 - aucune donnée fictive ;
-- aucun texte fonctionnel dans une image ;
-- aucune progression inventée ;
 - aucune animation permanente ;
 - aucun son ;
 - aucune particule continue ;
@@ -117,23 +142,6 @@ Deux variantes maximum. Le prototype ne contient aucune logique GitHub et n’es
 - aucune fonction perdue selon la taille ;
 - fallback intact sans asset ;
 - cache-first et hors ligne préservés.
-
-## Assets
-
-- AVIF ou WebP pour les grandes images ;
-- SVG local pour icônes et cadres ;
-- PNG uniquement si nécessaire ;
-- dimensions explicites ;
-- poids publié ;
-- provenance documentée ;
-- licence vérifiée ;
-- aucune sortie IA brute intégrée ;
-- aucune donnée métier dessinée ;
-- lazy loading ;
-- variantes de taille lorsque le gain est réel ;
-- suppression des assets inutilisés.
-
-Respecte les budgets de `docs/03-technique/11-performance.md` et `docs/02-ux-ui/11-inventaire-assets-phase-6.md`.
 
 ## Accessibilité
 
@@ -143,52 +151,33 @@ Respecte les budgets de `docs/03-technique/11-performance.md` et `docs/02-ux-ui/
 - zones tactiles de 44 px ;
 - zoom 200 % ;
 - clavier complet ;
-- VoiceOver iOS ou contrôle équivalent ;
+- VoiceOver iOS ou équivalent ;
 - images décoratives avec alt vide ;
 - couvertures informatives avec alt concis ;
 - modales avec fond inerte et restauration du focus ;
 - textes et icônes pour les états ;
-- mouvement réduit complet ;
-- contrôle du mode contraste accru lorsque disponible.
+- mouvement réduit complet.
 
 ## Mouvement
 
-Autorisé :
+Autorisé : micro-interactions courtes, transitions de panneau, entrée narrative rare, lueur courte et relèvement léger.
 
-- micro-interaction 100 à 180 ms ;
-- transition de panneau 180 à 280 ms ;
-- entrée narrative rare 300 à 450 ms ;
-- lueur courte de synchronisation ;
-- entrée d’une nouvelle caisse ;
-- relèvement léger au survol ;
-- enfoncement court au pressé.
-
-Interdit :
-
-- parallaxe permanente ;
-- particules ;
-- clignotement ;
-- oscillation continue ;
-- grande surface animée ;
-- déplacement de contenu après interaction ;
-- mouvement requis pour comprendre un état.
+Interdit : parallaxe permanente, particules, clignotement, oscillation continue, grande surface animée, déplacement de contenu et mouvement nécessaire à la compréhension.
 
 ## Responsive
 
-Contrôle obligatoire :
-
-- 320 px ;
-- 390 px ;
-- 768 px ;
-- 1024 px ;
-- 1440 px ;
-- 1920 px ;
-- zoom 200 % ;
-- portrait et paysage ;
-- densité compacte ;
-- mouvement réduit.
+Contrôle obligatoire : 320, 390, 768, 1024, 1440 et 1920 px ; zoom 200 % ; portrait et paysage ; densité compacte ; mouvement réduit.
 
 Le mobile devient un établi compact. La tablette paysage est la cible de confort. Le bureau présente la scène complète. Le décor est réduit avant le contenu.
+
+## Lots d’intégration
+
+- 6A : fondations visuelles ;
+- 6B : cartes, statistiques et panneaux ;
+- 6C : dashboard et catalogue ;
+- 6D : fiches, activité et paramètres ;
+- 6E : mouvement, optimisation et suppression des prototypes remplacés ;
+- lot correctif : P1 et P2 uniquement.
 
 ## Tests et mesures
 
@@ -198,65 +187,44 @@ Pour chaque PR :
 - `npm run typecheck` ;
 - `npm run lint` ;
 - `npm test` ;
-- smoke tests existants ;
+- smoke tests ;
 - `npm run build` ;
-- poids CSS avant et après ;
-- poids des assets ;
+- poids CSS et assets ;
+- signatures et dimensions des fichiers ;
 - requêtes initiales ;
-- LCP ;
-- CLS ;
+- LCP et CLS ;
 - cache froid et chaud ;
 - hors ligne ;
 - images bloquées ;
-- fallback ;
+- fallbacks ;
 - responsive ;
 - clavier ;
 - contraste ;
 - mouvement réduit.
 
-Ne désactive aucune règle ni aucun test pour obtenir une CI verte.
+Ne désactive aucune règle ni aucun test.
 
 ## Discipline de revue
 
-Pour chaque PR :
-
-1. relire le diff complet ;
+1. relire le diff ;
 2. contrôler le périmètre ;
-3. vérifier l’absence de secret et de donnée fictive ;
-4. mesurer les budgets ;
-5. exécuter la CI complète ;
-6. sortir la PR du brouillon ;
+3. vérifier le registre ;
+4. vérifier l’absence de secret et de donnée fictive ;
+5. mesurer les budgets ;
+6. exécuter la CI ;
 7. demander une revue Codex ;
-8. interroger réellement les review threads ;
+8. interroger réellement les fils ;
 9. corriger chaque P1 et P2 avec test ;
-10. relancer toute la CI ;
-11. résoudre formellement les fils ;
-12. interroger une seconde fois les fils ;
+10. relancer la CI ;
+11. résoudre les fils ;
+12. interroger une seconde fois ;
 13. fusionner avec verrouillage sur le SHA exact ;
-14. contrôler directement `main`.
-
-Ne déclare jamais une PR sans P1 ou P2 avant d’avoir interrogé les fils.
+14. contrôler `main`.
 
 ## Rapport de fin de lot
 
-Fournir :
-
-- périmètre livré ;
-- composants modifiés ;
-- assets ajoutés ;
-- poids ;
-- mesures ;
-- formats contrôlés ;
-- tests ;
-- corrections de revue ;
-- PR ;
-- SHA fusionné ;
-- version visible ;
-- cache PWA ;
-- limites restantes.
+Fournir : périmètre, composants, assets, noms, dimensions, poids, tests, corrections de revue, PR, SHA fusionné, version visible, cache PWA et limites restantes.
 
 ## Fin de Phase 6
 
-La Phase 6 est terminée seulement lorsque toutes les vues sont cohérentes, tous les fallbacks fonctionnent, les budgets sont validés, aucun P1 ou P2 n’est ouvert et la checklist Phase 6 est clôturée.
-
-Ne commence pas la Phase 7 avant ce point.
+La Phase 6 est terminée lorsque toutes les vues sont cohérentes, les fallbacks fonctionnent, les budgets sont validés, le registre est clôturé et aucun P1 ou P2 n’est ouvert.

@@ -28,16 +28,17 @@ Chaque phase peut être découpée en plusieurs PR courtes. Éviter une PR uniqu
 
 La Phase 6 suit obligatoirement cet ordre :
 
-1. **6.0 Cadrage documentaire** : direction, bible, assets, budgets, responsive, mouvement et protocole Lovable ;
-2. **6.1 Prototype isolé** : shell, cartes et panneaux sur bureau et mobile ;
-3. **6A Fondations visuelles** : tokens, marque, shell, navigation et focus ;
-4. **6B Composants principaux** : cartes, statistiques, panneaux et fallbacks ;
-5. **6C Vues de découverte** : dashboard et catalogue ;
-6. **6D Vues de détail** : fiches, activité et paramètres ;
-7. **6E Finitions** : mouvement, assets finaux, optimisation et audit global ;
-8. **6F Corrections** : lot facultatif réservé aux P1 et P2 de revue.
+1. **6.0 Cadrage documentaire** : direction, bible, inventaire, budgets, responsive, mouvement, registre et protocole de production ;
+2. **6.1 Production manuelle** : un seul asset à la fois, selon le registre ;
+3. **6.2 Validation** : planches desktop, tablette, mobile et fallbacks ;
+4. **6A Fondations visuelles** : tokens, marque, shell, navigation et focus ;
+5. **6B Composants principaux** : cartes, statistiques, panneaux et fallbacks ;
+6. **6C Vues de découverte** : dashboard et catalogue ;
+7. **6D Vues de détail** : fiches, activité et paramètres ;
+8. **6E Finitions** : mouvement, assets finaux, optimisation et audit global ;
+9. **Corrections** : lot facultatif réservé aux P1 et P2.
 
-Les lots de production ne démarrent pas avant validation humaine du prototype 6.1.
+Les lots d’intégration ne démarrent pas avant validation humaine des assets et planches concernés.
 
 ## Jalons
 
@@ -47,23 +48,34 @@ Les lots de production ne démarrent pas avant validation humaine du prototype 6
 - **M3** : dashboard utilisable ;
 - **M4** : navigation complète ;
 - **M5** : MVP fonctionnel ;
-- **M6.0** : cadrage artistique validé ;
-- **M6.1** : prototype visuel validé ;
+- **M6.0** : cadrage artistique et registre validés ;
+- **M6.1** : premiers assets conformes validés ;
+- **M6.2** : planches responsive validées ;
 - **M6** : identité visuelle aboutie ;
 - **M7** : version 1.0.0 publiée.
 
 ## Go ou No-Go Phase 6
 
-No-Go vers l’implémentation si :
+No-Go vers la production si :
 
-- la référence visuelle n’est pas conservée dans le dépôt ;
+- la référence visuelle n’est pas conservée ;
 - la bible visuelle n’est pas validée ;
-- le prototype mobile n’existe pas ;
-- les budgets d’assets ne sont pas définis ;
-- le rôle de Lovable et de GitHub est ambigu ;
+- le registre ne précise pas le nom et les dimensions du prochain asset ;
+- le protocole de production n’est pas à jour ;
+- les budgets ne sont pas définis ;
+- le dossier runtime plat n’est pas la règle commune ;
 - une proposition exige un framework ou un backend ;
 - les fallbacks ne sont pas prévus ;
 - l’accessibilité est traitée comme une finition.
+
+No-Go vers l’intégration si :
+
+- l’asset n’est pas inscrit au registre ;
+- son nom, son format ou ses dimensions diffèrent ;
+- sa validation humaine manque ;
+- son fallback n’est pas testé ;
+- il provient d’un prototype hérité non remplacé ;
+- plusieurs assets ont été produits sans validation intermédiaire.
 
 No-Go vers la Phase 7 si :
 
@@ -71,8 +83,8 @@ No-Go vers la Phase 7 si :
 - un P1 ou P2 reste ouvert ;
 - la performance a régressé sans approbation ;
 - le mode hors ligne ou le mouvement réduit est incomplet ;
-- des données fictives ont été ajoutées pour embellir.
+- des données fictives ont été ajoutées.
 
 ## Gestion des idées
 
-Les extensions non MVP sont consignées séparément. La roadmap de réalisation n’est pas une liste infinie de souhaits.
+Les extensions non MVP sont consignées séparément. La roadmap n’est pas une liste infinie de souhaits.
