@@ -59,7 +59,8 @@
 - [ ] formats optimisés ;
 - [ ] transparence contrôlée ;
 - [ ] sources M/S requises approuvées A et versionnées R avant leurs dérivés ;
-- [ ] assets de dépendance et de fallback P/V avant leurs dépendants ;
+- [ ] assets canoniques Phase 6 cités par identifiant en P/V avant leurs dépendants ;
+- [ ] fallbacks HTML, CSS, système ou runtime hors registre décrits exactement par leur ligne du registre, présents et testés sans faux P/V ;
 - [ ] créations internes tracées sans statut R artificiel ;
 - [ ] assets contrôlés et versionnés à la racine avec P, validés avec V puis consommés avec I ;
 - [ ] aucun nouveau sous-dossier par famille ou projet ;

@@ -71,7 +71,8 @@ No-Go vers l’intégration si :
 
 - l’asset n’est pas inscrit au registre ;
 - sa source M/S requise ou sa source amont n’est pas versionnée R ;
-- un asset de dépendance ou de fallback cité n’est pas P/V ;
+- un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback n’est pas P/V ;
+- un fallback HTML, CSS, système ou runtime hors registre n’est pas décrit exactement par sa ligne du registre, présent et testé ;
 - une création interne n’a pas de méthode, provenance ou droits renseignés ;
 - son nom, son format ou ses dimensions diffèrent ;
 - il n’est pas contrôlé et versionné P à la racine du dossier runtime ;

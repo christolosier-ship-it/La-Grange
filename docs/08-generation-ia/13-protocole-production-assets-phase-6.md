@@ -57,12 +57,13 @@ Avant de produire :
 1. lire sa ligne dans le registre ;
 2. vérifier son identifiant ;
 3. si elle cite une source M ou S, confirmer son statut R ;
-4. si elle cite un asset de dépendance ou de fallback, confirmer ses statuts P et V ;
-5. si elle indique une création interne, vérifier que méthode, provenance et droits sont renseignés sans exiger R ;
-6. copier le nom final exact ;
-7. relever format, dimensions, alpha, usage, fallback et budget ;
-8. vérifier que l’élément précédent est validé ;
-9. vérifier que le champ « Prochain élément autorisé » désigne cette production.
+4. si elle cite par identifiant un asset canonique Phase 6 de dépendance ou de fallback, confirmer ses statuts P et V ;
+5. si elle cite un fallback HTML, CSS, système ou runtime hors registre, exiger que la ligne décrive son implémentation exacte — et son chemin versionné s’il s’agit d’un fichier — puis vérifier sa présence et son fonctionnement sans exiger P/V ;
+6. si elle indique une création interne, vérifier que méthode, provenance et droits sont renseignés sans exiger R ;
+7. copier le nom final exact ;
+8. relever format, dimensions, alpha, usage, fallback et budget ;
+9. vérifier que l’élément précédent est validé ;
+10. vérifier que le champ « Prochain élément autorisé » désigne cette production.
 
 ## Production
 
@@ -198,7 +199,8 @@ B06, C05 et C29 sont des tâches CSS, pas des assets. Ils ne reçoivent ni P ni 
 Un asset est produit et validé lorsque :
 
 - toute source M ou S explicitement citée par sa ligne est R ;
-- tout asset explicitement cité comme dépendance ou fallback possède P et V ;
+- tout asset canonique Phase 6 explicitement cité par identifiant comme dépendance ou fallback possède P et V ;
+- tout fallback HTML, CSS, système ou runtime hors registre possède une implémentation exacte décrite par la ligne — et un chemin versionné s’il s’agit d’un fichier —, présente et testée sans statut P/V ;
 - une création interne sans source canonique possède une méthode, une provenance et des droits renseignés sans statut R artificiel ;
 - sa provenance et ses droits sont renseignés ;
 - son budget est respecté ou approuvé ;
@@ -211,4 +213,4 @@ I reste décoché jusqu’à la PR d’intégration concernée.
 
 ## Ordre de production
 
-L’ordre autorisé est celui de la section finale du registre. Un asset de dépendance ou de fallback reçoit toujours P et V avant son dépendant, même si son étiquette de priorité est plus basse. Pour Gargotte, C18 est donc validé avant F01a ; la chaîne de sources reste obligatoirement M04 avec R, puis S01a avec R avant F01a et F01b, et S01c avec R avant F01c. C15 est validé avant C16. Le champ « Prochain élément autorisé » est mis à jour après chaque validation.
+L’ordre autorisé est celui de la section finale du registre. Un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback reçoit toujours P et V avant son dépendant, même si son étiquette de priorité est plus basse. Pour Gargotte, C18 est donc validé avant F01a ; la chaîne de sources reste obligatoirement M04 avec R, puis S01a avec R avant F01a et F01b, et S01c avec R avant F01c. C15 est validé avant C16. Les fallbacks runtime hors registre, dont les chemins exacts d’A09 et A10, sont déclarés par leur ligne puis contrôlés sans P/V. Le champ « Prochain élément autorisé » est mis à jour après chaque validation.

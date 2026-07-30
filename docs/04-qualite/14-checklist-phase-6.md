@@ -30,7 +30,8 @@ Cette checklist est complétée dans chaque PR visuelle avec les éléments appl
 - [ ] les dimensions décodées correspondent ;
 - [ ] la transparence correspond ;
 - [ ] toute source M/S requise possède A et R, y compris sa source amont lorsqu’elle est dérivée ;
-- [ ] tout asset cité comme dépendance ou fallback possède P et V avant son dépendant ;
+- [ ] tout asset canonique Phase 6 cité par identifiant comme dépendance ou fallback possède P et V avant son dépendant ;
+- [ ] tout fallback HTML, CSS, système ou runtime hors registre est décrit exactement par sa ligne du registre, présent et testé sans faux statut P/V ;
 - [ ] une création interne sans source canonique possède méthode, provenance et droits sans statut R artificiel ;
 - [ ] un seul asset a été produit avant validation ;
 - [ ] P correspond à un fichier contrôlé et versionné à la racine du dossier runtime ;

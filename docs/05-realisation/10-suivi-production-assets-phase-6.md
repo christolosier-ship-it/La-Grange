@@ -52,16 +52,17 @@ Le `README.md` et le `manifest.json` historiques présents dans `public/assets/p
 
 1. sélectionner une seule ligne A à F ;
 2. si la ligne cite une source M ou S, vérifier son statut R ;
-3. si la ligne cite un asset dérivé ou un asset de fallback, vérifier ses statuts P et V ;
-4. si la ligne indique une création interne sans source canonique, renseigner directement sa méthode, sa provenance et ses droits sans inventer de statut R ;
-5. produire uniquement ce fichier ;
-6. exporter exactement au nom, format, dimensions et budget indiqués ;
-7. contrôler signature, dimensions, alpha, poids et absence de texte fonctionnel ;
-8. renseigner précisément la provenance et les droits ;
-9. placer le fichier à plat dans `public/assets/phase-6/` ;
-10. cocher P après contrôle technique et présence versionnée ;
-11. obtenir la validation humaine puis cocher V ;
-12. mettre à jour le champ « Prochain élément autorisé ».
+3. si la ligne cite par identifiant un asset canonique Phase 6 comme dérivé ou fallback, vérifier ses statuts P et V ;
+4. si le fallback est du HTML, du CSS, une ressource système ou un fichier runtime hors registre, exiger que la ligne décrive son implémentation exacte — et son chemin versionné s’il s’agit d’un fichier — puis vérifier sa présence et son fonctionnement sans lui attribuer P/V ;
+5. si la ligne indique une création interne sans source canonique, renseigner directement sa méthode, sa provenance et ses droits sans inventer de statut R ;
+6. produire uniquement ce fichier ;
+7. exporter exactement au nom, format, dimensions et budget indiqués ;
+8. contrôler signature, dimensions, alpha, poids et absence de texte fonctionnel ;
+9. renseigner précisément la provenance et les droits ;
+10. placer le fichier à plat dans `public/assets/phase-6/` ;
+11. cocher P après contrôle technique et présence versionnée ;
+12. obtenir la validation humaine puis cocher V ;
+13. mettre à jour le champ « Prochain élément autorisé ».
 
 ### Intégration ultérieure
 
@@ -181,10 +182,12 @@ Une couverture et un logo possèdent des sources séparées. Les lignes F ne peu
 | A06 | P2 | `p6-a06-brand-mark-dark.svg` | SVG | viewBox 256 × 256 | oui | Variante monochrome sombre | A04 avec `currentColor` | A04, méthode et droits à renseigner précisément avant P | 12 Ko | [ ] | [ ] | [ ] |
 | A07 | P2 | `p6-a07-favicon-32x32.png` | PNG | 32 × 32 | oui | Favicon 32 px | initiales LG | A04, méthode et droits à renseigner précisément avant P | 8 Ko | [ ] | [ ] | [ ] |
 | A08 | P2 | `p6-a08-favicon-48x48.png` | PNG | 48 × 48 | oui | Favicon 48 px | initiales LG | A04, méthode et droits à renseigner précisément avant P | 10 Ko | [ ] | [ ] | [ ] |
-| A09 | P2 | `p6-a09-pwa-icon-192x192.png` | PNG | 192 × 192 | non | Icône PWA opaque | icône provisoire actuelle | A04, méthode et droits à renseigner précisément avant P | 45 Ko | [ ] | [ ] | [ ] |
-| A10 | P2 | `p6-a10-pwa-icon-512x512.png` | PNG | 512 × 512 | non | Icône PWA haute définition | icône provisoire actuelle | A04, méthode et droits à renseigner précisément avant P | 150 Ko | [ ] | [ ] | [ ] |
+| A09 | P2 | `p6-a09-pwa-icon-192x192.png` | PNG | 192 × 192 | non | Icône PWA opaque | `public/icons/icon-192.png`, fallback runtime existant hors registre Phase 6 | A04, méthode et droits à renseigner précisément avant P | 45 Ko | [ ] | [ ] | [ ] |
+| A10 | P2 | `p6-a10-pwa-icon-512x512.png` | PNG | 512 × 512 | non | Icône PWA haute définition | `public/icons/icon-512.png`, fallback runtime existant hors registre Phase 6 | A04, méthode et droits à renseigner précisément avant P | 150 Ko | [ ] | [ ] | [ ] |
 | A11 | P2 | `p6-a11-pwa-maskable-512x512.png` | PNG | 512 × 512 | non | Icône maskable, sujet dans la safe area 409 × 409 | A10 | A04, méthode et droits à renseigner précisément avant P | 150 Ko | [ ] | [ ] | [ ] |
 | A12 | P2 | `p6-a12-apple-touch-icon-180x180.png` | PNG | 180 × 180 | non | Icône Apple Touch sans coins pré-arrondis | A10 | A04, méthode et droits à renseigner précisément avant P | 50 Ko | [ ] | [ ] | [ ] |
+
+Les fallbacks runtime existants d’A09 et A10 restent opérationnels jusqu’à leur remplacement. Leurs chemins versionnés exacts sont déclarés par les lignes ci-dessus ; ils sont contrôlés par chemin, signature et chargement, mais ne sont pas des assets canoniques Phase 6 et ne reçoivent donc aucun statut P/V.
 
 ---
 
@@ -485,7 +488,7 @@ Un lot peut démarrer lorsque toutes ses sources R et ses assets P/V sont satisf
 17. P2 ;
 18. P3 uniquement sur décision explicite, sans bloquer 6E.
 
-Un asset cité comme dépendance ou fallback reçoit toujours P et V avant l’asset qui en dépend ; cette règle de dépendance prime sur l’étiquette de priorité.
+Un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback reçoit toujours P et V avant l’asset qui en dépend ; cette règle de dépendance prime sur l’étiquette de priorité. Un fallback hors registre n’est autorisé que si la ligne décrit son implémentation exacte — et son chemin versionné s’il s’agit d’un fichier ; il est vérifié en présence et en comportement sans recevoir P/V.
 
 ## Prochain élément autorisé
 

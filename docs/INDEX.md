@@ -61,7 +61,8 @@ Référence visuelle :
 - les planches G utilisent P/V dans `docs/assets/phase-6/`, ne reçoivent jamais I, sont produites après les changements des PR d’intégration et bloquent leur fusion, pas leur démarrage ;
 - un seul fichier est produit, contrôlé et validé à la fois ;
 - une source M ou S, y compris toute source amont, est versionnée avant tout dérivé ;
-- un asset cité comme dépendance ou fallback possède P/V avant son dépendant ; une création interne documente sa provenance sans statut R artificiel ;
+- un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback possède P/V avant son dépendant ;
+- un fallback HTML, CSS, système ou runtime hors registre est décrit exactement par sa ligne du registre puis présent et testé sans faux P/V ; une création interne documente sa provenance sans R artificiel ;
 - un contrôle CSS est spécifié avant le lot puis intégré dans sa PR avant fusion ;
 - aucune production en masse sans validation intermédiaire ;
 - les nouveaux fichiers canoniques sont versionnés à plat dans `docs/assets/phase-6/` ou `public/assets/phase-6/` selon leur rôle ;

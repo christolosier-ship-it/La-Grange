@@ -39,17 +39,19 @@ La production suit obligatoirement ces règles :
 1. un seul fichier est produit, contrôlé puis validé à la fois ;
 2. le contrat complet est défini dans le registre avant la production ;
 3. une source S dérivée ne reçoit R que lorsque sa source amont M ou S est elle-même R ;
-4. un asset exige R pour toute source M/S citée, P/V pour tout asset de dépendance ou de fallback cité, et une provenance renseignée sans R artificiel pour une création interne ;
-5. l’asset est contrôlé, versionné à la racine du dossier public puis reçoit P ;
-6. la validation humaine donne V, sans donner I ;
-7. l’intégration manuelle raccorde ultérieurement le fichier au code et donne I ;
-8. tous les nouveaux assets canoniques sont placés à plat dans `public/assets/phase-6/` ;
-9. aucun nouveau sous-dossier n’est autorisé ;
-10. aucun ZIP, fragment Base64 ou workflow de reconstruction n’est autorisé ;
-11. les prototypes hérités ne sont pas canoniques ;
-12. un prototype hérité n’est supprimé qu’après son remplacement validé et le contrôle de ses références ;
-13. un contrôle CSS doit être spécifié avant le démarrage de son lot et intégré dans sa PR avant fusion ;
-14. les planches sont des preuves d’acceptation produites après les changements des PR d’intégration et bloquent leur fusion, pas leur démarrage.
+4. un asset exige R pour toute source M/S citée et P/V pour tout asset canonique Phase 6 cité par identifiant comme dépendance ou fallback ;
+5. un fallback HTML, CSS, système ou runtime hors registre n’est autorisé que si la ligne du registre décrit son implémentation exacte — et son chemin versionné s’il s’agit d’un fichier ; il est présent et testé sans statut P/V artificiel ;
+6. une création interne renseigne sa méthode, sa provenance et ses droits sans R artificiel ;
+7. l’asset est contrôlé, versionné à la racine du dossier public puis reçoit P ;
+8. la validation humaine donne V, sans donner I ;
+9. l’intégration manuelle raccorde ultérieurement le fichier au code et donne I ;
+10. tous les nouveaux assets canoniques sont placés à plat dans `public/assets/phase-6/` ;
+11. aucun nouveau sous-dossier n’est autorisé ;
+12. aucun ZIP, fragment Base64 ou workflow de reconstruction n’est autorisé ;
+13. les prototypes hérités ne sont pas canoniques ;
+14. un prototype hérité n’est supprimé qu’après son remplacement validé et le contrôle de ses références ;
+15. un contrôle CSS doit être spécifié avant le démarrage de son lot et intégré dans sa PR avant fusion ;
+16. les planches sont des preuves d’acceptation produites après les changements des PR d’intégration et bloquent leur fusion, pas leur démarrage.
 
 ## Exception transitoire gelée
 

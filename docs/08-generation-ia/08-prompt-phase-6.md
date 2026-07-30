@@ -67,7 +67,7 @@ Le registre fixe chaque asset. Aucune production n’est autorisée à partir d�
 
 1. lire le prochain élément autorisé dans le registre ;
 2. s’il s’agit d’une source M/S, vérifier sa source amont, obtenir A et versionner le fichier canonique avant R ;
-3. s’il s’agit d’un asset, exiger R pour toute source M/S citée, P/V pour tout asset de dépendance ou de fallback cité, ou renseigner directement la provenance d’une création interne ;
+3. s’il s’agit d’un asset, exiger R pour toute source M/S citée, P/V pour tout asset canonique Phase 6 cité par identifiant, vérifier sans faux statut tout fallback hors registre décrit exactement par sa ligne, ou renseigner directement la provenance d’une création interne ;
 4. exporter exactement au nom, format, dimensions, alpha et budget prévus ;
 5. contrôler puis versionner l’asset à la racine de `public/assets/phase-6/` avant P ;
 6. obtenir la validation humaine avant V, avec I encore décoché ;

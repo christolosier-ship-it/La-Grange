@@ -204,7 +204,7 @@ Il est supprimé s’il ressemble à un contrôle, réduit le contraste, se rép
 - un seul asset produit et validé à la fois ;
 - nom, format et dimensions issus du registre ;
 - source M/S citée approuvée A et versionnée R avant tout dérivé ;
-- asset de dépendance ou de fallback cité déjà P/V, ou provenance interne renseignée en l’absence de source canonique ;
+- asset canonique Phase 6 cité par identifiant déjà P/V, fallback hors registre décrit exactement par la ligne du registre puis présent et testé sans faux statut, ou provenance interne renseignée en l’absence de source canonique ;
 - asset contrôlé et versionné à la racine du dossier runtime avec P, puis validé avec V ;
 - raccord manuel au code et statut I uniquement dans le lot 6A à 6E concerné ;
 - aucun nouveau sous-dossier ; l’exception héritée reste gelée ;

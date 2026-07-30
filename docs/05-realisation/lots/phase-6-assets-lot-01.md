@@ -62,7 +62,7 @@ Chaque remplacement suit désormais exclusivement le registre et le protocole ac
 1. lorsqu’une source M ou S est citée, approbation A puis versionnement R de son fichier canonique ;
 2. lorsqu’une source S est dérivée, vérification préalable de sa source amont R ;
 3. sélection d’une seule ligne exacte du registre ;
-4. vérification de toute source M/S citée avec R et de tout asset de dépendance ou de fallback cité avec P/V ;
+4. vérification de toute source M/S citée avec R, de tout asset canonique Phase 6 cité par identifiant avec P/V et de tout fallback hors registre décrit exactement par sa ligne par présence et test sans faux statut ;
 5. provenance et droits renseignés ;
 6. nom, format, dimensions, alpha, usage, fallback et budget définis avant production ;
 7. production d’un seul fichier ;

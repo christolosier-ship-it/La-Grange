@@ -264,7 +264,7 @@ Chaque fichier suit le protocole :
 
 1. contrat et dépendances lus dans le registre ;
 2. source M/S citée approuvée A et versionnée R ;
-3. asset de dépendance ou de fallback cité déjà P/V, ou provenance interne renseignée lorsqu’aucune source canonique n’existe ;
+3. asset canonique Phase 6 cité par identifiant déjà P/V, ou fallback hors registre décrit exactement par la ligne du registre puis présent et testé sans faux statut, ou provenance interne renseignée lorsqu’aucune source canonique n’existe ;
 4. source amont R vérifiée lorsqu’une source S est dérivée ;
 5. production d’un seul fichier ;
 6. export exact et provenance renseignée ;
