@@ -63,11 +63,11 @@ Le registre `10-suivi-production-assets-phase-6.md` est l’unique source de vé
 - une source M ou S doit être approuvée et versionnée avant tout dérivé ;
 - une source S dérivée d’une autre source ne peut recevoir R que lorsque sa source amont est elle-même R ;
 - un asset exige R seulement pour une source M/S explicitement citée et P/V seulement pour un asset canonique Phase 6 cité par identifiant ;
-- un fallback HTML, CSS, système ou runtime hors registre n’est autorisé que si la ligne du registre décrit son implémentation exacte — et son chemin versionné s’il s’agit d’un fichier ; il doit être présent et testé sans recevoir de faux statut P/V ;
+- un fallback HTML, CSS, système ou runtime hors registre n’est autorisé que si la ligne du registre décrit son implémentation exacte — sélecteurs consommateurs et feuilles versionnées pour le CSS, chemin versionné s’il s’agit d’un fichier ; il doit être présent et testé sans recevoir de faux statut P/V, y compris chacun des quatre chemins runtime distincts d’A09 à A12 ;
 - une création interne renseigne sa méthode, sa provenance et ses droits sans R artificiel ;
 - le fichier final respecte exactement le nom, le format, les dimensions, l’alpha et le budget du registre ;
 - tout SVG respecte un `viewBox` canonique complet à quatre valeurs numériques ;
-- tout export dérivé, y compris chaque fichier F, renseigne sa propre méthode d’export, son outil et son auteur avant P ;
+- tout export dérivé, y compris chaque fichier F et chaque planche G, renseigne sa propre méthode d’export ou de capture, son outil et son auteur avant P ;
 - les assets P et V sont versionnés à la racine de `public/assets/phase-6/`, même avant leur consommation ;
 - I n’est coché que lorsque l’application consomme réellement le fichier ;
 - un contrôle CSS doit être spécifié avant le lot puis intégré dans sa PR ;

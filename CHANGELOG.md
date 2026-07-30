@@ -60,7 +60,7 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - correction de la chaîne M04 vers S01a et S01c avant la production de F01 ;
 - ordonnancement des fallbacks C18 et C15 avant leurs assets dépendants ;
 - distinction entre dépendance canonique soumise à P/V et fallback runtime hors registre contrôlé sans faux statut ;
-- contrats exacts pour les fallbacks hors registre, `viewBox` complets et provenance d’export bloquante sur chaque fichier projet F ;
+- contrats exacts pour les fallbacks hors registre avec consommateurs et feuilles CSS versionnées, `viewBox` complets, fallbacks PWA opérationnels et provenance d’export bloquante sur chaque fichier projet F et chaque planche G ;
 - clarification du budget du shell en séparant le fond responsive actif du plafond global de 250 Ko ;
 - déplacement des planches G dans les critères d’acceptation des PR afin de supprimer les dépendances circulaires ;
 - séparation des preuves du shell 6A et du dashboard final 6C, avec trois planches dédiées au shell ;

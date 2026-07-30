@@ -115,30 +115,30 @@ Le plafond de **250 Ko** concerne le décor critique supplémentaire chargé pou
 
 ## Contrats exacts des fallbacks hors registre
 
-Les codes suivants font partie intégrante de chaque ligne qui les cite. Ils décrivent l’implémentation hors registre à conserver et à tester ; aucun code `FB-*` ne reçoit P/V.
+Les codes suivants font partie intégrante de chaque ligne qui les cite. Ils décrivent l’implémentation hors registre à conserver et à tester ; aucun code `FB-*` ne reçoit P/V. Chaque contrat CSS nomme ses sélecteurs consommateurs et ses feuilles versionnées. Si une déclaration requise n’existe pas au contrôle pré-P, elle doit être ajoutée dans la feuille citée avant d’attribuer P ; l’absence du sélecteur, du chemin ou de la déclaration bloque P.
 
 | Code | Contrat exact |
 | --- | --- |
 | `FB-BG` | sélecteur `body` dans `src/styles/index.css` ; pile `radial-gradient(circle at 72% -10%, rgba(119, 79, 35, 0.44) 0, transparent 34rem)`, `linear-gradient(rgba(21, 16, 11, 0.96), rgba(21, 16, 11, 0.98))`, puis `repeating-linear-gradient(90deg, #1c140d 0 4rem, #21170f 4rem 8rem)` |
-| `FB-WOOD` | `background: var(--color-surface-wood); color: var(--color-text)` ; tokens versionnés dans `src/styles/tokens.css` |
-| `FB-PAPER` | `background: var(--color-paper); color: var(--color-bg-deep)` ; tokens versionnés dans `src/styles/tokens.css` |
-| `FB-PANEL` | `background: var(--color-surface-panel); border: 1px solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text)` |
-| `FB-DARK` | `background: var(--color-bg-deep); border: 1px solid var(--color-border); color: var(--color-text)` |
-| `FB-BORDER` | `border: 1px solid var(--color-border); border-radius: var(--radius-md)` |
-| `FB-DASHED` | `border: 2px dashed var(--color-border); border-radius: var(--radius-md)` |
-| `FB-BADGE` | `display: inline-flex; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-surface-panel); color: var(--color-text)` |
-| `FB-SEPARATOR-H` | `border-block-start: 1px solid var(--color-border)` |
-| `FB-SEPARATOR-V` | `border-inline-start: 1px solid var(--color-border)` ; masqué sous `45rem` |
-| `FB-RADIAL` | `background: radial-gradient(circle, rgba(214, 154, 50, 0.26), transparent 68%)` |
-| `FB-ACCENT` | `border: 1px solid var(--color-amber); box-shadow: 0 0 0 0.18rem rgba(214, 154, 50, 0.12)` |
-| `FB-SHADOW` | `box-shadow: var(--shadow-card)` |
-| `FB-BUTTON` | `background: var(--color-surface-wood); border: 1px solid var(--color-border); color: var(--color-text)` |
-| `FB-DANGER` | `background: var(--color-danger); border: 1px solid var(--color-border); color: var(--color-text)` |
-| `FB-NATIVE-INPUT` | `appearance: auto; background: var(--color-bg-deep); border: 1px solid var(--color-border); color: var(--color-text)` |
-| `FB-NATIVE-BUTTON` | `appearance: auto; background: var(--color-surface-wood); border: 1px solid var(--color-border); color: var(--color-text)` |
+| `FB-WOOD` | B07/B08 : `.project-card__fallback` dans `src/styles/dashboard.css` et `.project-detail__artwork` dans `src/styles/project-detail.css` ; C13 : `.primary-nav` dans `src/styles/index.css`, `.rail-panel` dans `src/styles/dashboard.css` et `.catalogue-controls` dans `src/styles/catalogue.css` ; autres consommateurs `.return-link`, `.update-notice button`, `.settings-panel button` et `.confirmation-modal button` dans leurs feuilles versionnées | conserver la règle versionnée du sélecteur et un fond bois CSS lisible ; lorsqu’il emploie le token, `background: var(--color-surface-wood); color: var(--color-text)` |
+| `FB-PAPER` | consommateurs `.workbench-note` et `.update-notice` dans `src/styles/index.css` ; conserver `background: var(--color-paper)` et `color: var(--color-bg-deep)` sous les éventuels gradients déjà présents |
+| `FB-PANEL` | C01/C02/C04 : `.project-card`, C11 : `.stat-card`, dans `src/styles/dashboard.css` ; C19 : `.confirmation-modal`, C21 : `.settings-diagnostic-preview`, dans `src/styles/settings.css` ; conserver un fond opaque, `border: 1px solid var(--color-border)`, un rayon au moins `var(--radius-md)` et le texte `var(--color-text)` |
+| `FB-DARK` | B10/B11 et C14 : `.dashboard-feedback` dans `src/styles/dashboard.css`, `.activity-header`, `.activity-feedback`, `.activity-empty`, `.activity-week` et `.activity-event` dans `src/styles/activity.css`, `.project-detail__detail-group` dans `src/styles/project-detail.css` et `.settings-diagnostic-preview` dans `src/styles/settings.css` | conserver la règle versionnée du sélecteur : fond sombre opaque ou semi-opaque, bordure visible et `color: var(--color-text)` ou `var(--color-text-muted)` |
+| `FB-BORDER` | C12 : `.dashboard-section` dans `src/styles/dashboard.css` ; C13 : `.primary-nav` dans `src/styles/index.css`, `.rail-panel` dans `src/styles/dashboard.css` et `.catalogue-controls` dans `src/styles/catalogue.css` ; C15 : `.workbench-note`, C20 : `.update-notice`, dans `src/styles/index.css` | conserver `border: 1px solid var(--color-border)` ou la bordure versionnée du sélecteur, avec un rayon au moins `var(--radius-md)` lorsque le composant est encadré |
+| `FB-DASHED` | consommateurs `.dashboard-empty` dans `src/styles/dashboard.css`, `.catalogue-empty` et `.catalogue-unavailable` dans `src/styles/catalogue.css` ; conserver une bordure `dashed` visible et `border-radius: var(--radius-md)` |
+| `FB-BADGE` | consommateurs `.status-badge` et `.new-badge` dans `src/styles/dashboard.css` ; conserver `display: inline-flex`, une bordure visible, `border-radius: 999px`, un fond contrasté et un texte lisible |
+| `FB-SEPARATOR-H` | C09 : `.project-card__metadata` dans `src/styles/dashboard.css` et `.project-detail__metadata` dans `src/styles/project-detail.css` ; C10 : `.project-card__launch` dans `src/styles/dashboard.css` et `.project-detail__actions` dans `src/styles/project-detail.css` ; C27 : `.activity-week > h2` et `.activity-day + .activity-day` dans `src/styles/activity.css`, `.settings-panel > header` dans `src/styles/settings.css` ; conserver une bordure horizontale `1px solid var(--color-border)` |
+| `FB-SEPARATOR-V` | consommateurs `.dashboard-rail` dans `src/styles/dashboard.css` et `.project-detail__rail` dans `src/styles/project-detail.css` ; `border-inline-start: 0` sous `45rem`, puis `border-inline-start: 1px solid var(--color-border)` à partir de `45rem` |
+| `FB-RADIAL` | consommateur `.dashboard-hero::before` dans `src/styles/dashboard.css` ; `background: radial-gradient(circle, rgba(214, 154, 50, 0.26), transparent 68%)` |
+| `FB-ACCENT` | B13 : `.sync-button`, B14 : `.project-card.is-new`, dans `src/styles/dashboard.css` ; autre consommateur `.activity-event__marker` dans `src/styles/activity.css` ; conserver une bordure ambre visible et `box-shadow: 0 0 0 0.18rem rgba(214, 154, 50, 0.12)` ou la règle d’accent versionnée du sélecteur |
+| `FB-SHADOW` | consommateurs `.dashboard-hero`, `.dashboard-section` et `.rail-panel` dans `src/styles/dashboard.css`, `.project-detail__hero` et `.project-detail__panel` dans `src/styles/project-detail.css` ; `box-shadow: var(--shadow-card)` |
+| `FB-BUTTON` | C22 : `.sync-button` dans `src/styles/dashboard.css` et `.project-detail__action.is-primary` dans `src/styles/project-detail.css` ; C23 : `.project-card__launch` dans `src/styles/dashboard.css`, `.catalogue-search button`, `.catalogue-reset` et `.catalogue-empty button` dans `src/styles/catalogue.css`, `.project-detail__action` et `.project-detail__detail-link` dans `src/styles/project-detail.css`, `.settings-panel button` et `.confirmation-modal button` dans `src/styles/settings.css` ; conserver un bouton ou lien HTML avec fond visible, bordure visible et `color: var(--color-text)` ou `var(--color-paper)` |
+| `FB-DANGER` | consommateurs `.settings-panel button.is-destructive` et `.confirmation-modal button.is-destructive` dans `src/styles/settings.css` ; `border-color: rgba(226, 125, 96, 0.72)`, `background: rgba(105, 42, 30, 0.82)` et libellé HTML lisible |
+| `FB-NATIVE-INPUT` | consommateurs `.catalogue-search input` et `.catalogue-field select` dans `src/styles/catalogue.css`, `.settings-form input` et `.settings-select-grid select` dans `src/styles/settings.css` ; conserver les éléments natifs, `appearance: auto`, une bordure visible, un fond sombre et `color: var(--color-text)` |
+| `FB-NATIVE-BUTTON` | consommateurs `.filter-chip` et `.catalogue-view-toggle button` dans `src/styles/catalogue.css` ; conserver les boutons HTML, `appearance: auto`, `border: 1px solid var(--color-border)`, un fond sombre et `color: var(--color-text)` |
 | `FB-BRAND-NAME` | texte HTML exact « La Grange » dans `.brand strong`, versionné dans `src/ui/layout/app-shell.ts` |
 | `FB-BRAND-MARK` | texte HTML exact « LG » dans `.brand-mark`, versionné dans `src/ui/layout/app-shell.ts` |
-| `FB-PROJECT` | nom réel du projet et initiales calculées dans `.project-card__title` et `.project-card__fallback`, versionnés dans `src/ui/components/project-card.ts` |
+| `FB-PROJECT` | couvertures catalogue : nom réel dans `.project-card__title` et initiales dans `.project-card__fallback`, générés par `src/ui/components/project-card.ts` et stylés dans `src/styles/dashboard.css` et `src/styles/project-card.css` ; couverture de fiche : `.project-detail__artwork-fallback` ; logos Fxxc : initiales dans `.project-detail__logo` ; ces deux fallbacks sont générés par `src/features/project-detail/project-detail-elements.ts` et stylés dans `src/styles/project-detail.css` |
 | `FB-LABEL` | libellé HTML exact de la colonne `Fonction` ou du contrôle consommateur, conservé comme texte visible ou nom accessible |
 | `FB-WELCOME` | contenu HTML de `.workbench-note`, versionné dans `src/ui/layout/app-shell.ts`, conservé visible et lisible |
 | `FB-NONE` | aucun substitut visuel ; le nœud décoratif est omis et la mise en page ainsi que toutes les fonctions restent disponibles |
@@ -216,10 +216,10 @@ Une couverture et un logo possèdent des sources séparées. Les lignes F ne peu
 | A08 | P2 | `p6-a08-favicon-48x48.png` | PNG | 48 × 48 | oui | Favicon 48 px | `FB-BRAND-MARK` | A04, méthode et droits à renseigner précisément avant P | 10 Ko | [ ] | [ ] | [ ] |
 | A09 | P2 | `p6-a09-pwa-icon-192x192.png` | PNG | 192 × 192 | non | Icône PWA opaque | `public/icons/icon-192.png`, fallback runtime existant hors registre Phase 6 | A04, méthode et droits à renseigner précisément avant P | 45 Ko | [ ] | [ ] | [ ] |
 | A10 | P2 | `p6-a10-pwa-icon-512x512.png` | PNG | 512 × 512 | non | Icône PWA haute définition | `public/icons/icon-512.png`, fallback runtime existant hors registre Phase 6 | A04, méthode et droits à renseigner précisément avant P | 150 Ko | [ ] | [ ] | [ ] |
-| A11 | P2 | `p6-a11-pwa-maskable-512x512.png` | PNG | 512 × 512 | non | Icône maskable, sujet dans la safe area 409 × 409 | A10 | A04, méthode et droits à renseigner précisément avant P | 150 Ko | [ ] | [ ] | [ ] |
-| A12 | P2 | `p6-a12-apple-touch-icon-180x180.png` | PNG | 180 × 180 | non | Icône Apple Touch sans coins pré-arrondis | A10 | A04, méthode et droits à renseigner précisément avant P | 50 Ko | [ ] | [ ] | [ ] |
+| A11 | P2 | `p6-a11-pwa-maskable-512x512.png` | PNG | 512 × 512 | non | Icône maskable, sujet dans la safe area 409 × 409 | `public/icons/maskable-512.png`, fallback runtime existant hors registre Phase 6 | A04, méthode et droits à renseigner précisément avant P | 150 Ko | [ ] | [ ] | [ ] |
+| A12 | P2 | `p6-a12-apple-touch-icon-180x180.png` | PNG | 180 × 180 | non | Icône Apple Touch sans coins pré-arrondis | `public/icons/apple-touch-icon.png`, fallback runtime existant hors registre Phase 6 | A04, méthode et droits à renseigner précisément avant P | 50 Ko | [ ] | [ ] | [ ] |
 
-Les fallbacks runtime existants d’A09 et A10 restent opérationnels jusqu’à leur remplacement. Leurs chemins versionnés exacts sont déclarés par les lignes ci-dessus ; ils sont contrôlés par chemin, signature et chargement, mais ne sont pas des assets canoniques Phase 6 et ne reçoivent donc aucun statut P/V.
+Les fallbacks runtime existants d’A09 à A12 restent opérationnels jusqu’à leur remplacement. Leurs quatre chemins versionnés exacts sont déclarés par les lignes ci-dessus ; ils sont contrôlés par chemin, signature, dimensions, usage manifeste ou HTML et chargement, mais ne sont pas des assets canoniques Phase 6 et ne reçoivent donc aucun statut P/V.
 
 ---
 
@@ -426,33 +426,33 @@ Une ligne correspond à un seul fichier. Les droits artistiques sont hérités d
 
 # 8. Planches de validation documentaire
 
-Ces PNG sont produits dans la PR d’intégration qui rend leur contenu observable. Ils sont placés à plat dans `docs/assets/phase-6/`, n’entrent pas dans le runtime et utilisent uniquement l’application et les assets du lot concerné.
+Ces PNG sont produits dans la PR d’intégration qui rend leur contenu observable. Ils sont placés à plat dans `docs/assets/phase-6/`, n’entrent pas dans le runtime et utilisent uniquement l’application et les assets du lot concerné. Les droits projet ne remplacent pas leur provenance de transformation : chaque ligne G exige sa propre méthode de capture, son outil et son auteur avant P.
 
 | ID | P | Nom final | Dimensions | Usage | Source / droits | Budget max | P | V |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| G01 | P0 | `p6-g01-dashboard-desktop-1440x1024.png` | 1440 × 1024 | Dashboard desktop | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G02 | P0 | `p6-g02-dashboard-tablet-1024x1366.png` | 1024 × 1366 | Dashboard tablette | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G03 | P0 | `p6-g03-dashboard-mobile-390x844.png` | 390 × 844 | Dashboard mobile | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G04a | P1 | `p6-g04a-catalogue-desktop-1440x1024.png` | 1440 × 1024 | Catalogue desktop | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G04b | P1 | `p6-g04b-catalogue-mobile-390x844.png` | 390 × 844 | Catalogue mobile | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G05a | P1 | `p6-g05a-project-detail-desktop-1440x1024.png` | 1440 × 1024 | Fiche desktop | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G05b | P1 | `p6-g05b-project-detail-mobile-390x844.png` | 390 × 844 | Fiche mobile | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G06a | P1 | `p6-g06a-activity-desktop-1440x1024.png` | 1440 × 1024 | Activité desktop | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G06b | P1 | `p6-g06b-activity-mobile-390x844.png` | 390 × 844 | Activité mobile | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G07a | P1 | `p6-g07a-settings-desktop-1440x1024.png` | 1440 × 1024 | Paramètres desktop | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G07b | P1 | `p6-g07b-settings-mobile-390x844.png` | 390 × 844 | Paramètres mobile | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G08 | P1 | `p6-g08-components-gallery-1920x1080.png` | 1920 × 1080 | Galerie de composants | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G09 | P1 | `p6-g09-no-images-1440x1024.png` | 1440 × 1024 | Fallbacks sans images | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G10a | P1 | `p6-g10a-long-content-1440x1024.png` | 1440 × 1024 | Contenus longs desktop | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G10b | P1 | `p6-g10b-long-content-mobile-390x844.png` | 390 × 844 | Contenus longs mobile | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G11 | P1 | `p6-g11-zoom-200-780x1688.png` | 780 × 1688 | Zoom 200 % | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G12 | P1 | `p6-g12-compact-density-1440x1024.png` | 1440 × 1024 | Densité compacte | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G13 | P1 | `p6-g13-reduced-motion-1440x1024.png` | 1440 × 1024 | Mouvement réduit | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G14a | P2 | `p6-g14a-low-light-1440x1024.png` | 1440 × 1024 | Lumière faible | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G14b | P2 | `p6-g14b-bright-light-1440x1024.png` | 1440 × 1024 | Lumière forte | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G15a | P0 | `p6-g15a-shell-desktop-1440x1024.png` | 1440 × 1024 | Shell et navigation desktop avant composition du dashboard | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G15b | P0 | `p6-g15b-shell-tablet-1024x1366.png` | 1024 × 1366 | Shell et navigation tablette avant composition du dashboard | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
-| G15c | P0 | `p6-g15c-shell-mobile-390x844.png` | 390 × 844 | Shell et navigation mobile avant composition du dashboard | captures du projet / droits projet | 2 Mo | [ ] | [ ] |
+| G01 | P0 | `p6-g01-dashboard-desktop-1440x1024.png` | 1440 × 1024 | Dashboard desktop | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G02 | P0 | `p6-g02-dashboard-tablet-1024x1366.png` | 1024 × 1366 | Dashboard tablette | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G03 | P0 | `p6-g03-dashboard-mobile-390x844.png` | 390 × 844 | Dashboard mobile | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G04a | P1 | `p6-g04a-catalogue-desktop-1440x1024.png` | 1440 × 1024 | Catalogue desktop | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G04b | P1 | `p6-g04b-catalogue-mobile-390x844.png` | 390 × 844 | Catalogue mobile | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G05a | P1 | `p6-g05a-project-detail-desktop-1440x1024.png` | 1440 × 1024 | Fiche desktop | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G05b | P1 | `p6-g05b-project-detail-mobile-390x844.png` | 390 × 844 | Fiche mobile | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G06a | P1 | `p6-g06a-activity-desktop-1440x1024.png` | 1440 × 1024 | Activité desktop | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G06b | P1 | `p6-g06b-activity-mobile-390x844.png` | 390 × 844 | Activité mobile | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G07a | P1 | `p6-g07a-settings-desktop-1440x1024.png` | 1440 × 1024 | Paramètres desktop | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G07b | P1 | `p6-g07b-settings-mobile-390x844.png` | 390 × 844 | Paramètres mobile | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G08 | P1 | `p6-g08-components-gallery-1920x1080.png` | 1920 × 1080 | Galerie de composants | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G09 | P1 | `p6-g09-no-images-1440x1024.png` | 1440 × 1024 | Fallbacks sans images | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G10a | P1 | `p6-g10a-long-content-1440x1024.png` | 1440 × 1024 | Contenus longs desktop | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G10b | P1 | `p6-g10b-long-content-mobile-390x844.png` | 390 × 844 | Contenus longs mobile | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G11 | P1 | `p6-g11-zoom-200-780x1688.png` | 780 × 1688 | Zoom 200 % | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G12 | P1 | `p6-g12-compact-density-1440x1024.png` | 1440 × 1024 | Densité compacte | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G13 | P1 | `p6-g13-reduced-motion-1440x1024.png` | 1440 × 1024 | Mouvement réduit | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G14a | P2 | `p6-g14a-low-light-1440x1024.png` | 1440 × 1024 | Lumière faible | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G14b | P2 | `p6-g14b-bright-light-1440x1024.png` | 1440 × 1024 | Lumière forte | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G15a | P0 | `p6-g15a-shell-desktop-1440x1024.png` | 1440 × 1024 | Shell et navigation desktop avant composition du dashboard | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G15b | P0 | `p6-g15b-shell-tablet-1024x1366.png` | 1024 × 1366 | Shell et navigation tablette avant composition du dashboard | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G15c | P0 | `p6-g15c-shell-mobile-390x844.png` | 390 × 844 | Shell et navigation mobile avant composition du dashboard | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
 
 ---
 

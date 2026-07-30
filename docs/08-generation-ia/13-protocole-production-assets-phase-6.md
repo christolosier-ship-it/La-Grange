@@ -58,7 +58,7 @@ Avant de produire :
 2. vérifier son identifiant ;
 3. si elle cite une source M ou S, confirmer son statut R ;
 4. si elle cite par identifiant un asset canonique Phase 6 de dépendance ou de fallback, confirmer ses statuts P et V ;
-5. si elle cite un fallback HTML, CSS, système ou runtime hors registre, exiger que la ligne décrive son implémentation exacte — et son chemin versionné s’il s’agit d’un fichier — puis vérifier sa présence et son fonctionnement sans exiger P/V ;
+5. si elle cite un fallback HTML, CSS, système ou runtime hors registre, exiger que la ligne décrive son implémentation exacte — sélecteurs consommateurs et feuilles versionnées pour le CSS, chemin versionné s’il s’agit d’un fichier — puis vérifier sa présence et son fonctionnement sans exiger P/V ;
 6. si elle indique une création interne, vérifier que méthode, provenance et droits sont renseignés sans exiger R ;
 7. copier le nom final exact ;
 8. relever format, dimensions, alpha, usage, fallback et budget ;
@@ -103,7 +103,7 @@ Avant P, la colonne `Source / droits` précise :
 - le statut des droits d’utilisation ;
 - la licence et sa référence lorsqu’elle existe.
 
-Pour un export dérivé, notamment chaque fichier F, la ligne conserve aussi sa propre méthode d’export, son outil et son auteur ; l’héritage des droits de la source ne remplace pas cette provenance de transformation.
+Pour un export dérivé, notamment chaque fichier F et chaque planche G, la ligne conserve aussi sa propre méthode d’export ou de capture, son outil et son auteur ; l’héritage des droits de la source ne remplace pas cette provenance de transformation.
 
 La valeur `à renseigner avant P` est bloquante. Les icônes, y compris les marques externes, possèdent leur propre champ de provenance.
 
@@ -142,7 +142,7 @@ Après validation, cocher V et mettre à jour le prochain élément autorisé. I
 
 ## Planches documentaires
 
-Les planches G sont des **preuves d’acceptation produites dans la PR d’intégration** qui rend leur contenu observable. Elles ne sont pas des prérequis de démarrage du lot.
+Les planches G sont des **preuves d’acceptation produites dans la PR d’intégration** qui rend leur contenu observable. Elles ne sont pas des prérequis de démarrage du lot. Chaque planche renseigne sur sa propre ligne sa méthode de capture, son outil et son auteur avant P.
 
 Elles sont placées à plat dans `docs/assets/phase-6/`, ne sont jamais servies par l’application et vérifient les formats, les fallbacks, les contenus longs, le zoom, la densité, le mouvement réduit et la lumière.
 
@@ -215,4 +215,4 @@ I reste décoché jusqu’à la PR d’intégration concernée.
 
 ## Ordre de production
 
-L’ordre autorisé est celui de la section finale du registre. Un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback reçoit toujours P et V avant son dépendant, même si son étiquette de priorité est plus basse. Pour Gargotte, C18 est donc validé avant F01a ; la chaîne de sources reste obligatoirement M04 avec R, puis S01a avec R avant F01a et F01b, et S01c avec R avant F01c. C15 est validé avant C16. Les fallbacks runtime hors registre, dont les chemins exacts d’A09 et A10, sont déclarés par leur ligne puis contrôlés sans P/V. Le champ « Prochain élément autorisé » est mis à jour après chaque validation.
+L’ordre autorisé est celui de la section finale du registre. Un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback reçoit toujours P et V avant son dépendant, même si son étiquette de priorité est plus basse. Pour Gargotte, C18 est donc validé avant F01a ; la chaîne de sources reste obligatoirement M04 avec R, puis S01a avec R avant F01a et F01b, et S01c avec R avant F01c. C15 est validé avant C16. Les quatre fallbacks runtime hors registre d’A09 à A12 sont déclarés par leur chemin exact sur chaque ligne, puis contrôlés dans leur usage manifeste ou HTML sans P/V. Le champ « Prochain élément autorisé » est mis à jour après chaque validation.

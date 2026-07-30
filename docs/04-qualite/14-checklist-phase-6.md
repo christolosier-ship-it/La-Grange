@@ -32,9 +32,10 @@ Cette checklist est complétée dans chaque PR visuelle avec les éléments appl
 - [ ] la transparence correspond ;
 - [ ] toute source M/S requise possède A et R, y compris sa source amont lorsqu’elle est dérivée ;
 - [ ] tout asset canonique Phase 6 cité par identifiant comme dépendance ou fallback possède P et V avant son dépendant ;
-- [ ] tout fallback HTML, CSS, système ou runtime hors registre est décrit exactement par sa ligne du registre, présent et testé sans faux statut P/V ;
+- [ ] tout fallback HTML, CSS, système ou runtime hors registre est décrit exactement par sa ligne du registre, avec sélecteurs consommateurs et feuilles versionnées pour le CSS ou chemin versionné pour un fichier, puis présent et testé sans faux statut P/V ;
+- [ ] les quatre fallbacks runtime distincts d’A09 à A12 existent à leur chemin déclaré et sont contrôlés dans leur usage manifeste ou HTML ;
 - [ ] une création interne sans source canonique possède méthode, provenance et droits sans statut R artificiel ;
-- [ ] tout export dérivé possède sa propre méthode d’export, son outil et son auteur avant P ;
+- [ ] tout export dérivé, y compris chaque fichier F et chaque planche G, possède sa propre méthode d’export ou de capture, son outil et son auteur avant P ;
 - [ ] un seul asset a été produit avant validation ;
 - [ ] P correspond à un fichier contrôlé et versionné à la racine du dossier runtime ;
 - [ ] la validation humaine est tracée ;

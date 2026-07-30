@@ -252,7 +252,7 @@ La colonne `Source / droits` du registre est la source officielle. Elle est rens
 - statut des droits ;
 - licence et référence lorsqu’elles existent.
 
-Chaque export dérivé conserve en plus sa propre méthode d’export, son outil et son auteur sur sa ligne, même lorsque les droits artistiques sont hérités de la source.
+Chaque export dérivé, y compris chaque fichier F et chaque planche G, conserve en plus sa propre méthode d’export ou de capture, son outil et son auteur sur sa ligne, même lorsque les droits artistiques sont hérités de la source.
 
 Aucun manifeste runtime ne porte cette information documentaire.
 
@@ -310,6 +310,7 @@ Ils sont :
 | cadre SVG | contrat `FB-*` exact de sa ligne |
 | couverture projet | C18 et `FB-PROJECT` |
 | logo projet | `FB-PROJECT` |
+| icône PWA A09 à A12 | chemin runtime versionné exact déclaré par chaque ligne |
 | icône | `FB-LABEL` |
 | police décorative | pile système |
 | ornement | `FB-NONE` |
