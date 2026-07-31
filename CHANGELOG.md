@@ -34,7 +34,8 @@ Toutes les évolutions notables de La Grange sont consignées ici selon une stru
 - budgets individuels et contrats fichier par fichier pour les familles A à G ;
 - matrice exacte des prérequis d’entrée, affectations aux lots et planches d’acceptation pour les PR 6A à 6E ;
 - protocole de production manuelle asset par asset et ADR maintenant GitHub comme source de vérité ;
-- découpage de la Phase 6 en production validée puis PR 6A à 6E.
+- découpage de la Phase 6 en production validée puis PR 6A à 6E ;
+- intégration du lot visuel 6A avec enseigne responsive A01 à A03, médaillon A04, fonds B01 à B04, texture B07, lumière B12 et iconographie fonctionnelle D01 à D05 et D21 à D26.
 
 ### Corrigé
 
