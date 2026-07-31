@@ -4,7 +4,7 @@
 
 **Ce fichier est la source de vérité unique du catalogue des assets de la Phase 6.**
 
-Dernière mise à jour : 2026-07-30.
+Dernière mise à jour : 2026-07-31.
 
 Il fixe les identifiants, noms finaux, formats, dimensions, transparences, usages, fallbacks, budgets, provenances, droits et statuts. En cas de conflit, le présent registre prime pour la production et l’intégration des assets.
 
@@ -151,8 +151,8 @@ Le contrôle bloque l’image ou le SVG, vérifie les déclarations, littéraux,
 
 | ID | P | Master | Fichier canonique | Dimensions | Alpha | Usage | Source / droits | Budget max | A | R |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| M01 | P0 | Enseigne La Grange | `p6-m01-brand-sign-master-1600x720.webp` | 1600 × 720 | oui | Direction approuvée de l’enseigne | création utilisateur/IA, droits projet à confirmer avant R | 1,5 Mo | [x] | [ ] |
-| M02 | P0 | Fond d’atelier | `p6-m02-background-workshop-master-2048x1152.webp` | 2048 × 1152 | non | Direction approuvée du fond nocturne | création utilisateur/IA, droits projet à confirmer avant R | 2 Mo | [x] | [ ] |
+| M01 | P0 | Enseigne La Grange | `p6-m01-brand-sign-master-1600x720.webp` | 1600 × 720 | oui | Direction approuvée de l’enseigne | création utilisateur assistée par IA ; sélection et validation par le propriétaire du projet ; conversion WebP et mise au format 1600 × 720 réalisées dans ChatGPT ; droits d’utilisation accordés au projet La Grange | 1,5 Mo | [x] | [x] |
+| M02 | P0 | Fond d’atelier | `p6-m02-background-workshop-master-2048x1152.webp` | 2048 × 1152 | non | Direction approuvée du fond nocturne | création utilisateur assistée par IA ; sélection et validation par le propriétaire du projet ; conversion WebP et mise au format 2048 × 1152 réalisées dans ChatGPT ; droits d’utilisation accordés au projet La Grange | 2 Mo | [x] | [x] |
 | M03 | P0 | Cadre de carte vide | `p6-m03-project-card-frame-master-640x960.webp` | 640 × 960 | oui | Direction approuvée du cadre vertical | création utilisateur/IA, droits projet à confirmer avant R | 1,2 Mo | [x] | [ ] |
 | M04 | P1 | Carte Gargotte complète | `p6-m04-gargotte-card-master-640x960.webp` | 640 × 960 | non | Référence de composition Gargotte, jamais intégrée telle quelle | création utilisateur/IA, droits projet à confirmer avant R | 1,2 Mo | [x] | [ ] |
 | M05 | P0 | Panneau de bienvenue | `p6-m05-welcome-panel-master-640x960.webp` | 640 × 960 | oui | Direction approuvée du papier suspendu | création utilisateur/IA, droits projet à confirmer avant R | 1,2 Mo | [x] | [ ] |
@@ -524,6 +524,6 @@ Un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback r
 
 ## Prochain élément autorisé
 
-**Versionner M01 sous `docs/assets/phase-6/p6-m01-brand-sign-master-1600x720.webp`.**
+**Contrôler A01 sous `public/assets/phase-6/p6-a01-brand-sign-1600x720.webp`, renseigner sa méthode d’export, son outil, son auteur et ses droits, puis attribuer P/V si conforme.**
 
-A01 ne peut pas être produit tant que A et R de M01 ne sont pas cochés.
+M01 et M02 sont désormais approuvés et versionnés sous leurs chemins canoniques.
