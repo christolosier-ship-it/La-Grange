@@ -206,7 +206,7 @@ Une couverture et un logo possèdent des sources séparées. Les lignes F ne peu
 
 | ID | P | Fichier final | Format | Dimensions | Alpha | Usage | Fallback | Source / droits | Budget max | P | V | I |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| A01 | P0 | `p6-a01-brand-sign-1600x720.webp` | WebP | 1600 × 720 | oui | Enseigne desktop, marque seule, centrée dans le rail gauche | `FB-BRAND-NAME` | M01, méthode et droits à renseigner précisément avant P | 100 Ko | [ ] | [ ] | [ ] |
+| A01 | P0 | `p6-a01-brand-sign-1600x720.webp` | WebP | 1600 × 720 | oui | Enseigne desktop, marque seule, centrée dans le rail gauche | `FB-BRAND-NAME` | dérivé de M01 ; création utilisateur assistée par IA ; détourage, conversion WebP et export 1600 × 720 réalisés dans ChatGPT ; sélection et validation par le propriétaire du projet ; droits d’utilisation accordés au projet La Grange | 100 Ko | [x] | [x] | [ ] |
 | A02 | P0 | `p6-a02-brand-sign-800x360.webp` | WebP | 800 × 360 | oui | Enseigne tablette, même composition que A01 | `FB-BRAND-NAME` | A01, méthode et droits à renseigner précisément avant P | 60 Ko | [ ] | [ ] | [ ] |
 | A03 | P0 | `p6-a03-brand-sign-mobile-960x560.webp` | WebP | 960 × 560 | oui | Composition resserrée pour mobile, lisible à 280 px CSS | `FB-BRAND-NAME` | M01, méthode et droits à renseigner précisément avant P | 80 Ko | [ ] | [ ] | [ ] |
 | A04 | P1 | `p6-a04-brand-mark.svg` | SVG | viewBox 0 0 256 256 | oui | Symbole compact de navigation et raccourcis | `FB-BRAND-MARK` | M01, méthode et droits à renseigner précisément avant P | 15 Ko | [ ] | [ ] | [ ] |
@@ -226,7 +226,7 @@ Les fallbacks runtime existants d’A09 à A12 restent opérationnels jusqu’à
 # 3. Fond, matières et lumière
 
 | ID | P | Fichier final | Format | Dimensions | Alpha | Usage | Fallback | Source / droits | Budget max | P | V | I |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | B01 | P0 | `p6-b01-background-workshop-2048x1152.webp` | WebP | 2048 × 1152 | non | Fond desktop, centre calme, aucune information fonctionnelle | `FB-BG` | M02, méthode et droits à renseigner précisément avant P | 190 Ko | [ ] | [ ] | [ ] |
 | B02 | P0 | `p6-b02-background-workshop-tablet-1366x1024.webp` | WebP | 1366 × 1024 | non | Recadrage tablette paysage, rail gauche préservé | `FB-BG` | M02, méthode et droits à renseigner précisément avant P | 160 Ko | [ ] | [ ] | [ ] |
 | B03 | P0 | `p6-b03-background-workshop-tablet-1024x1366.webp` | WebP | 1024 × 1366 | non | Recadrage tablette portrait, centre de lecture libre | `FB-BG` | M02, méthode et droits à renseigner précisément avant P | 160 Ko | [ ] | [ ] | [ ] |
@@ -524,6 +524,6 @@ Un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback r
 
 ## Prochain élément autorisé
 
-**Contrôler A01 sous `public/assets/phase-6/p6-a01-brand-sign-1600x720.webp`, renseigner sa méthode d’export, son outil, son auteur et ses droits, puis attribuer P/V si conforme.**
+**Contrôler A02 sous `public/assets/phase-6/p6-a02-brand-sign-800x360.webp`, renseigner sa méthode d’export, son outil, son auteur et ses droits, puis attribuer P/V si conforme.**
 
-M01 et M02 sont désormais approuvés et versionnés sous leurs chemins canoniques.
+A01 est désormais conforme, versionné et validé ; il autorise la variante tablette A02.
