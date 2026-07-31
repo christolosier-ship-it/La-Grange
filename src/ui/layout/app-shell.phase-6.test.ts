@@ -1,10 +1,11 @@
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import type { SyncState } from '../../core/sync/sync-service';
 import { createAppShell, updateWorkbenchStatus } from './app-shell';
 
 const phase6ShellStyles = readFileSync(
-  new URL('../../styles/phase-6-shell.css', import.meta.url),
+  resolve(process.cwd(), 'src/styles/phase-6-shell.css'),
   'utf8',
 );
 
