@@ -36,6 +36,12 @@ Le `README.md` et le `manifest.json` historiques présents dans `public/assets/p
 - aucun ZIP, Base64, fragment ou workflow de matérialisation ;
 - les planches documentaires suivent la même convention `p6-<id>-...`.
 
+## Convention simplifiée de provenance interne
+
+Le code **`PROD-LG`** signifie : asset produit avec ChatGPT sous la direction du propriétaire du projet La Grange, sélectionné et validé par lui, puis autorisé pour l’usage du projet La Grange. Cette mention suffit pour la méthode, l’outil, l’auteur de la direction artistique et les droits internes ; elle évite de répéter la même déclaration sur chaque ligne.
+
+La confirmation du propriétaire datée du 2026-07-31 vaut validation humaine V pour les assets conformes déjà versionnés et cochés dans le présent registre. Les noms, logos et marques de tiers restent la propriété de leurs titulaires.
+
 ## Méthode obligatoire
 
 ### Masters et sources
@@ -53,16 +59,15 @@ Le `README.md` et le `manifest.json` historiques présents dans `public/assets/p
 1. sélectionner une seule ligne A à F ;
 2. si la ligne cite une source M ou S, vérifier son statut R ;
 3. si la ligne cite par identifiant un asset canonique Phase 6 comme dérivé ou fallback, vérifier ses statuts P et V ;
-4. si le fallback est du HTML, du CSS, une ressource système ou un fichier runtime hors registre, exiger que la ligne décrive son implémentation exacte — et son chemin versionné s’il s’agit d’un fichier — puis vérifier sa présence et son fonctionnement sans lui attribuer P/V ;
-5. si la ligne indique une création interne sans source canonique, renseigner directement sa méthode, sa provenance et ses droits sans inventer de statut R ;
+4. si le fallback est du HTML, du CSS, une ressource système ou un fichier runtime hors registre, exiger que la ligne décrive son implémentation exacte, et son chemin versionné s’il s’agit d’un fichier, puis vérifier sa présence et son fonctionnement sans lui attribuer P/V ;
+5. si la ligne indique une création interne sans source canonique, utiliser `PROD-LG` ;
 6. produire uniquement ce fichier ;
 7. exporter exactement au nom, format, dimensions et budget indiqués ;
 8. contrôler signature, dimensions, alpha, poids et absence de texte fonctionnel ;
-9. renseigner précisément la provenance et les droits ;
-10. placer le fichier à plat dans `public/assets/phase-6/` ;
-11. cocher P après contrôle technique et présence versionnée ;
-12. obtenir la validation humaine puis cocher V ;
-13. mettre à jour le champ « Prochain élément autorisé ».
+9. placer le fichier à plat dans `public/assets/phase-6/` ;
+10. cocher P après contrôle technique et présence versionnée ;
+11. obtenir la validation humaine puis cocher V ;
+12. mettre à jour le champ « Prochain élément autorisé ».
 
 ### Intégration ultérieure
 
@@ -100,7 +105,7 @@ La production en masse sans validation intermédiaire est interdite.
 - **V** : planche validée humainement ;
 - aucune planche ne reçoit I.
 
-La valeur `à renseigner avant P` ou `à confirmer avant R` est bloquante.
+La valeur `à renseigner avant P` ou `à confirmer avant R` reste bloquante lorsqu’elle n’est pas remplacée par `PROD-LG` ou par une provenance spécifique.
 
 ## Priorités
 
@@ -151,11 +156,11 @@ Le contrôle bloque l’image ou le SVG, vérifie les déclarations, littéraux,
 
 | ID | P | Master | Fichier canonique | Dimensions | Alpha | Usage | Source / droits | Budget max | A | R |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| M01 | P0 | Enseigne La Grange | `p6-m01-brand-sign-master-1600x720.webp` | 1600 × 720 | oui | Direction approuvée de l’enseigne | création utilisateur assistée par IA ; sélection et validation par le propriétaire du projet ; conversion WebP et mise au format 1600 × 720 réalisées dans ChatGPT ; droits d’utilisation accordés au projet La Grange | 1,5 Mo | [x] | [x] |
-| M02 | P0 | Fond d’atelier | `p6-m02-background-workshop-master-2048x1152.webp` | 2048 × 1152 | non | Direction approuvée du fond nocturne | création utilisateur assistée par IA ; sélection et validation par le propriétaire du projet ; conversion WebP et mise au format 2048 × 1152 réalisées dans ChatGPT ; droits d’utilisation accordés au projet La Grange | 2 Mo | [x] | [x] |
-| M03 | P0 | Cadre de carte vide | `p6-m03-project-card-frame-master-640x960.webp` | 640 × 960 | oui | Direction approuvée du cadre vertical | création utilisateur/IA, droits projet à confirmer avant R | 1,2 Mo | [x] | [ ] |
-| M04 | P1 | Carte Gargotte complète | `p6-m04-gargotte-card-master-640x960.webp` | 640 × 960 | non | Référence de composition Gargotte, jamais intégrée telle quelle | création utilisateur/IA, droits projet à confirmer avant R | 1,2 Mo | [x] | [ ] |
-| M05 | P0 | Panneau de bienvenue | `p6-m05-welcome-panel-master-640x960.webp` | 640 × 960 | oui | Direction approuvée du papier suspendu | création utilisateur/IA, droits projet à confirmer avant R | 1,2 Mo | [x] | [ ] |
+| M01 | P0 | Enseigne La Grange | `p6-m01-brand-sign-master-1600x720.webp` | 1600 × 720 | oui | Direction approuvée de l’enseigne | `PROD-LG` | 1,5 Mo | [x] | [x] |
+| M02 | P0 | Fond d’atelier | `p6-m02-background-workshop-master-2048x1152.webp` | 2048 × 1152 | non | Direction approuvée du fond nocturne | `PROD-LG` | 2 Mo | [x] | [x] |
+| M03 | P0 | Cadre de carte vide | `p6-m03-project-card-frame-master-640x960.webp` | 640 × 960 | oui | Direction approuvée du cadre vertical | `PROD-LG` | 1,2 Mo | [x] | [ ] |
+| M04 | P1 | Carte Gargotte complète | `p6-m04-gargotte-card-master-640x960.webp` | 640 × 960 | non | Référence de composition Gargotte, jamais intégrée telle quelle | `PROD-LG` | 1,2 Mo | [x] | [ ] |
+| M05 | P0 | Panneau de bienvenue | `p6-m05-welcome-panel-master-640x960.webp` | 640 × 960 | oui | Direction approuvée du papier suspendu | `PROD-LG` | 1,2 Mo | [x] | [ ] |
 
 ## 1.2 Sources canoniques des projets
 
@@ -163,8 +168,8 @@ Une couverture et un logo possèdent des sources séparées. Les lignes F ne peu
 
 | ID | P | Source | Fichier canonique | Dimensions | Alpha | Usage | Source / droits | Budget max | A | R |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| S01a | P0 | Gargotte Adventure, master couverture | `p6-s01a-gargotte-adventure-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | M04 avec R + adaptation interne, droits projet à confirmer avant R | 1,5 Mo | [x] | [ ] |
-| S01c | P0 | Gargotte Adventure, master logo | `p6-s01c-gargotte-adventure-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | M04 avec R + adaptation interne, droits projet à confirmer avant R | 1 Mo | [x] | [ ] |
+| S01a | P0 | Gargotte Adventure, master couverture | `p6-s01a-gargotte-adventure-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | M04 avec R + `PROD-LG` | 1,5 Mo | [x] | [ ] |
+| S01c | P0 | Gargotte Adventure, master logo | `p6-s01c-gargotte-adventure-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | M04 avec R + `PROD-LG` | 1 Mo | [x] | [ ] |
 | S02a | P0 | Les Petites Quêtes, master couverture | `p6-s02a-les-petites-quetes-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | direction du projet à approuver, droits à confirmer avant R | 1,5 Mo | [ ] | [ ] |
 | S02c | P0 | Les Petites Quêtes, master logo | `p6-s02c-les-petites-quetes-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | identité du projet à approuver, droits à confirmer avant R | 1 Mo | [ ] | [ ] |
 | S03a | P0 | BibiLeaf, master couverture | `p6-s03a-bibileaf-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | direction du projet à approuver, droits à confirmer avant R | 1,5 Mo | [ ] | [ ] |
@@ -206,18 +211,18 @@ Une couverture et un logo possèdent des sources séparées. Les lignes F ne peu
 
 | ID | P | Fichier final | Format | Dimensions | Alpha | Usage | Fallback | Source / droits | Budget max | P | V | I |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| A01 | P0 | `p6-a01-brand-sign-1600x720.webp` | WebP | 1600 × 720 | oui | Enseigne desktop, marque seule, centrée dans le rail gauche | `FB-BRAND-NAME` | dérivé de M01 ; création utilisateur assistée par IA ; détourage, conversion WebP et export 1600 × 720 réalisés dans ChatGPT ; sélection et validation par le propriétaire du projet ; droits d’utilisation accordés au projet La Grange | 100 Ko | [x] | [x] | [ ] |
-| A02 | P0 | `p6-a02-brand-sign-800x360.webp` | WebP | 800 × 360 | oui | Enseigne tablette, même composition que A01 | `FB-BRAND-NAME` | A01, méthode et droits à renseigner précisément avant P | 60 Ko | [ ] | [ ] | [ ] |
-| A03 | P0 | `p6-a03-brand-sign-mobile-960x560.webp` | WebP | 960 × 560 | oui | Composition resserrée pour mobile, lisible à 280 px CSS | `FB-BRAND-NAME` | M01, méthode et droits à renseigner précisément avant P | 80 Ko | [ ] | [ ] | [ ] |
-| A04 | P1 | `p6-a04-brand-mark.svg` | SVG | viewBox 0 0 256 256 | oui | Symbole compact de navigation et raccourcis | `FB-BRAND-MARK` | M01, méthode et droits à renseigner précisément avant P | 15 Ko | [ ] | [ ] | [ ] |
-| A05 | P2 | `p6-a05-brand-mark-light.svg` | SVG | viewBox 0 0 256 256 | oui | Variante monochrome claire | A04 avec `currentColor` | A04, méthode et droits à renseigner précisément avant P | 12 Ko | [ ] | [ ] | [ ] |
-| A06 | P2 | `p6-a06-brand-mark-dark.svg` | SVG | viewBox 0 0 256 256 | oui | Variante monochrome sombre | A04 avec `currentColor` | A04, méthode et droits à renseigner précisément avant P | 12 Ko | [ ] | [ ] | [ ] |
-| A07 | P2 | `p6-a07-favicon-32x32.png` | PNG | 32 × 32 | oui | Favicon 32 px | `FB-BRAND-MARK` | A04, méthode et droits à renseigner précisément avant P | 8 Ko | [ ] | [ ] | [ ] |
-| A08 | P2 | `p6-a08-favicon-48x48.png` | PNG | 48 × 48 | oui | Favicon 48 px | `FB-BRAND-MARK` | A04, méthode et droits à renseigner précisément avant P | 10 Ko | [ ] | [ ] | [ ] |
-| A09 | P2 | `p6-a09-pwa-icon-192x192.png` | PNG | 192 × 192 | non | Icône PWA opaque | `public/icons/icon-192.png`, fallback runtime existant hors registre Phase 6 | A04, méthode et droits à renseigner précisément avant P | 45 Ko | [ ] | [ ] | [ ] |
-| A10 | P2 | `p6-a10-pwa-icon-512x512.png` | PNG | 512 × 512 | non | Icône PWA haute définition | `public/icons/icon-512.png`, fallback runtime existant hors registre Phase 6 | A04, méthode et droits à renseigner précisément avant P | 150 Ko | [ ] | [ ] | [ ] |
-| A11 | P2 | `p6-a11-pwa-maskable-512x512.png` | PNG | 512 × 512 | non | Icône maskable, sujet dans la safe area 409 × 409 | `public/icons/maskable-512.png`, fallback runtime existant hors registre Phase 6 | A04, méthode et droits à renseigner précisément avant P | 150 Ko | [ ] | [ ] | [ ] |
-| A12 | P2 | `p6-a12-apple-touch-icon-180x180.png` | PNG | 180 × 180 | non | Icône Apple Touch sans coins pré-arrondis | `public/icons/apple-touch-icon.png`, fallback runtime existant hors registre Phase 6 | A04, méthode et droits à renseigner précisément avant P | 50 Ko | [ ] | [ ] | [ ] |
+| A01 | P0 | `p6-a01-brand-sign-1600x720.webp` | WebP | 1600 × 720 | oui | Enseigne desktop, marque seule, centrée dans le rail gauche | `FB-BRAND-NAME` | M01 + `PROD-LG` | 100 Ko | [x] | [x] | [ ] |
+| A02 | P0 | `p6-a02-brand-sign-800x360.webp` | WebP | 800 × 360 | oui | Enseigne tablette, même composition que A01 | `FB-BRAND-NAME` | A01 + `PROD-LG` | 60 Ko | [x] | [x] | [ ] |
+| A03 | P0 | `p6-a03-brand-sign-mobile-960x560.webp` | WebP | 960 × 560 | oui | Composition resserrée pour mobile, lisible à 280 px CSS | `FB-BRAND-NAME` | M01 + `PROD-LG` | 80 Ko | [x] | [x] | [ ] |
+| A04 | P1 | `p6-a04-brand-mark.svg` | SVG | viewBox 0 0 256 256 | oui | Symbole compact de navigation et raccourcis | `FB-BRAND-MARK` | M01 + `PROD-LG` | 15 Ko | [x] | [x] | [ ] |
+| A05 | P2 | `p6-a05-brand-mark-light.svg` | SVG | viewBox 0 0 256 256 | oui | Variante monochrome claire | A04 avec `currentColor` | A04 + `PROD-LG` | 12 Ko | [x] | [x] | [ ] |
+| A06 | P2 | `p6-a06-brand-mark-dark.svg` | SVG | viewBox 0 0 256 256 | oui | Variante monochrome sombre | A04 avec `currentColor` | A04 + `PROD-LG` | 12 Ko | [x] | [x] | [ ] |
+| A07 | P2 | `p6-a07-favicon-32x32.png` | PNG | 32 × 32 | oui | Favicon 32 px | `FB-BRAND-MARK` | A04 + `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| A08 | P2 | `p6-a08-favicon-48x48.png` | PNG | 48 × 48 | oui | Favicon 48 px | `FB-BRAND-MARK` | A04 + `PROD-LG` | 10 Ko | [x] | [x] | [ ] |
+| A09 | P2 | `p6-a09-pwa-icon-192x192.png` | PNG | 192 × 192 | non | Icône PWA opaque | `public/icons/icon-192.png`, fallback runtime existant hors registre Phase 6 | A04 + `PROD-LG` | 45 Ko | [x] | [x] | [ ] |
+| A10 | P2 | `p6-a10-pwa-icon-512x512.png` | PNG | 512 × 512 | non | Icône PWA haute définition | `public/icons/icon-512.png`, fallback runtime existant hors registre Phase 6 | A04 + `PROD-LG` | 150 Ko | [x] | [x] | [ ] |
+| A11 | P2 | `p6-a11-pwa-maskable-512x512.png` | PNG | 512 × 512 | non | Icône maskable, sujet dans la safe area 409 × 409 | `public/icons/maskable-512.png`, fallback runtime existant hors registre Phase 6 | A04 + `PROD-LG` | 150 Ko | [x] | [x] | [ ] |
+| A12 | P2 | `p6-a12-apple-touch-icon-180x180.png` | PNG | 180 × 180 | non | Icône Apple Touch sans coins pré-arrondis | `public/icons/apple-touch-icon.png`, fallback runtime existant hors registre Phase 6 | A04 + `PROD-LG` | 50 Ko | [x] | [x] | [ ] |
 
 Les fallbacks runtime existants d’A09 à A12 restent opérationnels jusqu’à leur remplacement. Leurs quatre chemins versionnés exacts sont déclarés par les lignes ci-dessus ; ils sont contrôlés par chemin, signature, dimensions, usage manifeste ou HTML et chargement, mais ne sont pas des assets canoniques Phase 6 et ne reçoivent donc aucun statut P/V.
 
@@ -227,20 +232,20 @@ Les fallbacks runtime existants d’A09 à A12 restent opérationnels jusqu’à
 
 | ID | P | Fichier final | Format | Dimensions | Alpha | Usage | Fallback | Source / droits | Budget max | P | V | I |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| B01 | P0 | `p6-b01-background-workshop-2048x1152.webp` | WebP | 2048 × 1152 | non | Fond desktop, centre calme, aucune information fonctionnelle | `FB-BG` | M02, méthode et droits à renseigner précisément avant P | 190 Ko | [ ] | [ ] | [ ] |
-| B02 | P0 | `p6-b02-background-workshop-tablet-1366x1024.webp` | WebP | 1366 × 1024 | non | Recadrage tablette paysage, rail gauche préservé | `FB-BG` | M02, méthode et droits à renseigner précisément avant P | 160 Ko | [ ] | [ ] | [ ] |
-| B03 | P0 | `p6-b03-background-workshop-tablet-1024x1366.webp` | WebP | 1024 × 1366 | non | Recadrage tablette portrait, centre de lecture libre | `FB-BG` | M02, méthode et droits à renseigner précisément avant P | 160 Ko | [ ] | [ ] | [ ] |
-| B04 | P0 | `p6-b04-background-workshop-mobile-780x1386.webp` | WebP | 780 × 1386 | non | Export 2× pour 390 px CSS, décor fortement allégé | `FB-BG` | M02, méthode et droits à renseigner précisément avant P | 120 Ko | [ ] | [ ] | [ ] |
-| B05 | P2 | `p6-b05-background-workshop-low-density-780x1386.webp` | WebP | 780 × 1386 | non | Variante économie de données, faible détail | `FB-BG` | B04, méthode et droits à renseigner précisément avant P | 90 Ko | [ ] | [ ] | [ ] |
-| B07 | P0 | `p6-b07-texture-wood-structure-1024x1024.webp` | WebP | 1024 × 1024 | non | Tuile raccordable de charpente, veinage faible | `FB-WOOD` | création interne, méthode et droits à renseigner précisément avant P | 70 Ko | [ ] | [ ] | [ ] |
-| B08 | P0 | `p6-b08-texture-wood-crate-1024x1024.webp` | WebP | 1024 × 1024 | non | Tuile raccordable de caisse, plus claire que B07 | `FB-WOOD` | création interne, méthode et droits à renseigner précisément avant P | 70 Ko | [ ] | [ ] | [ ] |
-| B09 | P1 | `p6-b09-texture-paper-calm-512x512.webp` | WebP | 512 × 512 | non | Papier très discret derrière texte | `FB-PAPER` | création interne, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
-| B10 | P1 | `p6-b10-texture-metal-dark-512x512.webp` | WebP | 512 × 512 | non | Métal mat sans chrome | `FB-DARK` | création interne, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
-| B11 | P2 | `p6-b11-texture-dark-glass-512x512.webp` | WebP | 512 × 512 | oui | Surface semi-opaque pour données secondaires | `FB-DARK` | création interne, méthode et droits à renseigner précisément avant P | 40 Ko | [ ] | [ ] | [ ] |
-| B12 | P0 | `p6-b12-light-main-1600x900.png` | PNG | 1600 × 900 | oui | Masque de lumière ambre principal | `FB-RADIAL` | création interne, méthode et droits à renseigner précisément avant P | 60 Ko | [ ] | [ ] | [ ] |
-| B13 | P1 | `p6-b13-light-sync-256x256.png` | PNG | 256 × 256 | oui | Halo court de synchronisation | `FB-ACCENT` | création interne, méthode et droits à renseigner précisément avant P | 15 Ko | [ ] | [ ] | [ ] |
-| B14 | P1 | `p6-b14-light-new-project-256x256.png` | PNG | 256 × 256 | oui | Accent temporaire nouvelle arrivée | `FB-ACCENT` | création interne, méthode et droits à renseigner précisément avant P | 15 Ko | [ ] | [ ] | [ ] |
-| B15 | P2 | `p6-b15-shadow-structure-1600x900.png` | PNG | 1600 × 900 | oui | Ombres de poutres sans couvrir le contenu | `FB-SHADOW` | création interne, méthode et droits à renseigner précisément avant P | 60 Ko | [ ] | [ ] | [ ] |
+| B01 | P0 | `p6-b01-background-workshop-2048x1152.webp` | WebP | 2048 × 1152 | non | Fond desktop, centre calme, aucune information fonctionnelle | `FB-BG` | M02 + `PROD-LG` | 190 Ko | [x] | [x] | [ ] |
+| B02 | P0 | `p6-b02-background-workshop-tablet-1366x1024.webp` | WebP | 1366 × 1024 | non | Recadrage tablette paysage, rail gauche préservé | `FB-BG` | M02 + `PROD-LG` | 160 Ko | [x] | [x] | [ ] |
+| B03 | P0 | `p6-b03-background-workshop-tablet-1024x1366.webp` | WebP | 1024 × 1366 | non | Recadrage tablette portrait, centre de lecture libre | `FB-BG` | M02 + `PROD-LG` | 160 Ko | [x] | [x] | [ ] |
+| B04 | P0 | `p6-b04-background-workshop-mobile-780x1386.webp` | WebP | 780 × 1386 | non | Export 2× pour 390 px CSS, décor fortement allégé | `FB-BG` | M02 + `PROD-LG` | 120 Ko | [x] | [x] | [ ] |
+| B05 | P2 | `p6-b05-background-workshop-low-density-780x1386.webp` | WebP | 780 × 1386 | non | Variante économie de données, faible détail | `FB-BG` | B04 + `PROD-LG` | 90 Ko | [x] | [x] | [ ] |
+| B07 | P0 | `p6-b07-texture-wood-structure-1024x1024.webp` | WebP | 1024 × 1024 | non | Tuile raccordable de charpente, veinage faible | `FB-WOOD` | `PROD-LG` | 70 Ko | [x] | [x] | [ ] |
+| B08 | P0 | `p6-b08-texture-wood-crate-1024x1024.webp` | WebP | 1024 × 1024 | non | Tuile raccordable de caisse, plus claire que B07 | `FB-WOOD` | `PROD-LG` | 70 Ko | [x] | [x] | [ ] |
+| B09 | P1 | `p6-b09-texture-paper-calm-512x512.webp` | WebP | 512 × 512 | non | Papier très discret derrière texte | `FB-PAPER` | `PROD-LG` | 35 Ko | [x] | [x] | [ ] |
+| B10 | P1 | `p6-b10-texture-metal-dark-512x512.webp` | WebP | 512 × 512 | non | Métal mat sans chrome | `FB-DARK` | `PROD-LG` | 35 Ko | [x] | [x] | [ ] |
+| B11 | P2 | `p6-b11-texture-dark-glass-512x512.webp` | WebP | 512 × 512 | oui | Surface semi-opaque pour données secondaires | `FB-DARK` | `PROD-LG` | 40 Ko | [x] | [x] | [ ] |
+| B12 | P0 | `p6-b12-light-main-1600x900.png` | PNG | 1600 × 900 | oui | Masque de lumière ambre principal | `FB-RADIAL` | `PROD-LG` | 60 Ko | [x] | [x] | [ ] |
+| B13 | P1 | `p6-b13-light-sync-256x256.png` | PNG | 256 × 256 | oui | Halo court de synchronisation | `FB-ACCENT` | `PROD-LG` | 15 Ko | [x] | [x] | [ ] |
+| B14 | P1 | `p6-b14-light-new-project-256x256.png` | PNG | 256 × 256 | oui | Accent temporaire nouvelle arrivée | `FB-ACCENT` | `PROD-LG` | 15 Ko | [x] | [x] | [ ] |
+| B15 | P2 | `p6-b15-shadow-structure-1600x900.png` | PNG | 1600 × 900 | oui | Ombres de poutres sans couvrir le contenu | `FB-SHADOW` | `PROD-LG` | 60 Ko | [x] | [x] | [ ] |
 
 ---
 
@@ -248,33 +253,35 @@ Les fallbacks runtime existants d’A09 à A12 restent opérationnels jusqu’à
 
 | ID | P | Fichier final | Format | Dimensions | Alpha | Usage | Fallback | Source / droits | Budget max | P | V | I |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| C01 | P0 | `p6-c01-project-card-frame-standard.svg` | SVG | viewBox 0 0 640 960 | oui | Cadre carte standard, fenêtre libre, aucun texte | `FB-PANEL` | M03, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
-| C02 | P0 | `p6-c02-project-card-frame-compact.svg` | SVG | viewBox 0 0 512 720 | oui | Cadre compact, géométrie issue de C01 | `FB-PANEL` | C01, méthode et droits à renseigner précisément avant P | 30 Ko | [ ] | [ ] | [ ] |
-| C03 | P1 | `p6-c03-project-card-frame-featured.svg` | SVG | viewBox 0 0 800 960 | oui | Carte mise en avant, accent plus large | C01 | C01, méthode et droits à renseigner précisément avant P | 40 Ko | [ ] | [ ] | [ ] |
-| C04 | P1 | `p6-c04-project-card-frame-list.svg` | SVG | viewBox 0 0 960 320 | oui | Cadre horizontal de vue liste | `FB-PANEL` | C01, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
-| C06 | P1 | `p6-c06-ribbon-category.svg` | SVG | viewBox 0 0 160 240 | oui | Ruban de catégorie recolorable, sans texte | `FB-BADGE` | création interne, méthode et droits à renseigner précisément avant P | 15 Ko | [ ] | [ ] | [ ] |
-| C07 | P1 | `p6-c07-ribbon-new-project.svg` | SVG | viewBox 0 0 160 240 | oui | Ruban nouvelle arrivée, sans texte | `FB-BADGE` + `FB-LABEL` | création interne, méthode et droits à renseigner précisément avant P | 15 Ko | [ ] | [ ] | [ ] |
-| C08 | P1 | `p6-c08-status-label.svg` | SVG | viewBox 0 0 320 96 | oui | Étiquette d’état neutre, texte séparé | `FB-BADGE` + `FB-LABEL` | création interne, méthode et droits à renseigner précisément avant P | 15 Ko | [ ] | [ ] | [ ] |
-| C09 | P1 | `p6-c09-metadata-rail.svg` | SVG | viewBox 0 0 640 96 | oui | Rail de métadonnées sans icône intégrée | `FB-SEPARATOR-H` | création interne, méthode et droits à renseigner précisément avant P | 18 Ko | [ ] | [ ] | [ ] |
-| C10 | P1 | `p6-c10-actions-rail.svg` | SVG | viewBox 0 0 640 120 | oui | Rail inférieur, quatre actions maximum | `FB-SEPARATOR-H` | création interne, méthode et droits à renseigner précisément avant P | 20 Ko | [ ] | [ ] | [ ] |
-| C11 | P0 | `p6-c11-stats-beam.svg` | SVG | viewBox 0 0 1600 220 | oui | Poutre de quatre statistiques réelles maximum | `FB-PANEL` | création interne, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
-| C12 | P0 | `p6-c12-section-beam.svg` | SVG | viewBox 0 0 1600 120 | oui | Poutre de titre, texte et lien hors asset | `FB-BORDER` + `FB-LABEL` | création interne, méthode et droits à renseigner précisément avant P | 30 Ko | [ ] | [ ] | [ ] |
-| C13 | P0 | `p6-c13-panel-wood-secondary.svg` | SVG | viewBox 0 0 640 960 | oui | Panneau bois de navigation, filtre ou résumé | `FB-WOOD` + `FB-BORDER` | création interne, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
-| C14 | P1 | `p6-c14-panel-dark-glass.svg` | SVG | viewBox 0 0 640 960 | oui | Panneau sombre pour activité et données secondaires | `FB-DARK` | création interne, méthode et droits à renseigner précisément avant P | 30 Ko | [ ] | [ ] | [ ] |
-| C15 | P1 | `p6-c15-paper-note.svg` | SVG | viewBox 0 0 640 800 | oui | Papier vide pour aide et état vide | `FB-PAPER` + `FB-BORDER` | création interne, méthode et droits à renseigner précisément avant P | 30 Ko | [ ] | [ ] | [ ] |
-| C16 | P0 | `p6-c16-welcome-panel-640x960.webp` | WebP | 640 × 960 | oui | Panneau de bienvenue illustré, sans texte fonctionnel | C15 + `FB-WELCOME` | M05, méthode et droits à renseigner précisément avant P | 100 Ko | [ ] | [ ] | [ ] |
-| C17 | P1 | `p6-c17-empty-slot.svg` | SVG | viewBox 0 0 512 720 | oui | Emplacement vide non ambigu | `FB-DASHED` | création interne, méthode et droits à renseigner précisément avant P | 20 Ko | [ ] | [ ] | [ ] |
-| C18 | P1 | `p6-c18-project-cover-fallback.svg` | SVG | viewBox 0 0 640 400 | oui | Fallback de couverture, initiales hors asset | `FB-PROJECT` | création interne, méthode et droits à renseigner précisément avant P | 25 Ko | [ ] | [ ] | [ ] |
-| C19 | P2 | `p6-c19-modal-frame.svg` | SVG | viewBox 0 0 960 720 | oui | Décor périphérique de modale accessible | `FB-PANEL` | création interne, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
-| C20 | P2 | `p6-c20-toast-frame.svg` | SVG | viewBox 0 0 640 160 | oui | Cadre léger de notification temporaire | `FB-BORDER` | création interne, méthode et droits à renseigner précisément avant P | 20 Ko | [ ] | [ ] | [ ] |
-| C21 | P2 | `p6-c21-diagnostic-panel.svg` | SVG | viewBox 0 0 960 720 | oui | Panneau de diagnostic, texte sélectionnable | `FB-PANEL` | création interne, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
-| C22 | P1 | `p6-c22-button-primary.svg` | SVG | viewBox 0 0 480 112 | oui | Plaque de bouton principal, texte HTML | `FB-BUTTON` + `FB-LABEL` | création interne, méthode et droits à renseigner précisément avant P | 15 Ko | [ ] | [ ] | [ ] |
-| C23 | P1 | `p6-c23-button-secondary.svg` | SVG | viewBox 0 0 480 112 | oui | Plaque de bouton secondaire | `FB-BUTTON` + `FB-LABEL` | création interne, méthode et droits à renseigner précisément avant P | 15 Ko | [ ] | [ ] | [ ] |
-| C24 | P1 | `p6-c24-button-danger.svg` | SVG | viewBox 0 0 480 112 | oui | Plaque danger limitée, texte obligatoire | `FB-DANGER` + `FB-LABEL` | création interne, méthode et droits à renseigner précisément avant P | 15 Ko | [ ] | [ ] | [ ] |
-| C25 | P1 | `p6-c25-search-field-frame.svg` | SVG | viewBox 0 0 960 112 | oui | Cadre de recherche, champ natif visible | `FB-NATIVE-INPUT` | création interne, méthode et droits à renseigner précisément avant P | 20 Ko | [ ] | [ ] | [ ] |
-| C26 | P1 | `p6-c26-filter-chip.svg` | SVG | viewBox 0 0 320 96 | oui | Étiquette de filtre, état en CSS | `FB-NATIVE-BUTTON` | création interne, méthode et droits à renseigner précisément avant P | 12 Ko | [ ] | [ ] | [ ] |
-| C27 | P2 | `p6-c27-separator-horizontal.svg` | SVG | viewBox 0 0 1024 32 | oui | Séparateur horizontal extensible | `FB-SEPARATOR-H` | création interne, méthode et droits à renseigner précisément avant P | 12 Ko | [ ] | [ ] | [ ] |
-| C28 | P2 | `p6-c28-separator-vertical.svg` | SVG | viewBox 0 0 32 1024 | oui | Séparateur vertical, masqué sur mobile | `FB-SEPARATOR-V` | création interne, méthode et droits à renseigner précisément avant P | 12 Ko | [ ] | [ ] | [ ] |
+| C01 | P0 | `p6-c01-project-card-frame-standard.svg` | SVG | viewBox 0 0 640 960 | oui | Cadre carte standard, fenêtre libre, aucun texte | `FB-PANEL` | M03 + `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
+| C02 | P0 | `p6-c02-project-card-frame-compact.svg` | SVG | viewBox 0 0 512 720 | oui | Cadre compact, géométrie issue de C01 | `FB-PANEL` | C01 + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| C03 | P1 | `p6-c03-project-card-frame-featured.svg` | SVG | viewBox 0 0 800 960 | oui | Carte mise en avant, accent plus large | C01 | C01 + `PROD-LG` | 40 Ko | [ ] | [ ] | [ ] |
+| C04 | P1 | `p6-c04-project-card-frame-list.svg` | SVG | viewBox 0 0 960 320 | oui | Cadre horizontal de vue liste | `FB-PANEL` | C01 + `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
+| C06 | P1 | `p6-c06-ribbon-category.svg` | SVG | viewBox 0 0 160 240 | oui | Ruban de catégorie recolorable, sans texte | `FB-BADGE` | `PROD-LG` | 15 Ko | [ ] | [ ] | [ ] |
+| C07 | P1 | `p6-c07-ribbon-new-project.svg` | SVG | viewBox 0 0 160 240 | oui | Ruban nouvelle arrivée, sans texte | `FB-BADGE` + `FB-LABEL` | `PROD-LG` | 15 Ko | [ ] | [ ] | [ ] |
+| C08 | P1 | `p6-c08-status-label.svg` | SVG | viewBox 0 0 320 96 | oui | Étiquette d’état neutre, texte séparé | `FB-BADGE` + `FB-LABEL` | `PROD-LG` | 15 Ko | [ ] | [ ] | [ ] |
+| C09 | P1 | `p6-c09-metadata-rail.svg` | SVG | viewBox 0 0 640 96 | oui | Rail de métadonnées sans icône intégrée | `FB-SEPARATOR-H` | `PROD-LG` | 18 Ko | [ ] | [ ] | [ ] |
+| C10 | P1 | `p6-c10-actions-rail.svg` | SVG | viewBox 0 0 640 120 | oui | Rail inférieur, quatre actions maximum | `FB-SEPARATOR-H` | `PROD-LG` | 20 Ko | [ ] | [ ] | [ ] |
+| C11 | P0 | `p6-c11-stats-beam.svg` | SVG | viewBox 0 0 1600 220 | oui | Poutre de quatre statistiques réelles maximum | `FB-PANEL` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
+| C12 | P0 | `p6-c12-section-beam.svg` | SVG | viewBox 0 0 1600 120 | oui | Poutre de titre, texte et lien hors asset | `FB-BORDER` + `FB-LABEL` | `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| C13 | P0 | `p6-c13-panel-wood-secondary.svg` | SVG | viewBox 0 0 640 960 | oui | Panneau bois de navigation, filtre ou résumé | `FB-WOOD` + `FB-BORDER` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
+| C14 | P1 | `p6-c14-panel-dark-glass.svg` | SVG | viewBox 0 0 640 960 | oui | Panneau sombre pour activité et données secondaires | `FB-DARK` | `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| C15 | P1 | `p6-c15-paper-note.svg` | SVG | viewBox 0 0 640 800 | oui | Papier vide pour aide et état vide | `FB-PAPER` + `FB-BORDER` | `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| C16 | P0 | `p6-c16-welcome-panel-640x960.webp` | WebP | 640 × 960 | oui | Panneau de bienvenue illustré, sans texte fonctionnel | C15 + `FB-WELCOME` | M05 + `PROD-LG` | 100 Ko | [ ] | [ ] | [ ] |
+| C17 | P1 | `p6-c17-empty-slot.svg` | SVG | viewBox 0 0 512 720 | oui | Emplacement vide non ambigu | `FB-DASHED` | `PROD-LG` | 20 Ko | [ ] | [ ] | [ ] |
+| C18 | P1 | `p6-c18-project-cover-fallback.svg` | SVG | viewBox 0 0 640 400 | oui | Fallback de couverture, initiales hors asset | `FB-PROJECT` | `PROD-LG` | 25 Ko | [ ] | [ ] | [ ] |
+| C19 | P2 | `p6-c19-modal-frame.svg` | SVG | viewBox 0 0 960 720 | oui | Décor périphérique de modale accessible | `FB-PANEL` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
+| C20 | P2 | `p6-c20-toast-frame.svg` | SVG | viewBox 0 0 640 160 | oui | Cadre léger de notification temporaire | `FB-BORDER` | `PROD-LG` | 20 Ko | [ ] | [ ] | [ ] |
+| C21 | P2 | `p6-c21-diagnostic-panel.svg` | SVG | viewBox 0 0 960 720 | oui | Panneau de diagnostic, texte sélectionnable | `FB-PANEL` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
+| C22 | P1 | `p6-c22-button-primary.svg` | SVG | viewBox 0 0 480 112 | oui | Plaque de bouton principal, texte HTML | `FB-BUTTON` + `FB-LABEL` | `PROD-LG` | 15 Ko | [ ] | [ ] | [ ] |
+| C23 | P1 | `p6-c23-button-secondary.svg` | SVG | viewBox 0 0 480 112 | oui | Plaque de bouton secondaire | `FB-BUTTON` + `FB-LABEL` | `PROD-LG` | 15 Ko | [ ] | [ ] | [ ] |
+| C24 | P1 | `p6-c24-button-danger.svg` | SVG | viewBox 0 0 480 112 | oui | Plaque danger limitée, texte obligatoire | `FB-DANGER` + `FB-LABEL` | `PROD-LG` | 15 Ko | [ ] | [ ] | [ ] |
+| C25 | P1 | `p6-c25-search-field-frame.svg` | SVG | viewBox 0 0 960 112 | oui | Cadre de recherche, champ natif visible | `FB-NATIVE-INPUT` | `PROD-LG` | 20 Ko | [ ] | [ ] | [ ] |
+| C26 | P1 | `p6-c26-filter-chip.svg` | SVG | viewBox 0 0 320 96 | oui | Étiquette de filtre, état en CSS | `FB-NATIVE-BUTTON` | `PROD-LG` | 12 Ko | [ ] | [ ] | [ ] |
+| C27 | P2 | `p6-c27-separator-horizontal.svg` | SVG | viewBox 0 0 1024 32 | oui | Séparateur horizontal extensible | `FB-SEPARATOR-H` | `PROD-LG` | 12 Ko | [ ] | [ ] | [ ] |
+| C28 | P2 | `p6-c28-separator-vertical.svg` | SVG | viewBox 0 0 32 1024 | oui | Séparateur vertical, masqué sur mobile | `FB-SEPARATOR-V` | `PROD-LG` | 12 Ko | [ ] | [ ] | [ ] |
+
+**Écart contrôlé :** les fichiers `p6-c01-project-card-frame-standard-640x960.webp`, `p6-c02-project-card-frame-compact-512x720.webp` et `p6-c03-project-card-frame-featured-800x960.webp` sont présents dans le dépôt, mais ils ne correspondent pas encore aux contrats SVG ci-dessus et M03 n’est pas versionné. Ils restent donc sans P/V jusqu’à décision documentaire et technique. C04 a été annulé et n’est pas considéré comme produit.
 
 ## 4.2 Contrôles CSS sans fichier
 
@@ -290,72 +297,72 @@ Ces lignes ne sont pas des assets et ne possèdent pas P ou V. `Spécifié` conf
 
 # 5. Iconographie fonctionnelle
 
-Règles communes : SVG local, `viewBox 0 0 24 24`, trait 1,75 à 2 px, `currentColor`, aucun texte. Chaque ligne possède sa provenance propre et son fallback `FB-LABEL` reprend exactement le libellé de sa colonne `Fonction`.
+Règles communes : SVG local, `viewBox 0 0 24 24`, trait 1,75 à 2 px, `currentColor`, aucun texte. Le fallback `FB-LABEL` reprend exactement le libellé de la colonne `Fonction`. La provenance commune est `PROD-LG`.
 
 | ID | P | Fonction | Fichier final | Dimensions | Alpha | Fallback | Source / droits | Budget max | P | V | I |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| D01 | P0 | Vue d’ensemble | `p6-d01-icon-overview.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D02 | P0 | Catalogue ou projets | `p6-d02-icon-projects.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D03 | P0 | Activité | `p6-d03-icon-activity.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D04 | P0 | Paramètres | `p6-d04-icon-settings.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D05 | P0 | Synchroniser | `p6-d05-icon-sync.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D06 | P1 | GitHub | `p6-d06-icon-github.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | marque GitHub officielle ; méthode de reprise, outil, auteur et licence à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D07 | P1 | Ouvrir l’application | `p6-d07-icon-launch-app.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D08 | P1 | Lien externe | `p6-d08-icon-external-link.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D09 | P1 | Favori vide et rempli | `p6-d09-icon-favorite.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D10 | P1 | Recherche | `p6-d10-icon-search.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D11 | P1 | Filtrer | `p6-d11-icon-filter.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D12 | P1 | Trier | `p6-d12-icon-sort.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D13 | P1 | Vue grille | `p6-d13-icon-grid.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D14 | P1 | Vue liste | `p6-d14-icon-list.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D15 | P1 | Copier | `p6-d15-icon-copy.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D16 | P1 | Réinitialiser le cache | `p6-d16-icon-reset-cache.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D17 | P1 | Retour | `p6-d17-icon-back.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D18 | P1 | Fermer | `p6-d18-icon-close.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D19 | P2 | Plus d’actions | `p6-d19-icon-more.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D20 | P2 | Ouvrir les détails | `p6-d20-icon-details.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D21 | P0 | En ligne | `p6-d21-icon-online.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D22 | P0 | Hors ligne | `p6-d22-icon-offline.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D23 | P0 | Synchronisation en cours | `p6-d23-icon-sync-running.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D24 | P0 | Succès | `p6-d24-icon-success.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D25 | P0 | Avertissement | `p6-d25-icon-warning.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D26 | P0 | Erreur | `p6-d26-icon-error.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D27 | P1 | Nouveau projet | `p6-d27-icon-new-project.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D28 | P1 | Projet archivé | `p6-d28-icon-archived.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D29 | P1 | Fork | `p6-d29-icon-fork.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D30 | P1 | Application disponible | `p6-d30-icon-app-available.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D31 | P1 | Dépôt uniquement | `p6-d31-icon-repository-only.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D32 | P1 | Cache local | `p6-d32-icon-local-cache.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D33 | P1 | Date ou calendrier | `p6-d33-icon-calendar.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D34 | P1 | Horloge ou activité récente | `p6-d34-icon-clock.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D35 | P1 | Version ou release | `p6-d35-icon-release.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D36 | P1 | Langage ou code | `p6-d36-icon-code.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D37 | P1 | Branche | `p6-d37-icon-branch.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D38 | P1 | Pull request | `p6-d38-icon-pull-request.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D39 | P1 | Conflit ou protection | `p6-d39-icon-shield.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D40 | P2 | Dépôt renommé | `p6-d40-icon-renamed.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
-| D41 | P2 | URL d’application modifiée | `p6-d41-icon-app-url-changed.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | création interne ; méthode, outil, auteur et droits à renseigner avant P | 8 Ko | [ ] | [ ] | [ ] |
+| D01 | P0 | Vue d’ensemble | `p6-d01-icon-overview.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D02 | P0 | Catalogue ou projets | `p6-d02-icon-projects.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D03 | P0 | Activité | `p6-d03-icon-activity.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D04 | P0 | Paramètres | `p6-d04-icon-settings.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D05 | P0 | Synchroniser | `p6-d05-icon-sync.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D06 | P1 | GitHub | `p6-d06-icon-github.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` ; pictogramme fonctionnel GitHub, marque appartenant à GitHub | 8 Ko | [x] | [x] | [ ] |
+| D07 | P1 | Ouvrir l’application | `p6-d07-icon-launch-app.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D08 | P1 | Lien externe | `p6-d08-icon-external-link.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D09 | P1 | Favori vide et rempli | `p6-d09-icon-favorite.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D10 | P1 | Recherche | `p6-d10-icon-search.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D11 | P1 | Filtrer | `p6-d11-icon-filter.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D12 | P1 | Trier | `p6-d12-icon-sort.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D13 | P1 | Vue grille | `p6-d13-icon-grid.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D14 | P1 | Vue liste | `p6-d14-icon-list.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D15 | P1 | Copier | `p6-d15-icon-copy.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D16 | P1 | Réinitialiser le cache | `p6-d16-icon-reset-cache.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D17 | P1 | Retour | `p6-d17-icon-back.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D18 | P1 | Fermer | `p6-d18-icon-close.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D19 | P2 | Plus d’actions | `p6-d19-icon-more.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D20 | P2 | Ouvrir les détails | `p6-d20-icon-details.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D21 | P0 | En ligne | `p6-d21-icon-online.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D22 | P0 | Hors ligne | `p6-d22-icon-offline.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D23 | P0 | Synchronisation en cours | `p6-d23-icon-sync-running.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D24 | P0 | Succès | `p6-d24-icon-success.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D25 | P0 | Avertissement | `p6-d25-icon-warning.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D26 | P0 | Erreur | `p6-d26-icon-error.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D27 | P1 | Nouveau projet | `p6-d27-icon-new-project.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D28 | P1 | Projet archivé | `p6-d28-icon-archived.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D29 | P1 | Fork | `p6-d29-icon-fork.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D30 | P1 | Application disponible | `p6-d30-icon-app-available.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D31 | P1 | Dépôt uniquement | `p6-d31-icon-repository-only.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D32 | P1 | Cache local | `p6-d32-icon-local-cache.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D33 | P1 | Date ou calendrier | `p6-d33-icon-calendar.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D34 | P1 | Horloge ou activité récente | `p6-d34-icon-clock.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D35 | P1 | Version ou release | `p6-d35-icon-release.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D36 | P1 | Langage ou code | `p6-d36-icon-code.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D37 | P1 | Branche | `p6-d37-icon-branch.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D38 | P1 | Pull request | `p6-d38-icon-pull-request.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D39 | P1 | Conflit ou protection | `p6-d39-icon-shield.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D40 | P2 | Dépôt renommé | `p6-d40-icon-renamed.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
+| D41 | P2 | URL d’application modifiée | `p6-d41-icon-app-url-changed.svg` | viewBox 0 0 24 24 | oui | `FB-LABEL` | `PROD-LG` | 8 Ko | [x] | [x] | [ ] |
 
 ---
 
 # 6. Ornements décoratifs
 
 | ID | P | Fichier final | Format | Dimensions | Alpha | Usage | Fallback | Source / droits | Budget max | P | V | I |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| E01a | P2 | `p6-e01a-lamp-512x768.webp` | WebP | 512 × 768 | oui | Lampe suspendue | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 45 Ko | [ ] | [ ] | [ ] |
-| E01b | P2 | `p6-e01b-lamp-halo-1024x1024.png` | PNG | 1024 × 1024 | oui | Halo de lampe | `FB-RADIAL` | création interne, méthode et droits à renseigner précisément avant P | 50 Ko | [ ] | [ ] | [ ] |
-| E02a | P2 | `p6-e02a-rope-segment-1024x128.webp` | WebP | 1024 × 128 | oui | Segment de corde raccordable | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
-| E02b | P2 | `p6-e02b-rope-corner-256x256.webp` | WebP | 256 × 256 | oui | Angle de corde raccordable | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 20 Ko | [ ] | [ ] | [ ] |
-| E03 | P2 | `p6-e03-screws-bolts-512x512.webp` | WebP | 512 × 512 | oui | Jeu d’attaches | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 30 Ko | [ ] | [ ] | [ ] |
-| E04 | P2 | `p6-e04-nails-pins-512x512.webp` | WebP | 512 × 512 | oui | Jeu de clous et punaises | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 30 Ko | [ ] | [ ] | [ ] |
-| E05 | P3 | `p6-e05-mug-512x512.webp` | WebP | 512 × 512 | oui | Tasse décorative | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
-| E06 | P3 | `p6-e06-potted-plant-512x768.webp` | WebP | 512 × 768 | oui | Plante décorative | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 45 Ko | [ ] | [ ] | [ ] |
-| E07 | P3 | `p6-e07-wrench-768x256.webp` | WebP | 768 × 256 | oui | Clé décorative | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
-| E08 | P3 | `p6-e08-notebook-plan-768x512.webp` | WebP | 768 × 512 | oui | Carnet sans texte lisible | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 45 Ko | [ ] | [ ] | [ ] |
-| E09 | P3 | `p6-e09-leaves-sprouts-512x512.webp` | WebP | 512 × 512 | oui | Feuilles et pousses | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
-| E10 | P3 | `p6-e10-workshop-crate-768x512.webp` | WebP | 768 × 512 | oui | Caisse décorative non interactive | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 50 Ko | [ ] | [ ] | [ ] |
-| E11 | P3 | `p6-e11-laboratory-vial-512x768.webp` | WebP | 512 × 768 | oui | Fiole décorative | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 40 Ko | [ ] | [ ] | [ ] |
-| E12 | P3 | `p6-e12-workbench-tool-512x512.webp` | WebP | 512 × 512 | oui | Outil d’établi sans marque | `FB-NONE` | création interne, méthode et droits à renseigner précisément avant P | 35 Ko | [ ] | [ ] | [ ] |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| E01a | P2 | `p6-e01a-lamp-512x768.webp` | WebP | 512 × 768 | oui | Lampe suspendue | `FB-NONE` | `PROD-LG` | 45 Ko | [ ] | [ ] | [ ] |
+| E01b | P2 | `p6-e01b-lamp-halo-1024x1024.png` | PNG | 1024 × 1024 | oui | Halo de lampe | `FB-RADIAL` | `PROD-LG` | 50 Ko | [ ] | [ ] | [ ] |
+| E02a | P2 | `p6-e02a-rope-segment-1024x128.webp` | WebP | 1024 × 128 | oui | Segment de corde raccordable | `FB-NONE` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
+| E02b | P2 | `p6-e02b-rope-corner-256x256.webp` | WebP | 256 × 256 | oui | Angle de corde raccordable | `FB-NONE` | `PROD-LG` | 20 Ko | [ ] | [ ] | [ ] |
+| E03 | P2 | `p6-e03-screws-bolts-512x512.webp` | WebP | 512 × 512 | oui | Jeu d’attaches | `FB-NONE` | `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| E04 | P2 | `p6-e04-nails-pins-512x512.webp` | WebP | 512 × 512 | oui | Jeu de clous et punaises | `FB-NONE` | `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| E05 | P3 | `p6-e05-mug-512x512.webp` | WebP | 512 × 512 | oui | Tasse décorative | `FB-NONE` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
+| E06 | P3 | `p6-e06-potted-plant-512x768.webp` | WebP | 512 × 768 | oui | Plante décorative | `FB-NONE` | `PROD-LG` | 45 Ko | [ ] | [ ] | [ ] |
+| E07 | P3 | `p6-e07-wrench-768x256.webp` | WebP | 768 × 256 | oui | Clé décorative | `FB-NONE` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
+| E08 | P3 | `p6-e08-notebook-plan-768x512.webp` | WebP | 768 × 512 | oui | Carnet sans texte lisible | `FB-NONE` | `PROD-LG` | 45 Ko | [ ] | [ ] | [ ] |
+| E09 | P3 | `p6-e09-leaves-sprouts-512x512.webp` | WebP | 512 × 512 | oui | Feuilles et pousses | `FB-NONE` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
+| E10 | P3 | `p6-e10-workshop-crate-768x512.webp` | WebP | 768 × 512 | oui | Caisse décorative non interactive | `FB-NONE` | `PROD-LG` | 50 Ko | [ ] | [ ] | [ ] |
+| E11 | P3 | `p6-e11-laboratory-vial-512x768.webp` | WebP | 512 × 768 | oui | Fiole décorative | `FB-NONE` | `PROD-LG` | 40 Ko | [ ] | [ ] | [ ] |
+| E12 | P3 | `p6-e12-workbench-tool-512x512.webp` | WebP | 512 × 512 | oui | Outil d’établi sans marque | `FB-NONE` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
 
 Les ornements E05 à E12 restent optionnels. Ils peuvent être produits après 6E, ne bloquent aucun lot et ne sont jamais nécessaires à la compréhension.
 
@@ -363,96 +370,96 @@ Les ornements E05 à E12 restent optionnels. Ils peuvent être produits après 6
 
 # 7. Couvertures et identités de projets
 
-Une ligne correspond à un seul fichier. Les droits artistiques sont hérités de la source S citée, qui doit être R avant production. Chaque export F conserve néanmoins sa propre provenance de transformation : méthode d’export, outil et auteur sont renseignés sur sa ligne avant P.
+Une ligne correspond à un seul fichier. Les droits artistiques sont hérités de la source S citée, qui doit être R avant production. Chaque export F utilise `PROD-LG` pour sa transformation interne.
 
 | ID | P | Projet / usage | Fichier final | Dimensions | Alpha | Usage / fallback | Source / droits | Budget max | P | V | I |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| F01a | P0 | Gargotte Adventure, couverture catalogue | `p6-f01a-gargotte-adventure-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S01a avec R / droits renseignés sur S01a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F01b | P0 | Gargotte Adventure, couverture fiche | `p6-f01b-gargotte-adventure-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F01a agrandie ou C18 | S01a avec R / droits renseignés sur S01a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F01c | P0 | Gargotte Adventure, logo | `p6-f01c-gargotte-adventure-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S01c avec R / droits renseignés sur S01c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F02a | P0 | Les Petites Quêtes, couverture catalogue | `p6-f02a-les-petites-quetes-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S02a avec R / droits renseignés sur S02a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F02b | P0 | Les Petites Quêtes, couverture fiche | `p6-f02b-les-petites-quetes-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F02a agrandie ou C18 | S02a avec R / droits renseignés sur S02a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F02c | P0 | Les Petites Quêtes, logo | `p6-f02c-les-petites-quetes-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S02c avec R / droits renseignés sur S02c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F03a | P0 | BibiLeaf, couverture catalogue | `p6-f03a-bibileaf-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S03a avec R / droits renseignés sur S03a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F03b | P0 | BibiLeaf, couverture fiche | `p6-f03b-bibileaf-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F03a agrandie ou C18 | S03a avec R / droits renseignés sur S03a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F03c | P0 | BibiLeaf, logo | `p6-f03c-bibileaf-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S03c avec R / droits renseignés sur S03c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F04a | P0 | Agripine, couverture catalogue | `p6-f04a-agripine-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S04a avec R / droits renseignés sur S04a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F04b | P0 | Agripine, couverture fiche | `p6-f04b-agripine-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F04a agrandie ou C18 | S04a avec R / droits renseignés sur S04a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F04c | P0 | Agripine, logo | `p6-f04c-agripine-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S04c avec R / droits renseignés sur S04c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F05a | P0 | Luma, couverture catalogue | `p6-f05a-luma-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S05a avec R / droits renseignés sur S05a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F05b | P0 | Luma, couverture fiche | `p6-f05b-luma-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F05a agrandie ou C18 | S05a avec R / droits renseignés sur S05a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F05c | P0 | Luma, logo | `p6-f05c-luma-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S05c avec R / droits renseignés sur S05c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F06a | P0 | Tracker Habit, couverture catalogue | `p6-f06a-tracker-habit-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S06a avec R / droits renseignés sur S06a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F06b | P0 | Tracker Habit, couverture fiche | `p6-f06b-tracker-habit-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F06a agrandie ou C18 | S06a avec R / droits renseignés sur S06a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F06c | P0 | Tracker Habit, logo | `p6-f06c-tracker-habit-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S06c avec R / droits renseignés sur S06c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F07a | P0 | ZythoHunt, couverture catalogue | `p6-f07a-zythohunt-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S07a avec R / droits renseignés sur S07a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F07b | P0 | ZythoHunt, couverture fiche | `p6-f07b-zythohunt-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F07a agrandie ou C18 | S07a avec R / droits renseignés sur S07a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F07c | P0 | ZythoHunt, logo | `p6-f07c-zythohunt-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S07c avec R / droits renseignés sur S07c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F08a | P0 | MaintBoard V3, couverture catalogue | `p6-f08a-maintboard-v3-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S08a avec R / droits renseignés sur S08a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F08b | P0 | MaintBoard V3, couverture fiche | `p6-f08b-maintboard-v3-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F08a agrandie ou C18 | S08a avec R / droits renseignés sur S08a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F08c | P0 | MaintBoard V3, logo | `p6-f08c-maintboard-v3-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S08c avec R / droits renseignés sur S08c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F09a | P1 | CadeauScope, couverture catalogue | `p6-f09a-cadeauscope-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S09a avec R / droits renseignés sur S09a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F09b | P1 | CadeauScope, couverture fiche | `p6-f09b-cadeauscope-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F09a agrandie ou C18 | S09a avec R / droits renseignés sur S09a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F09c | P1 | CadeauScope, logo | `p6-f09c-cadeauscope-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S09c avec R / droits renseignés sur S09c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F10a | P1 | GargoGen, couverture catalogue | `p6-f10a-gargogen-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S10a avec R / droits renseignés sur S10a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F10b | P1 | GargoGen, couverture fiche | `p6-f10b-gargogen-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F10a agrandie ou C18 | S10a avec R / droits renseignés sur S10a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F10c | P1 | GargoGen, logo | `p6-f10c-gargogen-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S10c avec R / droits renseignés sur S10c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F11a | P1 | Tiny Universe, couverture catalogue | `p6-f11a-tiny-universe-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S11a avec R / droits renseignés sur S11a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F11b | P1 | Tiny Universe, couverture fiche | `p6-f11b-tiny-universe-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F11a agrandie ou C18 | S11a avec R / droits renseignés sur S11a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F11c | P1 | Tiny Universe, logo | `p6-f11c-tiny-universe-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S11c avec R / droits renseignés sur S11c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F12a | P1 | TeissAI, couverture catalogue | `p6-f12a-teissai-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S12a avec R / droits renseignés sur S12a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F12b | P1 | TeissAI, couverture fiche | `p6-f12b-teissai-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F12a agrandie ou C18 | S12a avec R / droits renseignés sur S12a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F12c | P1 | TeissAI, logo | `p6-f12c-teissai-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S12c avec R / droits renseignés sur S12c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F13a | P1 | DermIA Quantum, couverture catalogue | `p6-f13a-dermia-quantum-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S13a avec R / droits renseignés sur S13a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F13b | P1 | DermIA Quantum, couverture fiche | `p6-f13b-dermia-quantum-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F13a agrandie ou C18 | S13a avec R / droits renseignés sur S13a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F13c | P1 | DermIA Quantum, logo | `p6-f13c-dermia-quantum-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S13c avec R / droits renseignés sur S13c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F14a | P1 | Casse-latte Simulator 2026, couverture catalogue | `p6-f14a-casse-latte-simulator-2026-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S14a avec R / droits renseignés sur S14a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F14b | P1 | Casse-latte Simulator 2026, couverture fiche | `p6-f14b-casse-latte-simulator-2026-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F14a agrandie ou C18 | S14a avec R / droits renseignés sur S14a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F14c | P1 | Casse-latte Simulator 2026, logo | `p6-f14c-casse-latte-simulator-2026-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S14c avec R / droits renseignés sur S14c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F15a | P2 | Gargotte V5, couverture catalogue | `p6-f15a-gargotte-v5-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S15a avec R / droits renseignés sur S15a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F15b | P2 | Gargotte V5, couverture fiche | `p6-f15b-gargotte-v5-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F15a agrandie ou C18 | S15a avec R / droits renseignés sur S15a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F15c | P2 | Gargotte V5, logo | `p6-f15c-gargotte-v5-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S15c avec R / droits renseignés sur S15c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F16a | P2 | PQ-, couverture catalogue | `p6-f16a-pq-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S16a avec R / droits renseignés sur S16a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F16b | P2 | PQ-, couverture fiche | `p6-f16b-pq-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F16a agrandie ou C18 | S16a avec R / droits renseignés sur S16a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F16c | P2 | PQ-, logo | `p6-f16c-pq-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S16c avec R / droits renseignés sur S16c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F17a | P2 | AI Agents for Beginners, couverture catalogue | `p6-f17a-ai-agents-for-beginners-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S17a avec R / droits renseignés sur S17a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F17b | P2 | AI Agents for Beginners, couverture fiche | `p6-f17b-ai-agents-for-beginners-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F17a agrandie ou C18 | S17a avec R / droits renseignés sur S17a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F17c | P2 | AI Agents for Beginners, logo | `p6-f17c-ai-agents-for-beginners-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S17c avec R / droits renseignés sur S17c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
-| F18a | P2 | La Grange, couverture catalogue | `p6-f18a-la-grange-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S18a avec R / droits renseignés sur S18a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
-| F18b | P2 | La Grange, couverture fiche | `p6-f18b-la-grange-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F18a agrandie ou C18 | S18a avec R / droits renseignés sur S18a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
-| F18c | P2 | La Grange, logo | `p6-f18c-la-grange-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S18c avec R / droits renseignés sur S18c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
+| F01a | P0 | Gargotte Adventure, couverture catalogue | `p6-f01a-gargotte-adventure-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S01a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F01b | P0 | Gargotte Adventure, couverture fiche | `p6-f01b-gargotte-adventure-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F01a agrandie ou C18 | S01a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F01c | P0 | Gargotte Adventure, logo | `p6-f01c-gargotte-adventure-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S01c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F02a | P0 | Les Petites Quêtes, couverture catalogue | `p6-f02a-les-petites-quetes-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S02a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F02b | P0 | Les Petites Quêtes, couverture fiche | `p6-f02b-les-petites-quetes-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F02a agrandie ou C18 | S02a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F02c | P0 | Les Petites Quêtes, logo | `p6-f02c-les-petites-quetes-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S02c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F03a | P0 | BibiLeaf, couverture catalogue | `p6-f03a-bibileaf-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S03a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F03b | P0 | BibiLeaf, couverture fiche | `p6-f03b-bibileaf-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F03a agrandie ou C18 | S03a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F03c | P0 | BibiLeaf, logo | `p6-f03c-bibileaf-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S03c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F04a | P0 | Agripine, couverture catalogue | `p6-f04a-agripine-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S04a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F04b | P0 | Agripine, couverture fiche | `p6-f04b-agripine-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F04a agrandie ou C18 | S04a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F04c | P0 | Agripine, logo | `p6-f04c-agripine-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S04c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F05a | P0 | Luma, couverture catalogue | `p6-f05a-luma-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S05a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F05b | P0 | Luma, couverture fiche | `p6-f05b-luma-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F05a agrandie ou C18 | S05a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F05c | P0 | Luma, logo | `p6-f05c-luma-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S05c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F06a | P0 | Tracker Habit, couverture catalogue | `p6-f06a-tracker-habit-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S06a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F06b | P0 | Tracker Habit, couverture fiche | `p6-f06b-tracker-habit-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F06a agrandie ou C18 | S06a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F06c | P0 | Tracker Habit, logo | `p6-f06c-tracker-habit-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S06c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F07a | P0 | ZythoHunt, couverture catalogue | `p6-f07a-zythohunt-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S07a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F07b | P0 | ZythoHunt, couverture fiche | `p6-f07b-zythohunt-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F07a agrandie ou C18 | S07a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F07c | P0 | ZythoHunt, logo | `p6-f07c-zythohunt-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S07c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F08a | P0 | MaintBoard V3, couverture catalogue | `p6-f08a-maintboard-v3-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S08a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F08b | P0 | MaintBoard V3, couverture fiche | `p6-f08b-maintboard-v3-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F08a agrandie ou C18 | S08a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F08c | P0 | MaintBoard V3, logo | `p6-f08c-maintboard-v3-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S08c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F09a | P1 | CadeauScope, couverture catalogue | `p6-f09a-cadeauscope-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S09a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F09b | P1 | CadeauScope, couverture fiche | `p6-f09b-cadeauscope-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F09a agrandie ou C18 | S09a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F09c | P1 | CadeauScope, logo | `p6-f09c-cadeauscope-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S09c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F10a | P1 | GargoGen, couverture catalogue | `p6-f10a-gargogen-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S10a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F10b | P1 | GargoGen, couverture fiche | `p6-f10b-gargogen-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F10a agrandie ou C18 | S10a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F10c | P1 | GargoGen, logo | `p6-f10c-gargogen-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S10c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F11a | P1 | Tiny Universe, couverture catalogue | `p6-f11a-tiny-universe-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S11a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F11b | P1 | Tiny Universe, couverture fiche | `p6-f11b-tiny-universe-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F11a agrandie ou C18 | S11a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F11c | P1 | Tiny Universe, logo | `p6-f11c-tiny-universe-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S11c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F12a | P1 | TeissAI, couverture catalogue | `p6-f12a-teissai-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S12a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F12b | P1 | TeissAI, couverture fiche | `p6-f12b-teissai-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F12a agrandie ou C18 | S12a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F12c | P1 | TeissAI, logo | `p6-f12c-teissai-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S12c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F13a | P1 | DermIA Quantum, couverture catalogue | `p6-f13a-dermia-quantum-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S13a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F13b | P1 | DermIA Quantum, couverture fiche | `p6-f13b-dermia-quantum-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F13a agrandie ou C18 | S13a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F13c | P1 | DermIA Quantum, logo | `p6-f13c-dermia-quantum-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S13c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F14a | P1 | Casse-latte Simulator 2026, couverture catalogue | `p6-f14a-casse-latte-simulator-2026-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S14a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F14b | P1 | Casse-latte Simulator 2026, couverture fiche | `p6-f14b-casse-latte-simulator-2026-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F14a agrandie ou C18 | S14a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F14c | P1 | Casse-latte Simulator 2026, logo | `p6-f14c-casse-latte-simulator-2026-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S14c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F15a | P2 | Gargotte V5, couverture catalogue | `p6-f15a-gargotte-v5-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S15a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F15b | P2 | Gargotte V5, couverture fiche | `p6-f15b-gargotte-v5-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F15a agrandie ou C18 | S15a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F15c | P2 | Gargotte V5, logo | `p6-f15c-gargotte-v5-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S15c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F16a | P2 | PQ-, couverture catalogue | `p6-f16a-pq-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S16a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F16b | P2 | PQ-, couverture fiche | `p6-f16b-pq-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F16a agrandie ou C18 | S16a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F16c | P2 | PQ-, logo | `p6-f16c-pq-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S16c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F17a | P2 | AI Agents for Beginners, couverture catalogue | `p6-f17a-ai-agents-for-beginners-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S17a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F17b | P2 | AI Agents for Beginners, couverture fiche | `p6-f17b-ai-agents-for-beginners-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F17a agrandie ou C18 | S17a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F17c | P2 | AI Agents for Beginners, logo | `p6-f17c-ai-agents-for-beginners-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S17c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F18a | P2 | La Grange, couverture catalogue | `p6-f18a-la-grange-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S18a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
+| F18b | P2 | La Grange, couverture fiche | `p6-f18b-la-grange-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F18a agrandie ou C18 | S18a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
+| F18c | P2 | La Grange, logo | `p6-f18c-la-grange-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S18c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
 
 ---
 
 # 8. Planches de validation documentaire
 
-Ces PNG sont produits dans la PR d’intégration qui rend leur contenu observable. Ils sont placés à plat dans `docs/assets/phase-6/`, n’entrent pas dans le runtime et utilisent uniquement l’application et les assets du lot concerné. Les droits projet ne remplacent pas leur provenance de transformation : chaque ligne G exige sa propre méthode de capture, son outil et son auteur avant P.
+Ces PNG sont produits dans la PR d’intégration qui rend leur contenu observable. Ils sont placés à plat dans `docs/assets/phase-6/`, n’entrent pas dans le runtime et utilisent uniquement l’application et les assets du lot concerné. Chaque planche utilise `PROD-LG` pour sa capture interne.
 
 | ID | P | Nom final | Dimensions | Usage | Source / droits | Budget max | P | V |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| G01 | P0 | `p6-g01-dashboard-desktop-1440x1024.png` | 1440 × 1024 | Dashboard desktop | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G02 | P0 | `p6-g02-dashboard-tablet-1024x1366.png` | 1024 × 1366 | Dashboard tablette | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G03 | P0 | `p6-g03-dashboard-mobile-390x844.png` | 390 × 844 | Dashboard mobile | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G04a | P1 | `p6-g04a-catalogue-desktop-1440x1024.png` | 1440 × 1024 | Catalogue desktop | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G04b | P1 | `p6-g04b-catalogue-mobile-390x844.png` | 390 × 844 | Catalogue mobile | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G05a | P1 | `p6-g05a-project-detail-desktop-1440x1024.png` | 1440 × 1024 | Fiche desktop | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G05b | P1 | `p6-g05b-project-detail-mobile-390x844.png` | 390 × 844 | Fiche mobile | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G06a | P1 | `p6-g06a-activity-desktop-1440x1024.png` | 1440 × 1024 | Activité desktop | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G06b | P1 | `p6-g06b-activity-mobile-390x844.png` | 390 × 844 | Activité mobile | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G07a | P1 | `p6-g07a-settings-desktop-1440x1024.png` | 1440 × 1024 | Paramètres desktop | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G07b | P1 | `p6-g07b-settings-mobile-390x844.png` | 390 × 844 | Paramètres mobile | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G08 | P1 | `p6-g08-components-gallery-1920x1080.png` | 1920 × 1080 | Galerie de composants | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G09 | P1 | `p6-g09-no-images-1440x1024.png` | 1440 × 1024 | Fallbacks sans images | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G10a | P1 | `p6-g10a-long-content-1440x1024.png` | 1440 × 1024 | Contenus longs desktop | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G10b | P1 | `p6-g10b-long-content-mobile-390x844.png` | 390 × 844 | Contenus longs mobile | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G11 | P1 | `p6-g11-zoom-200-780x1688.png` | 780 × 1688 | Zoom 200 % | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G12 | P1 | `p6-g12-compact-density-1440x1024.png` | 1440 × 1024 | Densité compacte | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G13 | P1 | `p6-g13-reduced-motion-1440x1024.png` | 1440 × 1024 | Mouvement réduit | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G14a | P2 | `p6-g14a-low-light-1440x1024.png` | 1440 × 1024 | Lumière faible | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G14b | P2 | `p6-g14b-bright-light-1440x1024.png` | 1440 × 1024 | Lumière forte | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G15a | P0 | `p6-g15a-shell-desktop-1440x1024.png` | 1440 × 1024 | Shell et navigation desktop avant composition du dashboard | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G15b | P0 | `p6-g15b-shell-tablet-1024x1366.png` | 1024 × 1366 | Shell et navigation tablette avant composition du dashboard | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
-| G15c | P0 | `p6-g15c-shell-mobile-390x844.png` | 390 × 844 | Shell et navigation mobile avant composition du dashboard | capture du projet / droits projet ; méthode de capture, outil et auteur à renseigner avant P | 2 Mo | [ ] | [ ] |
+| G01 | P0 | `p6-g01-dashboard-desktop-1440x1024.png` | 1440 × 1024 | Dashboard desktop | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G02 | P0 | `p6-g02-dashboard-tablet-1024x1366.png` | 1024 × 1366 | Dashboard tablette | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G03 | P0 | `p6-g03-dashboard-mobile-390x844.png` | 390 × 844 | Dashboard mobile | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G04a | P1 | `p6-g04a-catalogue-desktop-1440x1024.png` | 1440 × 1024 | Catalogue desktop | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G04b | P1 | `p6-g04b-catalogue-mobile-390x844.png` | 390 × 844 | Catalogue mobile | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G05a | P1 | `p6-g05a-project-detail-desktop-1440x1024.png` | 1440 × 1024 | Fiche desktop | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G05b | P1 | `p6-g05b-project-detail-mobile-390x844.png` | 390 × 844 | Fiche mobile | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G06a | P1 | `p6-g06a-activity-desktop-1440x1024.png` | 1440 × 1024 | Activité desktop | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G06b | P1 | `p6-g06b-activity-mobile-390x844.png` | 390 × 844 | Activité mobile | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G07a | P1 | `p6-g07a-settings-desktop-1440x1024.png` | 1440 × 1024 | Paramètres desktop | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G07b | P1 | `p6-g07b-settings-mobile-390x844.png` | 390 × 844 | Paramètres mobile | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G08 | P1 | `p6-g08-components-gallery-1920x1080.png` | 1920 × 1080 | Galerie de composants | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G09 | P1 | `p6-g09-no-images-1440x1024.png` | 1440 × 1024 | Fallbacks sans images | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G10a | P1 | `p6-g10a-long-content-1440x1024.png` | 1440 × 1024 | Contenus longs desktop | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G10b | P1 | `p6-g10b-long-content-mobile-390x844.png` | 390 × 844 | Contenus longs mobile | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G11 | P1 | `p6-g11-zoom-200-780x1688.png` | 780 × 1688 | Zoom 200 % | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G12 | P1 | `p6-g12-compact-density-1440x1024.png` | 1440 × 1024 | Densité compacte | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G13 | P1 | `p6-g13-reduced-motion-1440x1024.png` | 1440 × 1024 | Mouvement réduit | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G14a | P2 | `p6-g14a-low-light-1440x1024.png` | 1440 × 1024 | Lumière faible | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G14b | P2 | `p6-g14b-bright-light-1440x1024.png` | 1440 × 1024 | Lumière forte | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G15a | P0 | `p6-g15a-shell-desktop-1440x1024.png` | 1440 × 1024 | Shell et navigation desktop avant composition du dashboard | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G15b | P0 | `p6-g15b-shell-tablet-1024x1366.png` | 1024 × 1366 | Shell et navigation tablette avant composition du dashboard | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
+| G15c | P0 | `p6-g15c-shell-mobile-390x844.png` | 390 × 844 | Shell et navigation mobile avant composition du dashboard | capture du projet + `PROD-LG` | 2 Mo | [ ] | [ ] |
 
 ---
 
@@ -473,6 +480,8 @@ Un lot peut démarrer lorsque toutes ses sources R et ses assets P/V sont satisf
 | 6C | sources déjà validées par 6A et 6B | C25, C26, D09, D10, D11, D12, D13, D14, D27, D28, D29, D30, D31, D33, D34, D35, D36 | aucun | G01, G02, G03, G04a, G04b, G12 | Dashboard et catalogue, recherche, filtres, tri et densité |
 | 6D | sources déjà validées | C19, C21, C22, C23, C24, C27, C28, D06, D07, D08, D15, D16, D17, D18, D19, D20, D32, D37, D38, D39, D40, D41 | aucun | G05a, G05b, G06a, G06b, G07a, G07b | Fiches, activité, paramètres, diagnostics et modales |
 | 6E | S09a, S09c, S10a, S10c, S11a, S11c, S12a, S12c, S13a, S13c, S14a, S14c, S15a, S15c, S16a, S16c, S17a, S17c, S18a, S18c | A05, A06, A07, A08, A09, A10, A11, A12, B05, B08, B09, B10, B11, B13, B14, B15, E01a, E01b, E02a, E02b, E03, E04, F09a, F09b, F09c, F10a, F10b, F10c, F11a, F11b, F11c, F12a, F12b, F12c, F13a, F13b, F13c, F14a, F14b, F14c, F15a, F15b, F15c, F16a, F16b, F16c, F17a, F17b, F17c, F18a, F18b, F18c | aucun | G11, G13, G14a, G14b | Finitions, projets P1/P2, mouvement, lumière et optimisation |
+
+**État d’entrée 6A : satisfait.** M01 et M02 possèdent R ; tous les assets P/V requis sont cochés ; B06 et C29 sont spécifiés. Le lot peut donc passer à l’intégration.
 
 ---
 
@@ -501,29 +510,26 @@ Un lot peut démarrer lorsque toutes ses sources R et ses assets P/V sont satisf
 
 # 12. Ordre de production
 
-1. versionner M01, puis produire A01 ;
-2. versionner M02, puis produire B01 ;
-3. versionner M03, puis produire C01 ;
-4. versionner M04 ;
-5. produire et valider C18, fallback requis par F01a ;
-6. versionner S01a à partir de M04, produire F01a, puis F01b ;
-7. versionner S01c à partir de M04, puis produire F01c ;
-8. versionner M05 ;
-9. produire et valider C15, puis produire C16 ;
-10. variantes strictement enregistrées ;
-11. matières et lumière P0 ;
-12. iconographie P0 ;
-13. cadres et panneaux P0 ;
-14. sources S02a et S02c à S08a et S08c, puis F02a à F08c fichier par fichier ;
-15. démarrer le lot autorisé, appliquer ses changements, puis produire ses planches d’acceptation dans sa PR ;
-16. P1 ;
-17. P2 ;
-18. P3 uniquement sur décision explicite, sans bloquer 6E.
+1. intégrer le lot 6A et produire G15a, G15b et G15c dans sa PR ;
+2. versionner M03 avant toute validation canonique de C01 ;
+3. versionner M04 ;
+4. produire et valider C18, fallback requis par F01a ;
+5. versionner S01a à partir de M04, produire F01a, puis F01b ;
+6. versionner S01c à partir de M04, puis produire F01c ;
+7. versionner M05 ;
+8. produire et valider C15, puis produire C16 ;
+9. variantes strictement enregistrées ;
+10. cadres et panneaux P0 ;
+11. sources S02a et S02c à S08a et S08c, puis F02a à F08c fichier par fichier ;
+12. démarrer le lot autorisé, appliquer ses changements, puis produire ses planches d’acceptation dans sa PR ;
+13. P1 ;
+14. P2 ;
+15. P3 uniquement sur décision explicite, sans bloquer 6E.
 
-Un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback reçoit toujours P et V avant l’asset qui en dépend ; cette règle de dépendance prime sur l’étiquette de priorité. Un fallback hors registre n’est autorisé que si la ligne décrit son implémentation exacte — et son chemin versionné s’il s’agit d’un fichier ; il est vérifié en présence et en comportement sans recevoir P/V.
+Un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback reçoit toujours P et V avant l’asset qui en dépend ; cette règle de dépendance prime sur l’étiquette de priorité. Un fallback hors registre n’est autorisé que si la ligne décrit son implémentation exacte et son chemin versionné s’il s’agit d’un fichier ; il est vérifié en présence et en comportement sans recevoir P/V.
 
 ## Prochain élément autorisé
 
-**Contrôler A02 sous `public/assets/phase-6/p6-a02-brand-sign-800x360.webp`, renseigner sa méthode d’export, son outil, son auteur et ses droits, puis attribuer P/V si conforme.**
+**Démarrer le lot d’intégration 6A : raccorder A01 à A04, B01 à B04, B07, B12, D01 à D05 et D21 à D26 ; intégrer B06 et C29 ; puis produire les planches G15a, G15b et G15c avant fusion.**
 
-A01 est désormais conforme, versionné et validé ; il autorise la variante tablette A02.
+En production d’assets, le prochain master bloquant est M03 sous `docs/assets/phase-6/p6-m03-project-card-frame-master-640x960.webp`.
