@@ -45,8 +45,9 @@ export function createAppShell(): HTMLElement {
   shell.querySelector<HTMLImageElement>('[data-brand-sign]')?.addEventListener('error', () => {
     brand?.classList.add('is-fallback');
   });
-  shell.querySelector<HTMLImageElement>('[data-brand-mark]')?.addEventListener('error', (event) => {
-    event.currentTarget.remove();
+  const brandMarkAsset = shell.querySelector<HTMLImageElement>('[data-brand-mark]');
+  brandMarkAsset?.addEventListener('error', () => {
+    brandMarkAsset.remove();
   });
 
   const list = shell.querySelector('ul');
