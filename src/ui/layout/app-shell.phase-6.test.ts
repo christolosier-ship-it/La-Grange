@@ -1,7 +1,12 @@
+import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it } from 'vitest';
 import type { SyncState } from '../../core/sync/sync-service';
-import phase6ShellStyles from '../../styles/phase-6-shell.css?raw';
 import { createAppShell, updateWorkbenchStatus } from './app-shell';
+
+const phase6ShellStyles = readFileSync(
+  new URL('../../styles/phase-6-shell.css', import.meta.url),
+  'utf8',
+);
 
 const REQUIRED_SHELL_ASSETS = [
   'p6-a01-brand-sign-1600x720.webp',
