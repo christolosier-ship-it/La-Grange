@@ -8,6 +8,10 @@ const phase6ShellStyles = readFileSync(
   resolve(process.cwd(), 'src/styles/phase-6-shell.css'),
   'utf8',
 );
+const serviceWorkerSource = readFileSync(
+  resolve(process.cwd(), 'public/sw.js'),
+  'utf8',
+);
 
 const REQUIRED_SHELL_ASSETS = [
   'p6-a01-brand-sign-1600x720.webp',
@@ -53,6 +57,18 @@ describe('Phase 6A app shell assets', () => {
       'Activité',
       'Paramètres',
     ]);
+  });
+
+  it('precaches every shared asset required by the offline shell', () => {
+    expect(serviceWorkerSource).toContain('shell-v11');
+    for (const asset of REQUIRED_SHELL_ASSETS) {
+      expect(serviceWorkerSource).toContain(asset);
+    }
+  });
+
+  it('reserves the distinct mobile and wide brand ratios', () => {
+    expect(phase6ShellStyles).toContain('aspect-ratio: 12 / 7');
+    expect(phase6ShellStyles).toContain('aspect-ratio: 20 / 9');
   });
 
   it('switches to the HTML brand fallback when the selected sign cannot load', () => {
