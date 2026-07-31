@@ -366,7 +366,7 @@ Les ornements E05 à E12 restent optionnels. Ils peuvent être produits après 6
 Une ligne correspond à un seul fichier. Les droits artistiques sont hérités de la source S citée, qui doit être R avant production. Chaque export F conserve néanmoins sa propre provenance de transformation : méthode d’export, outil et auteur sont renseignés sur sa ligne avant P.
 
 | ID | P | Projet / usage | Fichier final | Dimensions | Alpha | Usage / fallback | Source / droits | Budget max | P | V | I |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | F01a | P0 | Gargotte Adventure, couverture catalogue | `p6-f01a-gargotte-adventure-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S01a avec R / droits renseignés sur S01a ; méthode d’export, outil et auteur à renseigner avant P | 80 Ko | [ ] | [ ] | [ ] |
 | F01b | P0 | Gargotte Adventure, couverture fiche | `p6-f01b-gargotte-adventure-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F01a agrandie ou C18 | S01a avec R / droits renseignés sur S01a ; méthode d’export, outil et auteur à renseigner avant P | 130 Ko | [ ] | [ ] | [ ] |
 | F01c | P0 | Gargotte Adventure, logo | `p6-f01c-gargotte-adventure-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S01c avec R / droits renseignés sur S01c ; méthode d’export, outil et auteur à renseigner avant P | 30 Ko | [ ] | [ ] | [ ] |
