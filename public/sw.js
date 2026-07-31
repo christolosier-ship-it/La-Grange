@@ -1,6 +1,6 @@
 /* La Grange shell service worker: application data remains managed by IndexedDB. */
 const CACHE_PREFIX = 'la-grange-';
-const CACHE_NAME = `${CACHE_PREFIX}shell-v10`;
+const CACHE_NAME = `${CACHE_PREFIX}shell-v11`;
 const SCOPE_URL = new URL(self.registration.scope);
 const BASE_URL = SCOPE_URL.href;
 const SHELL_URLS = [
@@ -10,6 +10,27 @@ const SHELL_URLS = [
   new URL('icons/icon-192.png', BASE_URL).href,
   new URL('icons/icon-512.png', BASE_URL).href,
   new URL('icons/maskable-512.png', BASE_URL).href,
+  new URL('assets/phase-6/p6-a01-brand-sign-1600x720.webp', BASE_URL).href,
+  new URL('assets/phase-6/p6-a02-brand-sign-800x360.webp', BASE_URL).href,
+  new URL('assets/phase-6/p6-a03-brand-sign-mobile-960x560.webp', BASE_URL).href,
+  new URL('assets/phase-6/p6-a04-brand-mark.svg', BASE_URL).href,
+  new URL('assets/phase-6/p6-b01-background-workshop-2048x1152.webp', BASE_URL).href,
+  new URL('assets/phase-6/p6-b02-background-workshop-tablet-1366x1024.webp', BASE_URL).href,
+  new URL('assets/phase-6/p6-b03-background-workshop-tablet-1024x1366.webp', BASE_URL).href,
+  new URL('assets/phase-6/p6-b04-background-workshop-mobile-780x1386.webp', BASE_URL).href,
+  new URL('assets/phase-6/p6-b07-texture-wood-structure-1024x1024.webp', BASE_URL).href,
+  new URL('assets/phase-6/p6-b12-light-main-1600x900.png', BASE_URL).href,
+  new URL('assets/phase-6/p6-d01-icon-overview.svg', BASE_URL).href,
+  new URL('assets/phase-6/p6-d02-icon-projects.svg', BASE_URL).href,
+  new URL('assets/phase-6/p6-d03-icon-activity.svg', BASE_URL).href,
+  new URL('assets/phase-6/p6-d04-icon-settings.svg', BASE_URL).href,
+  new URL('assets/phase-6/p6-d05-icon-sync.svg', BASE_URL).href,
+  new URL('assets/phase-6/p6-d21-icon-online.svg', BASE_URL).href,
+  new URL('assets/phase-6/p6-d22-icon-offline.svg', BASE_URL).href,
+  new URL('assets/phase-6/p6-d23-icon-sync-running.svg', BASE_URL).href,
+  new URL('assets/phase-6/p6-d24-icon-success.svg', BASE_URL).href,
+  new URL('assets/phase-6/p6-d25-icon-warning.svg', BASE_URL).href,
+  new URL('assets/phase-6/p6-d26-icon-error.svg', BASE_URL).href,
 ];
 
 self.addEventListener('install', (event) => {
