@@ -157,7 +157,6 @@ export function createDashboardLoadingState(sync: SyncState | undefined): HTMLEl
   for (let index = 0; index < 4; index += 1) skeleton.append(document.createElement('span'));
 
   state.append(title, message, skeleton);
-  if (sync?.status === 'error' || sync?.status === 'offline') state.append(createSyncButton(sync));
   return state;
 }
 
