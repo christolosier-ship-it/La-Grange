@@ -1,9 +1,9 @@
 name: Generate corrected G15 boards
 
 on:
-  push:
+  pull_request:
     branches:
-      - fix/phase-6a-visual-integration
+      - main
     paths:
       - .github/workflows/generate-g15-corrected.yml
 
@@ -15,8 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Checkout
+      - name: Checkout correction branch
         uses: actions/checkout@v4
+        with:
+          ref: fix/phase-6a-visual-integration
 
       - name: Setup Node
         uses: actions/setup-node@v4
