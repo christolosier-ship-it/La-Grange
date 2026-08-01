@@ -62,7 +62,7 @@ export function createAppShell(): HTMLElement {
   shell.innerHTML = `
     <div class="phase-6-scene" aria-hidden="true">
       <picture class="phase-6-scene__background">
-        <source media="(min-width: 70rem)" srcset="${phase6Asset('p6-b01-background-workshop-2048x1152.webp')}">
+        <source media="(min-width: 87.5rem)" srcset="${phase6Asset('p6-b01-background-workshop-2048x1152.webp')}">
         <source media="(min-width: 45rem) and (orientation: landscape)" srcset="${phase6Asset('p6-b02-background-workshop-tablet-1366x1024.webp')}">
         <source media="(min-width: 45rem) and (orientation: portrait)" srcset="${phase6Asset('p6-b03-background-workshop-tablet-1024x1366.webp')}">
         <img src="${phase6Asset('p6-b04-background-workshop-mobile-780x1386.webp')}" alt="" width="780" height="1386" decoding="async" fetchpriority="high">
