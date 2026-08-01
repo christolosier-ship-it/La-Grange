@@ -1,0 +1,109 @@
+name: Generate G15 shell boards
+
+on:
+  push:
+    branches:
+      - docs/g15-shell-captures
+    paths:
+      - .github/workflows/generate-g15.yml
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install application dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Build application
+        run: npm run build
+
+      - name: Start preview server
+        run: |
+          nohup npx vite preview --host 127.0.0.1 --port 4173 > /tmp/la-grange-vite.log 2>&1 &
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:4173/La-Grange/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/la-grange-vite.log
+          exit 1
+
+      - name: Capture G15 boards
+        run: |
+          mkdir -p docs/assets/phase-6
+          node --input-type=module <<'EOF'
+          import { chromium } from 'playwright';
+
+          const captures = [
+            {
+              name: 'p6-g15a-shell-desktop-1440x1024.png',
+              width: 1440,
+              height: 1024,
+            },
+            {
+              name: 'p6-g15b-shell-tablet-1024x1366.png',
+              width: 1024,
+              height: 1366,
+            },
+            {
+              name: 'p6-g15c-shell-mobile-390x844.png',
+              width: 390,
+              height: 844,
+            },
+          ];
+
+          const browser = await chromium.launch({ headless: true });
+
+          try {
+            for (const capture of captures) {
+              const context = await browser.newContext({
+                viewport: { width: capture.width, height: capture.height },
+                deviceScaleFactor: 1,
+                locale: 'fr-FR',
+                colorScheme: 'dark',
+              });
+              const page = await context.newPage();
+              await page.goto('http://127.0.0.1:4173/La-Grange/#/', {
+                waitUntil: 'domcontentloaded',
+              });
+              await page.waitForSelector('.app-shell', { state: 'visible' });
+              await page.waitForTimeout(6000);
+              await page.screenshot({
+                path: `docs/assets/phase-6/${capture.name}`,
+                fullPage: false,
+              });
+              await context.close();
+            }
+          } finally {
+            await browser.close();
+          }
+          EOF
+
+      - name: Commit generated boards
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/assets/phase-6/p6-g15a-shell-desktop-1440x1024.png
+          git add docs/assets/phase-6/p6-g15b-shell-tablet-1024x1366.png
+          git add docs/assets/phase-6/p6-g15c-shell-mobile-390x844.png
+          git commit -m "docs: générer les planches G15 du shell"
+          git push origin HEAD:docs/g15-shell-captures
