@@ -1,9 +1,12 @@
 name: Generate G15 shell boards
 
 on:
-  push:
+  pull_request:
     branches:
-      - docs/g15-shell-captures
+      - main
+    types:
+      - opened
+      - synchronize
     paths:
       - .github/workflows/generate-g15.yml
 
@@ -15,8 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Checkout
+      - name: Checkout capture branch
         uses: actions/checkout@v4
+        with:
+          ref: docs/g15-shell-captures
 
       - name: Setup Node
         uses: actions/setup-node@v4
