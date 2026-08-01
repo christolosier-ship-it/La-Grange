@@ -103,9 +103,13 @@ export function createAppShell(): HTMLElement {
     <footer><small>La Grange · lecture seule · v${APP_VERSION}</small></footer>`;
 
   const brand = shell.querySelector<HTMLElement>('.brand');
-  shell.querySelector<HTMLImageElement>('[data-brand-sign]')?.addEventListener('error', () => brand?.classList.add('is-fallback'));
+  shell.querySelector<HTMLImageElement>('[data-brand-sign]')?.addEventListener('error', () => {
+    brand?.classList.add('is-fallback');
+  });
   const brandMarkAsset = shell.querySelector<HTMLImageElement>('[data-brand-mark]');
-  brandMarkAsset?.addEventListener('error', () => brandMarkAsset.remove());
+  brandMarkAsset?.addEventListener('error', () => {
+    brandMarkAsset.remove();
+  });
 
   const list = shell.querySelector('ul');
   if (!list) throw new Error('La navigation principale est introuvable.');
