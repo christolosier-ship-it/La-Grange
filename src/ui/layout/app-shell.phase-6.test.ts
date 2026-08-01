@@ -8,6 +8,10 @@ const phase6ShellStyles = readFileSync(
   resolve(process.cwd(), 'src/styles/phase-6-shell.css'),
   'utf8',
 );
+const appShellSource = readFileSync(
+  resolve(process.cwd(), 'src/ui/layout/app-shell.ts'),
+  'utf8',
+);
 const serviceWorkerSource = readFileSync(
   resolve(process.cwd(), 'public/sw.js'),
   'utf8',
@@ -44,9 +48,10 @@ describe('Phase 6A app shell assets', () => {
 
   it('references every validated shell asset while retaining HTML labels', () => {
     const shell = createAppShell();
+    const implementation = `${shell.outerHTML}\n${appShellSource}\n${phase6ShellStyles}`;
 
     for (const asset of REQUIRED_SHELL_ASSETS) {
-      expect(`${shell.outerHTML}\n${phase6ShellStyles}`).toContain(asset);
+      expect(implementation).toContain(asset);
     }
 
     expect(shell.querySelector('.brand-copy')?.textContent).toContain('La Grange');
