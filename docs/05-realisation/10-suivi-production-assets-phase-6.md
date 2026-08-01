@@ -125,11 +125,11 @@ Les codes suivants font partie intégrante de chaque ligne qui les cite. Ils dé
 | Code | Contrat exact |
 | --- | --- |
 | `FB-BG` | sélecteur `body` dans `src/styles/index.css` ; pile `radial-gradient(circle at 72% -10%, rgba(119, 79, 35, 0.44) 0, transparent 34rem)`, `linear-gradient(rgba(21, 16, 11, 0.96), rgba(21, 16, 11, 0.98))`, puis `repeating-linear-gradient(90deg, #1c140d 0 4rem, #21170f 4rem 8rem)` |
-| `FB-WOOD` | B07/B08 : `.project-card__fallback` dans `src/styles/dashboard.css` et `.project-detail__artwork` dans `src/styles/project-detail.css` ; C13 : `.primary-nav` dans `src/styles/index.css`, `.rail-panel` dans `src/styles/dashboard.css` et `.catalogue-controls` dans `src/styles/catalogue.css` ; autres consommateurs `.return-link`, `.update-notice button`, `.settings-panel button` et `.confirmation-modal button` dans leurs feuilles versionnées | conserver la règle versionnée du sélecteur et un fond bois CSS lisible ; lorsqu’il emploie le token, `background: var(--color-surface-wood); color: var(--color-text)` |
+| `FB-WOOD` | B07/B08 : `.project-card__fallback` dans `src/styles/dashboard.css` et `.project-detail__artwork` dans `src/styles/project-detail.css` ; C13 : `.primary-nav` dans `src/styles/index.css`, `.rail-panel` dans `src/styles/dashboard.css` et `.catalogue-controls` dans `src/styles/catalogue.css` ; autres consommateurs `.return-link`, `.update-notice button`, `.settings-panel button` et `.confirmation-modal button` dans leurs feuilles versionnées ; conserver la règle versionnée du sélecteur et un fond bois CSS lisible ; lorsqu’il emploie le token, `background: var(--color-surface-wood); color: var(--color-text)` |
 | `FB-PAPER` | consommateurs `.workbench-note` et `.update-notice` dans `src/styles/index.css` ; conserver `background: var(--color-paper)` et `color: var(--color-bg-deep)` sous les éventuels gradients déjà présents |
 | `FB-PANEL` | C01/C02/C04 : `.project-card`, C11 : `.stat-card`, dans `src/styles/dashboard.css` ; C19 : `.confirmation-modal`, C21 : `.settings-diagnostic-preview`, dans `src/styles/settings.css` ; conserver un fond opaque, `border: 1px solid var(--color-border)`, un rayon au moins `var(--radius-md)` et le texte `var(--color-text)` |
-| `FB-DARK` | B10/B11 et C14 : `.dashboard-feedback` dans `src/styles/dashboard.css`, `.activity-header`, `.activity-feedback`, `.activity-empty`, `.activity-week` et `.activity-event` dans `src/styles/activity.css`, `.project-detail__detail-group` dans `src/styles/project-detail.css` et `.settings-diagnostic-preview` dans `src/styles/settings.css` | conserver la règle versionnée du sélecteur : fond sombre opaque ou semi-opaque, bordure visible et `color: var(--color-text)` ou `var(--color-text-muted)` |
-| `FB-BORDER` | C12 : `.dashboard-section` dans `src/styles/dashboard.css` ; C13 : `.primary-nav` dans `src/styles/index.css`, `.rail-panel` dans `src/styles/dashboard.css` et `.catalogue-controls` dans `src/styles/catalogue.css` ; C15 : `.workbench-note`, C20 : `.update-notice`, dans `src/styles/index.css` | conserver `border: 1px solid var(--color-border)` ou la bordure versionnée du sélecteur, avec un rayon au moins `var(--radius-md)` lorsque le composant est encadré |
+| `FB-DARK` | B10/B11 et C14 : `.dashboard-feedback` dans `src/styles/dashboard.css`, `.activity-header`, `.activity-feedback`, `.activity-empty`, `.activity-week` et `.activity-event` dans `src/styles/activity.css`, `.project-detail__detail-group` dans `src/styles/project-detail.css` et `.settings-diagnostic-preview` dans `src/styles/settings.css` ; conserver la règle versionnée du sélecteur : fond sombre opaque ou semi-opaque, bordure visible et `color: var(--color-text)` ou `var(--color-text-muted)` |
+| `FB-BORDER` | C12 : `.dashboard-section` dans `src/styles/dashboard.css` ; C13 : `.primary-nav` dans `src/styles/index.css`, `.rail-panel` dans `src/styles/dashboard.css` et `.catalogue-controls` dans `src/styles/catalogue.css` ; C15 : `.workbench-note`, C20 : `.update-notice`, dans `src/styles/index.css` ; conserver `border: 1px solid var(--color-border)` ou la bordure versionnée du sélecteur, avec un rayon au moins `var(--radius-md)` lorsque le composant est encadré |
 | `FB-DASHED` | consommateurs `.dashboard-empty` dans `src/styles/dashboard.css`, `.catalogue-empty` et `.catalogue-unavailable` dans `src/styles/catalogue.css` ; conserver une bordure `dashed` visible et `border-radius: var(--radius-md)` |
 | `FB-BADGE` | consommateurs `.status-badge` et `.new-badge` dans `src/styles/dashboard.css` ; conserver `display: inline-flex`, une bordure visible, `border-radius: 999px`, un fond contrasté et un texte lisible |
 | `FB-SEPARATOR-H` | C09 : `.project-card__metadata` dans `src/styles/dashboard.css` et `.project-detail__metadata` dans `src/styles/project-detail.css` ; C10 : `.project-card__launch` dans `src/styles/dashboard.css` et `.project-detail__actions` dans `src/styles/project-detail.css` ; C27 : `.activity-week > h2` et `.activity-day + .activity-day` dans `src/styles/activity.css`, `.settings-panel > header` dans `src/styles/settings.css` ; conserver une bordure horizontale `1px solid var(--color-border)` |
@@ -231,7 +231,7 @@ Les fallbacks runtime existants d’A09 à A12 restent opérationnels jusqu’à
 # 3. Fond, matières et lumière
 
 | ID | P | Fichier final | Format | Dimensions | Alpha | Usage | Fallback | Source / droits | Budget max | P | V | I |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | B01 | P0 | `p6-b01-background-workshop-2048x1152.webp` | WebP | 2048 × 1152 | non | Fond desktop, centre calme, aucune information fonctionnelle | `FB-BG` | M02 + `PROD-LG` | 190 Ko | [x] | [x] | [ ] |
 | B02 | P0 | `p6-b02-background-workshop-tablet-1366x1024.webp` | WebP | 1366 × 1024 | non | Recadrage tablette paysage, rail gauche préservé | `FB-BG` | M02 + `PROD-LG` | 160 Ko | [x] | [x] | [ ] |
 | B03 | P0 | `p6-b03-background-workshop-tablet-1024x1366.webp` | WebP | 1024 × 1366 | non | Recadrage tablette portrait, centre de lecture libre | `FB-BG` | M02 + `PROD-LG` | 160 Ko | [x] | [x] | [ ] |
@@ -269,7 +269,7 @@ Les fallbacks runtime existants d’A09 à A12 restent opérationnels jusqu’à
 | C15 | P1 | `p6-c15-paper-note.svg` | SVG | viewBox 0 0 640 800 | oui | Papier vide pour aide et état vide | `FB-PAPER` + `FB-BORDER` | `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
 | C16 | P0 | `p6-c16-welcome-panel-640x960.webp` | WebP | 640 × 960 | oui | Panneau de bienvenue illustré, sans texte fonctionnel | C15 + `FB-WELCOME` | M05 + `PROD-LG` | 100 Ko | [ ] | [ ] | [ ] |
 | C17 | P1 | `p6-c17-empty-slot.svg` | SVG | viewBox 0 0 512 720 | oui | Emplacement vide non ambigu | `FB-DASHED` | `PROD-LG` | 20 Ko | [ ] | [ ] | [ ] |
-| C18 | P1 | `p6-c18-project-cover-fallback.svg` | SVG | viewBox 0 0 640 400 | oui | Fallback de couverture, initiales hors asset | `FB-PROJECT` | `PROD-LG` | 25 Ko | [ ] | [ ] | [ ] |
+| C18 | P1 | `p6-c18-project-cover-fallback.svg` | SVG | viewBox 0 0 640 400 | oui | Fallback de couverture, initiales hors asset | `FB-PROJECT` | `PROD-LG` | 25 Ko | [x] | [x] | [ ] |
 | C19 | P2 | `p6-c19-modal-frame.svg` | SVG | viewBox 0 0 960 720 | oui | Décor périphérique de modale accessible | `FB-PANEL` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
 | C20 | P2 | `p6-c20-toast-frame.svg` | SVG | viewBox 0 0 640 160 | oui | Cadre léger de notification temporaire | `FB-BORDER` | `PROD-LG` | 20 Ko | [ ] | [ ] | [ ] |
 | C21 | P2 | `p6-c21-diagnostic-panel.svg` | SVG | viewBox 0 0 960 720 | oui | Panneau de diagnostic, texte sélectionnable | `FB-PANEL` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
@@ -348,7 +348,7 @@ Règles communes : SVG local, `viewBox 0 0 24 24`, trait 1,75 à 2 px, `currentC
 # 6. Ornements décoratifs
 
 | ID | P | Fichier final | Format | Dimensions | Alpha | Usage | Fallback | Source / droits | Budget max | P | V | I |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | E01a | P2 | `p6-e01a-lamp-512x768.webp` | WebP | 512 × 768 | oui | Lampe suspendue | `FB-NONE` | `PROD-LG` | 45 Ko | [ ] | [ ] | [ ] |
 | E01b | P2 | `p6-e01b-lamp-halo-1024x1024.png` | PNG | 1024 × 1024 | oui | Halo de lampe | `FB-RADIAL` | `PROD-LG` | 50 Ko | [ ] | [ ] | [ ] |
 | E02a | P2 | `p6-e02a-rope-segment-1024x128.webp` | WebP | 1024 × 128 | oui | Segment de corde raccordable | `FB-NONE` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
@@ -373,7 +373,7 @@ Les ornements E05 à E12 restent optionnels. Ils peuvent être produits après 6
 Une ligne correspond à un seul fichier. Les droits artistiques sont hérités de la source S citée, qui doit être R avant production. Chaque export F utilise `PROD-LG` pour sa transformation interne.
 
 | ID | P | Projet / usage | Fichier final | Dimensions | Alpha | Usage / fallback | Source / droits | Budget max | P | V | I |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | F01a | P0 | Gargotte Adventure, couverture catalogue | `p6-f01a-gargotte-adventure-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S01a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
 | F01b | P0 | Gargotte Adventure, couverture fiche | `p6-f01b-gargotte-adventure-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F01a agrandie ou C18 | S01a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
 | F01c | P0 | Gargotte Adventure, logo | `p6-f01c-gargotte-adventure-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S01c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
@@ -532,4 +532,4 @@ Un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback r
 
 **Démarrer le lot d’intégration 6A : raccorder A01 à A04, B01 à B04, B07, B12, D01 à D05 et D21 à D26 ; intégrer B06 et C29 ; puis produire les planches G15a, G15b et G15c avant fusion.**
 
-En production d’assets, le prochain élément autorisé est C18 sous `public/assets/phase-6/p6-c18-project-cover-fallback.svg`.
+En production d’assets, le prochain élément autorisé est S01a sous `docs/assets/phase-6/p6-s01a-gargotte-adventure-cover-master-960x600.webp`.
