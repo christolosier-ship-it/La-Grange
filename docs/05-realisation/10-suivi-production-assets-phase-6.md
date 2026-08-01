@@ -4,7 +4,7 @@
 
 **Ce fichier est la source de vérité unique du catalogue des assets de la Phase 6.**
 
-Dernière mise à jour : 2026-07-31.
+Dernière mise à jour : 2026-08-01.
 
 Il fixe les identifiants, noms finaux, formats, dimensions, transparences, usages, fallbacks, budgets, provenances, droits et statuts. En cas de conflit, le présent registre prime pour la production et l’intégration des assets.
 
@@ -158,8 +158,8 @@ Le contrôle bloque l’image ou le SVG, vérifie les déclarations, littéraux,
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | M01 | P0 | Enseigne La Grange | `p6-m01-brand-sign-master-1600x720.webp` | 1600 × 720 | oui | Direction approuvée de l’enseigne | `PROD-LG` | 1,5 Mo | [x] | [x] |
 | M02 | P0 | Fond d’atelier | `p6-m02-background-workshop-master-2048x1152.webp` | 2048 × 1152 | non | Direction approuvée du fond nocturne | `PROD-LG` | 2 Mo | [x] | [x] |
-| M03 | P0 | Cadre de carte vide | `p6-m03-project-card-frame-master-640x960.webp` | 640 × 960 | oui | Direction approuvée du cadre vertical | `PROD-LG` | 1,2 Mo | [x] | [ ] |
-| M04 | P1 | Carte Gargotte complète | `p6-m04-gargotte-card-master-640x960.webp` | 640 × 960 | non | Référence de composition Gargotte, jamais intégrée telle quelle | `PROD-LG` | 1,2 Mo | [x] | [ ] |
+| M03 | P0 | Cadre de carte vide | `p6-m03-project-card-frame-master-640x960.webp` | 640 × 960 | oui | Direction approuvée du cadre vertical | `PROD-LG` | 1,2 Mo | [x] | [x] |
+| M04 | P1 | Carte Gargotte complète | `p6-m04-gargotte-card-master-640x960.webp` | 640 × 960 | non | Référence de composition Gargotte, jamais intégrée telle quelle | `PROD-LG` | 1,2 Mo | [x] | [x] |
 | M05 | P0 | Panneau de bienvenue | `p6-m05-welcome-panel-master-640x960.webp` | 640 × 960 | oui | Direction approuvée du papier suspendu | `PROD-LG` | 1,2 Mo | [x] | [ ] |
 
 ## 1.2 Sources canoniques des projets
@@ -532,4 +532,4 @@ Un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback r
 
 **Démarrer le lot d’intégration 6A : raccorder A01 à A04, B01 à B04, B07, B12, D01 à D05 et D21 à D26 ; intégrer B06 et C29 ; puis produire les planches G15a, G15b et G15c avant fusion.**
 
-En production d’assets, le prochain master bloquant est M03 sous `docs/assets/phase-6/p6-m03-project-card-frame-master-640x960.webp`.
+En production d’assets, le prochain élément autorisé est C18 sous `public/assets/phase-6/p6-c18-project-cover-fallback.svg`.
