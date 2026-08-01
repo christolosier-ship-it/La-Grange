@@ -2,7 +2,6 @@ import type { AppState } from '../../app/store';
 import { selectVisibleProjects } from '../../core/preferences/project-visibility';
 import {
   createDashboardFeedback,
-  createDashboardHero,
   createDashboardLoadingState,
   createDashboardStats,
 } from './dashboard-header';
@@ -17,7 +16,12 @@ import { selectDashboard } from './dashboard-selectors';
 export function renderDashboard(state: AppState | undefined): HTMLElement {
   const dashboard = document.createElement('div');
   dashboard.className = 'dashboard';
-  dashboard.append(createDashboardHero(state?.sync));
+
+  const title = document.createElement('h1');
+  title.className = 'visually-hidden';
+  title.tabIndex = -1;
+  title.textContent = 'L’atelier en un coup d’œil';
+  dashboard.append(title);
 
   const feedback = createDashboardFeedback(state?.sync);
   if (feedback) dashboard.append(feedback);

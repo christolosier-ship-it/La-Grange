@@ -1,5 +1,4 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { SYNC_REQUEST_EVENT } from '../../app/events';
 import { INITIAL_STATE, type AppState } from '../../app/store';
 import type { Project, SyncSnapshot } from '../../core/projects/model';
 import { renderDashboard } from './dashboard-view';
@@ -59,6 +58,7 @@ describe('renderDashboard', () => {
     const stats = [...view.querySelectorAll('.stat-card strong')].map((element) => element.textContent);
     expect(stats).toEqual(['3', '1', '2', '1']);
     expect(view.querySelector('h1')?.textContent).toBe('L’atelier en un coup d’œil');
+    expect(view.querySelector('h1')?.classList.contains('visually-hidden')).toBe(true);
     expect(view.textContent).toContain('L’établi');
     expect(view.textContent).toContain('Prêts à partir');
     expect(view.textContent).toContain('Répartition');
@@ -87,24 +87,20 @@ describe('renderDashboard', () => {
     expect(view.querySelector('.project-card__launch')?.textContent).toContain('connexion requise');
   });
 
-  it('shows a useful first-load error with a retry action', () => {
+  it('shows a useful first-load error without duplicating the lateral refresh action', () => {
     const view = renderDashboard({
       ...INITIAL_STATE,
       sync: { status: 'error', error: new Error('API indisponible') },
     });
 
     expect(view.querySelector('[role="alert"]')?.textContent).toContain('API indisponible');
-    expect(view.querySelector<HTMLButtonElement>('.sync-button')).not.toBeNull();
+    expect(view.querySelector<HTMLButtonElement>('.sync-button')).toBeNull();
     expect(view.querySelectorAll('.project-card')).toHaveLength(0);
   });
 
-  it('dispatches the shared synchronization request event', () => {
-    const listener = vi.fn();
-    window.addEventListener(SYNC_REQUEST_EVENT, listener, { once: true });
+  it('does not render the synchronization action inside the dashboard content', () => {
     const view = renderDashboard(state([project(1)]));
-    view.querySelector<HTMLButtonElement>('.sync-button')?.click();
-
-    expect(listener).toHaveBeenCalledOnce();
+    expect(view.querySelector<HTMLButtonElement>('.sync-button')).toBeNull();
   });
 
   it('treats empty sections without inventing content', () => {
