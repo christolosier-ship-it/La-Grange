@@ -3,12 +3,7 @@ import { PLURAL_ACTIVITY_STATE_LABELS } from '../../ui/text/activity-state-label
 import { PROJECT_CATEGORY_LABELS } from '../../ui/text/project-labels';
 import type { CatalogueFacets, CatalogueState } from './catalogue-model';
 
-const ACTIVITY_STATE_ORDER: readonly ActivityState[] = [
-  'active',
-  'maintenance',
-  'sleeping',
-  'archived',
-];
+const ACTIVITY_STATE_ORDER: readonly ActivityState[] = ['active', 'maintenance', 'sleeping', 'archived'];
 
 const SORT_LABELS = {
   'activity-desc': 'Activité récente',
@@ -40,9 +35,7 @@ function createSelect(
     option.textContent = text;
     select.append(option);
   }
-  select.addEventListener('change', () => {
-    onChange(select.value);
-  });
+  select.addEventListener('change', () => onChange(select.value));
   field.append(label, select);
   return { field, select };
 }
@@ -56,6 +49,23 @@ export function createCatalogueControls(
   const controls = document.createElement('section');
   controls.className = 'catalogue-controls';
   controls.setAttribute('aria-label', 'Recherche, filtres et affichage du catalogue');
+
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'catalogue-controls__toggle';
+  toggle.textContent = 'Masquer la recherche et les filtres';
+  toggle.setAttribute('aria-expanded', 'true');
+
+  const body = document.createElement('div');
+  body.className = 'catalogue-controls__body';
+  body.id = 'catalogue-controls-body';
+  toggle.setAttribute('aria-controls', body.id);
+  toggle.addEventListener('click', () => {
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    toggle.textContent = expanded ? 'Afficher la recherche et les filtres' : 'Masquer la recherche et les filtres';
+    body.hidden = expanded;
+  });
 
   const searchGroup = document.createElement('div');
   searchGroup.className = 'catalogue-search';
@@ -106,10 +116,7 @@ export function createCatalogueControls(
       const selected = new Set(current.states);
       if (selected.has(state)) selected.delete(state);
       else selected.add(state);
-      current = {
-        ...current,
-        states: ACTIVITY_STATE_ORDER.filter((value) => selected.has(value)),
-      };
+      current = { ...current, states: ACTIVITY_STATE_ORDER.filter((value) => selected.has(value)) };
       button.setAttribute('aria-pressed', String(current.states.includes(state)));
       onChange(current);
     });
@@ -119,39 +126,18 @@ export function createCatalogueControls(
   stateGroup.append(stateTitle, stateRow);
 
   const categoryControl = createSelect(
-    'Catégorie',
-    'catalogue-category',
-    [
-      ['all', 'Toutes les catégories'],
-      ...facets.categories.map((category) => [category, PROJECT_CATEGORY_LABELS[category]] as const),
-    ],
-    (value) => {
-      current = { ...current, category: value as CatalogueState['category'] };
-      onChange(current);
-    },
+    'Catégorie', 'catalogue-category',
+    [['all', 'Toutes les catégories'], ...facets.categories.map((category) => [category, PROJECT_CATEGORY_LABELS[category]] as const)],
+    (value) => { current = { ...current, category: value as CatalogueState['category'] }; onChange(current); },
   );
-
   const languageControl = createSelect(
-    'Langage',
-    'catalogue-language',
-    [
-      ['all', 'Tous les langages'],
-      ...facets.languages.map((language) => [language, language] as const),
-    ],
-    (value) => {
-      current = { ...current, language: value };
-      onChange(current);
-    },
+    'Langage', 'catalogue-language',
+    [['all', 'Tous les langages'], ...facets.languages.map((language) => [language, language] as const)],
+    (value) => { current = { ...current, language: value }; onChange(current); },
   );
-
   const sortControl = createSelect(
-    'Trier par',
-    'catalogue-sort',
-    Object.entries(SORT_LABELS),
-    (value) => {
-      current = { ...current, sort: value as CatalogueState['sort'] };
-      onChange(current);
-    },
+    'Trier par', 'catalogue-sort', Object.entries(SORT_LABELS),
+    (value) => { current = { ...current, sort: value as CatalogueState['sort'] }; onChange(current); },
   );
 
   const favorite = document.createElement('button');
@@ -198,23 +184,15 @@ export function createCatalogueControls(
 
   const secondary = document.createElement('div');
   secondary.className = 'catalogue-controls__secondary';
-  secondary.append(
-    categoryControl.field,
-    languageControl.field,
-    sortControl.field,
-    favorite,
-    viewGroup,
-    reset,
-  );
-  controls.append(searchGroup, stateGroup, secondary);
+  secondary.append(categoryControl.field, languageControl.field, sortControl.field, favorite, viewGroup, reset);
+  body.append(searchGroup, stateGroup, secondary);
+  controls.append(toggle, body);
 
   const sync = (state: CatalogueState): void => {
     current = state;
     search.value = state.query;
     clear.disabled = state.query.length === 0;
-    for (const [activityState, button] of stateButtons) {
-      button.setAttribute('aria-pressed', String(state.states.includes(activityState)));
-    }
+    for (const [activityState, button] of stateButtons) button.setAttribute('aria-pressed', String(state.states.includes(activityState)));
     categoryControl.select.value = state.category;
     languageControl.select.value = state.language;
     sortControl.select.value = state.sort;
@@ -224,15 +202,7 @@ export function createCatalogueControls(
   };
 
   reset.addEventListener('click', () => {
-    current = {
-      query: '',
-      states: [],
-      category: 'all',
-      language: 'all',
-      favoritesOnly: false,
-      sort: 'activity-desc',
-      view: current.view,
-    };
+    current = { query: '', states: [], category: 'all', language: 'all', favoritesOnly: false, sort: 'activity-desc', view: current.view };
     sync(current);
     onChange(current);
     search.focus();
