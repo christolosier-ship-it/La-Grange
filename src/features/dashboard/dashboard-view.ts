@@ -20,7 +20,7 @@ export function renderDashboard(state: AppState | undefined): HTMLElement {
   const title = document.createElement('h1');
   title.className = 'visually-hidden';
   title.tabIndex = -1;
-  title.textContent = 'Vue d’ensemble';
+  title.textContent = 'L’atelier en un coup d’œil';
   dashboard.append(title);
 
   const feedback = createDashboardFeedback(state?.sync);
