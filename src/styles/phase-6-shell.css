@@ -47,7 +47,10 @@ body {
   mix-blend-mode: screen;
 }
 
-.app-shell > :not(.phase-6-scene) {
+.brand,
+main,
+.workbench-note,
+footer {
   position: relative;
   z-index: 1;
 }
