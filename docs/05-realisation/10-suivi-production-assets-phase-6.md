@@ -168,8 +168,8 @@ Une couverture et un logo possèdent des sources séparées. Les lignes F ne peu
 
 | ID | P | Source | Fichier canonique | Dimensions | Alpha | Usage | Source / droits | Budget max | A | R |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| S01a | P0 | Gargotte Adventure, master couverture | `p6-s01a-gargotte-adventure-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | M04 avec R + `PROD-LG` | 1,5 Mo | [x] | [ ] |
-| S01c | P0 | Gargotte Adventure, master logo | `p6-s01c-gargotte-adventure-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | M04 avec R + `PROD-LG` | 1 Mo | [x] | [ ] |
+| S01a | P0 | Gargotte Adventure, master couverture | `p6-s01a-gargotte-adventure-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | M04 avec R + `PROD-LG` | 1,5 Mo | [x] | [x] |
+| S01c | P0 | Gargotte Adventure, master logo | `p6-s01c-gargotte-adventure-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | M04 avec R + `PROD-LG` | 1 Mo | [x] | [x] |
 | S02a | P0 | Les Petites Quêtes, master couverture | `p6-s02a-les-petites-quetes-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | direction du projet à approuver, droits à confirmer avant R | 1,5 Mo | [ ] | [ ] |
 | S02c | P0 | Les Petites Quêtes, master logo | `p6-s02c-les-petites-quetes-logo-master-1024x320.webp` | 1024 × 320 | oui | Source du logo 512 × 160 | identité du projet à approuver, droits à confirmer avant R | 1 Mo | [ ] | [ ] |
 | S03a | P0 | BibiLeaf, master couverture | `p6-s03a-bibileaf-cover-master-960x600.webp` | 960 × 600 | non | Source des couvertures 640 et 960 | direction du projet à approuver, droits à confirmer avant R | 1,5 Mo | [ ] | [ ] |
@@ -374,9 +374,9 @@ Une ligne correspond à un seul fichier. Les droits artistiques sont hérités d
 
 | ID | P | Projet / usage | Fichier final | Dimensions | Alpha | Usage / fallback | Source / droits | Budget max | P | V | I |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| F01a | P0 | Gargotte Adventure, couverture catalogue | `p6-f01a-gargotte-adventure-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S01a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
-| F01b | P0 | Gargotte Adventure, couverture fiche | `p6-f01b-gargotte-adventure-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F01a agrandie ou C18 | S01a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
-| F01c | P0 | Gargotte Adventure, logo | `p6-f01c-gargotte-adventure-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S01c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
+| F01a | P0 | Gargotte Adventure, couverture catalogue | `p6-f01a-gargotte-adventure-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S01a avec R + `PROD-LG` | 80 Ko | [x] | [x] | [ ] |
+| F01b | P0 | Gargotte Adventure, couverture fiche | `p6-f01b-gargotte-adventure-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F01a agrandie ou C18 | S01a avec R + `PROD-LG` | 130 Ko | [x] | [x] | [ ] |
+| F01c | P0 | Gargotte Adventure, logo | `p6-f01c-gargotte-adventure-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S01c avec R + `PROD-LG` | 30 Ko | [x] | [x] | [ ] |
 | F02a | P0 | Les Petites Quêtes, couverture catalogue | `p6-f02a-les-petites-quetes-cover-640x400.webp` | 640 × 400 | non | Carte catalogue / C18 + `FB-PROJECT` | S02a avec R + `PROD-LG` | 80 Ko | [ ] | [ ] | [ ] |
 | F02b | P0 | Les Petites Quêtes, couverture fiche | `p6-f02b-les-petites-quetes-cover-960x600.webp` | 960 × 600 | non | Fiche projet / F02a agrandie ou C18 | S02a avec R + `PROD-LG` | 130 Ko | [ ] | [ ] | [ ] |
 | F02c | P0 | Les Petites Quêtes, logo | `p6-f02c-les-petites-quetes-logo-512x160.webp` | 512 × 160 | oui | Logo éditorial / `FB-PROJECT` | S02c avec R + `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
@@ -532,4 +532,4 @@ Un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback r
 
 **Démarrer le lot d’intégration 6A : raccorder A01 à A04, B01 à B04, B07, B12, D01 à D05 et D21 à D26 ; intégrer B06 et C29 ; puis produire les planches G15a, G15b et G15c avant fusion.**
 
-En production d’assets, le prochain élément autorisé est S01a sous `docs/assets/phase-6/p6-s01a-gargotte-adventure-cover-master-960x600.webp`.
+En production d’assets, le prochain élément autorisé est M05 sous `docs/assets/phase-6/p6-m05-welcome-panel-master-640x960.webp`.
