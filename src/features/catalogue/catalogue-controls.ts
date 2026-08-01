@@ -35,7 +35,9 @@ function createSelect(
     option.textContent = text;
     select.append(option);
   }
-  select.addEventListener('change', () => onChange(select.value));
+  select.addEventListener('change', () => {
+    onChange(select.value);
+  });
   field.append(label, select);
   return { field, select };
 }
