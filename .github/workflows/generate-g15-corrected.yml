@@ -8,7 +8,7 @@ on:
       - .github/workflows/generate-g15-corrected.yml
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   capture:
@@ -49,9 +49,10 @@ jobs:
 
       - name: Validate shell and capture G15 boards
         run: |
-          mkdir -p artifacts/g15
+          mkdir -p docs/assets/phase-6 artifacts/g15
           node --input-type=module <<'EOF'
           import { chromium } from 'playwright';
+          import { copyFile } from 'node:fs/promises';
 
           const baseUrl = 'http://127.0.0.1:4173/La-Grange/';
           const captures = [
@@ -129,7 +130,9 @@ jobs:
               if (JSON.stringify(beforeRoute) !== JSON.stringify(afterRoute)) throw new Error(`Scène instable entre menus pour ${name}`);
 
               await page.goto(`${baseUrl}#/`, { waitUntil: 'networkidle' });
-              await page.screenshot({ path: `artifacts/g15/${name}`, fullPage: false });
+              const output = `docs/assets/phase-6/${name}`;
+              await page.screenshot({ path: output, fullPage: false });
+              await copyFile(output, `artifacts/g15/${name}`);
               await context.close();
             }
 
@@ -152,3 +155,13 @@ jobs:
           name: corrected-g15-boards-${{ github.run_attempt }}
           path: artifacts/g15/*.png
           if-no-files-found: error
+
+      - name: Commit corrected G15 boards
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/assets/phase-6/p6-g15a-shell-desktop-1440x1024.png
+          git add docs/assets/phase-6/p6-g15b-shell-tablet-1024x1366.png
+          git add docs/assets/phase-6/p6-g15c-shell-mobile-390x844.png
+          git commit -m "docs: ajouter les planches G15 corrigées"
+          git push origin HEAD:fix/phase-6a-visual-integration
