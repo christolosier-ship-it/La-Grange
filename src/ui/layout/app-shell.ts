@@ -6,20 +6,69 @@ import type { SyncState } from '../../core/sync/sync-service';
 const PHASE_6_ASSET_BASE = `${import.meta.env.BASE_URL}assets/phase-6/`;
 
 const NAVIGATION = [
-  { href: '#/', label: 'Vue d’ensemble', route: 'dashboard' },
-  { href: '#/projects', label: 'Projets', route: 'projects' },
-  { href: '#/activity', label: 'Activité', route: 'activity' },
-  { href: '#/settings', label: 'Paramètres', route: 'settings' },
+  {
+    href: '#/',
+    label: 'Vue d’ensemble',
+    route: 'dashboard',
+    icon: 'p6-d01-icon-overview.svg',
+  },
+  {
+    href: '#/projects',
+    label: 'Projets',
+    route: 'projects',
+    icon: 'p6-d02-icon-projects.svg',
+  },
+  {
+    href: '#/activity',
+    label: 'Activité',
+    route: 'activity',
+    icon: 'p6-d03-icon-activity.svg',
+  },
+  {
+    href: '#/settings',
+    label: 'Paramètres',
+    route: 'settings',
+    icon: 'p6-d04-icon-settings.svg',
+  },
 ] as const;
 
 function phase6Asset(filename: string): string {
   return `${PHASE_6_ASSET_BASE}${filename}`;
 }
 
+function createPhase6Icon(filename: string, className: string): HTMLImageElement {
+  const icon = document.createElement('img');
+  icon.className = className;
+  icon.src = phase6Asset(filename);
+  icon.alt = '';
+  icon.width = 24;
+  icon.height = 24;
+  icon.decoding = 'async';
+  icon.setAttribute('aria-hidden', 'true');
+  return icon;
+}
+
 export function createAppShell(): HTMLElement {
   const shell = document.createElement('div');
   shell.className = 'app-shell';
+  shell.style.setProperty(
+    '--phase-6-wood-texture',
+    `url("${phase6Asset('p6-b07-texture-wood-structure-1024x1024.webp')}")`,
+  );
+  shell.style.setProperty(
+    '--phase-6-sync-icon',
+    `url("${phase6Asset('p6-d05-icon-sync.svg')}")`,
+  );
   shell.innerHTML = `
+    <div class="phase-6-scene" aria-hidden="true">
+      <picture class="phase-6-scene__background">
+        <source media="(min-width: 87.5rem)" srcset="${phase6Asset('p6-b01-background-workshop-2048x1152.webp')}">
+        <source media="(min-width: 45rem) and (orientation: landscape)" srcset="${phase6Asset('p6-b02-background-workshop-tablet-1366x1024.webp')}">
+        <source media="(min-width: 45rem) and (orientation: portrait)" srcset="${phase6Asset('p6-b03-background-workshop-tablet-1024x1366.webp')}">
+        <img src="${phase6Asset('p6-b04-background-workshop-mobile-780x1386.webp')}" alt="" width="780" height="1386" decoding="async" fetchpriority="high">
+      </picture>
+      <img class="phase-6-scene__light" src="${phase6Asset('p6-b12-light-main-1600x900.png')}" alt="" width="1600" height="900" decoding="async">
+    </div>
     <header class="brand">
       <a href="#/" aria-label="La Grange, accueil">
         <span class="brand-sign" aria-hidden="true">
@@ -58,7 +107,7 @@ export function createAppShell(): HTMLElement {
     const link = document.createElement('a');
     link.href = item.href;
     link.dataset.route = item.route;
-    link.textContent = item.label;
+    link.append(createPhase6Icon(item.icon, 'primary-nav__icon'), document.createTextNode(item.label));
     li.append(link);
     list.append(li);
   }
@@ -88,6 +137,7 @@ export function updateWorkbenchStatus(shell: HTMLElement, state?: SyncState): vo
   title.className = 'workbench-note__title';
   const strong = document.createElement('strong');
   const detail = document.createElement('p');
+  let iconFilename = 'p6-d24-icon-success.svg';
 
   if (!state || state.status === 'idle') {
     panel.dataset.syncState = 'success';
@@ -95,37 +145,45 @@ export function updateWorkbenchStatus(shell: HTMLElement, state?: SyncState): vo
     detail.textContent = 'L’inventaire attend sa première synchronisation.';
   } else if (state.status === 'loading-cache') {
     panel.dataset.syncState = 'syncing';
+    iconFilename = 'p6-d23-icon-sync-running.svg';
     strong.textContent = 'Ouverture des réserves';
     detail.textContent = 'Lecture de la dernière copie locale.';
   } else if (state.status === 'syncing') {
     panel.dataset.syncState = 'syncing';
+    iconFilename = 'p6-d23-icon-sync-running.svg';
     strong.textContent = 'Inventaire en cours';
     detail.textContent = 'La Grange consulte les dépôts publics GitHub.';
   } else if (state.status === 'offline') {
     panel.dataset.syncState = 'offline';
+    iconFilename = 'p6-d22-icon-offline.svg';
     strong.textContent = 'Mode hors ligne';
     detail.textContent = state.snapshot
       ? `${String(state.snapshot.projects.length)} projet(s) chargé(s) depuis le cache.`
       : 'Aucune copie locale n’est encore disponible.';
   } else if (state.status === 'error') {
     panel.dataset.syncState = 'error';
+    iconFilename = 'p6-d26-icon-error.svg';
     strong.textContent = 'Synchronisation incomplète';
     detail.textContent = state.snapshot
       ? `${String(state.snapshot.projects.length)} projet(s) conservé(s). ${readableError(state.error)}`
       : readableError(state.error);
   } else {
     panel.dataset.syncState = 'online';
+    iconFilename = 'p6-d21-icon-online.svg';
     strong.textContent = 'Inventaire à jour';
     detail.textContent = `${String(state.snapshot?.projects.length ?? 0)} projet(s) disponible(s).`;
   }
 
-  title.append(strong);
+  title.append(createPhase6Icon(iconFilename, 'workbench-note__icon'), strong);
   panel.replaceChildren(title, detail);
 
   if (state?.warning) {
     const warning = document.createElement('p');
     warning.className = 'workbench-warning';
-    warning.textContent = `Avertissement : ${readableError(state.warning)}`;
+    warning.append(
+      createPhase6Icon('p6-d25-icon-warning.svg', 'workbench-warning__icon'),
+      document.createTextNode(`Avertissement : ${readableError(state.warning)}`),
+    );
     panel.append(warning);
   }
 }

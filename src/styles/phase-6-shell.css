@@ -1,16 +1,58 @@
 body {
-  --phase-6-workshop-background: url('/assets/phase-6/p6-b04-background-workshop-mobile-780x1386.webp');
-  background-color: var(--color-bg-deep);
-  background-image:
-    url('/assets/phase-6/p6-b12-light-main-1600x900.png'),
-    linear-gradient(rgba(21, 16, 11, 0.24), rgba(21, 16, 11, 0.7)),
-    var(--phase-6-workshop-background),
-    radial-gradient(circle at 72% -10%, rgba(119, 79, 35, 0.44) 0, transparent 34rem),
-    linear-gradient(rgba(21, 16, 11, 0.96), rgba(21, 16, 11, 0.98)),
+  background: var(--color-bg-deep);
+}
+
+.phase-6-scene {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 72% -10%, rgba(119, 79, 35, 0.48) 0, transparent 34rem),
+    linear-gradient(rgba(21, 16, 11, 0.92), rgba(21, 16, 11, 0.98)),
     repeating-linear-gradient(90deg, #1c140d 0 4rem, #21170f 4rem 8rem);
-  background-position: center top, center, center top, center top, center, center;
-  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat;
-  background-size: cover, cover, cover, auto, auto, auto;
+}
+
+.phase-6-scene::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(10, 7, 5, 0.08), rgba(10, 7, 5, 0.32));
+}
+
+.phase-6-scene__background,
+.phase-6-scene__background img,
+.phase-6-scene__light {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.phase-6-scene__background img {
+  object-fit: contain;
+  object-position: center;
+  filter: brightness(0.72) saturate(0.92);
+}
+
+.phase-6-scene__light {
+  object-fit: contain;
+  object-position: center;
+  opacity: 0.68;
+  mix-blend-mode: screen;
+}
+
+.brand,
+main,
+.workbench-note,
+footer {
+  position: relative;
+  z-index: 1;
 }
 
 .brand a {
@@ -88,9 +130,11 @@ body {
   padding: var(--space-3);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  background:
-    linear-gradient(rgba(42, 29, 19, 0.8), rgba(42, 29, 19, 0.92)),
-    url('/assets/phase-6/p6-b07-texture-wood-structure-1024x1024.webp') center / 28rem auto;
+  background-image:
+    linear-gradient(rgba(42, 29, 19, 0.45), rgba(42, 29, 19, 0.68)),
+    var(--phase-6-wood-texture, none);
+  background-position: center;
+  background-size: auto, 24rem auto;
   box-shadow: var(--shadow-card);
 }
 
@@ -113,63 +157,30 @@ body {
 }
 
 .primary-nav {
-  background:
-    linear-gradient(rgba(18, 13, 9, 0.9), rgba(18, 13, 9, 0.97)),
-    url('/assets/phase-6/p6-b07-texture-wood-structure-1024x1024.webp') center / 32rem auto;
-}
-
-.primary-nav a::before,
-.sync-button::before,
-.workbench-note__title::before,
-.workbench-warning::before {
-  content: '';
-  flex: 0 0 auto;
-  display: block;
-  background-color: currentColor;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-  mask-size: contain;
+  background-color: rgba(18, 13, 9, 0.76);
+  background-image:
+    linear-gradient(rgba(18, 13, 9, 0.38), rgba(18, 13, 9, 0.62)),
+    var(--phase-6-wood-texture, none);
+  background-position: center;
+  background-size: auto, 24rem auto;
+  box-shadow: 0 0.55rem 1.4rem rgba(0, 0, 0, 0.28);
 }
 
 .primary-nav a::before {
-  width: 1.25rem;
-  height: 1.25rem;
-  aspect-ratio: auto;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
+  content: none;
+  display: none;
 }
 
-.primary-nav a[data-route='dashboard']::before {
-  -webkit-mask-image: url('/assets/phase-6/p6-d01-icon-overview.svg');
-  mask-image: url('/assets/phase-6/p6-d01-icon-overview.svg');
+.primary-nav__icon {
+  display: block;
+  width: 1.35rem;
+  height: 1.35rem;
+  object-fit: contain;
+  opacity: 0.82;
+  filter: brightness(0) invert(1);
 }
 
-.primary-nav a[data-route='projects']::before {
-  -webkit-mask-image: url('/assets/phase-6/p6-d02-icon-projects.svg');
-  mask-image: url('/assets/phase-6/p6-d02-icon-projects.svg');
-}
-
-.primary-nav a[data-route='activity']::before {
-  width: 1.25rem;
-  height: 1.25rem;
-  aspect-ratio: auto;
-  border-width: 0;
-  border-radius: 0;
-  box-shadow: none;
-  -webkit-mask-image: url('/assets/phase-6/p6-d03-icon-activity.svg');
-  mask-image: url('/assets/phase-6/p6-d03-icon-activity.svg');
-}
-
-.primary-nav a[data-route='settings']::before {
-  border-radius: 0;
-  box-shadow: none;
-  -webkit-mask-image: url('/assets/phase-6/p6-d04-icon-settings.svg');
-  mask-image: url('/assets/phase-6/p6-d04-icon-settings.svg');
-}
+.primary-nav a[aria-current='page'] .primary-nav__icon { opacity: 1; }
 
 .sync-button {
   display: inline-flex;
@@ -179,73 +190,52 @@ body {
 }
 
 .sync-button::before {
+  content: '';
+  flex: 0 0 auto;
+  display: block;
   width: 1.2rem;
   height: 1.2rem;
-  -webkit-mask-image: url('/assets/phase-6/p6-d05-icon-sync.svg');
-  mask-image: url('/assets/phase-6/p6-d05-icon-sync.svg');
+  background-color: currentColor;
+  -webkit-mask-image: var(--phase-6-sync-icon);
+  mask-image: var(--phase-6-sync-icon);
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
 
 .sync-button[aria-busy='true']::before { animation: phase-6-sync-spin 0.9s linear infinite; }
 
-.workbench-note__title {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.workbench-note__title::before,
-.workbench-warning::before {
-  width: 1.15rem;
-  height: 1.15rem;
-}
-
-.workbench-note[data-sync-state='online'] .workbench-note__title::before {
-  -webkit-mask-image: url('/assets/phase-6/p6-d21-icon-online.svg');
-  mask-image: url('/assets/phase-6/p6-d21-icon-online.svg');
-}
-
-.workbench-note[data-sync-state='offline'] .workbench-note__title::before {
-  -webkit-mask-image: url('/assets/phase-6/p6-d22-icon-offline.svg');
-  mask-image: url('/assets/phase-6/p6-d22-icon-offline.svg');
-}
-
-.workbench-note[data-sync-state='syncing'] .workbench-note__title::before {
-  -webkit-mask-image: url('/assets/phase-6/p6-d23-icon-sync-running.svg');
-  mask-image: url('/assets/phase-6/p6-d23-icon-sync-running.svg');
-}
-
-.workbench-note[data-sync-state='success'] .workbench-note__title::before {
-  -webkit-mask-image: url('/assets/phase-6/p6-d24-icon-success.svg');
-  mask-image: url('/assets/phase-6/p6-d24-icon-success.svg');
-}
-
+.workbench-note__title,
 .workbench-warning {
   display: flex;
   align-items: flex-start;
   gap: var(--space-2);
 }
 
-.workbench-warning::before {
-  margin-top: 0.16rem;
-  -webkit-mask-image: url('/assets/phase-6/p6-d25-icon-warning.svg');
-  mask-image: url('/assets/phase-6/p6-d25-icon-warning.svg');
+.workbench-note__title { align-items: center; }
+.workbench-note__title::before,
+.workbench-warning::before { content: none; }
+
+.workbench-note__icon,
+.workbench-warning__icon {
+  flex: 0 0 auto;
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  object-fit: contain;
+  opacity: 0.78;
 }
 
-.workbench-note[data-sync-state='error'] .workbench-note__title::before {
-  -webkit-mask-image: url('/assets/phase-6/p6-d26-icon-error.svg');
-  mask-image: url('/assets/phase-6/p6-d26-icon-error.svg');
+.workbench-warning__icon { margin-top: 0.1rem; }
+.workbench-note[data-sync-state='syncing'] .workbench-note__icon {
+  animation: phase-6-sync-spin 0.9s linear infinite;
 }
 
 @keyframes phase-6-sync-spin {
   to { transform: rotate(1turn); }
-}
-
-@media (min-width: 45rem) and (orientation: portrait) {
-  body { --phase-6-workshop-background: url('/assets/phase-6/p6-b03-background-workshop-tablet-1024x1366.webp'); }
-}
-
-@media (min-width: 45rem) and (orientation: landscape) {
-  body { --phase-6-workshop-background: url('/assets/phase-6/p6-b02-background-workshop-tablet-1366x1024.webp'); }
 }
 
 @media (min-width: 45rem) {
@@ -254,21 +244,21 @@ body {
     padding: var(--space-3);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card);
   }
 }
 
 @media (min-width: 70rem) {
-  body { --phase-6-workshop-background: url('/assets/phase-6/p6-b01-background-workshop-2048x1152.webp'); }
   .brand a { padding: 0; border: 0; background: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sync-button[aria-busy='true']::before { animation: none; }
+  .sync-button[aria-busy='true']::before,
+  .workbench-note[data-sync-state='syncing'] .workbench-note__icon { animation: none; }
 }
 
 @media (forced-colors: active) {
-  body { background-image: none; }
+  .phase-6-scene { display: none; }
   .brand-mark,
   .primary-nav { border: 2px solid CanvasText; background: Canvas; }
+  .primary-nav__icon { filter: none; }
 }
