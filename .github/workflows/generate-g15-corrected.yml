@@ -1,0 +1,203 @@
+name: Generate corrected G15 boards
+
+on:
+  push:
+    branches:
+      - fix/phase-6a-visual-integration
+    paths:
+      - .github/workflows/generate-g15-corrected.yml
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install application dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+
+      - name: Build application
+        run: npm run build
+
+      - name: Start preview server
+        run: |
+          nohup npx vite preview --host 127.0.0.1 --port 4173 > /tmp/la-grange-vite.log 2>&1 &
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:4173/La-Grange/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/la-grange-vite.log
+          exit 1
+
+      - name: Validate shell and capture G15 boards
+        run: |
+          mkdir -p docs/assets/phase-6 artifacts/g15
+          node --input-type=module <<'EOF'
+          import { chromium } from 'playwright';
+          import { copyFile } from 'node:fs/promises';
+
+          const baseUrl = 'http://127.0.0.1:4173/La-Grange/';
+          const captures = [
+            {
+              name: 'p6-g15a-shell-desktop-1440x1024.png',
+              width: 1440,
+              height: 1024,
+              expectedBackground: 'p6-b01-background-workshop-2048x1152.webp',
+            },
+            {
+              name: 'p6-g15b-shell-tablet-1024x1366.png',
+              width: 1024,
+              height: 1366,
+              expectedBackground: 'p6-b03-background-workshop-tablet-1024x1366.webp',
+            },
+            {
+              name: 'p6-g15c-shell-mobile-390x844.png',
+              width: 390,
+              height: 844,
+              expectedBackground: 'p6-b04-background-workshop-mobile-780x1386.webp',
+            },
+          ];
+
+          const browser = await chromium.launch({ headless: true });
+
+          try {
+            for (const capture of captures) {
+              const context = await browser.newContext({
+                viewport: { width: capture.width, height: capture.height },
+                deviceScaleFactor: 1,
+                locale: 'fr-FR',
+                colorScheme: 'dark',
+              });
+              const page = await context.newPage();
+              await page.goto(`${baseUrl}#/`, { waitUntil: 'networkidle' });
+              await page.waitForSelector('.app-shell', { state: 'visible' });
+
+              const result = await page.evaluate(() => {
+                const background = document.querySelector('.phase-6-scene__background img');
+                const light = document.querySelector('.phase-6-scene__light');
+                const scene = document.querySelector('.phase-6-scene');
+                const nav = document.querySelector('.primary-nav');
+                const navIcons = [...document.querySelectorAll('.primary-nav__icon')];
+                const statusIcon = document.querySelector('.workbench-note__icon');
+                const syncButton = document.querySelector('.sync-button');
+                const syncPseudo = syncButton ? getComputedStyle(syncButton, '::before') : null;
+                const sceneStyle = scene ? getComputedStyle(scene) : null;
+                const backgroundStyle = background ? getComputedStyle(background) : null;
+                const navStyle = nav ? getComputedStyle(nav) : null;
+
+                return {
+                  backgroundSrc: background instanceof HTMLImageElement ? background.currentSrc : '',
+                  backgroundComplete: background instanceof HTMLImageElement && background.complete && background.naturalWidth > 0,
+                  lightComplete: light instanceof HTMLImageElement && light.complete && light.naturalWidth > 0,
+                  scenePosition: sceneStyle?.position,
+                  sceneWidth: scene?.getBoundingClientRect().width ?? 0,
+                  sceneHeight: scene?.getBoundingClientRect().height ?? 0,
+                  backgroundObjectFit: backgroundStyle?.objectFit,
+                  navBackground: navStyle?.backgroundImage ?? '',
+                  navIcons: navIcons.map((icon) => ({
+                    complete: icon instanceof HTMLImageElement && icon.complete && icon.naturalWidth > 0,
+                    width: icon.getBoundingClientRect().width,
+                    height: icon.getBoundingClientRect().height,
+                  })),
+                  statusIconVisible: statusIcon instanceof HTMLImageElement
+                    && statusIcon.complete
+                    && statusIcon.naturalWidth > 0
+                    && statusIcon.getBoundingClientRect().width > 0,
+                  syncMask: syncPseudo?.maskImage || syncPseudo?.webkitMaskImage || '',
+                };
+              });
+
+              if (!result.backgroundSrc.includes(capture.expectedBackground)) {
+                throw new Error(`Fond inattendu pour ${capture.name}: ${result.backgroundSrc}`);
+              }
+              if (!result.backgroundComplete || !result.lightComplete) {
+                throw new Error(`Fond ou lumière non chargé pour ${capture.name}`);
+              }
+              if (result.scenePosition !== 'fixed') {
+                throw new Error(`La scène n’est pas fixe pour ${capture.name}`);
+              }
+              if (Math.round(result.sceneWidth) !== capture.width || Math.round(result.sceneHeight) !== capture.height) {
+                throw new Error(`La scène ne correspond pas au viewport pour ${capture.name}`);
+              }
+              if (result.backgroundObjectFit !== 'contain') {
+                throw new Error(`Le fond n’utilise pas contain pour ${capture.name}`);
+              }
+              if (!result.navBackground.includes('p6-b07-texture-wood-structure-1024x1024.webp')) {
+                throw new Error(`B07 absent de la navigation pour ${capture.name}`);
+              }
+              if (result.navIcons.length !== 4 || result.navIcons.some((icon) => !icon.complete || icon.width < 16 || icon.height < 16)) {
+                throw new Error(`Icônes de navigation non visibles pour ${capture.name}`);
+              }
+              if (!result.statusIconVisible) {
+                throw new Error(`Icône d’état non visible pour ${capture.name}`);
+              }
+              if (!result.syncMask.includes('p6-d05-icon-sync.svg')) {
+                throw new Error(`D05 absent du bouton de synchronisation pour ${capture.name}`);
+              }
+
+              const beforeRouteChange = await page.locator('.phase-6-scene').boundingBox();
+              await page.goto(`${baseUrl}#/projects`, { waitUntil: 'networkidle' });
+              const afterRouteChange = await page.locator('.phase-6-scene').boundingBox();
+              if (JSON.stringify(beforeRouteChange) !== JSON.stringify(afterRouteChange)) {
+                throw new Error(`La scène change de dimensions entre les menus pour ${capture.name}`);
+              }
+
+              await page.goto(`${baseUrl}#/`, { waitUntil: 'networkidle' });
+              const output = `docs/assets/phase-6/${capture.name}`;
+              await page.screenshot({ path: output, fullPage: false });
+              await copyFile(output, `artifacts/g15/${capture.name}`);
+              await context.close();
+            }
+
+            const landscapeContext = await browser.newContext({
+              viewport: { width: 1366, height: 1024 },
+              deviceScaleFactor: 1,
+            });
+            const landscapePage = await landscapeContext.newPage();
+            await landscapePage.goto(`${baseUrl}#/`, { waitUntil: 'networkidle' });
+            const landscapeBackground = await landscapePage.locator('.phase-6-scene__background img').evaluate(
+              (image) => image instanceof HTMLImageElement ? image.currentSrc : '',
+            );
+            if (!landscapeBackground.includes('p6-b02-background-workshop-tablet-1366x1024.webp')) {
+              throw new Error(`B02 non sélectionné en tablette paysage: ${landscapeBackground}`);
+            }
+            await landscapeContext.close();
+          } finally {
+            await browser.close();
+          }
+          EOF
+
+      - name: Upload G15 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: corrected-g15-boards
+          path: artifacts/g15/*.png
+          if-no-files-found: error
+
+      - name: Commit generated boards
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/assets/phase-6/p6-g15a-shell-desktop-1440x1024.png
+          git add docs/assets/phase-6/p6-g15b-shell-tablet-1024x1366.png
+          git add docs/assets/phase-6/p6-g15c-shell-mobile-390x844.png
+          git commit -m "docs: générer les planches G15 corrigées"
+          git push origin HEAD:fix/phase-6a-visual-integration
