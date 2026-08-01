@@ -44,10 +44,9 @@ describe('Phase 6A app shell assets', () => {
 
   it('references every validated shell asset while retaining HTML labels', () => {
     const shell = createAppShell();
-    const integratedMarkupAndStyles = `${shell.innerHTML}\n${phase6ShellStyles}`;
 
     for (const asset of REQUIRED_SHELL_ASSETS) {
-      expect(integratedMarkupAndStyles).toContain(asset);
+      expect(`${shell.outerHTML}\n${phase6ShellStyles}`).toContain(asset);
     }
 
     expect(shell.querySelector('.brand-copy')?.textContent).toContain('La Grange');
@@ -57,6 +56,41 @@ describe('Phase 6A app shell assets', () => {
       'Activité',
       'Paramètres',
     ]);
+  });
+
+  it('renders one fixed responsive scene whose selected background stays fully visible', () => {
+    const shell = createAppShell();
+    const scene = shell.querySelector('.phase-6-scene');
+    const sources = [...shell.querySelectorAll<HTMLSourceElement>('.phase-6-scene__background source')];
+    const fallback = shell.querySelector<HTMLImageElement>('.phase-6-scene__background img');
+    const light = shell.querySelector<HTMLImageElement>('.phase-6-scene__light');
+
+    expect(scene).not.toBeNull();
+    expect(sources.map((source) => source.srcset)).toEqual(expect.arrayContaining([
+      expect.stringContaining('p6-b01-background-workshop-2048x1152.webp'),
+      expect.stringContaining('p6-b02-background-workshop-tablet-1366x1024.webp'),
+      expect.stringContaining('p6-b03-background-workshop-tablet-1024x1366.webp'),
+    ]));
+    expect(fallback?.src).toContain('p6-b04-background-workshop-mobile-780x1386.webp');
+    expect(light?.src).toContain('p6-b12-light-main-1600x900.png');
+    expect(phase6ShellStyles).toContain('.phase-6-scene {\n  position: fixed;');
+    expect(phase6ShellStyles).toContain('object-fit: contain;');
+    expect(phase6ShellStyles).not.toContain('background-size: cover');
+  });
+
+  it('renders navigation icons as visible image elements and resolves shared CSS asset URLs from Vite base', () => {
+    const shell = createAppShell();
+    const icons = [...shell.querySelectorAll<HTMLImageElement>('.primary-nav__icon')];
+
+    expect(icons).toHaveLength(4);
+    expect(icons.map((icon) => icon.src)).toEqual([
+      expect.stringContaining('p6-d01-icon-overview.svg'),
+      expect.stringContaining('p6-d02-icon-projects.svg'),
+      expect.stringContaining('p6-d03-icon-activity.svg'),
+      expect.stringContaining('p6-d04-icon-settings.svg'),
+    ]);
+    expect(shell.style.getPropertyValue('--phase-6-wood-texture')).toContain('p6-b07-texture-wood-structure-1024x1024.webp');
+    expect(shell.style.getPropertyValue('--phase-6-sync-icon')).toContain('p6-d05-icon-sync.svg');
   });
 
   it('precaches every shared asset required by the offline shell', () => {
@@ -82,20 +116,21 @@ describe('Phase 6A app shell assets', () => {
   });
 
   it.each([
-    ['idle', 'success'],
-    ['loading-cache', 'syncing'],
-    ['syncing', 'syncing'],
-    ['offline', 'offline'],
-    ['error', 'error'],
-    ['ready', 'online'],
-  ] as const)('maps the %s synchronization state to the %s icon hook', (status, expectedIcon) => {
+    ['idle', 'success', 'p6-d24-icon-success.svg'],
+    ['loading-cache', 'syncing', 'p6-d23-icon-sync-running.svg'],
+    ['syncing', 'syncing', 'p6-d23-icon-sync-running.svg'],
+    ['offline', 'offline', 'p6-d22-icon-offline.svg'],
+    ['error', 'error', 'p6-d26-icon-error.svg'],
+    ['ready', 'online', 'p6-d21-icon-online.svg'],
+  ] as const)('maps the %s synchronization state to a visible %s icon', (status, expectedState, expectedAsset) => {
     const shell = createAppShell();
     updateWorkbenchStatus(shell, { status } as SyncState);
 
-    expect(shell.querySelector<HTMLElement>('[data-sync-panel]')?.dataset.syncState).toBe(expectedIcon);
+    expect(shell.querySelector<HTMLElement>('[data-sync-panel]')?.dataset.syncState).toBe(expectedState);
+    expect(shell.querySelector<HTMLImageElement>('.workbench-note__icon')?.src).toContain(expectedAsset);
   });
 
-  it('retains a visible textual warning alongside the decorative warning icon', () => {
+  it('retains a visible textual warning alongside D25', () => {
     const shell = createAppShell();
     updateWorkbenchStatus(shell, {
       status: 'ready',
@@ -103,5 +138,6 @@ describe('Phase 6A app shell assets', () => {
     } as SyncState);
 
     expect(shell.querySelector('.workbench-warning')?.textContent).toContain('données partielles');
+    expect(shell.querySelector<HTMLImageElement>('.workbench-warning__icon')?.src).toContain('p6-d25-icon-warning.svg');
   });
 });
