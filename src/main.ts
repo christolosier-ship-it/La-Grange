@@ -3,6 +3,7 @@ import {
   initializeAdminSession,
   mountAdminSessionControls,
 } from './core/customization/admin-session';
+import { installReleaseBadges } from './core/github/release-badges';
 import './styles/index.css';
 import './styles/project-card.css';
 import './styles/catalogue.css';
@@ -18,4 +19,5 @@ const root = document.querySelector<HTMLElement>('#app');
 startApplication(root);
 const shell = root?.querySelector<HTMLElement>('.app-shell');
 if (shell) mountAdminSessionControls(shell);
+installReleaseBadges(root ?? document);
 void initializeAdminSession();
