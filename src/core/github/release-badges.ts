@@ -42,5 +42,7 @@ export function installReleaseBadges(root: ParentNode = document): () => void {
     }
   });
   observer.observe(root, { childList: true, subtree: true });
-  return () => observer.disconnect();
+  return () => {
+    observer.disconnect();
+  };
 }
