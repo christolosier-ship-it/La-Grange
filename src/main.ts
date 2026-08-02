@@ -4,6 +4,7 @@ import {
   mountAdminSessionControls,
 } from './core/customization/admin-session';
 import { installReleaseBadges } from './core/github/release-badges';
+import { installCustomizationCoverPreview } from './features/project-customization/cover-preview';
 import './styles/index.css';
 import './styles/project-card.css';
 import './styles/catalogue.css';
@@ -20,4 +21,5 @@ startApplication(root);
 const shell = root?.querySelector<HTMLElement>('.app-shell');
 if (shell) mountAdminSessionControls(shell);
 installReleaseBadges(root ?? document);
+installCustomizationCoverPreview();
 void initializeAdminSession();
