@@ -64,16 +64,15 @@ export async function githubRequest<T>(
   init: RequestInit = {},
 ): Promise<T> {
   const token = await installationToken();
+  const headers = new Headers(init.headers);
+  headers.set('Accept', 'application/vnd.github+json');
+  headers.set('Authorization', `Bearer ${token}`);
+  headers.set('Content-Type', 'application/json');
+  headers.set('User-Agent', 'La-Grange-Phase-6B');
+  headers.set('X-GitHub-Api-Version', '2022-11-28');
   const response = await fetch(`https://api.github.com${path}`, {
     ...init,
-    headers: {
-      Accept: 'application/vnd.github+json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'User-Agent': 'La-Grange-Phase-6B',
-      'X-GitHub-Api-Version': '2022-11-28',
-      ...init.headers,
-    },
+    headers,
   });
   if (!response.ok) {
     const detail = await response.text().catch(() => '');
