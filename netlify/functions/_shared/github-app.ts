@@ -5,6 +5,8 @@ interface GitHubTokenResponse {
   readonly expires_at: string;
 }
 
+let cachedToken: { readonly value: string; readonly expiresAt: number } | undefined;
+
 function required(name: string): string {
   const value = process.env[name]?.trim();
   if (!value) throw new Error(`${name} is required.`);
@@ -32,6 +34,7 @@ function appJwt(): string {
 }
 
 async function installationToken(): Promise<string> {
+  if (cachedToken && cachedToken.expiresAt - Date.now() > 60_000) return cachedToken.value;
   const installationId = required('GITHUB_APP_INSTALLATION_ID');
   const response = await fetch(`https://api.github.com/app/installations/${encodeURIComponent(installationId)}/access_tokens`, {
     method: 'POST',
@@ -44,7 +47,8 @@ async function installationToken(): Promise<string> {
   });
   if (!response.ok) throw new Error(`GitHub installation token failed (${String(response.status)}).`);
   const data = await response.json() as Partial<GitHubTokenResponse>;
-  if (!data.token) throw new Error('GitHub installation token response is invalid.');
+  if (!data.token || !data.expires_at) throw new Error('GitHub installation token response is invalid.');
+  cachedToken = { value: data.token, expiresAt: Date.parse(data.expires_at) };
   return data.token;
 }
 
