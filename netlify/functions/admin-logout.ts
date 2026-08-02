@@ -2,7 +2,7 @@ import { clearSessionCookie, validWriteOrigin } from './_shared/session';
 
 export const config = { path: '/api/admin/logout' };
 
-export default async function handler(request: Request): Promise<Response> {
+export default function handler(request: Request): Response {
   if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405 });
   if (!validWriteOrigin(request)) return new Response('Forbidden', { status: 403 });
   return Response.json({ authenticated: false }, {
