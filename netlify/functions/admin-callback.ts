@@ -17,9 +17,9 @@ interface GitHubUser {
   readonly login?: string;
 }
 
-function redirect(request: Request, path: string, cookies: readonly string[] = []): Response {
+function redirect(path: string, cookies: readonly string[] = []): Response {
   const headers = new Headers({
-    Location: new URL(path, canonicalOrigin(request)).href,
+    Location: new URL(path, canonicalOrigin()).href,
     'Cache-Control': 'no-store',
     'Referrer-Policy': 'no-referrer',
   });
@@ -33,7 +33,7 @@ export default async function handler(request: Request): Promise<Response> {
   const code = url.searchParams.get('code');
   const state = url.searchParams.get('state');
   if (!code || !verifyOAuthState(request, state)) {
-    return redirect(request, '/#/settings?admin=invalid-state', [clearOAuthCookie()]);
+    return redirect('/#/settings?admin=invalid-state', [clearOAuthCookie()]);
   }
 
   const clientId = process.env.GITHUB_OAUTH_CLIENT_ID?.trim();
@@ -45,9 +45,9 @@ export default async function handler(request: Request): Promise<Response> {
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     body: JSON.stringify({ client_id: clientId, client_secret: clientSecret, code }),
   });
-  if (!tokenResponse.ok) return redirect(request, '/#/settings?admin=oauth-error', [clearOAuthCookie()]);
+  if (!tokenResponse.ok) return redirect('/#/settings?admin=oauth-error', [clearOAuthCookie()]);
   const token = await tokenResponse.json() as OAuthTokenResponse;
-  if (!token.access_token) return redirect(request, '/#/settings?admin=oauth-error', [clearOAuthCookie()]);
+  if (!token.access_token) return redirect('/#/settings?admin=oauth-error', [clearOAuthCookie()]);
 
   const userResponse = await fetch('https://api.github.com/user', {
     headers: {
@@ -57,13 +57,13 @@ export default async function handler(request: Request): Promise<Response> {
       'X-GitHub-Api-Version': '2022-11-28',
     },
   });
-  if (!userResponse.ok) return redirect(request, '/#/settings?admin=user-error', [clearOAuthCookie()]);
+  if (!userResponse.ok) return redirect('/#/settings?admin=user-error', [clearOAuthCookie()]);
   const user = await userResponse.json() as GitHubUser;
   if (!user.login || !allowedAdmin(user.login)) {
-    return redirect(request, '/#/settings?admin=forbidden', [clearOAuthCookie()]);
+    return redirect('/#/settings?admin=forbidden', [clearOAuthCookie()]);
   }
 
-  return redirect(request, '/#/?admin=connected', [
+  return redirect('/#/?admin=connected', [
     clearOAuthCookie(),
     createSessionCookie(user.login),
   ]);
