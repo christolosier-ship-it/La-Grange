@@ -2,30 +2,31 @@
 
 ## Noyau graphique
 
-- [x] M06 produit, approuvé et versionné ;
 - [x] C01 produit et validé ;
 - [x] C11 produit et validé ;
-- [x] C06 produit et validé ;
+- [x] D06, D07 et D20 conservés ;
 - [x] D42 produit et validé ;
 - [x] D43 produit et validé ;
+- [x] dépôt purgé des masters, doublons et assets prospectifs ;
 - [ ] iconographie des neuf styles produite ou réutilisée localement ;
 - [ ] aucun texte fonctionnel rasterisé ;
-- [ ] budgets et transparences contrôlés.
+- [ ] dimensions, poids et transparences contrôlés sur le build final.
 
 ## Dashboard
 
 - [ ] rail gauche fixe ;
 - [ ] version et état administrateur en bas du rail ;
 - [ ] zone principale seule défilante ;
-- [ ] bandeau unique avec quatre statistiques HTML ;
+- [ ] bandeau unique C11 avec quatre statistiques HTML ;
 - [ ] grille continue sans titre ni conteneur ;
 - [ ] aucun rail droit ;
 - [ ] aucun fond local derrière les cartes.
 
 ## Carte
 
-- [ ] couverture ou fallback C18 ;
-- [ ] bannière de style ;
+- [ ] skin C01 ;
+- [ ] couverture ou fallback HTML/CSS ;
+- [ ] marqueur de style HTML/CSS ;
 - [ ] version manuelle, release stable ou préversion ;
 - [ ] dernière activité ;
 - [ ] progression manuelle facultative ;
@@ -41,7 +42,7 @@
 - [ ] métadonnées supprimées ;
 - [ ] limites d’octets et dimensions ;
 - [ ] chemin calculé côté serveur ;
-- [ ] fallback si aucune couverture ;
+- [ ] fallback HTML/CSS si aucune couverture ;
 - [ ] aucune série Sxx/Fxx exigée.
 
 ## Publication
@@ -78,5 +79,6 @@
 - [ ] build ;
 - [ ] audit de sécurité ;
 - [ ] poids et LCP/CLS ;
+- [ ] manifeste des assets exact ;
 - [ ] documentation à jour ;
 - [ ] aucun P1/P2.
