@@ -7,7 +7,7 @@ export default function handler(request: Request): Response {
   const clientId = process.env.GITHUB_OAUTH_CLIENT_ID?.trim();
   if (!clientId) return new Response('Administration non configurée.', { status: 503 });
   const { state, cookie } = createOAuthState();
-  const callback = `${canonicalOrigin(request)}/api/admin/callback`;
+  const callback = `${canonicalOrigin()}/api/admin/callback`;
   const authorize = new URL('https://github.com/login/oauth/authorize');
   authorize.searchParams.set('client_id', clientId);
   authorize.searchParams.set('redirect_uri', callback);
