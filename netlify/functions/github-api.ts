@@ -107,13 +107,16 @@ function upstreamUrl(request: Request): URL | undefined {
       encodeURIComponent(segments[2]),
       ...resource.split('/'),
     ].join('/');
-    const allowed = resource === 'commits' || resource === 'releases'
-      ? {
-          per_page: /^(?:[1-9]|[1-9][0-9]|100)$/u,
-          page: /^(?:[1-9]|[1-9][0-9]{1,2})$/u,
-        }
-      : {};
-    return copyQuery(incoming.searchParams, upstream.searchParams, allowed) ? upstream : undefined;
+
+    if (resource === 'commits' || resource === 'releases') {
+      const valid = copyQuery(incoming.searchParams, upstream.searchParams, {
+        per_page: /^(?:[1-9]|[1-9][0-9]|100)$/u,
+        page: /^(?:[1-9]|[1-9][0-9]{1,2})$/u,
+      });
+      return valid ? upstream : undefined;
+    }
+
+    return incoming.searchParams.size === 0 ? upstream : undefined;
   }
 
   return undefined;
