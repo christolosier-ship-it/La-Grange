@@ -4,10 +4,22 @@ Toutes les évolutions notables de La Grange sont consignées ici.
 
 ## [Non publié]
 
+### Connexion et synchronisation GitHub
+
+- bouton de connexion GitHub directement dans La Grange avec retour OAuth automatique ;
+- conservation du jeton OAuth dans une session chiffrée `HttpOnly`, limitée à huit heures ;
+- distinction explicite entre compte GitHub connecté et droits administrateur ;
+- proxy Netlify de lecture GitHub limité aux dépôts, commits, releases et README ;
+- bascule automatique des lectures vers le quota authentifié après connexion ;
+- requêtes conditionnelles par ETag réactivées sur le chemin same-origin ;
+- synchronisation forcée et rechargement des versions après authentification ;
+- maintien de la consultation publique directe pour les visiteurs non connectés ;
+- tests du chiffrement, de la liste blanche du proxy et du routage client.
+
 ### Implémentation Phase 6B
 
 - rail gauche fixe sur tablette paysage et bureau, avec défilement réservé à la zone principale ;
-- version de La Grange et état de connexion administrateur intégrés au bas du rail ;
+- version de La Grange et état de connexion GitHub intégrés au bas du rail ;
 - bandeau C11 avec quatre statistiques HTML superposées ;
 - suppression des sections et conteneurs redondants du dashboard ;
 - grille continue de cartes directement sur le fond général ;
@@ -19,7 +31,7 @@ Toutes les évolutions notables de La Grange sont consignées ici.
 - modale administrateur avec aperçu, couleurs, avancement, version et couverture ;
 - schéma v3 de `project-overrides.json` avec compatibilité de lecture de l’ancien format ;
 - conversion des couvertures en WebP 640 × 400 et validation serveur stricte ;
-- authentification OAuth GitHub, cookie de session signé et liste blanche administrateur ;
+- authentification OAuth GitHub, session chiffrée et liste blanche administrateur ;
 - GitHub App limitée au dépôt `La-Grange` pour créer branche, commit et PR sans fusion automatique ;
 - configuration Netlify, en-têtes de sécurité et typecheck des Functions ;
 - cache PWA mis à jour avec C01, C11 et les cinq icônes d’action ;
