@@ -1,5 +1,7 @@
 import { ActivityService } from '../core/activity/activity-service';
 import { IndexedDbCache } from '../core/cache/indexed-db';
+import { ADMIN_SESSION_EVENT } from '../core/customization/admin-session';
+import type { AdminSessionState } from '../core/customization/types';
 import { ProjectDetailService } from '../core/details/project-detail-service';
 import { GitHubClient } from '../core/github/client';
 import { GitHubDetailClient } from '../core/github/detail-client';
@@ -194,6 +196,10 @@ export function startApplication(root: HTMLElement | null): void {
     void coordinator.synchronize({ online: navigator.onLine, force });
   };
 
+  window.addEventListener(ADMIN_SESSION_EVENT, (event) => {
+    const state = (event as CustomEvent<AdminSessionState>).detail;
+    if (state.status === 'authenticated') synchronize(true);
+  });
   window.addEventListener(SYNC_REQUEST_EVENT, () => {
     synchronize(true);
   });
