@@ -198,7 +198,10 @@ export function startApplication(root: HTMLElement | null): void {
 
   window.addEventListener(ADMIN_SESSION_EVENT, (event) => {
     const state = (event as CustomEvent<AdminSessionState>).detail;
-    if (state.status === 'authenticated') synchronize(true);
+    if (state.status !== 'authenticated') return;
+    void coordinator.synchronize({ online: navigator.onLine, force: true }).finally(() => {
+      synchronize(true);
+    });
   });
   window.addEventListener(SYNC_REQUEST_EVENT, () => {
     synchronize(true);
