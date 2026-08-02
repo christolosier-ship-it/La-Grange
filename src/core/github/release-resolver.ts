@@ -25,9 +25,9 @@ function newest(releases: readonly GitHubReleaseDto[]): GitHubReleaseDto | undef
   ))[0];
 }
 
-function apiUrl(project: Project): string | undefined {
+function apiUrl(githubUrl: string): string | undefined {
   try {
-    const url = new URL(project.githubUrl);
+    const url = new URL(githubUrl);
     const parts = url.pathname.split('/').filter(Boolean);
     if (url.hostname !== 'github.com' || parts.length !== 2) return undefined;
     return `https://api.github.com/repos/${encodeURIComponent(parts[0]!)}/${encodeURIComponent(parts[1]!)}/releases?per_page=20`;
@@ -36,8 +36,8 @@ function apiUrl(project: Project): string | undefined {
   }
 }
 
-async function fetchVersion(project: Project): Promise<string | undefined> {
-  const url = apiUrl(project);
+async function fetchVersion(githubUrl: string): Promise<string | undefined> {
+  const url = apiUrl(githubUrl);
   if (!url) return undefined;
   try {
     const response = await fetch(url, {
@@ -59,18 +59,25 @@ async function fetchVersion(project: Project): Promise<string | undefined> {
   }
 }
 
-export function resolveProjectVersion(project: Project): Promise<string | undefined> {
-  if (project.manualVersion?.trim()) return Promise.resolve(project.manualVersion.trim());
-  if (project.resolvedVersion?.trim()) return Promise.resolve(project.resolvedVersion.trim());
-  const key = project.repositoryName.toLowerCase();
+export function resolveRepositoryVersion(
+  repositoryName: string,
+  githubUrl: string,
+): Promise<string | undefined> {
+  const key = repositoryName.toLowerCase();
   if (cache.has(key)) return Promise.resolve(cache.get(key));
   const active = pending.get(key);
   if (active) return active;
-  const request = fetchVersion(project).then((version) => {
+  const request = fetchVersion(githubUrl).then((version) => {
     cache.set(key, version);
     pending.delete(key);
     return version;
   });
   pending.set(key, request);
   return request;
+}
+
+export function resolveProjectVersion(project: Project): Promise<string | undefined> {
+  if (project.manualVersion?.trim()) return Promise.resolve(project.manualVersion.trim());
+  if (project.resolvedVersion?.trim()) return Promise.resolve(project.resolvedVersion.trim());
+  return resolveRepositoryVersion(project.repositoryName, project.githubUrl);
 }
