@@ -28,10 +28,6 @@ function encryptionKey(): Buffer {
   return createHash('sha256').update(secret(), 'utf8').digest();
 }
 
-function encode(value: string): string {
-  return Buffer.from(value, 'utf8').toString('base64url');
-}
-
 function sign(value: string): string {
   return createHmac('sha256', secret()).update(value).digest('base64url');
 }
