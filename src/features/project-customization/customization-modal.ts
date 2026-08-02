@@ -61,7 +61,9 @@ function toBase64(blob: Blob): Promise<string> {
       }
       resolve(reader.result.split(',')[1] ?? '');
     }, { once: true });
-    reader.addEventListener('error', () => reject(new Error('Lecture de la couverture impossible.')), { once: true });
+    reader.addEventListener('error', () => {
+      reject(new Error('Lecture de la couverture impossible.'));
+    }, { once: true });
     reader.readAsDataURL(blob);
   });
 }
@@ -180,8 +182,11 @@ function updatePreview(
   preview.style.setProperty('--preview-primary', primary);
   preview.style.setProperty('--preview-secondary', secondary);
   preview.style.setProperty('--preview-progress', progressColor);
-  preview.querySelector<HTMLElement>('.customization-preview__style')!.textContent = definition.symbol;
-  preview.querySelector<HTMLElement>('.customization-preview__style')!.title = definition.label;
+  const styleMarker = preview.querySelector<HTMLElement>('.customization-preview__style');
+  if (styleMarker) {
+    styleMarker.textContent = definition.symbol;
+    styleMarker.title = definition.label;
+  }
   const versionNode = preview.querySelector<HTMLElement>('.customization-preview__version');
   if (versionNode) versionNode.textContent = version ?? 'Version automatique';
   const bar = preview.querySelector<HTMLElement>('.customization-preview__progress span');
@@ -212,7 +217,9 @@ export function openProjectCustomization(project: Project): void {
   close.className = 'customization-close';
   close.setAttribute('aria-label', 'Fermer la personnalisation');
   close.textContent = '×';
-  close.addEventListener('click', () => dialog.close());
+  close.addEventListener('click', () => {
+    dialog.close();
+  });
   header.append(heading, close);
 
   const preview = createPreview(project);
@@ -288,7 +295,9 @@ export function openProjectCustomization(project: Project): void {
   const cancel = document.createElement('button');
   cancel.type = 'button';
   cancel.textContent = 'Annuler';
-  cancel.addEventListener('click', () => dialog.close());
+  cancel.addEventListener('click', () => {
+    dialog.close();
+  });
   const submit = document.createElement('button');
   submit.type = 'submit';
   submit.className = 'is-primary';
@@ -381,7 +390,9 @@ export function openProjectCustomization(project: Project): void {
 
   form.append(header, preview, fields, status, actions);
   dialog.append(form);
-  dialog.addEventListener('close', () => dialog.remove(), { once: true });
+  dialog.addEventListener('close', () => {
+    dialog.remove();
+  }, { once: true });
   document.body.append(dialog);
   dialog.showModal();
   close.focus();
