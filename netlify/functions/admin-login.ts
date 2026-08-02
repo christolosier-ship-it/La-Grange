@@ -2,7 +2,7 @@ import { canonicalOrigin, createOAuthState } from './_shared/session';
 
 export const config = { path: '/api/admin/login' };
 
-export default async function handler(request: Request): Promise<Response> {
+export default function handler(request: Request): Response {
   if (request.method !== 'GET') return new Response('Method Not Allowed', { status: 405 });
   const clientId = process.env.GITHUB_OAUTH_CLIENT_ID?.trim();
   if (!clientId) return new Response('Administration non configurée.', { status: 503 });
