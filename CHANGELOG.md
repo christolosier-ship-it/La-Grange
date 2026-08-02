@@ -4,16 +4,14 @@ Toutes les évolutions notables de La Grange sont consignées ici.
 
 ## [Non publié]
 
-### Simplification de la production 6B
+### Purge des assets Phase 6
 
-- production et validation du master M06 ;
-- production de C01, C11, C06, D42 et D43 ;
-- passage à un noyau graphique partagé de trois WebP et deux nouvelles icônes ;
-- retrait de la pré-production des couvertures et logos de projets ;
-- couvertures désormais téléversées, recadrées et versionnées depuis la modale administrateur ;
-- retrait des planches PNG canoniques G16a à G20 ;
-- validation visuelle réalisée directement sur le build et jointe à la PR ;
-- maintien des neuf styles, avec iconographie produite ou réutilisée pendant l’intégration.
+- suppression des masters et planches documentaires devenus inutiles ;
+- suppression des anciens sous-dossiers runtime et de leurs prototypes ;
+- suppression des variantes, textures, cadres, icônes et packs de projets non consommés ;
+- conservation exclusive des assets du shell réellement utilisés et du noyau C01, C11, D06, D07, D20, D42 et D43 nécessaire à la Phase 6B ;
+- reconstruction du manifeste et synchronisation de la documentation ;
+- fallback de couverture et marqueur de style désormais réalisés en HTML/CSS.
 
 ### Conception 6B
 

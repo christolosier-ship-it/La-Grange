@@ -1,66 +1,37 @@
 {
-  "version": 2,
-  "status": "assets-present-not-integrated",
+  "version": 3,
+  "status": "assets-present-partially-integrated",
   "assets": [
-    {
-      "id": "A01-runtime",
-      "path": "/assets/phase-6/brand/brand-sign.svg",
-      "role": "Enseigne principale du shell",
-      "format": "svg",
-      "dimensions": [800, 360],
-      "alpha": true,
-      "validated": true,
-      "integratedInUi": false
-    },
-    {
-      "id": "B01-runtime",
-      "path": "/assets/phase-6/shell/background-workshop.webp",
-      "role": "Fond d’atelier responsive du shell",
-      "format": "webp",
-      "dimensions": [800, 450],
-      "alpha": false,
-      "validated": true,
-      "integratedInUi": false
-    },
-    {
-      "id": "C01-runtime",
-      "path": "/assets/phase-6/components/project-card-frame.webp",
-      "role": "Cadre décoratif de carte projet",
-      "format": "webp",
-      "dimensions": [280, 416],
-      "alpha": true,
-      "validated": true,
-      "integratedInUi": false
-    },
-    {
-      "id": "C16-runtime",
-      "path": "/assets/phase-6/panels/welcome-panel.webp",
-      "role": "Panneau décoratif de bienvenue sans texte fonctionnel",
-      "format": "webp",
-      "dimensions": [80, 124],
-      "alpha": true,
-      "validated": true,
-      "integratedInUi": false
-    },
-    {
-      "id": "F01-cover-runtime",
-      "path": "/assets/phase-6/projects/gargotte/cover.webp",
-      "role": "Couverture éditoriale Gargotte Adventure",
-      "format": "webp",
-      "dimensions": [480, 300],
-      "alpha": false,
-      "validated": true,
-      "integratedInUi": false
-    },
-    {
-      "id": "F01-logo-runtime",
-      "path": "/assets/phase-6/projects/gargotte/logo.webp",
-      "role": "Logo éditorial Gargotte Adventure",
-      "format": "webp",
-      "dimensions": [260, 78],
-      "alpha": true,
-      "validated": true,
-      "integratedInUi": false
-    }
+    { "id": "A01", "path": "/assets/phase-6/p6-a01-brand-sign-1600x720.webp", "role": "Enseigne desktop", "format": "webp", "dimensions": [1600, 720], "alpha": true, "integratedInUi": true },
+    { "id": "A02", "path": "/assets/phase-6/p6-a02-brand-sign-800x360.webp", "role": "Enseigne tablette", "format": "webp", "dimensions": [800, 360], "alpha": true, "integratedInUi": true },
+    { "id": "A03", "path": "/assets/phase-6/p6-a03-brand-sign-mobile-960x560.webp", "role": "Enseigne compacte", "format": "webp", "dimensions": [960, 560], "alpha": true, "integratedInUi": true },
+    { "id": "A04", "path": "/assets/phase-6/p6-a04-brand-mark.svg", "role": "Médaillon de marque", "format": "svg", "viewBox": "0 0 256 256", "alpha": true, "integratedInUi": true },
+
+    { "id": "B01", "path": "/assets/phase-6/p6-b01-background-workshop-2048x1152.webp", "role": "Fond grand bureau", "format": "webp", "dimensions": [2048, 1152], "alpha": false, "integratedInUi": true },
+    { "id": "B02", "path": "/assets/phase-6/p6-b02-background-workshop-tablet-1366x1024.webp", "role": "Fond tablette paysage", "format": "webp", "dimensions": [1366, 1024], "alpha": false, "integratedInUi": true },
+    { "id": "B03", "path": "/assets/phase-6/p6-b03-background-workshop-tablet-1024x1366.webp", "role": "Fond tablette portrait", "format": "webp", "dimensions": [1024, 1366], "alpha": false, "integratedInUi": true },
+    { "id": "B04", "path": "/assets/phase-6/p6-b04-background-workshop-mobile-780x1386.webp", "role": "Fond compact", "format": "webp", "dimensions": [780, 1386], "alpha": false, "integratedInUi": true },
+    { "id": "B07", "path": "/assets/phase-6/p6-b07-texture-wood-structure-1024x1024.webp", "role": "Texture bois du shell", "format": "webp", "dimensions": [1024, 1024], "alpha": false, "integratedInUi": true },
+    { "id": "B12", "path": "/assets/phase-6/p6-b12-light-main-1600x900.png", "role": "Lumière principale", "format": "png", "dimensions": [1600, 900], "alpha": true, "integratedInUi": true },
+
+    { "id": "C01", "path": "/assets/phase-6/p6-c01-project-card-skin-standard-640x960.webp", "role": "Skin commun des cartes 6B", "format": "webp", "dimensions": [640, 960], "alpha": true, "integratedInUi": false },
+    { "id": "C11", "path": "/assets/phase-6/p6-c11-stats-beam-1600x220.webp", "role": "Bandeau de statistiques 6B", "format": "webp", "dimensions": [1600, 220], "alpha": true, "integratedInUi": false },
+
+    { "id": "D01", "path": "/assets/phase-6/p6-d01-icon-overview.svg", "role": "Navigation vue d’ensemble", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": true },
+    { "id": "D02", "path": "/assets/phase-6/p6-d02-icon-projects.svg", "role": "Navigation projets", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": true },
+    { "id": "D03", "path": "/assets/phase-6/p6-d03-icon-activity.svg", "role": "Navigation activité", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": true },
+    { "id": "D04", "path": "/assets/phase-6/p6-d04-icon-settings.svg", "role": "Navigation paramètres", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": true },
+    { "id": "D05", "path": "/assets/phase-6/p6-d05-icon-sync.svg", "role": "Synchronisation", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": true },
+    { "id": "D06", "path": "/assets/phase-6/p6-d06-icon-github.svg", "role": "Action GitHub 6B", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": false },
+    { "id": "D07", "path": "/assets/phase-6/p6-d07-icon-launch-app.svg", "role": "Action lancer l’application 6B", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": false },
+    { "id": "D20", "path": "/assets/phase-6/p6-d20-icon-details.svg", "role": "Action détail 6B", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": false },
+    { "id": "D21", "path": "/assets/phase-6/p6-d21-icon-online.svg", "role": "État en ligne", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": true },
+    { "id": "D22", "path": "/assets/phase-6/p6-d22-icon-offline.svg", "role": "État hors ligne", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": true },
+    { "id": "D23", "path": "/assets/phase-6/p6-d23-icon-sync-running.svg", "role": "Synchronisation en cours", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": true },
+    { "id": "D24", "path": "/assets/phase-6/p6-d24-icon-success.svg", "role": "Succès", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": true },
+    { "id": "D25", "path": "/assets/phase-6/p6-d25-icon-warning.svg", "role": "Avertissement", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": true },
+    { "id": "D26", "path": "/assets/phase-6/p6-d26-icon-error.svg", "role": "Erreur", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": true },
+    { "id": "D42", "path": "/assets/phase-6/p6-d42-icon-readme.svg", "role": "Action README 6B", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": false },
+    { "id": "D43", "path": "/assets/phase-6/p6-d43-icon-customize.svg", "role": "Action personnalisation 6B", "format": "svg", "viewBox": "0 0 24 24", "alpha": true, "integratedInUi": false }
   ]
 }

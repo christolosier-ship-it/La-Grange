@@ -32,7 +32,7 @@ Décision validée par le propriétaire le 2026-08-02. Ce document constitue la 
 
 - un seul WebP C11 ;
 - quatre statistiques HTML : projets, actifs, applications, archives ;
-- aucun texte ou chiffre dans l’image ;
+- aucun texte, chiffre, icône ou séparateur fonctionnel dans l’image ;
 - défile avec la zone principale.
 
 ## Grille
@@ -54,9 +54,11 @@ Décision validée par le propriétaire le 2026-08-02. Ce document constitue la 
 5. ouverture de la modale de personnalisation ;
 6. progression manuelle facultative ;
 7. temps depuis la dernière activité du dépôt ;
-8. bannière du style ;
+8. marqueur de style en HTML/CSS ;
 9. version de l’application ;
-10. image de couverture ou fallback.
+10. image de couverture ou fallback HTML/CSS.
+
+La peau graphique commune est C01. Elle ne contient aucune donnée, aucun texte, aucun bouton et aucune couleur de style imposée.
 
 ## Rangée d’actions
 
@@ -85,7 +87,15 @@ Le bouton de personnalisation est absent hors session administrateur.
 
 Neuf styles maximum : style de vie, jeux, productivité, santé, éducation, nature, création, technique et métier, inclassable.
 
-Chaque style fournit une bannière, une couleur principale, une couleur secondaire et une couleur de progression. L’icône peut provenir de l’iconographie locale existante.
+Chaque style fournit :
+
+- un libellé ;
+- une icône locale réutilisée ou créée au raccord ;
+- une couleur principale ;
+- une couleur secondaire ;
+- une couleur de progression.
+
+Aucune bannière raster dédiée n’est utilisée.
 
 ## Couverture
 
@@ -95,7 +105,7 @@ La couverture n’est pas un asset pré-produit de la Phase 6B. Elle est ajouté
 - recadrage 8:5 ;
 - sortie WebP 640 × 400 ;
 - PR automatique ;
-- fallback C18 si absente.
+- fallback HTML/CSS si absente.
 
 Aucun logo séparé n’est exigé. Le nom du projet reste en HTML.
 

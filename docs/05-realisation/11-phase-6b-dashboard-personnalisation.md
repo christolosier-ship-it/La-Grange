@@ -4,18 +4,19 @@
 
 Réaliser le dashboard validé le 2026-08-02 et permettre au propriétaire de personnaliser chaque carte par une pull request GitHub sécurisée.
 
-## Simplification validée le 2026-08-02
+## Noyau graphique retenu
 
-La production graphique 6B est réduite au noyau commun :
+La production graphique 6B est limitée à :
 
-- M06, master de composition ;
 - C01, skin partagé de carte ;
-- C11, poutre de statistiques ;
-- C06, bannière neutre recolorable ;
-- D42, action README ;
-- D43, action personnalisation.
+- C11, bandeau de statistiques ;
+- D06, accès GitHub ;
+- D07, lancement de l’application ;
+- D20, détail du projet ;
+- D42, accès au README ;
+- D43, personnalisation.
 
-Les couvertures et logos ne sont plus pré-produits. Ils sont ajoutés depuis la modale de personnalisation. Les planches PNG de validation sont supprimées.
+Aucun master, bannière raster de style, fallback de couverture illustré, pack de projet ou planche PNG canonique n’est requis.
 
 ## Prérequis
 
@@ -23,9 +24,8 @@ Les couvertures et logos ne sont plus pré-produits. Ils sont ajoutés depuis la
 - ADR-010 accepté ;
 - GitHub App limitée au dépôt ;
 - déploiement Netlify défini ;
-- M06 approuvé et versionné ;
-- C01, C06, C11, D42 et D43 produits et validés ;
-- ancienne PR SVG 6B fermée sans fusion.
+- C01, C11, D06, D07, D20, D42 et D43 présents et validés ;
+- dépôt purgé des assets prospectifs et des doublons.
 
 ## Lot serveur
 
@@ -43,14 +43,14 @@ Les couvertures et logos ne sont plus pré-produits. Ils sont ajoutés depuis la
 
 - rail gauche fixe ;
 - version et état administrateur dans le rail ;
-- poutre de statistiques ;
+- bandeau de statistiques C11 ;
 - grille continue directement sur le fond ;
-- nouvelle carte ;
+- carte habillée par C01 ;
 - cinq actions alignées ;
 - infobulles ;
 - progression manuelle ;
 - version manuelle ou release ;
-- neuf styles ;
+- neuf styles réalisés en HTML/CSS et iconographie locale ;
 - modale et aperçu ;
 - téléversement et recadrage de couverture ;
 - publication et feedback.
@@ -65,7 +65,7 @@ La couverture est facultative et gérée depuis la modale :
 4. mise à jour des overrides ;
 5. création de PR.
 
-Sans couverture, la carte utilise C18 et le fallback HTML/CSS. Aucun logo séparé n’est requis.
+Sans couverture, la carte utilise un fallback HTML/CSS avec le nom ou les initiales du projet. Aucun logo séparé n’est requis.
 
 ## Critères d’acceptation
 
