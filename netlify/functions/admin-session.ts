@@ -2,7 +2,7 @@ import { readSession } from './_shared/session';
 
 export const config = { path: '/api/admin/session' };
 
-export default async function handler(request: Request): Promise<Response> {
+export default function handler(request: Request): Response {
   if (request.method !== 'GET') return new Response('Method Not Allowed', { status: 405 });
   const session = readSession(request);
   return Response.json(
