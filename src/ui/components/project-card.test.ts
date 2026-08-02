@@ -1,6 +1,13 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import type { Project } from '../../core/projects/model';
 import { createProjectCard } from './project-card';
+
+const projectCardStyles = readFileSync(
+  resolve(process.cwd(), 'src/styles/project-card.css'),
+  'utf8',
+);
 
 function project(overrides: Partial<Project> = {}): Project {
   return {
@@ -48,6 +55,14 @@ describe('createProjectCard', () => {
     expect(card.querySelector('a a')).toBeNull();
     expect(card.querySelector<HTMLAnchorElement>('.project-card__actions a')?.rel).toContain('noopener');
     expect(card.querySelector('.project-card__action--customize')).not.toBeNull();
+  });
+
+  it('keeps the title, middle plank and five action slots aligned with the card skin', () => {
+    expect(projectCardStyles).toContain('grid-template-rows: 16% 43% 11% 8% 10% 12%;');
+    expect(projectCardStyles).toContain('grid-template-columns: repeat(5, minmax(0, 1fr));');
+    expect(projectCardStyles).toMatch(/\.project-card__title\s*\{[\s\S]*?text-align:\s*center;/u);
+    expect(projectCardStyles).toMatch(/\.project-card__action\s*\{[\s\S]*?border:\s*0;[\s\S]*?background:\s*transparent;/u);
+    expect(projectCardStyles).not.toMatch(/\.project-card__action--customize\s*\{\s*display:\s*none;/u);
   });
 
   it('loads a configured 8:5 cover lazily with stable dimensions', () => {
