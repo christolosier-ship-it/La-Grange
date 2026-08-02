@@ -1,32 +1,34 @@
-# ADR-008 — Absence de backend dans le MVP
+# ADR-008 - Absence de backend de consultation
 
-- **Statut** : accepté
-- **Date** : 2026-07-28
+- **Statut** : remplacé pour l’administration par ADR-010
+- **Date initiale** : 2026-07-28
+- **Révision** : 2026-08-02
 
-## Contexte
+## Décision maintenue
 
-Le besoin principal porte sur des données publiques et une consultation personnelle. Un backend ajouterait hébergement, secrets, maintenance et sécurité.
+La consultation de La Grange reste une application statique dans le navigateur :
 
-## Décision
+- données publiques ;
+- cache IndexedDB ;
+- PWA ;
+- aucune donnée utilisateur envoyée à un serveur métier ;
+- aucune authentification nécessaire pour consulter.
 
-Déployer uniquement des fichiers statiques sur GitHub Pages.
+## Réouverture validée
 
-## Raisons
+La personnalisation commune à plusieurs appareils exige une écriture sécurisée dans le dépôt `La-Grange`. Un secret ne pouvant pas être embarqué dans la PWA, un petit backend de Functions est autorisé par ADR-010.
 
-- coût nul ou minimal ;
-- disponibilité simple ;
-- aucune donnée serveur ;
-- maintenance réduite ;
-- cohérence avec la lecture seule.
+## Limites du backend
 
-## Conséquences
+Il ne devient pas une API générale de La Grange. Il sert uniquement :
 
-- pas de webhooks ;
-- pas de dépôts privés ;
-- pas de synchronisation multi-appareil des préférences ;
-- contraintes de quota public ;
-- toutes les fonctions doivent pouvoir s’exécuter dans le navigateur.
+- l’authentification administrateur ;
+- la validation d’une personnalisation ;
+- le traitement d’une couverture ;
+- la création d’une branche, d’un commit et d’une PR.
 
-## Critères de réouverture
+Il ne stocke ni inventaire parallèle, ni compte métier, ni données privées des projets.
 
-Besoin réel d’authentification, de données privées, de webhook ou de traitement serveur impossible côté client. Un backend « pour faire plus pro » n’est pas un motif.
+## Déploiement
+
+Netlify est retenu pour servir le build et les Functions sous une même origine. GitHub Pages peut subsister en lecture seule.

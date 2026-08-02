@@ -1,15 +1,15 @@
 # Architecture de l’information
 
-## Navigation principale
+## Navigation principale fixe
 
 1. Vue d’ensemble ;
-2. Tous les projets ;
+2. Projets ;
 3. Activité ;
 4. Paramètres.
 
-Les regroupements narratifs du dashboard, comme L’établi ou Prêts à partir, sont des sections et filtres, pas des sous-applications.
+Le rail gauche demeure visible pendant le défilement. Il porte également la synchronisation, la version de La Grange et l’état administrateur.
 
-## Routes
+## Routes publiques
 
 ```text
 #/                         Dashboard
@@ -20,29 +20,48 @@ Les regroupements narratifs du dashboard, comme L’établi ou Prêts à partir,
 #/settings                 Paramètres
 ```
 
-## Hiérarchie du dashboard
+La modale de personnalisation est un overlay du projet courant et ne crée pas une nouvelle sous-application.
 
-1. identité et état de synchronisation ;
-2. statistiques utiles ;
-3. projets actifs ;
-4. applications lançables ;
-5. activité et répartition ;
-6. nouvelle arrivée ;
-7. raccourcis.
+## Hiérarchie du dashboard 6B
 
-## Hiérarchie d’une fiche
+1. bandeau de quatre statistiques ;
+2. grille continue de projets.
 
-1. identité ;
-2. actions principales ;
-3. description ;
-4. métadonnées ;
-5. activité détaillée facultative ;
-6. liens secondaires.
+Sont supprimés du dashboard :
+
+- titres « L’établi » et « Prêts à partir » ;
+- descriptions de section ;
+- lien « Voir tout l’inventaire » ;
+- rail droit ;
+- panneaux d’activité et de répartition ;
+- fond local de la grille.
+
+Les fonctions détaillées restent accessibles par le menu gauche.
+
+## Hiérarchie d’une carte
+
+1. bannière de style ;
+2. couverture et identité ;
+3. version ;
+4. description ;
+5. activité et technologie ;
+6. progression éventuelle ;
+7. cinq actions.
+
+## Hiérarchie de la modale
+
+1. titre et aperçu ;
+2. couverture ;
+3. style et couleurs ;
+4. avancement et version ;
+5. résumé de publication ;
+6. annulation ou création de PR ;
+7. statut et lien GitHub.
 
 ## Règles
 
-- une action principale ne doit pas être noyée dans plus de deux niveaux ;
-- le nom du projet doit toujours être visible ;
-- le retour doit conserver la position ou le filtre lorsque possible ;
-- les liens externes doivent être explicitement identifiables ;
-- l’activité n’est jamais assimilée à une santé logicielle.
+- une seule grille de projets sur le dashboard ;
+- aucune navigation dupliquée dans un en-tête de section ;
+- liens externes identifiables ;
+- bouton d’administration absent hors session ;
+- aucune donnée factuelle modifiée depuis la modale.

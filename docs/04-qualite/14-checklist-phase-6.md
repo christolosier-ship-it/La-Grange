@@ -2,265 +2,177 @@
 
 ## Usage
 
-Cette checklist est complétée dans chaque PR visuelle avec les éléments applicables. Un contrôle non exécuté est noté comme tel et ne peut pas être déclaré réussi par déduction.
+Cette checklist couvre l’historique 6A et l’étape active 6B. Les étapes UI/UX suivantes ne sont pas encore définies. Aucun agent ne doit les inventer.
 
-## Périmètre
+## Gouvernance
 
-- [ ] la PR ne mélange pas fonction métier et visuel ;
-- [ ] le lot correspond au document Phase 6 ;
-- [ ] les documents concernés sont à jour ;
-- [ ] le registre est à jour ;
-- [ ] les écarts aux planches validées sont explicités ;
-- [ ] les idées hors périmètre ne sont pas implémentées.
-
-## Vérité des données
-
-- [ ] aucune métrique fictive ;
-- [ ] aucune progression inventée ;
-- [ ] aucune version, release, branche ou conflit dessiné dans un asset ;
-- [ ] aucune donnée réelle remplacée par une donnée de démonstration ;
-- [ ] aucun contenu de prototype hérité utilisé en production ;
-- [ ] les états sans donnée restent honnêtes.
-
-## Registre et méthode
-
-- [ ] chaque asset figure dans `10-suivi-production-assets-phase-6.md` ;
-- [ ] le nom final est strictement identique ;
-- [ ] le format réel correspond ;
-- [ ] les dimensions décodées correspondent ;
-- [ ] tout SVG possède un `viewBox` complet à quatre valeurs numériques conforme au registre ;
-- [ ] la transparence correspond ;
-- [ ] toute source M/S requise possède A et R, y compris sa source amont lorsqu’elle est dérivée ;
-- [ ] tout asset canonique Phase 6 cité par identifiant comme dépendance ou fallback possède P et V avant son dépendant ;
-- [ ] tout fallback HTML, CSS, système ou runtime hors registre est décrit exactement par sa ligne du registre, avec sélecteurs consommateurs et feuilles versionnées pour le CSS ou chemin versionné pour un fichier, puis présent et testé sans faux statut P/V ;
-- [ ] les quatre fallbacks runtime distincts d’A09 à A12 existent à leur chemin déclaré et sont contrôlés dans leur usage manifeste ou HTML ;
-- [ ] une création interne sans source canonique possède méthode, provenance et droits sans statut R artificiel ;
-- [ ] tout export dérivé, y compris chaque fichier F et chaque planche G, possède sa propre méthode d’export ou de capture, son outil et son auteur avant P ;
-- [ ] un seul asset a été produit avant validation ;
-- [ ] P correspond à un fichier contrôlé et versionné à la racine du dossier runtime ;
-- [ ] la validation humaine est tracée ;
-- [ ] V est distinct de I, réservé à la consommation réelle par l’application ;
-- [ ] le prochain asset autorisé a été respecté ;
-- [ ] aucun nouveau sous-dossier n’a été créé dans `public/assets/phase-6/` ;
-- [ ] aucun fichier n’a été ajouté aux sous-dossiers hérités gelés ;
-- [ ] aucun ZIP, Base64, fragment ou workflow de reconstruction ;
-- [ ] les prototypes hérités ne sont pas comptés comme validés ;
-- [ ] aucun prototype remplacé n’est supprimé avant contrôle des références.
-- [ ] chaque contrôle CSS requis était spécifié avant le lot et est intégré avant fusion ;
-- [ ] les planches du lot ont été produites après ses changements et validées avant fusion.
-
-## Direction artistique
-
-- [ ] l’univers est immédiatement reconnaissable ;
-- [ ] le rendu est stylisé, ni photoréaliste ni cartoon ;
-- [ ] le décor reste secondaire ;
-- [ ] les matériaux suivent la bible ;
-- [ ] la lumière reste cohérente ;
-- [ ] les identités de projet sont plus colorées que le shell ;
-- [ ] les détails décoratifs ne ressemblent pas à des contrôles ;
-- [ ] aucune texture complexe sous un long texte ;
-- [ ] les irrégularités ne déforment ni texte ni hitbox ;
-- [ ] l’application reste cohérente sans ornements.
-
-## Composants
-
-- [ ] shell ;
-- [ ] navigation ;
-- [ ] statistiques ;
-- [ ] cartes standard ;
-- [ ] cartes compactes ;
-- [ ] cartes liste ;
-- [ ] badges ;
-- [ ] panneaux ;
-- [ ] recherche ;
-- [ ] filtres ;
-- [ ] états vides ;
-- [ ] toasts ;
-- [ ] modales ;
-- [ ] chronologie ;
-- [ ] paramètres.
-
-Pour chaque composant traité :
-
-- [ ] normal ;
-- [ ] survol ;
-- [ ] focus ;
-- [ ] pressé ;
-- [ ] désactivé ;
-- [ ] erreur ;
-- [ ] contenu long ;
-- [ ] asset absent ;
-- [ ] densité compacte ;
-- [ ] mouvement réduit.
-
-## Responsive
-
-### 320 px
-
-- [ ] aucune fonction perdue ;
-- [ ] aucun scroll horizontal ;
-- [ ] aucun cadre coupé ;
-- [ ] cibles tactiles de 44 px.
-
-### 390 px
-
-- [ ] navigation basse utilisable ;
-- [ ] cartes lisibles ;
-- [ ] actions près du pouce ;
-- [ ] ornements réduits.
-
-### 768 px
-
-- [ ] composition tablette portrait ;
-- [ ] deux colonnes seulement lorsque possible ;
-- [ ] panneaux secondaires dans le flux ;
-- [ ] zoom 200 % sans perte.
-
-### 1024 px
-
-- [ ] tablette paysage confortable ;
-- [ ] rail gauche compact ;
-- [ ] zone centrale prioritaire ;
-- [ ] safe areas contrôlées.
-
-### 1440 px
-
-- [ ] scène complète ;
-- [ ] rail droit lisible ;
-- [ ] grille stable ;
-- [ ] longueurs de ligne limitées.
-
-### 1920 px
-
-- [ ] scène centrée ;
-- [ ] fond prolongé sans étirer le contenu ;
-- [ ] aucune carte ajoutée pour remplir ;
-- [ ] aucune répétition visible.
-
-## Accessibilité
-
-- [ ] landmarks conservés ;
-- [ ] un seul `h1` ;
-- [ ] titres cohérents ;
-- [ ] lien d’évitement ;
-- [ ] clavier complet ;
-- [ ] focus visible ;
-- [ ] tabulation stable ;
-- [ ] aucune zone cliquable imbriquée illégalement ;
-- [ ] contrastes 4,5:1 et 3:1 ;
-- [ ] états avec texte et icône ;
-- [ ] images décoratives avec alt vide ;
-- [ ] couvertures avec alt concis ;
-- [ ] liens externes annoncés ;
-- [ ] dates relatives avec date complète accessible ;
-- [ ] VoiceOver ou équivalent ;
-- [ ] modale avec fond inerte ;
-- [ ] restauration du focus ;
-- [ ] erreur annoncée ;
-- [ ] zoom 200 % ;
-- [ ] orientation libre ;
-- [ ] contraste accru contrôlé.
-
-## Mouvement
-
-- [ ] aucune animation permanente ;
-- [ ] aucune particule continue ;
-- [ ] aucun clignotement ;
-- [ ] aucune grande surface animée ;
-- [ ] aucune animation ne bloque le clic ;
-- [ ] durées conformes ;
-- [ ] `transform` et `opacity` privilégiés ;
-- [ ] focus stable ;
-- [ ] mouvement réduit complet ;
-- [ ] synchronisation compréhensible sans lueur.
+- [ ] document de phase lu ;
+- [ ] contrat 6B lu ;
+- [ ] ADR-009 et ADR-010 lus ;
+- [ ] registre exact ;
+- [ ] périmètre limité ;
+- [ ] aucun changement futur implicite ;
+- [ ] PR courte et réversible.
 
 ## Assets
 
-- [ ] identifiant documenté ;
-- [ ] chemin plat et stable ;
-- [ ] dimensions documentées ;
-- [ ] poids documenté ;
-- [ ] format justifié ;
-- [ ] provenance documentée ;
-- [ ] licence vérifiée si externe ;
-- [ ] aucun script dans le SVG ;
+- [ ] source approuvée et versionnée ;
+- [ ] nom exact ;
+- [ ] format exact ;
+- [ ] dimensions exactes ;
+- [ ] alpha exact ;
+- [ ] poids mesuré ;
+- [ ] provenance et droits ;
+- [ ] fallback ;
+- [ ] fichier canonique à plat ;
+- [ ] aucun prototype hérité utilisé ;
 - [ ] aucun texte fonctionnel rasterisé ;
-- [ ] fallback testé ;
-- [ ] lazy loading ;
-- [ ] ratio réservé ;
-- [ ] asset inutilisé retiré après remplacement ;
-- [ ] aucune requête CDN.
+- [ ] aucun asset distant ;
+- [ ] aucun ZIP ou Base64 ;
+- [ ] P/V/I exacts.
+
+## Phase 6B : shell et dashboard
+
+- [ ] rail gauche fixe ;
+- [ ] navigation complète ;
+- [ ] synchronisation dans le rail ;
+- [ ] version en bas ;
+- [ ] état admin en bas ;
+- [ ] contenu principal seul défilant ;
+- [ ] bandeau WebP unique ;
+- [ ] statistiques HTML ;
+- [ ] grille continue ;
+- [ ] aucun en-tête de section ;
+- [ ] aucun lien redondant ;
+- [ ] aucun rail droit ;
+- [ ] aucun panneau derrière les cartes ;
+- [ ] fond Phase 6A inchangé sous la grille.
+
+## Phase 6B : cartes
+
+- [ ] skin WebP partagé ;
+- [ ] couverture ou fallback ;
+- [ ] style et bannière ;
+- [ ] palette ;
+- [ ] version ;
+- [ ] date relative et date complète ;
+- [ ] progression manuelle facultative ;
+- [ ] cinq actions sur une ligne ;
+- [ ] GitHub ;
+- [ ] application ;
+- [ ] README ;
+- [ ] détail ;
+- [ ] personnalisation admin ;
+- [ ] infobulles au survol et au focus ;
+- [ ] état archivé lisible ;
+- [ ] nom long ;
+- [ ] description longue ;
+- [ ] image en erreur.
+
+## Modale
+
+- [ ] invisible hors admin ;
+- [ ] titre et description accessibles ;
+- [ ] focus piégé ;
+- [ ] fermeture Échap ;
+- [ ] restauration du focus ;
+- [ ] aperçu ;
+- [ ] choix du style ;
+- [ ] couleurs ;
+- [ ] progression ;
+- [ ] version ;
+- [ ] couverture et recadrage ;
+- [ ] annulation sans effet ;
+- [ ] publication avec état ;
+- [ ] erreur annoncée ;
+- [ ] conflit annoncé ;
+- [ ] lien vers la PR.
+
+## GitHub et serveur
+
+- [ ] GitHub App limitée au dépôt ;
+- [ ] permissions minimales ;
+- [ ] secret serveur seulement ;
+- [ ] session sécurisée ;
+- [ ] compte autorisé ;
+- [ ] CSRF et origine ;
+- [ ] schéma strict ;
+- [ ] chemins autorisés ;
+- [ ] base SHA contrôlée ;
+- [ ] branche créée ;
+- [ ] commit créé ;
+- [ ] PR créée ;
+- [ ] aucune fusion automatique ;
+- [ ] aucun commit direct sur `main`.
+
+## Couverture
+
+- [ ] PNG/JPEG/WebP accepté ;
+- [ ] autre format refusé ;
+- [ ] signature réelle contrôlée ;
+- [ ] taille maximale ;
+- [ ] recadrage 8:5 ;
+- [ ] 640 × 400 ;
+- [ ] métadonnées retirées ;
+- [ ] WebP final ;
+- [ ] 35 à 80 Ko visés ;
+- [ ] nom canonique ;
+- [ ] ancienne référence remplacée proprement.
+
+## Accessibilité
+
+- [ ] clavier ;
+- [ ] focus ;
+- [ ] cibles 44 px ;
+- [ ] contraste ;
+- [ ] infobulles non exclusives ;
+- [ ] alt ;
+- [ ] lecteurs d’écran ;
+- [ ] zoom 200 % ;
+- [ ] mouvement réduit ;
+- [ ] images bloquées ;
+- [ ] messages d’état.
+
+## Formats 6B
+
+- [ ] tablette paysage 1024 px ;
+- [ ] tablette paysage 1366 px ;
+- [ ] bureau 1440 px ;
+- [ ] grand bureau 1920 px ;
+- [ ] écran bas ;
+- [ ] zoom 200 %.
+
+La robustesse étroite peut être testée, mais 6B ne définit pas une expérience smartphone dédiée.
 
 ## Performance
 
-- [ ] poids CSS et JavaScript avant/après ;
-- [ ] poids des nouveaux assets ;
-- [ ] poids du shell critique ;
+- [ ] CSS et JS avant/après ;
+- [ ] poids des assets ;
 - [ ] requêtes initiales ;
+- [ ] lazy loading ;
+- [ ] ratios réservés ;
 - [ ] LCP ;
 - [ ] CLS ;
-- [ ] interaction depuis le cache ;
-- [ ] cache froid et chaud ;
-- [ ] réseau limité ;
-- [ ] images bloquées ;
-- [ ] lazy loading ;
-- [ ] aucune couverture 960 dans une carte compacte ;
-- [ ] aucune police inutile ;
-- [ ] appareil moyen ;
-- [ ] iPad réel lorsque disponible ;
-- [ ] écart de budget approuvé.
-
-## PWA et hors ligne
-
-- [ ] shell hors ligne ;
-- [ ] dernier snapshot visible ;
-- [ ] assets critiques mis en cache ;
-- [ ] absence d’asset non critique tolérée ;
-- [ ] service worker contrôlé ;
-- [ ] IndexedDB préservé ;
-- [ ] installation iOS contrôlée ;
-- [ ] version visible mise à jour.
-
-## Fonctionnel non régressé
-
-- [ ] synchronisation ;
-- [ ] limite GitHub ;
-- [ ] changement de profil ;
-- [ ] dashboard ;
-- [ ] catalogue ;
-- [ ] recherche ;
-- [ ] filtres ;
-- [ ] favoris ;
-- [ ] fiche directe ;
-- [ ] détails ;
-- [ ] activité ;
-- [ ] paramètres ;
-- [ ] diagnostic ;
-- [ ] reset ciblé ;
-- [ ] hors ligne ;
-- [ ] renommage et alias.
+- [ ] cache froid/chaud ;
+- [ ] grille complète ;
+- [ ] modale chargée à la demande ;
+- [ ] upload mesuré.
 
 ## CI et revue
 
 - [ ] `npm ci` ;
-- [ ] TypeScript strict ;
-- [ ] ESLint ;
-- [ ] Vitest complet ;
-- [ ] smoke test GitHub ;
-- [ ] build Vite ;
-- [ ] aucun test désactivé ;
+- [ ] typecheck ;
+- [ ] lint ;
+- [ ] tests ;
+- [ ] smoke tests ;
+- [ ] build ;
 - [ ] diff relu ;
-- [ ] fichiers parasites absents ;
-- [ ] dépendances justifiées ;
-- [ ] revue Codex demandée ;
+- [ ] revue demandée ;
 - [ ] fils interrogés ;
-- [ ] P1 et P2 corrigés avec tests ;
-- [ ] fils résolus ;
-- [ ] seconde interrogation ;
+- [ ] P1/P2 corrigés ;
 - [ ] CI verte sur le SHA exact ;
-- [ ] fusion verrouillée ;
 - [ ] `main` contrôlé.
 
-## No-Go final
+## No-Go
 
-No-Go si : donnée fictive, contraste bloquant, fonction perdue, fallback cassé, hors ligne dégradé, focus perdu, scroll horizontal, asset distant, secret, animation obligatoire, budget non approuvé, nom ou dimensions non conformes, nouveau sous-dossier runtime ou ajout dans l’exception héritée, prototype hérité utilisé, P1/P2 ouvert, CI non verte ou vue majeure non traitée.
+No-Go si secret, écriture hors liste blanche, progression déduite, conteneur de section réintroduit, rail droit réintroduit, bouton admin public, PR fusionnée automatiquement, fallback cassé, régression hors ligne, budget non approuvé ou P1/P2 ouvert.

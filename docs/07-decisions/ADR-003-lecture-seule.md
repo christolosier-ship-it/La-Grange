@@ -1,27 +1,35 @@
-# ADR-003 — Lecture seule
+# ADR-003 - Lecture seule des données de projets
 
-- **Statut** : accepté
-- **Date** : 2026-07-28
+- **Statut** : partiellement remplacé par ADR-010
+- **Date initiale** : 2026-07-28
+- **Révision** : 2026-08-02
 
-## Contexte
+## Décision maintenue
 
-La Grange est conçue comme une porte d’entrée et une galerie, pas comme un outil de gestion GitHub.
+La Grange ne modifie aucune donnée métier des dépôts présentés :
 
-## Décision
+- issues ;
+- pull requests des projets ;
+- labels ;
+- releases ;
+- branches ;
+- contenu des dépôts projets.
 
-Le MVP ne réalise aucune écriture distante : pas d’issue, de PR, de label, de commentaire, de release ou de modification de repo.
+La consultation publique demeure anonyme et cache-first.
 
-## Raisons
+## Exception 6B
 
-- sécurité maximale sans authentification ;
-- interface plus simple ;
-- absence de responsabilité destructive ;
-- distinction claire avec GitHub ;
-- cohérence avec « pas de pilotage ».
+ADR-010 autorise un chemin d’administration strictement limité au dépôt `La-Grange`, pour modifier sa configuration éditoriale et ses couvertures.
 
-## Conséquences
+Cette exception :
 
-- les actions ouvrent des destinations externes ;
-- aucune connexion n’est nécessaire ;
-- les préférences locales ne sont pas synchronisées ;
-- toute future écriture exige authentification, autorisations minimales, backend éventuel et nouvel ADR.
+- exige une authentification ;
+- utilise une GitHub App côté serveur ;
+- crée uniquement une branche, un commit et une PR ;
+- ne fusionne jamais automatiquement ;
+- ne donne aucun accès d’écriture aux dépôts présentés ;
+- ne met aucun secret dans le navigateur.
+
+## Conséquence
+
+La Grange reste un hub de consultation des projets. Elle devient seulement capable de proposer, dans son propre dépôt, une modification versionnée de sa présentation.

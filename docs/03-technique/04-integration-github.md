@@ -1,54 +1,70 @@
 # Intégration GitHub
 
-## Endpoint principal
+## Deux chemins distincts
 
-Utiliser l’endpoint public listant les dépôts d’un utilisateur, avec pagination jusqu’à absence de page suivante. Paramètres retenus : tri par mise à jour, direction descendante, dépôts possédés par l’utilisateur et taille de page maximale autorisée.
+### Lecture publique
 
-## Requêtes depuis le navigateur
+La liste globale des dépôts reste récupérée par l’API REST GitHub publique, sans jeton côté navigateur. Elle utilise le cache, la pagination et les limites déjà établies.
 
-La Grange utilise des requêtes CORS simples, sans jeton et sans en-tête personnalisé. Cette décision évite les prévalidations fragiles observées sur Safari/iOS et conserve le bon récepteur natif de `Window.fetch`.
+Données principales : identité du dépôt, description, URL, page d’accueil, archive, fork, langage, branche par défaut, topics, dates et issues ouvertes.
 
-Les requêtes utilisent :
+### Administration 6B
 
-- `credentials: omit` ;
-- `cache: no-store` pour laisser IndexedDB piloter la fraîcheur métier ;
-- `redirect: follow` ;
-- `referrerPolicy: no-referrer`.
+La personnalisation utilise une GitHub App côté serveur. Elle n’accorde aucun accès direct au navigateur et ne remplace pas le client public de consultation.
 
-L’application ne dépend pas d’un ETag navigateur pour fonctionner. Le champ reste toléré dans le modèle de cache pour compatibilité de schéma, mais la stratégie active repose sur la durée de fraîcheur et la synchronisation explicite.
+## Détails et versions
 
-## Données exploitées
+Les détails d’une fiche restent chargés à la demande. La version affichée sur une carte respecte :
 
-`id`, `node_id`, `name`, `description`, `html_url`, `homepage`, `fork`, `archived`, `language`, `default_branch`, `topics`, `open_issues_count`, `created_at`, `updated_at`, `pushed_at`.
+1. version manuelle ;
+2. dernière release stable ;
+3. dernière préversion ;
+4. absence de badge.
 
-## Limites
+Les brouillons sont ignorés. La récupération automatique est mutualisée et mise en cache, jamais exécutée séparément à chaque rendu de carte.
 
-Sans authentification, le quota public est partagé par adresse IP. La Grange limite les appels grâce au cache, au délai de fraîcheur et au chargement ciblé. Elle ne doit jamais interroger chaque dépôt lors du rafraîchissement global.
+## GitHub App
 
-## Détails à la demande
+Installation limitée au dépôt `christolosier-ship-it/La-Grange`.
 
-La fiche peut demander, uniquement après une action explicite de l’utilisateur :
+Permissions :
 
-- les trois derniers commits ;
-- la dernière release ;
-- l’existence et l’URL du README.
+- `metadata: read` ;
+- `contents: read/write` ;
+- `pull_requests: read/write`.
 
-Le contenu HTML distant du README n’est jamais injecté dans La Grange. Ces trois réponses sont validées, transformées en modèle interne puis conservées dans le cache `projectDetails` pendant 45 minutes. Une fiche affichée depuis l’inventaire reste utilisable si ce chargement échoue.
+Aucune permission issues, administration, actions, secrets ou organisation.
+
+## Création d’une personnalisation
+
+Le service sécurisé :
+
+1. vérifie l’identité administrateur ;
+2. contrôle que le dépôt cible est exactement `La-Grange` ;
+3. relit le SHA de base ;
+4. refuse une base obsolète ou repropose un rafraîchissement ;
+5. modifie `public/data/project-overrides.json` ;
+6. ajoute ou remplace la couverture autorisée ;
+7. crée une branche et un commit ;
+8. ouvre une PR en brouillon ou prête selon la politique retenue ;
+9. ne fusionne jamais la PR.
 
 ## Erreurs
 
-- 403/429 avec quota épuisé : lire l’heure de reprise et suspendre les relances ;
-- 404 sur release ou README : absence normale de la ressource ;
-- 404 sur le dépôt : détail introuvable sans casser la fiche de base ;
-- 409 sur les commits : dépôt vide ;
-- 5xx ou erreur réseau : conserver les détails locaux et proposer un réessai ;
-- réponse invalide : ne jamais écrire la réponse dans IndexedDB.
+- session absente : `401` ;
+- compte non autorisé : `403` ;
+- configuration ou image invalide : `422` ;
+- base Git dépassée : `409` ;
+- limite GitHub : `429` avec reprise ;
+- erreur GitHub ou réseau : `502` sans perte du formulaire ;
+- PR déjà ouverte pour le même projet : proposer son URL plutôt que créer un doublon.
 
-## Références
+## Contraintes
 
-- https://docs.github.com/en/rest/repos/repos
-- https://docs.github.com/en/rest/commits/commits
-- https://docs.github.com/en/rest/releases/releases
-- https://docs.github.com/en/rest/repos/contents
-- https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
-- https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api
+- aucun secret dans le bundle ;
+- aucune URL GitHub fournie librement par le client ;
+- aucun HTML distant injecté ;
+- aucune mutation d’un autre dépôt ;
+- aucun commit direct sur `main` ;
+- aucune fusion automatique ;
+- aucune donnée factuelle remplacée par une saisie éditoriale.

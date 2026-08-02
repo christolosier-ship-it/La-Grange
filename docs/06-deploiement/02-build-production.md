@@ -2,39 +2,47 @@
 
 ## Objectif
 
-Produire un dossier statique autonome, compatible avec le sous-chemin GitHub Pages du dépôt `La-Grange`.
+Produire le build PWA et les Functions d’administration sans exposer les variables serveur.
 
-## Configuration Vite
+## Cibles
 
-Le `base` doit correspondre à `/La-Grange/` lorsque le site est publié à l’adresse standard du projet. Si un domaine personnalisé ou un site racine est utilisé plus tard, ce choix doit devenir configurable et documenté.
+### Netlify canonique
+
+- `base` racine ou domaine configuré ;
+- build Vite ;
+- assets locaux ;
+- manifest et service worker ;
+- Functions déployées séparément ;
+- variables secrètes disponibles uniquement à l’exécution serveur.
+
+### GitHub Pages de consultation
+
+- `base` `/La-Grange/` ;
+- build statique seulement ;
+- administration absente ou indisponible explicitement ;
+- aucun secret.
 
 ## Étapes
 
-1. installation reproductible des dépendances ;
+1. `npm ci` ;
 2. typecheck ;
 3. lint ;
 4. tests ;
-5. génération du build ;
-6. vérification des assets et du manifest ;
-7. prévisualisation locale du dossier produit ;
-8. audit des chemins et du service worker.
-
-## Contenu attendu
-
-- HTML d’entrée ;
-- bundles avec hash ;
-- manifest ;
-- icônes ;
-- service worker ;
-- textures et assets optimisés ;
-- fichier d’overrides ;
-- fallback de navigation.
+5. tests des Functions ;
+6. build Vite ;
+7. validation des assets et données générées ;
+8. inspection du bundle ;
+9. preview ;
+10. smoke tests.
 
 ## Contrôles
 
-- aucune source map publique contenant un secret ;
-- aucun chemin commençant par `/src` ;
-- aucune dépendance de développement dans le runtime ;
-- assets résolus sous le bon `base` ;
-- ouverture d’une route hash après rechargement ;
-- taille des bundles conforme au budget.
+- aucune variable serveur dans `dist` ;
+- aucun secret dans les source maps ;
+- chemins d’assets corrects ;
+- overrides valides ;
+- index de releases valide s’il est généré ;
+- route hash fonctionnelle ;
+- service worker isolé ;
+- bundle admin chargé à la demande ;
+- budgets respectés.

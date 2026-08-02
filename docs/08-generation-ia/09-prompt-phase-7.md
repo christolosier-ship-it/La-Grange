@@ -1,21 +1,35 @@
-# Prompt Phase 7 — Validation et release
+# Prompt Phase 7 - Validation et release
 
-Exécute `docs/05-realisation/09-phase-7-validation-release.md` sans ajouter de fonctionnalité.
+N’exécute cette phase qu’après déclaration explicite de fin de Phase 6 par le propriétaire.
 
 ## Travaux
 
-- audit produit, architecture, sécurité, qualité, accessibilité, performance et PWA ;
-- exécution de toutes les commandes ;
-- contrôle du bundle ;
-- essais réseau, limite API, cache et hors ligne ;
-- essais iPhone, iPad et bureau ;
-- mise à jour version, changelog et documentation ;
-- préparation du déploiement et du rollback.
+- audit produit ;
+- architecture ;
+- sécurité ;
+- GitHub App et Functions ;
+- modèle et migrations ;
+- tests ;
+- accessibilité ;
+- performance ;
+- PWA et hors ligne ;
+- déploiement ;
+- personnalisation multi-appareil ;
+- permissions et liste blanche ;
+- assets et licences ;
+- documentation ;
+- version, tag, release et rollback.
 
 ## Sortie
 
-Rapport Go / No-Go avec preuves. En cas de No-Go, corriger uniquement les anomalies nécessaires, relancer les contrôles puis documenter les risques résiduels.
+Rapport Go / No-Go avec preuves. Corriger uniquement les anomalies nécessaires. Ne pas ajouter une nouvelle personnalisation UI/UX pendant la Phase 7.
 
 ## Interdictions
 
-Ne pas maquiller un échec de test, ignorer un avertissement critique ou ajouter une amélioration visuelle de dernière minute non testée.
+- lancer avant clôture de la Phase 6 ;
+- maquiller un test ;
+- ignorer un P1/P2 ;
+- ajouter un secret ;
+- assouplir les permissions ;
+- activer la fusion automatique ;
+- modifier une vue sans contrat.

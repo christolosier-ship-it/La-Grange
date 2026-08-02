@@ -1,31 +1,37 @@
 # Gestion des versions
 
-## Schéma
+## Produit
 
 Semantic Versioning : `MAJOR.MINOR.PATCH`.
 
-- MAJOR : rupture importante de stockage, architecture ou comportement ;
-- MINOR : fonction compatible ;
-- PATCH : correction compatible.
+La valeur canonique de La Grange reste définie une seule fois et affichée en bas du rail gauche.
 
-Pendant le développement initial, les versions `0.x` peuvent évoluer rapidement, mais les migrations IndexedDB restent obligatoires dès que des données utilisateur existent.
+## Versions des projets
 
-## Sources de version
+La version affichée sur une carte n’est pas la version de La Grange. Elle suit :
 
-Une seule valeur canonique dans `package.json`, injectée au build dans l’interface. Le manifest, le changelog et le tag doivent être cohérents avec elle.
+1. version manuelle de l’override ;
+2. release stable ;
+3. préversion ;
+4. aucune.
 
-## Tags
+Le texte du tag est conservé.
 
-Tags annotés `vX.Y.Z` créés uniquement après validation et fusion sur `main`.
+## Configuration
 
-## Cache PWA
+`project-overrides.json` possède son propre `schemaVersion`. Une évolution incompatible exige validation, migration et tests.
 
-La version du cache du service worker n’est pas un substitut à la version produit. Elle change lorsque les stratégies ou assets précachés l’exigent.
+## API admin
 
-## Changelog
+Les contrats des Functions sont versionnés lorsque leur format change. Le client et le serveur doivent être compatibles pendant un déploiement progressif.
 
-Chaque PR ajoute ses changements à `Non publié`. Lors d’une release, déplacer les entrées sous la version datée.
+## PWA
 
-## Compatibilité
+La version du cache reste distincte de la version produit. Elle change lorsque les ressources précachées ou la stratégie l’exigent.
 
-Toute modification du modèle IndexedDB documente : version précédente, migration, stratégie d’échec et test de retour arrière logique.
+## Tags et changelog
+
+- tag `vX.Y.Z` après validation sur `main` ;
+- changelog mis à jour dans chaque PR ;
+- une PR de personnalisation n’augmente pas obligatoirement la version produit ;
+- une modification de code ou de schéma suit la politique normale.

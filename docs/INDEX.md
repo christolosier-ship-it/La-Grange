@@ -2,81 +2,92 @@
 
 Cette documentation est la source de vérité de La Grange.
 
-## Ordre de lecture recommandé
+## Ordre de lecture
 
-1. **Fondations** : vision, limites et vocabulaire.
-2. **Produit** : utilisateurs, parcours et règles métier.
-3. **UX/UI** : vues, composants, responsive et accessibilité.
-4. **Technique** : architecture, données, GitHub, cache et PWA.
-5. **Qualité** : tests et critères de sortie.
-6. **Réalisation** : ordre des phases et livrables.
-7. **Déploiement** : publication et retour arrière.
-8. **Décisions** : raisons des choix structurants.
-9. **Génération IA** : prompts et garde-fous pour réaliser le projet.
+1. fondations ;
+2. produit ;
+3. UX/UI ;
+4. technique ;
+5. qualité ;
+6. réalisation ;
+7. déploiement ;
+8. ADR ;
+9. génération IA.
 
-## Source de vérité en cas de conflit
+## Priorité en cas de conflit
 
 1. ADR accepté le plus récent ;
 2. règles métier ;
-3. spécification de la vue ou du composant ;
-4. document de phase ;
-5. README.
+3. contrat de vue ou de composant validé ;
+4. conception technique ;
+5. document de phase ;
+6. registre opérationnel pour les assets ;
+7. README.
 
-Exception Phase 6 : l’ADR-009 fixe la gouvernance, puis `05-realisation/10-suivi-production-assets-phase-6.md` prime pour tous les contrats opérationnels d’assets, notamment les identifiants, noms de fichiers, formats, dimensions, `viewBox`, transparences, usages, fallbacks, budgets, sources, provenances, droits, dépendances, affectations aux lots, priorités, statuts et ordre de production.
+Un conflit doit être corrigé avant implémentation.
 
-L’ADR-009 fixe la gouvernance et l’exception transitoire des prototypes hérités. Le registre fixe ensuite le contrat précis de chaque fichier. Un document secondaire ne peut ni créer une variante implicite, ni élargir un budget, ni valider un statut absent du registre.
+## État des phases
 
-Un conflit documentaire doit être corrigé avant d’implémenter. Il ne doit pas être arbitré silencieusement dans le code.
+- Phases 1 à 5 : implémentées ;
+- Phase 6A : fondations visuelles intégrées ;
+- Phase 6B : dashboard et personnalisation définis ;
+- suite de Phase 6 : volontairement non définie ;
+- Phase 7 : conservée pour l’audit et la release.
 
-## Dossier de cadrage Phase 6
+Aucun document ne doit réintroduire une étape Phase 6 future sans décision du propriétaire.
 
-Avant toute production ou modification visuelle, lire dans cet ordre :
+## Dossier Phase 6B
+
+Lire dans cet ordre :
 
 1. [`02-ux-ui/01-direction-artistique.md`](02-ux-ui/01-direction-artistique.md) ;
-2. [`02-ux-ui/03-specification-vues.md`](02-ux-ui/03-specification-vues.md) ;
-3. [`02-ux-ui/04-specification-composants.md`](02-ux-ui/04-specification-composants.md) ;
-4. [`02-ux-ui/05-design-system.md`](02-ux-ui/05-design-system.md) ;
-5. [`02-ux-ui/06-responsive-design.md`](02-ux-ui/06-responsive-design.md) ;
-6. [`02-ux-ui/07-animations.md`](02-ux-ui/07-animations.md) ;
+2. [`02-ux-ui/10-bible-visuelle-phase-6.md`](02-ux-ui/10-bible-visuelle-phase-6.md) ;
+3. [`02-ux-ui/12-contrat-dashboard-phase-6b.md`](02-ux-ui/12-contrat-dashboard-phase-6b.md) ;
+4. [`02-ux-ui/04-specification-composants.md`](02-ux-ui/04-specification-composants.md) ;
+5. [`02-ux-ui/05-design-system.md`](02-ux-ui/05-design-system.md) ;
+6. [`02-ux-ui/06-responsive-design.md`](02-ux-ui/06-responsive-design.md) ;
 7. [`02-ux-ui/09-accessibilite.md`](02-ux-ui/09-accessibilite.md) ;
-8. [`02-ux-ui/10-bible-visuelle-phase-6.md`](02-ux-ui/10-bible-visuelle-phase-6.md) ;
-9. [`02-ux-ui/11-inventaire-assets-phase-6.md`](02-ux-ui/11-inventaire-assets-phase-6.md) ;
-10. [`03-technique/11-performance.md`](03-technique/11-performance.md) ;
-11. [`04-qualite/14-checklist-phase-6.md`](04-qualite/14-checklist-phase-6.md) ;
-12. [`05-realisation/08-phase-6-polissage-visuel.md`](05-realisation/08-phase-6-polissage-visuel.md) ;
-13. [`05-realisation/10-suivi-production-assets-phase-6.md`](05-realisation/10-suivi-production-assets-phase-6.md) ;
-14. [`07-decisions/ADR-009-github-source-verite-production-assets.md`](07-decisions/ADR-009-github-source-verite-production-assets.md) ;
-15. [`08-generation-ia/08-prompt-phase-6.md`](08-generation-ia/08-prompt-phase-6.md) ;
-16. [`08-generation-ia/13-protocole-production-assets-phase-6.md`](08-generation-ia/13-protocole-production-assets-phase-6.md).
+8. [`02-ux-ui/11-inventaire-assets-phase-6.md`](02-ux-ui/11-inventaire-assets-phase-6.md) ;
+9. [`03-technique/01-architecture-systeme.md`](03-technique/01-architecture-systeme.md) ;
+10. [`03-technique/03-modele-donnees.md`](03-technique/03-modele-donnees.md) ;
+11. [`03-technique/10-securite.md`](03-technique/10-securite.md) ;
+12. [`03-technique/11-performance.md`](03-technique/11-performance.md) ;
+13. [`03-technique/12-configuration-overrides.md`](03-technique/12-configuration-overrides.md) ;
+14. [`03-technique/13-personnalisation-github.md`](03-technique/13-personnalisation-github.md) ;
+15. [`04-qualite/14-checklist-phase-6.md`](04-qualite/14-checklist-phase-6.md) ;
+16. [`05-realisation/08-phase-6-polissage-visuel.md`](05-realisation/08-phase-6-polissage-visuel.md) ;
+17. [`05-realisation/10-suivi-production-assets-phase-6.md`](05-realisation/10-suivi-production-assets-phase-6.md) ;
+18. [`05-realisation/11-phase-6b-dashboard-personnalisation.md`](05-realisation/11-phase-6b-dashboard-personnalisation.md) ;
+19. [`06-deploiement/07-deploiement-netlify.md`](06-deploiement/07-deploiement-netlify.md) ;
+20. [`07-decisions/ADR-009-github-source-verite-production-assets.md`](07-decisions/ADR-009-github-source-verite-production-assets.md) ;
+21. [`07-decisions/ADR-010-personnalisation-versionnee-via-github.md`](07-decisions/ADR-010-personnalisation-versionnee-via-github.md) ;
+22. [`08-generation-ia/13-protocole-production-assets-phase-6.md`](08-generation-ia/13-protocole-production-assets-phase-6.md).
 
 Référence visuelle :
 
 [`assets/phase-6/reference-dashboard-grange.webp`](assets/phase-6/reference-dashboard-grange.webp)
 
-## Gouvernance de la Phase 6
+## Gouvernance des assets
 
-- GitHub et la documentation restent les sources de vérité ;
-- le registre `10-suivi-production-assets-phase-6.md` est l’unique catalogue autorisé ;
-- le cycle est A/R pour les sources M/S, P/V pour les assets versionnés, puis I lors de leur consommation réelle ;
-- les planches G utilisent P/V dans `docs/assets/phase-6/`, ne reçoivent jamais I, sont produites après les changements des PR d’intégration et bloquent leur fusion, pas leur démarrage ;
-- un seul fichier est produit, contrôlé et validé à la fois ;
-- une source M ou S, y compris toute source amont, est versionnée avant tout dérivé ;
-- un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback possède P/V avant son dépendant ;
-- un fallback HTML, CSS, système ou runtime hors registre est décrit exactement par sa ligne du registre puis présent et testé sans faux P/V ; une création interne documente sa provenance sans R artificiel ;
-- un contrôle CSS est spécifié avant le lot puis intégré dans sa PR avant fusion ;
-- aucune production en masse sans validation intermédiaire ;
-- les nouveaux fichiers canoniques sont versionnés à plat dans `docs/assets/phase-6/` ou `public/assets/phase-6/` selon leur rôle ;
-- I est réservé à la consommation réelle par l’application ;
-- aucun nouveau sous-dossier n’est autorisé dans `public/assets/phase-6/` ;
-- les cinq sous-dossiers historiques sont une exception transitoire gelée, sans nouvel ajout, jusqu’au remplacement manuel de leurs fichiers ;
-- les prototypes hérités ne sont pas canoniques et leur `README.md` et leur `manifest.json` historiques n’ont aucune autorité sur les statuts ;
-- aucun fichier hérité n’est supprimé automatiquement avant son remplacement et le contrôle de ses références ;
-- les ornements P3 restent facultatifs ;
-- une branche et une PR par lot d’intégration ;
-- budgets, fallbacks, provenances, droits, responsive et accessibilité sont documentés ;
-- aucune donnée fictive ;
-- aucun P1 ou P2 ouvert avant fusion.
+- registre unique ;
+- A/R pour les sources ;
+- P/V/I pour les assets ;
+- fichiers canoniques à plat ;
+- prototypes hérités gelés ;
+- un fichier à la fois ;
+- planches après intégration ;
+- aucune production pour une étape future non cadrée.
 
-## Gouvernance générale
+## Gouvernance de l’administration
 
-Chaque PR modifiant le comportement doit identifier les documents impactés. Les décisions structurantes sont immuables sans nouvel ADR. Les documents de phase décrivent un ordre de réalisation, pas une invitation à étendre le périmètre.
+- GitHub App limitée à `La-Grange` ;
+- secret serveur ;
+- compte admin autorisé ;
+- liste blanche de fichiers ;
+- branche et PR ;
+- aucune fusion automatique ;
+- même configuration sur tous les appareils après déploiement.
+
+## Phase 7
+
+La Phase 7 reste définie dans [`05-realisation/09-phase-7-validation-release.md`](05-realisation/09-phase-7-validation-release.md). Elle ne démarre qu’après clôture explicite de toute la Phase 6.

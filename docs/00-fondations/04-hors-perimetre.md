@@ -1,22 +1,24 @@
 # Hors périmètre du MVP
 
-Les fonctions suivantes ne doivent pas être implémentées pendant les phases du MVP :
+Sont exclus :
 
 - accès aux dépôts privés ;
-- connexion OAuth ou GitHub App ;
-- création ou modification d’issues ;
-- merge ou suivi opérationnel de PR ;
+- écriture dans les dépôts présentés ;
+- création ou modification d’issues, releases, labels ou branches de projet ;
+- merge automatique des PR de personnalisation ;
 - Kanban, roadmap, sprint ou Gantt ;
-- notes personnelles synchronisées ;
-- statistiques globales de commits et de branches ;
-- temps de développement ;
+- calcul automatique de l’avancement ;
+- statistiques globales de commits et branches ;
 - webhooks temps réel ;
-- intégration Netlify, Figma, Drive, Sentry ou stores ;
-- multi-utilisateur ;
-- interface d’administration des overrides ;
-- thèmes multiples ;
-- IA générative.
+- multi-utilisateur généraliste ;
+- rôles complexes ;
+- édition du nom technique, de l’URL GitHub ou du README depuis la modale ;
+- thèmes complets multiples ;
+- expérience mobile dédiée ;
+- IA générative au runtime.
 
-## Politique d’extension
+## Exception explicitement incluse
 
-Une idée hors périmètre est consignée dans une issue ou une future roadmap. Elle ne doit pas être glissée dans une phase sous prétexte qu’elle semble rapide. Toute extension qui change la sécurité, le modèle de données ou le déploiement exige un ADR.
+L’authentification administrateur, la GitHub App, les Netlify Functions et la création d’une PR dans `La-Grange` sont incluses uniquement pour la personnalisation éditoriale décrite en Phase 6B.
+
+Toute extension supplémentaire exige une nouvelle décision documentaire et, si elle modifie la sécurité ou les permissions, un ADR.

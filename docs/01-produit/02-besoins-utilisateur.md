@@ -1,27 +1,30 @@
 # Besoins utilisateur
 
-## Besoins prioritaires
+## Consultation
 
-1. Voir tous les dépôts publics sans les saisir manuellement.
-2. Identifier rapidement les projets récemment actifs.
-3. Ouvrir l’application déployée en un geste.
-4. Accéder au dépôt et à sa documentation.
-5. Reconnaître visuellement chaque projet.
-6. Retrouver un projet par recherche ou filtre.
-7. Continuer à consulter la dernière version connue hors ligne.
-8. Savoir quand la synchronisation a réussi ou échoué.
+1. Voir automatiquement tous les dépôts publics.
+2. Identifier les projets actifs, lançables et archivés.
+3. Ouvrir l’application, GitHub, le README ou le détail depuis la carte.
+4. Lire la dernière activité sans ouvrir GitHub.
+5. Reconnaître chaque projet par sa couverture, son style et ses couleurs.
+6. Continuer à consulter le dernier état hors ligne.
 
-## Besoins émotionnels
+## Personnalisation
 
-- ressentir une cohérence entre les créations ;
-- avoir plaisir à parcourir l’interface ;
-- ne pas être noyé dans la technique ;
-- conserver une impression de maîtrise sans tableau de pilotage.
+1. Ouvrir une modale depuis la carte.
+2. Choisir une couverture.
+3. Choisir un style générique.
+4. Conserver les couleurs proposées ou définir trois couleurs cohérentes.
+5. Saisir un avancement manuel.
+6. Saisir une version manuelle facultative.
+7. Publier la modification dans une PR.
+8. Retrouver le même rendu sur plusieurs appareils après déploiement.
 
-## Besoins secondaires
+## Confort
 
-- marquer des favoris ;
-- masquer les forks et archives ;
-- choisir une densité de cartes ;
-- réduire les animations ;
-- distinguer un nouveau dépôt non encore consulté.
+- rail gauche toujours disponible ;
+- grille lisible sans en-têtes redondants ;
+- cinq boutons alignés ;
+- infobulles au survol et au focus ;
+- cible tactile adaptée à l’iPad ;
+- aucune information essentielle uniquement dans une infobulle.

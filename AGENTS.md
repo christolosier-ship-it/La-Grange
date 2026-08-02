@@ -2,116 +2,68 @@
 
 ## Mission
 
-Construire La Grange conformément à la documentation. L’application doit rester un hub personnel en lecture seule, simple, fiable et visuellement chaleureux.
+Construire La Grange conformément à la documentation. L’application reste un hub personnel de consultation, enrichi d’une administration étroitement limitée à la personnalisation éditoriale de ses propres projets.
 
-## Lecture obligatoire avant modification
+## Lecture obligatoire
 
 1. `README.md` ;
 2. `ARCHITECTURE.md` ;
 3. `docs/INDEX.md` ;
-4. le document de phase concerné dans `docs/05-realisation/` ;
-5. les ADR applicables dans `docs/07-decisions/`.
+4. le document de phase concerné ;
+5. les ADR applicables.
 
-Pour toute intervention Phase 6, lire également :
+Pour l’étape 6B, lire en plus :
 
-- `docs/02-ux-ui/10-bible-visuelle-phase-6.md` ;
-- `docs/02-ux-ui/11-inventaire-assets-phase-6.md` ;
-- `docs/05-realisation/08-phase-6-polissage-visuel.md` ;
+- `docs/02-ux-ui/12-contrat-dashboard-phase-6b.md` ;
+- `docs/03-technique/13-personnalisation-github.md` ;
+- `docs/05-realisation/11-phase-6b-dashboard-personnalisation.md` ;
 - `docs/05-realisation/10-suivi-production-assets-phase-6.md` ;
-- `docs/08-generation-ia/13-protocole-production-assets-phase-6.md` ;
-- la performance et la checklist Phase 6 référencées dans `docs/INDEX.md`.
-
-Le registre `10-suivi-production-assets-phase-6.md` est l’unique source de vérité pour les noms, formats, dimensions, transparences, budgets, provenances, droits et statuts des assets.
+- `docs/07-decisions/ADR-010-personnalisation-versionnee-via-github.md`.
 
 ## Interdictions
 
-- ne pas ajouter de backend au MVP ;
-- ne pas introduire React, Vue, Angular ou un autre framework sans ADR validé ;
-- ne jamais placer un token GitHub dans le code, les variables Vite publiques ou le dépôt ;
-- ne pas créer de fonctions de modification GitHub ;
-- ne pas afficher de données fictives comme une progression inventée ;
-- ne pas transformer La Grange en outil de gestion de tâches ;
-- ne pas contourner les limites API par des rafales de requêtes ;
-- ne pas injecter du HTML distant non assaini ;
-- ne pas ajouter de texte fonctionnel dans un asset raster ;
-- ne pas charger une police, une texture ou un asset distant au runtime ;
-- ne pas utiliser une animation permanente pour créer de l’ambiance ;
-- ne pas masquer une modification métier dans une PR visuelle ;
+- ne jamais placer un token GitHub dans le code, le bundle, une variable Vite publique ou le dépôt ;
+- ne pas permettre d’écriture sur un dépôt autre que `La-Grange` ;
+- ne pas écrire directement sur `main` depuis l’application ;
+- ne pas fusionner automatiquement une PR de personnalisation ;
+- ne pas modifier issues, releases, labels, branches de projets ou réglages de dépôt ;
+- ne pas inventer de donnée technique ;
+- ne pas calculer un avancement depuis les commits, issues ou branches ;
+- ne pas transformer La Grange en outil de pilotage ;
+- ne pas ajouter de framework UI sans ADR ;
+- ne pas rasteriser de texte fonctionnel ;
+- ne pas ajouter de fond ou conteneur derrière la grille de cartes ;
+- ne pas réintroduire les sections « L’établi », « Prêts à partir » ou le lien « Voir tout l’inventaire » ;
 - ne pas produire plusieurs assets sans validation intermédiaire ;
-- ne pas inventer un nom, un format, une dimension ou un budget absent du registre ;
-- ne pas créer de nouveau sous-dossier dans `public/assets/phase-6/` ;
-- ne pas ajouter de fichier dans les sous-dossiers hérités gelés ;
-- ne pas intégrer de ZIP, Base64, fragment ou workflow de reconstruction ;
-- ne pas considérer un prototype hérité comme un asset validé.
+- ne pas intégrer les SVG de la PR historique C01 à C10 comme direction finale ;
+- ne pas recréer des étapes futures de Phase 6 sans instruction du propriétaire.
 
-## Règles de code
+## Règles 6B
 
-- TypeScript strict ;
-- modules courts et à responsabilité unique ;
-- logique métier indépendante du DOM ;
-- fonctions pures pour mapping, tri, filtre et calcul d’état ;
-- textes UI centralisés lorsque réutilisés ;
-- CSS basé sur les tokens du design system ;
-- composants accessibles au clavier ;
-- pas de dépendance sans justification documentée.
+- rail gauche fixe sur tablette paysage et bureau ;
+- zone principale seule défilante ;
+- statistiques HTML superposées à un bandeau WebP unique ;
+- cartes directement posées sur le fond général de La Grange ;
+- une seule grille continue, sans en-tête de section ;
+- cadre matériel en WebP, structure et contenu en HTML/CSS, icônes en SVG ;
+- cinq actions alignées : GitHub, application, README, détail, personnalisation ;
+- infobulles au survol et au focus ;
+- bouton de personnalisation invisible hors session administrateur ;
+- avancement manuel facultatif ;
+- version manuelle prioritaire, sinon dernière release GitHub ;
+- personnalisation enregistrée par PR automatique ;
+- tablette paysage et bureau sont les formats d’acceptation.
 
-## Règles visuelles Phase 6
+## Qualité
 
-- GitHub et la documentation restent la source de vérité ;
-- un seul fichier est produit, contrôlé puis validé à la fois ;
-- le cycle de preuve est A puis R pour une source M/S, P puis V pour un asset versionné, et I uniquement lors de sa consommation réelle ;
-- une source M ou S doit être approuvée et versionnée avant tout dérivé ;
-- une source S dérivée d’une autre source ne peut recevoir R que lorsque sa source amont est elle-même R ;
-- un asset exige R seulement pour une source M/S explicitement citée et P/V seulement pour un asset canonique Phase 6 cité par identifiant ;
-- un fallback HTML, CSS, système ou runtime hors registre n’est autorisé que si la ligne du registre décrit son implémentation exacte — sélecteurs consommateurs et feuilles versionnées pour le CSS, chemin versionné s’il s’agit d’un fichier ; il doit être présent et testé sans recevoir de faux statut P/V, y compris chacun des quatre chemins runtime distincts d’A09 à A12 ;
-- une création interne renseigne sa méthode, sa provenance et ses droits sans R artificiel ;
-- le fichier final respecte exactement le nom, le format, les dimensions, l’alpha et le budget du registre ;
-- tout SVG respecte un `viewBox` canonique complet à quatre valeurs numériques ;
-- tout export dérivé, y compris chaque fichier F et chaque planche G, renseigne sa propre méthode d’export ou de capture, son outil et son auteur avant P ;
-- les assets P et V sont versionnés à la racine de `public/assets/phase-6/`, même avant leur consommation ;
-- I n’est coché que lorsque l’application consomme réellement le fichier ;
-- un contrôle CSS doit être spécifié avant le lot puis intégré dans sa PR ;
-- les planches d’acceptation sont produites après les changements du lot et avant sa fusion ;
-- les anciens sous-dossiers restent une exception transitoire gelée jusqu’au remplacement manuel ;
-- le `README.md` et le `manifest.json` historiques du dossier d’assets n’attribuent aucun statut et ne priment jamais sur le registre ;
-- le décor ne modifie ni le rôle, ni les données, ni les états d’un composant ;
-- le texte reste en HTML ;
-- chaque asset critique possède un fallback CSS ou SVG ;
-- le focus reste visible au-dessus des textures ;
-- les budgets d’assets sont mesurés et publiés ;
-- le mobile, la tablette et le bureau sont conçus comme des compositions distinctes ;
-- le mouvement réduit conserve l’état final sans animation décorative ;
-- une sortie IA brute est nettoyée, renommée, dimensionnée, compressée et validée avant production ;
-- les objets décoratifs sont inertes et hors de l’arbre d’accessibilité.
+Avant PR :
 
-## Qualité obligatoire
-
-Avant toute PR :
-
-- typecheck ;
-- tests unitaires ;
-- tests d’intégration concernés ;
-- build de production ;
-- vérification mobile, tablette et bureau ;
-- test hors ligne si le cache ou le service worker change ;
-- mise à jour du changelog et de la documentation.
-
-Pour une PR Phase 6, ajouter :
-
-- poids CSS avant et après ;
-- poids des nouveaux assets ;
-- contrôle des signatures, dimensions et transparences ;
-- contrôle des fallbacks ;
-- contrôle des contrastes sur les textures finales ;
-- contrôle 320, 390, 768, 1024, 1440 et 1920 px selon le lot ;
-- zoom 200 % ;
-- mouvement réduit ;
-- lazy loading ;
-- LCP et CLS ;
-- revue Codex et interrogation réelle des review threads.
-
-## Définition de terminé
-
-Une tâche n’est terminée que si son comportement nominal, ses erreurs, son état vide, son responsive et son accessibilité sont couverts.
-
-Une tâche Phase 6 n’est pas terminée si elle dépend d’un prototype non canonique, si le registre n’est pas exact, si une source manque, si le fichier n’a pas son nom, ses dimensions, son alpha ou son budget final, si elle dégrade le hors ligne, si elle invente une donnée ou si un P1 ou P2 reste ouvert.
+- typecheck, lint, tests, build ;
+- tests de sécurité du chemin administrateur ;
+- contrôle de permissions de la GitHub App ;
+- validation des fichiers image ;
+- test de conflit de base Git ;
+- test sans image, hors ligne, mouvement réduit et zoom 200 % ;
+- contrôle 1024, 1366, 1440 et 1920 px ;
+- audit du diff et de la documentation ;
+- aucun P1 ou P2 ouvert avant fusion.

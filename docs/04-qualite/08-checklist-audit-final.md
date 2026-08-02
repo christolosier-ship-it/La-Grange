@@ -2,112 +2,121 @@
 
 ## Cohérence produit
 
-- [ ] l’application reste un hub en lecture seule ;
-- [ ] aucune fonction de pilotage ;
-- [ ] ajout automatique démontré ;
-- [ ] toutes les données ont une provenance claire ;
-- [ ] aucune métrique décorative ;
-- [ ] aucune donnée de démonstration ou de prototype dans le chemin de production ;
-- [ ] aucune progression, release, branche ou conflit inventé pour reproduire la référence.
+- [ ] les projets publics apparaissent automatiquement ;
+- [ ] les données GitHub restent factuelles ;
+- [ ] la progression est facultative et clairement manuelle ;
+- [ ] la version suit la priorité documentée ;
+- [ ] la personnalisation ne devient pas un outil de gestion GitHub ;
+- [ ] aucune fonction future non cadrée n’est présente.
 
 ## Architecture
 
-- [ ] dépendances orientées vers le domaine ;
-- [ ] aucun composant n’appelle directement IndexedDB ou GitHub ;
-- [ ] synchronisation atomique ;
-- [ ] pagination et annulation ;
-- [ ] migrations de données ;
-- [ ] routeur compatible Pages ;
-- [ ] GitHub et la documentation restent la source de vérité ;
-- [ ] aucune architecture parallèle requise au runtime ;
-- [ ] aucune dépendance visuelle lourde non justifiée.
+- [ ] consultation publique séparée de l’administration ;
+- [ ] GitHub App limitée à `La-Grange` ;
+- [ ] Functions sous la même origine canonique ;
+- [ ] aucun secret côté client ;
+- [ ] aucun commit direct sur `main` ;
+- [ ] aucune fusion automatique ;
+- [ ] conflit Git géré ;
+- [ ] liste blanche des chemins.
+
+## Dashboard 6B
+
+- [ ] rail gauche fixe ;
+- [ ] marque, navigation et synchronisation dans le rail ;
+- [ ] version et état admin au bas du rail ;
+- [ ] contenu principal défilant ;
+- [ ] un seul bandeau de statistiques WebP ;
+- [ ] quatre statistiques HTML réelles ;
+- [ ] aucune carte statistique indépendante ;
+- [ ] aucune section « L’établi » ou « Prêts à partir » ;
+- [ ] aucun en-tête de section ;
+- [ ] aucun lien « Voir tout l’inventaire » ;
+- [ ] aucun rail droit ;
+- [ ] aucun fond local derrière la grille ;
+- [ ] cartes directement sur le fond général.
+
+## Carte projet
+
+- [ ] couverture 640 × 400 ou fallback ;
+- [ ] style parmi neuf valeurs ;
+- [ ] trio de couleurs cohérent ;
+- [ ] version ;
+- [ ] dernière activité ;
+- [ ] progression facultative ;
+- [ ] cinq actions alignées ;
+- [ ] application absente gérée ;
+- [ ] README absent géré ;
+- [ ] bouton admin masqué hors session ;
+- [ ] infobulles au survol et au focus.
+
+## Modale et publication
+
+- [ ] focus initial ;
+- [ ] piège Tab ;
+- [ ] fermeture Échap ;
+- [ ] restauration du focus ;
+- [ ] aperçu exact ;
+- [ ] progression 0–100 ;
+- [ ] réinitialisation des couleurs du style ;
+- [ ] validation de la couverture ;
+- [ ] statut de création de PR ;
+- [ ] URL de PR affichée ;
+- [ ] aucune annonce « publié » avant déploiement ;
+- [ ] erreur et conflit récupérables ;
+- [ ] hors ligne explicite.
 
 ## Sécurité
 
-- [ ] recherche de secrets ;
-- [ ] bundle inspecté ;
-- [ ] URL validées ;
-- [ ] HTML distant non injecté ;
-- [ ] CSP ;
-- [ ] dépendances auditées ;
-- [ ] aucun asset distant obligatoire ;
-- [ ] aucun script dans les SVG ;
-- [ ] provenance et licence des assets externes documentées.
+- [ ] authentification réelle ;
+- [ ] utilisateur autorisé ;
+- [ ] cookie sécurisé ;
+- [ ] CSRF ;
+- [ ] contrôle d’origine ;
+- [ ] limites de taille ;
+- [ ] octets magiques des images ;
+- [ ] métadonnées retirées ;
+- [ ] schéma strict ;
+- [ ] URLs et chemins imposés côté serveur ;
+- [ ] logs sans secret ;
+- [ ] dépendances auditées.
 
-## UX
+## Accessibilité
 
-- [ ] référence et planches validées respectées dans l’esprit ;
-- [ ] rendu stylisé, ni photoréaliste ni cartoon ;
-- [ ] lisibilité supérieure au décor ;
-- [ ] tablette confortable ;
-- [ ] mobile conçu comme un établi compact, pas comme un bureau réduit ;
-- [ ] nouveaux dépôts visibles ;
-- [ ] feedback réseau clair ;
-- [ ] fallback d’asset propre ;
-- [ ] toutes les vues appartiennent au même atelier ;
-- [ ] focus visible sur les textures ;
+- [ ] landmarks ;
+- [ ] un seul `h1` accessible ;
+- [ ] clavier complet ;
+- [ ] focus visible ;
+- [ ] contraste ;
+- [ ] cibles 44 px ;
+- [ ] infobulles non indispensables ;
+- [ ] dates complètes accessibles ;
+- [ ] alt des couvertures ;
+- [ ] décor hors arbre ;
 - [ ] zoom 200 % ;
-- [ ] mouvement réduit complet ;
-- [ ] checklist `14-checklist-phase-6.md` clôturée.
-
-## Assets
-
-- [ ] `10-suivi-production-assets-phase-6.md` est le registre final exact ;
-- [ ] chaque fichier possède un identifiant, un nom final et un statut exacts ;
-- [ ] dimensions explicites et décodées ;
-- [ ] poids publiés ;
-- [ ] formats optimisés ;
-- [ ] transparence contrôlée ;
-- [ ] sources M/S requises approuvées A et versionnées R avant leurs dérivés ;
-- [ ] assets canoniques Phase 6 cités par identifiant en P/V avant leurs dépendants ;
-- [ ] fallbacks HTML, CSS, système ou runtime hors registre décrits exactement par leur ligne du registre, présents et testés sans faux P/V ;
-- [ ] créations internes tracées sans statut R artificiel ;
-- [ ] assets contrôlés et versionnés à la racine avec P, validés avec V puis consommés avec I ;
-- [ ] aucun nouveau sous-dossier par famille ou projet ;
-- [ ] sous-dossiers hérités gelés, sans nouveau fichier ni statut canonique ;
-- [ ] `README.md` et `manifest.json` hérités sans autorité sur le registre ;
-- [ ] aucun ZIP, Base64, fragment ou workflow de reconstruction ;
-- [ ] lazy loading ;
-- [ ] aucun texte fonctionnel rasterisé ;
-- [ ] fallbacks CSS ou SVG ;
-- [ ] contrôles CSS spécifiés avant leur lot puis intégrés avant fusion ;
-- [ ] planches produites après les changements de leur lot ;
-- [ ] aucune sortie IA brute intégrée ;
-- [ ] prototypes hérités non comptés comme validés ;
-- [ ] fichiers remplacés supprimés seulement après contrôle des références ;
-- [ ] référence documentaire non servie dans le runtime.
+- [ ] VoiceOver ou équivalent ;
+- [ ] mouvement réduit.
 
 ## Performance et PWA
 
-- [ ] budgets tenus ou écarts justifiés ;
-- [ ] poids du shell critique mesuré ;
-- [ ] nombre de requêtes initiales mesuré ;
-- [ ] LCP et CLS contrôlés ;
+- [ ] poids des WebP ;
+- [ ] poids des SVG ;
+- [ ] requêtes initiales ;
 - [ ] lazy loading ;
-- [ ] fonctionnement hors ligne ;
-- [ ] mise à jour testée ;
-- [ ] installation testée ;
-- [ ] cache froid et chaud comparés ;
-- [ ] fonctionnement avec images bloquées ;
-- [ ] aucun asset décoratif ne bloque l’interaction depuis le cache.
+- [ ] ratio réservé ;
+- [ ] LCP ;
+- [ ] CLS ;
+- [ ] cache froid et chaud ;
+- [ ] hors ligne ;
+- [ ] images bloquées ;
+- [ ] mise à jour après fusion ;
+- [ ] même configuration sur deux appareils après déploiement.
 
-## Documentation
+## Documentation et release
 
-- [ ] README à jour ;
-- [ ] changelog ;
-- [ ] architecture réelle conforme ;
-- [ ] bible visuelle conforme aux composants finaux ;
-- [ ] inventaire d’assets conforme au registre et aux fichiers finaux ;
-- [ ] instructions de déploiement testées ;
-- [ ] journal de génération clôturé ;
-- [ ] écarts aux masters et planches documentés ;
-- [ ] PR et SHA de chaque lot consignés.
-
-## Revue
-
-- [ ] toutes les PR Phase 6 fusionnées sur un SHA vert ;
-- [ ] review threads interrogés après chaque correction ;
-- [ ] aucun P1 ou P2 ouvert ;
-- [ ] `main` contrôlé directement ;
-- [ ] version et cache PWA vérifiés ;
-- [ ] aucune dette visuelle bloquante reportée silencieusement en Phase 7.
+- [ ] tous les documents correspondent à l’implémentation ;
+- [ ] registre d’assets clôturé ;
+- [ ] ADR-010 respecté ;
+- [ ] captures tablette paysage et bureau ;
+- [ ] aucun P1/P2 ;
+- [ ] Phase 7 lancée seulement après clôture de la Phase 6.

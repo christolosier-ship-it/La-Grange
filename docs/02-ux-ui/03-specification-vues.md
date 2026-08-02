@@ -1,193 +1,66 @@
 # Spécification des vues
 
-## Règle commune Phase 6
+## Cible de Phase 6B
 
-Toutes les vues appartiennent au même atelier. Elles partagent le shell, la navigation, les matières, la typographie, le focus et les panneaux. Leur composition interne peut changer, mais aucune vue ne doit sembler provenir d’un second thème.
+L’étape 6B traite uniquement le dashboard et la modale de personnalisation. Les personnalisations détaillées du catalogue, de la fiche, de l’activité et des paramètres seront spécifiées dans des étapes ultérieures, au fur et à mesure des instructions du propriétaire.
 
-Le décor se concentre sur les contours, les grands fonds et les couvertures. Les zones de texte, formulaires et données restent calmes.
+## Shell partagé
 
-## Écran de démarrage
-
-Affiche le logo, une phrase courte et un indicateur accessible. Il disparaît dès que le cache est prêt. Il ne doit jamais imposer une durée artificielle.
-
-### Présentation Phase 6
-
-- enseigne ou symbole de La Grange ;
-- fond sombre simple ;
-- lumière courte et statique sous mouvement réduit ;
-- aucun décor lourd chargé avant le shell ;
-- aucun faux atelier animé pendant une durée imposée.
+- fond général fixe déjà implémenté ;
+- rail gauche fixe ;
+- marque et navigation en haut ;
+- panneau de synchronisation sous la navigation ;
+- version et état administrateur en bas ;
+- zone principale indépendante et défilante.
 
 ## Dashboard
 
-### Bureau
+### Formats cibles
 
-- rail gauche de 250 à 290 px ;
-- zone centrale fluide ;
-- rail droit de 280 à 340 px ;
-- grille de 3 ou 4 cartes selon largeur.
+- tablette paysage à partir d’environ 1024 px CSS ;
+- bureau 1366, 1440 et 1920 px ;
+- deux cartes par ligne sur tablette paysage ;
+- trois ou quatre cartes selon la largeur de bureau et la largeur minimale lisible.
 
 ### Contenu
 
-- 4 statistiques maximum ;
-- L’établi : projets actifs triés par activité ;
-- Prêts à partir : projets avec application ;
-- activité récente ;
-- répartition par état ;
-- nouvelle arrivée prioritaire.
+- bandeau de statistiques WebP ;
+- quatre données HTML : projets, actifs, applications et archives ;
+- grille continue de cartes ;
+- aucun en-tête de section ;
+- aucun lien « Voir tout » ;
+- aucun panneau central ;
+- aucun rail droit ;
+- aucun fond local derrière les cartes.
 
-### Présentation Phase 6
+### Défilement
 
-- rail gauche comme panneau mural ;
-- statistiques sur une poutre ou une plaque ;
-- sections centrales comme espaces d’établi ;
-- cartes mises en avant comme caisses illustrées ;
-- rail droit en panneaux empilés ;
-- une note éditoriale facultative ;
-- quelques ornements uniquement dans les espaces libres.
+Le rail et le fond restent fixes. Le bandeau et les cartes défilent ensemble dans la zone principale.
 
-La composition ne doit pas reproduire les six destinations fictives de la référence. La navigation reste limitée aux quatre routes réelles.
+## Modale de personnalisation
 
-Aucune progression, release, branche, commit ou conflit ne doit être ajouté pour ressembler à la référence.
+- ouverte par le cinquième bouton ;
+- absente pour un visiteur non authentifié ;
+- aperçu de la carte ;
+- choix ou retrait de couverture ;
+- recadrage 8:5 ;
+- choix de style ;
+- palette par défaut ou couleurs personnalisées ;
+- avancement manuel facultatif ;
+- version manuelle facultative et rappel de la version automatique ;
+- résumé des fichiers modifiés ;
+- création de PR ;
+- états chargement, succès, erreur et conflit.
 
-## Catalogue
+## Vues différées
 
-### Fonction
-
-- champ de recherche ;
-- puces de filtres ;
-- tri ;
-- bascule grille ou liste ;
-- résultat vide contextualisé ;
-- compteur de résultats.
-
-### Présentation Phase 6
-
-- commandes dans un panneau de travail calme ;
-- recherche native clairement identifiable ;
-- filtres comme étiquettes interactives ;
-- grille comme rayonnage ou ensemble de caisses ;
-- vue liste comme registre ou fiches alignées ;
-- aucun ornement entre le champ et les résultats ;
-- état vide comme emplacement libre accompagné d’une action unique.
-
-Le catalogue peut être plus sobre que le dashboard afin de préserver la vitesse de balayage.
-
-## Fiche projet
-
-### Fonction
-
-- hero illustré ;
-- actions « Ouvrir l’application » et « Voir sur GitHub » ;
-- description complète ;
-- métadonnées ;
-- derniers éléments chargés à la demande ;
-- navigation précédent ou suivant facultative sur bureau.
-
-### Présentation Phase 6
-
-- hero comme grand cadre ou panneau de projet ;
-- identité colorée contenue dans le shell ;
-- actions principales sur une plaque stable ;
-- description sur surface unie ;
-- métadonnées sur petites plaques ou lignes de registre ;
-- détails GitHub dans un panneau secondaire distinct ;
-- aucune grande texture derrière le texte ;
-- retour contextualisé toujours visible.
-
-Le projet reste lisible sans couverture, logo ou détails GitHub.
-
-## Activité
-
-### Fonction
-
-Chronologie groupée par date, construite à partir des événements connus. Les formulations restent prudentes : « activité détectée » plutôt que « nouvelle version » sans preuve.
-
-### Présentation Phase 6
-
-- registre, planche ou panneau vertical ;
-- groupes de semaines clairement séparés ;
-- jours identifiables sans couleur seule ;
-- repères discrets ;
-- événements encore disponibles liés à leur fiche ;
-- dépôts disparus affichés sans lien mort ;
-- aucun appel GitHub pour remplir la vue ;
-- lecture hors ligne complète.
-
-La chronologie doit rester plus calme que la colonne d’activité synthétique du dashboard.
-
-## Paramètres
-
-### Fonction
-
-Préférences locales, informations de cache, version et actions de maintenance. Aucun secret et aucun token.
-
-### Présentation Phase 6
-
-- panneaux de réglages clairement distincts ;
-- contrôles natifs conservés ;
-- informations de cache sur un panneau technique calme ;
-- favoris sous forme de liste ou fiches simples ;
-- diagnostic dans une zone de lecture unie ;
-- action destructive séparée ;
-- modale au premier plan avec fond inerte ;
-- aucune texture derrière le JSON ou texte copiable.
-
-La vue Paramètres privilégie la clarté. Elle reçoit moins d’ornements que le dashboard.
-
-## Page introuvable
-
-### Présentation Phase 6
-
-Une porte fermée, un emplacement vide ou une note peut soutenir la métaphore. Le message, la route et le lien de retour restent directs.
+Les vues Catalogue, Fiche projet, Activité et Paramètres conservent leur fonction actuelle. Leur nouvelle personnalisation artistique n’est pas définie dans ce document et ne doit pas être anticipée.
 
 ## États transversaux
 
-### Chargement du cache
-
-Structure visible immédiatement, sans animation longue. Le décor critique peut apparaître après le contenu.
-
-### Synchronisation
-
-Lueur ou changement de bordure discret. Statut textuel obligatoire.
-
-### Hors ligne
-
-Dernier contenu conservé. Note ou plaque informative sans transformer toute la scène.
-
-### Erreur récupérable
-
-Message utilisateur clair, contenu précédent conservé, action pertinente.
-
-### Cache vide
-
-Atelier vide mais utilisable. Aucune fausse caisse ni donnée de démonstration.
-
-### Asset absent
-
-Fallback déterministe. La composition conserve ses dimensions.
-
-## Cohérence entre vues
-
-- même enseigne ;
-- même navigation ;
-- mêmes tokens ;
-- mêmes cadres principaux ;
-- mêmes règles de focus ;
-- mêmes familles d’icônes ;
-- mêmes surfaces de lecture ;
-- même stratégie de fallback ;
-- densité et mouvement appliqués globalement.
-
-## Contrôle de sortie
-
-Chaque vue est validée aux formats 390, 768, 1024 et 1440 px, avec :
-
-- données réelles ou fixtures de test clairement isolées ;
-- textes longs ;
-- images absentes ;
-- hors ligne ;
-- mouvement réduit ;
-- densité compacte ;
-- navigation clavier ;
-- zoom 200 %.
+- cache visible immédiatement ;
+- synchronisation sans déplacement de cartes ;
+- hors ligne non bloquant ;
+- image absente avec fallback ;
+- service administrateur indisponible sans casser la consultation ;
+- mise à jour PWA après publication.

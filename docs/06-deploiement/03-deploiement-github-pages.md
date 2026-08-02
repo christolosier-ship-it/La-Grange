@@ -1,44 +1,45 @@
 # Déploiement GitHub Pages
 
-## Méthode retenue
+## Statut après décision 6B
 
-Utiliser GitHub Actions avec la source Pages configurée sur « GitHub Actions ». Le workflow construit le projet puis déploie le dossier généré.
+GitHub Pages peut rester une cible statique de consultation, de secours ou de transition. Il ne peut pas héberger seul le parcours d’administration 6B, qui exige une session serveur et des fonctions sécurisées.
 
-## Déclencheurs
+## Consultation
 
-- push sur `main` après mise en place de la release continue ;
-- déclenchement manuel pour diagnostic ;
-- pas de déploiement de production depuis une branche de fonctionnalité.
+Le workflow Pages peut continuer à :
 
-## Workflow logique
+1. installer les dépendances ;
+2. exécuter les contrôles ;
+3. construire l’application ;
+4. publier le dossier généré.
 
-1. checkout ;
-2. setup Node avec cache ;
-3. `npm ci` ;
-4. contrôles qualité ;
-5. `npm run build` ;
-6. upload de l’artefact Pages ;
-7. déploiement dans l’environnement `github-pages`.
+Cette version conserve :
 
-## Permissions
+- lecture des dépôts publics ;
+- cache IndexedDB ;
+- PWA ;
+- navigation ;
+- dashboard ;
+- liens externes.
 
-Le workflow utilise les permissions minimales requises pour Pages. Aucun token personnel n’est stocké.
+## Administration
 
-## Concurrence
+Sur GitHub Pages :
 
-Un seul déploiement de production actif. Une exécution plus récente peut annuler une exécution obsolète sans interrompre une publication déjà critique selon la configuration retenue.
+- aucun secret ;
+- aucune GitHub App côté client ;
+- aucune écriture ;
+- bouton de personnalisation absent ou état explicitement indisponible ;
+- aucune imitation locale d’une publication.
 
-## Vérifications post-déploiement
+## Cible canonique
 
-- page d’accueil ;
-- assets ;
-- manifest ;
-- service worker ;
-- route fiche ;
-- synchronisation GitHub ;
-- mode standalone ;
-- absence d’erreur console bloquante.
+La cible canonique 6B avec administration est Netlify, documentée dans `07-deploiement-netlify.md`.
 
-## Référence
+## Contrôles
 
-https://vite.dev/guide/static-deploy.html
+- les deux déploiements utilisent le même code public ;
+- la configuration d’environnement n’expose aucun secret ;
+- la version Pages ne prétend pas avoir publié une personnalisation ;
+- les chemins `base` restent corrects ;
+- le service worker de chaque origine reste isolé.
