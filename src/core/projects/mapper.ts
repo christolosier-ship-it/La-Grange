@@ -1,3 +1,4 @@
+import { resolveProjectColors, styleForCategory } from '../customization/project-styles';
 import { AppError } from '../errors/app-error';
 import type { GitHubRepositoryDto } from '../github/types';
 import { activityState } from './activity';
@@ -43,6 +44,8 @@ export function mapRepository(repository: GitHubRepositoryDto, now = new Date())
       .map((topic) => topic.trim().toLowerCase())
       .filter((topic) => topic.length > 0),
   )];
+  const category = 'uncategorized' as const;
+  const style = styleForCategory(category);
 
   return {
     id: repository.id,
@@ -65,8 +68,10 @@ export function mapRepository(repository: GitHubRepositoryDto, now = new Date())
     openIssuesCount: repository.open_issues_count,
     archived: repository.archived,
     fork: repository.fork,
-    category: 'uncategorized',
+    category,
     activityState: activityState(pushedAt, repository.archived, now),
+    style,
+    colors: resolveProjectColors(style),
     featured: false,
     isNew: false,
   };
