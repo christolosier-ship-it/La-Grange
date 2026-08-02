@@ -1,178 +1,82 @@
-# Checklist qualité de la Phase 6
+# Checklist Phase 6B
 
-## Usage
+## Noyau graphique
 
-Cette checklist couvre l’historique 6A et l’étape active 6B. Les étapes UI/UX suivantes ne sont pas encore définies. Aucun agent ne doit les inventer.
-
-## Gouvernance
-
-- [ ] document de phase lu ;
-- [ ] contrat 6B lu ;
-- [ ] ADR-009 et ADR-010 lus ;
-- [ ] registre exact ;
-- [ ] périmètre limité ;
-- [ ] aucun changement futur implicite ;
-- [ ] PR courte et réversible.
-
-## Assets
-
-- [ ] source approuvée et versionnée ;
-- [ ] nom exact ;
-- [ ] format exact ;
-- [ ] dimensions exactes ;
-- [ ] alpha exact ;
-- [ ] poids mesuré ;
-- [ ] provenance et droits ;
-- [ ] fallback ;
-- [ ] fichier canonique à plat ;
-- [ ] aucun prototype hérité utilisé ;
+- [x] M06 produit, approuvé et versionné ;
+- [x] C01 produit et validé ;
+- [x] C11 produit et validé ;
+- [x] C06 produit et validé ;
+- [x] D42 produit et validé ;
+- [x] D43 produit et validé ;
+- [ ] iconographie des neuf styles produite ou réutilisée localement ;
 - [ ] aucun texte fonctionnel rasterisé ;
-- [ ] aucun asset distant ;
-- [ ] aucun ZIP ou Base64 ;
-- [ ] P/V/I exacts.
+- [ ] budgets et transparences contrôlés.
 
-## Phase 6B : shell et dashboard
+## Dashboard
 
 - [ ] rail gauche fixe ;
-- [ ] navigation complète ;
-- [ ] synchronisation dans le rail ;
-- [ ] version en bas ;
-- [ ] état admin en bas ;
-- [ ] contenu principal seul défilant ;
-- [ ] bandeau WebP unique ;
-- [ ] statistiques HTML ;
-- [ ] grille continue ;
-- [ ] aucun en-tête de section ;
-- [ ] aucun lien redondant ;
+- [ ] version et état administrateur en bas du rail ;
+- [ ] zone principale seule défilante ;
+- [ ] bandeau unique avec quatre statistiques HTML ;
+- [ ] grille continue sans titre ni conteneur ;
 - [ ] aucun rail droit ;
-- [ ] aucun panneau derrière les cartes ;
-- [ ] fond Phase 6A inchangé sous la grille.
+- [ ] aucun fond local derrière les cartes.
 
-## Phase 6B : cartes
+## Carte
 
-- [ ] skin WebP partagé ;
-- [ ] couverture ou fallback ;
-- [ ] style et bannière ;
-- [ ] palette ;
-- [ ] version ;
-- [ ] date relative et date complète ;
+- [ ] couverture ou fallback C18 ;
+- [ ] bannière de style ;
+- [ ] version manuelle, release stable ou préversion ;
+- [ ] dernière activité ;
 - [ ] progression manuelle facultative ;
-- [ ] cinq actions sur une ligne ;
-- [ ] GitHub ;
-- [ ] application ;
-- [ ] README ;
-- [ ] détail ;
-- [ ] personnalisation admin ;
+- [ ] GitHub, application, README, détail et personnalisation alignés ;
 - [ ] infobulles au survol et au focus ;
-- [ ] état archivé lisible ;
-- [ ] nom long ;
-- [ ] description longue ;
-- [ ] image en erreur.
+- [ ] personnalisation masquée hors administrateur.
 
-## Modale
+## Couverture administrateur
 
-- [ ] invisible hors admin ;
-- [ ] titre et description accessibles ;
-- [ ] focus piégé ;
-- [ ] fermeture Échap ;
-- [ ] restauration du focus ;
-- [ ] aperçu ;
-- [ ] choix du style ;
-- [ ] couleurs ;
-- [ ] progression ;
-- [ ] version ;
-- [ ] couverture et recadrage ;
-- [ ] annulation sans effet ;
-- [ ] publication avec état ;
-- [ ] erreur annoncée ;
-- [ ] conflit annoncé ;
-- [ ] lien vers la PR.
-
-## GitHub et serveur
-
-- [ ] GitHub App limitée au dépôt ;
-- [ ] permissions minimales ;
-- [ ] secret serveur seulement ;
-- [ ] session sécurisée ;
-- [ ] compte autorisé ;
-- [ ] CSRF et origine ;
-- [ ] schéma strict ;
-- [ ] chemins autorisés ;
-- [ ] base SHA contrôlée ;
-- [ ] branche créée ;
-- [ ] commit créé ;
-- [ ] PR créée ;
-- [ ] aucune fusion automatique ;
-- [ ] aucun commit direct sur `main`.
-
-## Couverture
-
-- [ ] PNG/JPEG/WebP accepté ;
-- [ ] autre format refusé ;
-- [ ] signature réelle contrôlée ;
-- [ ] taille maximale ;
+- [ ] PNG, JPEG et WebP acceptés ;
 - [ ] recadrage 8:5 ;
-- [ ] 640 × 400 ;
-- [ ] métadonnées retirées ;
-- [ ] WebP final ;
-- [ ] 35 à 80 Ko visés ;
-- [ ] nom canonique ;
-- [ ] ancienne référence remplacée proprement.
+- [ ] sortie WebP 640 × 400 ;
+- [ ] métadonnées supprimées ;
+- [ ] limites d’octets et dimensions ;
+- [ ] chemin calculé côté serveur ;
+- [ ] fallback si aucune couverture ;
+- [ ] aucune série Sxx/Fxx exigée.
 
-## Accessibilité
+## Publication
 
-- [ ] clavier ;
-- [ ] focus ;
-- [ ] cibles 44 px ;
-- [ ] contraste ;
-- [ ] infobulles non exclusives ;
-- [ ] alt ;
-- [ ] lecteurs d’écran ;
+- [ ] compte administrateur autorisé ;
+- [ ] session sécurisée ;
+- [ ] CSRF et origine contrôlés ;
+- [ ] GitHub App limitée à `La-Grange` ;
+- [ ] branche et commit créés ;
+- [ ] PR automatique ;
+- [ ] aucune écriture directe sur `main` ;
+- [ ] aucune fusion automatique ;
+- [ ] conflit de SHA géré ;
+- [ ] aucun secret dans le bundle ou les diagnostics.
+
+## Validation directe
+
+- [ ] tablette paysage ;
+- [ ] bureau ;
+- [ ] grand bureau ;
 - [ ] zoom 200 % ;
-- [ ] mouvement réduit ;
 - [ ] images bloquées ;
-- [ ] messages d’état.
+- [ ] hors ligne ;
+- [ ] clavier et lecteur d’écran ;
+- [ ] mouvement réduit ;
+- [ ] visiteur et administrateur ;
+- [ ] captures jointes à la PR sans créer de planches canoniques.
 
-## Formats 6B
+## Qualité
 
-- [ ] tablette paysage 1024 px ;
-- [ ] tablette paysage 1366 px ;
-- [ ] bureau 1440 px ;
-- [ ] grand bureau 1920 px ;
-- [ ] écran bas ;
-- [ ] zoom 200 %.
-
-La robustesse étroite peut être testée, mais 6B ne définit pas une expérience smartphone dédiée.
-
-## Performance
-
-- [ ] CSS et JS avant/après ;
-- [ ] poids des assets ;
-- [ ] requêtes initiales ;
-- [ ] lazy loading ;
-- [ ] ratios réservés ;
-- [ ] LCP ;
-- [ ] CLS ;
-- [ ] cache froid/chaud ;
-- [ ] grille complète ;
-- [ ] modale chargée à la demande ;
-- [ ] upload mesuré.
-
-## CI et revue
-
-- [ ] `npm ci` ;
 - [ ] typecheck ;
 - [ ] lint ;
 - [ ] tests ;
-- [ ] smoke tests ;
 - [ ] build ;
-- [ ] diff relu ;
-- [ ] revue demandée ;
-- [ ] fils interrogés ;
-- [ ] P1/P2 corrigés ;
-- [ ] CI verte sur le SHA exact ;
-- [ ] `main` contrôlé.
-
-## No-Go
-
-No-Go si secret, écriture hors liste blanche, progression déduite, conteneur de section réintroduit, rail droit réintroduit, bouton admin public, PR fusionnée automatiquement, fallback cassé, régression hors ligne, budget non approuvé ou P1/P2 ouvert.
+- [ ] audit de sécurité ;
+- [ ] poids et LCP/CLS ;
+- [ ] documentation à jour ;
+- [ ] aucun P1/P2.

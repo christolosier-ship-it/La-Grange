@@ -26,28 +26,24 @@ Décision validée par le propriétaire le 2026-08-02. Ce document constitue la 
 - quatre destinations ;
 - panneau de synchronisation sous la navigation ;
 - bouton d’actualisation intégré ;
-- version de La Grange en bas ;
-- état administrateur en bas ;
-- aucun scroll avec les cartes.
+- version de La Grange et état administrateur en bas.
 
 ## Bandeau
 
-- un seul WebP ;
+- un seul WebP C11 ;
 - quatre statistiques HTML : projets, actifs, applications, archives ;
-- pas de quatre conteneurs indépendants ;
-- pas de données fictives ;
+- aucun texte ou chiffre dans l’image ;
 - défile avec la zone principale.
 
 ## Grille
 
 - une seule grille continue ;
-- aucun titre « L’établi » ;
-- aucun titre « Prêts à partir » ;
+- aucun titre « L’établi » ou « Prêts à partir » ;
 - aucun lien « Voir tout l’inventaire » ;
 - aucun en-tête de section ;
 - aucun rail droit ;
 - aucun fond ou voile derrière les cartes ;
-- le seul arrière-plan est le fond général de La Grange.
+- seul le fond général de La Grange est visible.
 
 ## Anatomie de la carte
 
@@ -60,27 +56,21 @@ Décision validée par le propriétaire le 2026-08-02. Ce document constitue la 
 7. temps depuis la dernière activité du dépôt ;
 8. bannière du style ;
 9. version de l’application ;
-10. image de couverture.
+10. image de couverture ou fallback.
 
 ## Rangée d’actions
 
-Les cinq boutons sont alignés proprement sur une ligne. Ils possèdent :
+Les cinq boutons sont alignés sur une ligne et possèdent une cible de 44 px minimum, une icône SVG, une infobulle au survol et au focus, et un libellé accessible.
 
-- une icône SVG ;
-- une cible de 44 px minimum ;
-- une infobulle au survol et au focus ;
-- un libellé accessible ;
-- un état indisponible explicite lorsque nécessaire.
-
-Le cinquième bouton est absent hors session administrateur.
+Le bouton de personnalisation est absent hors session administrateur.
 
 ## Progression
 
 - saisie manuellement ;
-- nombre de 0 à 100 ;
-- absence de valeur : barre absente ;
+- 0 à 100 ;
+- absence de valeur : aucune barre ;
 - couleur issue du style ou personnalisée ;
-- texte accessible « avancement estimé manuellement ».
+- libellé accessible indiquant une estimation manuelle.
 
 ## Version
 
@@ -93,31 +83,25 @@ Le cinquième bouton est absent hors session administrateur.
 
 ## Styles
 
-Maximum neuf styles :
+Neuf styles maximum : style de vie, jeux, productivité, santé, éducation, nature, création, technique et métier, inclassable.
 
-- style de vie ;
-- jeux ;
-- productivité ;
-- santé ;
-- éducation ;
-- nature ;
-- création ;
-- technique et métier ;
-- inclassable.
+Chaque style fournit une bannière, une couleur principale, une couleur secondaire et une couleur de progression. L’icône peut provenir de l’iconographie locale existante.
 
-Chaque style fournit bannière, icône, couleur principale, couleur secondaire et couleur de progression.
+## Couverture
+
+La couverture n’est pas un asset pré-produit de la Phase 6B. Elle est ajoutée depuis la modale administrateur :
+
+- entrée PNG, JPEG ou WebP ;
+- recadrage 8:5 ;
+- sortie WebP 640 × 400 ;
+- PR automatique ;
+- fallback C18 si absente.
+
+Aucun logo séparé n’est exigé. Le nom du projet reste en HTML.
 
 ## Modale
 
-Permet de modifier :
-
-- couverture ;
-- style ;
-- trois couleurs ;
-- avancement ;
-- version manuelle.
-
-Elle affiche un aperçu de la carte et crée une PR automatique dans `La-Grange`.
+Elle permet de modifier la couverture, le style, les trois couleurs, l’avancement et la version manuelle. Elle affiche un aperçu fidèle et crée une PR automatique dans `La-Grange`.
 
 ## Cibles
 
