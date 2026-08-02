@@ -25,6 +25,8 @@ function project(id: number, overrides: Partial<Project> = {}): Project {
     fork: false,
     category: 'uncategorized',
     activityState: 'active',
+    style: 'uncategorized',
+    colors: { primary: '#6d573f', secondary: '#c3aa86', progress: '#91714d' },
     featured: false,
     isNew: false,
     ...overrides,
@@ -47,7 +49,7 @@ afterEach(() => {
 });
 
 describe('renderDashboard', () => {
-  it('renders documented statistics and real project sections', () => {
+  it('renders one statistics beam and one continuous project grid', () => {
     const view = renderDashboard(state([
       project(1, { appUrl: 'https://example.com/one' }),
       project(2, { activityState: 'maintenance', appUrl: 'https://example.com/two' }),
@@ -59,32 +61,23 @@ describe('renderDashboard', () => {
     expect(stats).toEqual(['3', '1', '2', '1']);
     expect(view.querySelector('h1')?.textContent).toBe('L’atelier en un coup d’œil');
     expect(view.querySelector('h1')?.classList.contains('visually-hidden')).toBe(true);
-    expect(view.textContent).toContain('L’établi');
-    expect(view.textContent).toContain('Prêts à partir');
-    expect(view.textContent).toContain('Répartition');
-    expect(view.querySelector('.activity-list span')?.textContent).toBe('Archivé');
-    expect(view.querySelector('.activity-list time')?.getAttribute('aria-label')).toContain('Dernière activité détectée');
+    expect(view.querySelector('.dashboard-stats')).not.toBeNull();
+    expect(view.querySelectorAll('.dashboard-project-grid .project-card')).toHaveLength(3);
+    expect(view.querySelector('.dashboard-section')).toBeNull();
+    expect(view.querySelector('.dashboard-rail')).toBeNull();
+    expect(view.textContent).not.toContain('L’établi');
+    expect(view.textContent).not.toContain('Prêts à partir');
   });
 
-  it('makes a new repository immediately identifiable', () => {
-    const view = renderDashboard(state([
-      project(1),
-      project(2, { isNew: true, displayName: 'Nouvelle caisse' }),
-    ]));
-
-    const arrival = view.querySelector('.rail-panel--arrival');
-    expect(arrival?.textContent).toContain('Nouvelle caisse');
-    expect(arrival?.textContent).toContain('Nouvelle arrivée');
-  });
-
-  it('keeps cached data visible and marks external actions while offline', () => {
+  it('keeps cached cards visible and marks external actions while offline', () => {
     const view = renderDashboard(state([
       project(1, { appUrl: 'https://example.com/one' }),
     ], 'offline'));
 
     expect(view.querySelector('.dashboard-feedback')?.textContent).toContain('réserves');
-    expect(view.querySelectorAll('.project-card')).not.toHaveLength(0);
-    expect(view.querySelector('.project-card__launch')?.textContent).toContain('connexion requise');
+    expect(view.querySelectorAll('.project-card')).toHaveLength(1);
+    expect(view.querySelector('.project-card__action.requires-connection')?.getAttribute('aria-label'))
+      .toContain('connexion requise');
   });
 
   it('shows a useful first-load error without duplicating the lateral refresh action', () => {
@@ -103,11 +96,11 @@ describe('renderDashboard', () => {
     expect(view.querySelector<HTMLButtonElement>('.sync-button')).toBeNull();
   });
 
-  it('treats empty sections without inventing content', () => {
+  it('renders a direct empty state without inventing sections', () => {
     const view = renderDashboard(state([]));
 
     expect(view.querySelectorAll('.stat-card strong')[0]?.textContent).toBe('0');
-    expect(view.textContent).toContain('Aucun projet actif');
-    expect(view.textContent).toContain('Aucune nouvelle caisse');
+    expect(view.textContent).toContain('Aucun projet visible');
+    expect(view.querySelector('.dashboard-project-grid')).toBeNull();
   });
 });

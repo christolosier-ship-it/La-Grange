@@ -25,6 +25,8 @@ function project(overrides: Partial<Project> = {}): Project {
     fork: false,
     category: 'applications',
     activityState: 'active',
+    style: 'productivity',
+    colors: { primary: '#386f83', secondary: '#9bc4d1', progress: '#4f91a8' },
     featured: true,
     isNew: false,
     ...overrides,
@@ -36,34 +38,34 @@ afterEach(() => {
 });
 
 describe('createProjectCard', () => {
-  it('renders real metadata, status text and safe separate actions', () => {
+  it('renders the five independent actions and real repository metadata', () => {
     const card = createProjectCard(project(), { now: new Date('2026-07-02T00:00:00Z') });
     document.body.append(card);
 
-    expect(card.querySelector('.status-badge')?.textContent).toBe('Actif');
     expect(card.querySelector('.project-card__title')?.textContent).toBe('La Grange');
     expect(card.querySelector('time')?.getAttribute('datetime')).toBe('2026-07-01T00:00:00Z');
-    expect(card.querySelectorAll('a')).toHaveLength(2);
+    expect(card.querySelectorAll('.project-card__action')).toHaveLength(5);
     expect(card.querySelector('a a')).toBeNull();
-    expect(card.querySelector<HTMLAnchorElement>('.project-card__launch')?.rel).toContain('noopener');
+    expect(card.querySelector<HTMLAnchorElement>('.project-card__actions a')?.rel).toContain('noopener');
+    expect(card.querySelector('.project-card__action--customize')).not.toBeNull();
   });
 
-  it('loads a configured cover lazily with stable dimensions', () => {
+  it('loads a configured 8:5 cover lazily with stable dimensions', () => {
     const card = createProjectCard(project({ cover: 'projects/la-grange/cover.webp' }));
-    const image = card.querySelector<HTMLImageElement>('img');
+    const image = card.querySelector<HTMLImageElement>('.project-card__visual > img');
 
     expect(image?.loading).toBe('lazy');
     expect(image?.width).toBe(640);
-    expect(image?.height).toBe(360);
+    expect(image?.height).toBe(400);
     expect(image?.src).toContain('projects/la-grange/cover.webp');
   });
 
   it('falls back to deterministic initials and a generic crate pictogram', () => {
     const card = createProjectCard(project({ cover: 'projects/missing.webp' }));
-    const image = card.querySelector<HTMLImageElement>('img');
+    const image = card.querySelector<HTMLImageElement>('.project-card__visual > img');
     image?.dispatchEvent(new Event('error'));
 
-    expect(card.querySelector('img')).toBeNull();
+    expect(card.querySelector('.project-card__visual > img')).toBeNull();
     expect(card.querySelector<HTMLElement>('.project-card__fallback')?.hidden).toBe(false);
     expect(card.querySelector('.project-card__crate-icon')).not.toBeNull();
     expect(card.querySelector('.project-card__fallback span')?.textContent).toBe('LG');
@@ -78,17 +80,25 @@ describe('createProjectCard', () => {
       appUrl: undefined,
     }));
 
-    expect(card.textContent).toContain('Nouvelle arrivée');
-    expect(card.textContent).toContain('Archivé');
-    expect(card.querySelector('.project-card__launch')).toBeNull();
+    expect(card.classList.contains('is-new')).toBe(true);
+    expect(card.classList.contains('is-archived')).toBe(true);
+    expect(card.dataset.state).toBe('archived');
+    expect(card.querySelector<HTMLButtonElement>('.project-card__actions button:disabled')).not.toBeNull();
   });
 
-  it('marks application links as requiring connectivity while offline', () => {
-    const card = createProjectCard(project(), { offline: true });
-    const action = card.querySelector<HTMLAnchorElement>('.project-card__launch');
+  it('renders a manual progression and version when configured', () => {
+    const card = createProjectCard(project({ progress: 65, resolvedVersion: 'v1.4.0' }));
+    const progress = card.querySelector<HTMLElement>('[role="progressbar"]');
 
-    expect(action?.textContent).toContain('connexion requise');
-    expect(action?.classList.contains('requires-connection')).toBe(true);
-    expect(action?.getAttribute('aria-label')).toContain('connexion requise');
+    expect(progress?.getAttribute('aria-valuenow')).toBe('65');
+    expect(card.querySelector('.project-card__version')?.textContent).toBe('v1.4.0');
+  });
+
+  it('marks external links as requiring connectivity while offline', () => {
+    const card = createProjectCard(project(), { offline: true });
+    const actions = card.querySelectorAll<HTMLAnchorElement>('.project-card__action.requires-connection');
+
+    expect(actions.length).toBeGreaterThanOrEqual(3);
+    expect(actions[0]?.getAttribute('aria-label')).toContain('connexion requise');
   });
 });

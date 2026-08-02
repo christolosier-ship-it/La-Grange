@@ -4,6 +4,27 @@ Toutes les évolutions notables de La Grange sont consignées ici.
 
 ## [Non publié]
 
+### Implémentation Phase 6B
+
+- rail gauche fixe sur tablette paysage et bureau, avec défilement réservé à la zone principale ;
+- version de La Grange et état de connexion administrateur intégrés au bas du rail ;
+- bandeau C11 avec quatre statistiques HTML superposées ;
+- suppression des sections et conteneurs redondants du dashboard ;
+- grille continue de cartes directement sur le fond général ;
+- nouvelle carte C01 avec couverture 8:5, fallback HTML/CSS, style, version, activité et avancement manuel ;
+- cinq actions alignées : GitHub, application, README, détail et personnalisation ;
+- infobulles accessibles au survol et au focus ;
+- neuf styles génériques avec marqueurs HTML/CSS et trois couleurs ;
+- résolution de version manuelle ou de la dernière release GitHub stable, puis préversion ;
+- modale administrateur avec aperçu, couleurs, avancement, version et couverture ;
+- schéma v3 de `project-overrides.json` avec compatibilité de lecture de l’ancien format ;
+- conversion des couvertures en WebP 640 × 400 et validation serveur stricte ;
+- authentification OAuth GitHub, cookie de session signé et liste blanche administrateur ;
+- GitHub App limitée au dépôt `La-Grange` pour créer branche, commit et PR sans fusion automatique ;
+- configuration Netlify, en-têtes de sécurité et typecheck des Functions ;
+- cache PWA mis à jour avec C01, C11 et les cinq icônes d’action ;
+- tests automatisés adaptés au contrat 6B.
+
 ### Purge des assets Phase 6
 
 - suppression des masters et planches documentaires devenus inutiles ;
@@ -16,16 +37,8 @@ Toutes les évolutions notables de La Grange sont consignées ici.
 ### Conception 6B
 
 - refonte de l’étape 6B autour du dashboard, des cartes projet et de la personnalisation versionnée ;
-- rail gauche fixe avec synchronisation, version et état administrateur ;
-- bandeau de statistiques unique en WebP avec valeurs HTML superposées ;
-- suppression des grands conteneurs, des en-têtes de sections, du rail droit et du lien redondant vers l’inventaire ;
-- grille continue de cartes directement sur le fond général de La Grange ;
-- cinq actions alignées avec infobulles accessibles ;
-- avancement manuel facultatif ;
-- neuf styles génériques ;
-- règle de version : valeur manuelle, sinon release stable, sinon préversion ;
-- GitHub App limitée au dépôt `La-Grange` et Netlify Functions pour ouvrir une PR automatique ;
-- conservation de la Phase 7 comme jalon final.
+- conservation de la Phase 7 comme jalon final ;
+- futures étapes 6C et suivantes laissées à définir au fil des décisions du propriétaire.
 
 ### Historique conservé
 

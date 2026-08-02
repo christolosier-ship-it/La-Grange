@@ -8,6 +8,23 @@ export type ProjectCategory =
 
 export type ActivityState = 'active' | 'maintenance' | 'sleeping' | 'archived';
 
+export type ProjectStyle =
+  | 'lifestyle'
+  | 'games'
+  | 'productivity'
+  | 'health'
+  | 'education'
+  | 'nature'
+  | 'creation'
+  | 'technical'
+  | 'uncategorized';
+
+export interface ProjectColors {
+  readonly primary: string;
+  readonly secondary: string;
+  readonly progress: string;
+}
+
 export interface Project {
   readonly id: number;
   readonly nodeId?: string;
@@ -34,6 +51,11 @@ export interface Project {
   readonly cover?: string;
   readonly logo?: string;
   readonly accent?: string;
+  readonly style?: ProjectStyle;
+  readonly colors?: ProjectColors;
+  readonly progress?: number;
+  readonly manualVersion?: string;
+  readonly resolvedVersion?: string;
   readonly featured: boolean;
   readonly isNew: boolean;
   readonly sortOrder?: number;

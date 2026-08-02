@@ -1,5 +1,15 @@
+import {
+  PROJECT_STYLES,
+  resolveProjectColors,
+  styleForCategory,
+} from '../customization/project-styles';
 import { AppError } from '../errors/app-error';
-import type { Project, ProjectCategory } from './model';
+import type {
+  Project,
+  ProjectCategory,
+  ProjectColors,
+  ProjectStyle,
+} from './model';
 
 const CATEGORIES: readonly ProjectCategory[] = [
   'games',
@@ -10,18 +20,26 @@ const CATEGORIES: readonly ProjectCategory[] = [
   'uncategorized',
 ];
 
-const KEYS = new Set([
+const STYLES = PROJECT_STYLES.map((style) => style.key);
+const OVERRIDE_KEYS = new Set([
   'displayName',
   'description',
   'category',
   'cover',
   'logo',
   'accent',
+  'style',
+  'colors',
+  'progress',
+  'manualVersion',
   'featured',
   'appUrl',
   'hidden',
   'sortOrder',
 ]);
+const DOCUMENT_KEYS = new Set(['schemaVersion', 'projects']);
+const COLOR_KEYS = new Set(['primary', 'secondary', 'progress']);
+const HEX_COLOR = /^#[0-9a-f]{6}$/iu;
 
 export interface ProjectOverride {
   readonly displayName?: string;
@@ -30,6 +48,10 @@ export interface ProjectOverride {
   readonly cover?: string;
   readonly logo?: string;
   readonly accent?: string;
+  readonly style?: ProjectStyle;
+  readonly colors?: ProjectColors;
+  readonly progress?: number;
+  readonly manualVersion?: string;
   readonly featured?: boolean;
   readonly appUrl?: string;
   readonly hidden?: boolean;
@@ -63,6 +85,57 @@ function invalidOverride(message: string, strict: boolean): void {
   console.warn(`[La Grange] ${message}`);
 }
 
+function projectEntries(
+  value: Record<string, unknown>,
+  strictUnknown: boolean,
+): Record<string, unknown> {
+  const versioned = Object.hasOwn(value, 'schemaVersion') || Object.hasOwn(value, 'projects');
+  if (!versioned) return value;
+
+  for (const key of Object.keys(value)) {
+    if (!DOCUMENT_KEYS.has(key)) invalidOverride(`Unknown overrides document property: ${key}`, strictUnknown);
+  }
+
+  if (value.schemaVersion !== 3) {
+    invalidOverride('Unsupported overrides schemaVersion', strictUnknown);
+  }
+  if (!value.projects || typeof value.projects !== 'object' || Array.isArray(value.projects)) {
+    throw new AppError(
+      'invalid-overrides',
+      'Overrides projects must be an object',
+      'Configuration éditoriale invalide.',
+      true,
+    );
+  }
+  return value.projects as Record<string, unknown>;
+}
+
+function parseColors(value: unknown, name: string, strictUnknown: boolean): ProjectColors | undefined {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    invalidOverride(`Invalid colors: ${name}`, strictUnknown);
+    return undefined;
+  }
+
+  const raw = value as Record<string, unknown>;
+  for (const key of Object.keys(raw)) {
+    if (!COLOR_KEYS.has(key)) invalidOverride(`Unknown color property: ${name}.colors.${key}`, strictUnknown);
+  }
+
+  const colors: { primary?: string; secondary?: string; progress?: string } = {};
+  for (const key of ['primary', 'secondary', 'progress'] as const) {
+    const color = raw[key];
+    if (color === undefined) continue;
+    if (typeof color === 'string' && HEX_COLOR.test(color)) colors[key] = color.toLowerCase();
+    else invalidOverride(`Invalid ${key} color: ${name}`, strictUnknown);
+  }
+
+  if (!colors.primary || !colors.secondary || !colors.progress) {
+    invalidOverride(`Incomplete colors: ${name}`, strictUnknown);
+    return undefined;
+  }
+  return colors as ProjectColors;
+}
+
 export function parseOverrides(
   value: unknown,
   strictUnknown = import.meta.env.DEV,
@@ -77,8 +150,9 @@ export function parseOverrides(
   }
 
   const result: Record<string, ProjectOverride> = {};
+  const entries = projectEntries(value as Record<string, unknown>, strictUnknown);
 
-  for (const [name, raw] of Object.entries(value)) {
+  for (const [name, raw] of Object.entries(entries)) {
     if (!name.trim() || !raw || typeof raw !== 'object' || Array.isArray(raw)) {
       invalidOverride(`Invalid override: ${name}`, strictUnknown);
       continue;
@@ -86,7 +160,7 @@ export function parseOverrides(
 
     const item = raw as Record<string, unknown>;
     for (const key of Object.keys(item)) {
-      if (!KEYS.has(key)) invalidOverride(`Unknown override property: ${name}.${key}`, strictUnknown);
+      if (!OVERRIDE_KEYS.has(key)) invalidOverride(`Unknown override property: ${name}.${key}`, strictUnknown);
     }
 
     const override: ProjectOverride = {};
@@ -116,9 +190,37 @@ export function parseOverrides(
     }
 
     if (item.accent !== undefined) {
-      if (typeof item.accent === 'string' && item.accent.trim()) {
-        Object.assign(override, { accent: item.accent.trim() });
+      if (typeof item.accent === 'string' && HEX_COLOR.test(item.accent)) {
+        Object.assign(override, { accent: item.accent.toLowerCase() });
       } else invalidOverride(`Invalid accent: ${name}`, strictUnknown);
+    }
+
+    if (item.style !== undefined) {
+      if (typeof item.style === 'string' && STYLES.includes(item.style as ProjectStyle)) {
+        Object.assign(override, { style: item.style as ProjectStyle });
+      } else invalidOverride(`Invalid style: ${name}`, strictUnknown);
+    }
+
+    if (item.colors !== undefined) {
+      const colors = parseColors(item.colors, name, strictUnknown);
+      if (colors) Object.assign(override, { colors });
+    }
+
+    if (item.progress !== undefined) {
+      if (typeof item.progress === 'number'
+        && Number.isInteger(item.progress)
+        && item.progress >= 0
+        && item.progress <= 100) {
+        Object.assign(override, { progress: item.progress });
+      } else invalidOverride(`Invalid progress: ${name}`, strictUnknown);
+    }
+
+    if (item.manualVersion !== undefined) {
+      if (typeof item.manualVersion === 'string'
+        && item.manualVersion.trim()
+        && item.manualVersion.trim().length <= 40) {
+        Object.assign(override, { manualVersion: item.manualVersion.trim() });
+      } else invalidOverride(`Invalid manualVersion: ${name}`, strictUnknown);
     }
 
     if (item.featured !== undefined) {
@@ -154,17 +256,28 @@ export function enrichProjects(
 ): Project[] {
   return projects.flatMap((project) => {
     const override = overrides[project.repositoryName];
-    if (!override) return [project];
-    if (override.hidden === true) return [];
+    if (override?.hidden === true) return [];
 
-    const presentation = { ...override };
-    delete presentation.hidden;
+    const category = override?.category ?? project.category;
+    const style = override?.style ?? project.style ?? styleForCategory(category);
+    const colors = resolveProjectColors(
+      style,
+      override?.colors ?? project.colors,
+      override?.accent ?? project.accent,
+    );
+    const manualVersion = override?.manualVersion ?? project.manualVersion;
+
     return [{
       ...project,
-      ...presentation,
+      ...override,
       id: project.id,
       repositoryName: project.repositoryName,
       slug: project.slug,
+      category,
+      style,
+      colors,
+      manualVersion,
+      resolvedVersion: manualVersion ?? project.resolvedVersion,
     }];
   });
 }

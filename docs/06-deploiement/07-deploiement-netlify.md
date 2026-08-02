@@ -8,74 +8,97 @@ Netlify devient la cible canonique de La Grange lorsque la personnalisation 6B e
 
 - build Vite ;
 - fichiers PWA ;
-- Netlify Functions ;
+- Netlify Functions dans `netlify/functions/` ;
 - variables serveur ;
 - redirections OAuth ;
-- en-têtes de sécurité ;
+- en-têtes de sécurité définis dans `netlify.toml` ;
 - déploiements de prévisualisation des PR.
 
-## Variables serveur
+## Variables serveur exactes
 
-Exemples de secrets attendus :
+| Variable | Fonction |
+|---|---|
+| `LA_GRANGE_PUBLIC_ORIGIN` | origine HTTPS canonique, sans chemin |
+| `LA_GRANGE_SESSION_SECRET` | secret HMAC de session, 32 caractères minimum |
+| `LA_GRANGE_ADMIN_LOGINS` | liste des comptes GitHub autorisés, séparés par des virgules |
+| `GITHUB_OAUTH_CLIENT_ID` | identifiant du client OAuth GitHub |
+| `GITHUB_OAUTH_CLIENT_SECRET` | secret du client OAuth GitHub |
+| `GITHUB_APP_ID` | identifiant de la GitHub App |
+| `GITHUB_APP_PRIVATE_KEY` | clé privée PEM de la GitHub App |
+| `GITHUB_APP_INSTALLATION_ID` | installation limitée au dépôt La-Grange |
+| `GITHUB_REPOSITORY_OWNER` | `christolosier-ship-it` |
+| `GITHUB_REPOSITORY_NAME` | `La-Grange` |
 
-- identifiant GitHub App ;
-- clé privée GitHub App ;
-- identifiant d’installation ;
-- secret OAuth ;
-- secret de session ;
-- liste des comptes administrateurs ;
-- dépôt propriétaire et nom imposés.
+Ces variables ne portent jamais le préfixe public de Vite et ne sont jamais copiées dans le build client.
 
-Ils ne portent jamais le préfixe public de Vite et ne sont jamais copiés dans le build.
+## GitHub App
+
+Permissions minimales :
+
+- Metadata : Read-only ;
+- Contents : Read and write ;
+- Pull requests : Read and write.
+
+L’installation doit être limitée au seul dépôt `christolosier-ship-it/La-Grange`.
+
+## OAuth
+
+Le callback à déclarer côté GitHub est :
+
+```text
+https://<origine-canonique>/api/admin/callback
+```
+
+Le client OAuth sert uniquement à vérifier l’identité du propriétaire. Les écritures sont réalisées avec le jeton d’installation de la GitHub App.
 
 ## Flux
 
 1. push ou merge sur `main` ;
 2. installation ;
-3. typecheck, lint et tests ;
-4. build ;
-5. déploiement des fichiers et Functions ;
-6. smoke tests ;
-7. activation ;
-8. notification de mise à jour PWA.
+3. typecheck de l’application et des Functions ;
+4. lint et tests ;
+5. build ;
+6. déploiement des fichiers et Functions ;
+7. smoke tests ;
+8. activation ;
+9. notification de mise à jour PWA.
 
-## OAuth
-
-- callback HTTPS exact ;
-- état OAuth signé et à durée courte ;
-- redirection limitée à l’origine ;
-- session en cookie sécurisé ;
-- déconnexion invalidant la session ;
-- bouton de personnalisation affiché uniquement après lecture de session réussie.
-
-## Functions minimales
+## Functions implémentées
 
 - `GET /api/admin/session` ;
-- `POST /api/admin/login` ou démarrage OAuth ;
+- `GET /api/admin/login` ;
+- `GET /api/admin/callback` ;
 - `POST /api/admin/logout` ;
 - `POST /api/projects/:repositoryName/customization-pr`.
 
-Les noms exacts peuvent évoluer pendant l’implémentation, sans modifier leurs responsabilités.
-
 ## Publication d’une couverture
 
-Le traitement d’image se déroule côté serveur ou dans un traitement isolé validé. Le fichier final est ajouté à la branche de personnalisation avec le patch JSON dans le même commit lorsque possible.
+Le navigateur recadre et réencode l’image en WebP 640 × 400. La Function vérifie ensuite :
 
-## Prévisualisations
+- le contrat JSON ;
+- la signature RIFF/WebP ;
+- le sous-format ;
+- les dimensions réelles ;
+- le poids maximal de 220 Ko ;
+- le chemin canonique calculé côté serveur.
 
-Une PR de personnalisation peut obtenir une URL de preview Netlify. Cette preview est utile pour valider la carte avant fusion. Elle ne remplace pas la revue GitHub.
+La couverture et le patch JSON sont ajoutés au même commit de personnalisation. La Function ne peut écrire que dans `public/data/project-overrides.json` et `public/assets/phase-6/covers/`.
 
 ## Sécurité
 
-- CSP ;
-- HSTS ;
-- `X-Content-Type-Options` ;
-- politique de frame ;
-- cookies sécurisés ;
-- CORS limité à l’origine ;
-- limitation de débit ;
-- taille des corps ;
-- logs sans secret.
+- état OAuth signé et à durée courte ;
+- session HMAC en cookie `HttpOnly`, `Secure`, `SameSite=Lax` ;
+- compte administrateur sur liste blanche ;
+- contrôle strict de l’origine et en-tête CSRF dédié ;
+- schémas et propriétés en liste blanche ;
+- SHA de `main` revérifié avant création de branche ;
+- aucune fusion automatique ;
+- aucun secret dans le client ou les journaux ;
+- CSP, politique de frame, `X-Content-Type-Options` et permissions navigateur limitées.
+
+## Prévisualisations
+
+Une PR de personnalisation peut obtenir une URL de preview Netlify. Cette preview sert à contrôler la carte avant fusion et ne remplace pas la revue GitHub.
 
 ## Rollback
 

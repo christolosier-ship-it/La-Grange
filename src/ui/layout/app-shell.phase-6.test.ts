@@ -41,6 +41,16 @@ const REQUIRED_SHELL_ASSETS = [
   'p6-d26-icon-error.svg',
 ] as const;
 
+const REQUIRED_PHASE_6B_OFFLINE_ASSETS = [
+  'p6-c01-project-card-skin-standard-640x960.webp',
+  'p6-c11-stats-beam-1600x220.webp',
+  'p6-d06-icon-github.svg',
+  'p6-d07-icon-launch-app.svg',
+  'p6-d20-icon-details.svg',
+  'p6-d42-icon-readme.svg',
+  'p6-d43-icon-customize.svg',
+] as const;
+
 describe('Phase 6A app shell assets', () => {
   afterEach(() => {
     document.body.replaceChildren();
@@ -99,8 +109,8 @@ describe('Phase 6A app shell assets', () => {
   });
 
   it('precaches every shared asset required by the offline shell', () => {
-    expect(serviceWorkerSource).toContain('shell-v11');
-    for (const asset of REQUIRED_SHELL_ASSETS) {
+    expect(serviceWorkerSource).toContain('shell-v12');
+    for (const asset of [...REQUIRED_SHELL_ASSETS, ...REQUIRED_PHASE_6B_OFFLINE_ASSETS]) {
       expect(serviceWorkerSource).toContain(asset);
     }
   });

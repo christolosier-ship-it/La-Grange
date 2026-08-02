@@ -44,7 +44,7 @@ Neuf valeurs :
 | `technical` | Technique et métier |
 | `uncategorized` | Inclassable |
 
-Chaque style fournit une icône, une bannière et trois couleurs par défaut.
+Chaque style fournit une icône locale, un marqueur HTML/CSS et trois couleurs par défaut. Aucune bannière raster dédiée n’est utilisée.
 
 ## Traitement de couverture
 
