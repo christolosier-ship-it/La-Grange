@@ -7,7 +7,8 @@ Permettre au propriétaire de personnaliser une carte depuis La Grange tout en c
 ## Principes validés
 
 - modale ouverte depuis le cinquième bouton de la carte ;
-- bouton absent hors session administrateur ;
+- cinquième bouton toujours visible afin de conserver les cinq emplacements du skin ;
+- création d’une PR réservée à une session administrateur authentifiée ;
 - authentification GitHub ;
 - GitHub App limitée au dépôt `La-Grange` ;
 - Netlify Functions pour les opérations privilégiées ;
@@ -89,8 +90,8 @@ Le formulaire reste disponible après un échec. Aucune fausse confirmation « p
 
 ## Critères d’acceptation
 
-- un visiteur ne voit pas le bouton ;
-- un compte non autorisé ne peut rien modifier ;
+- un visiteur voit les cinq actions et peut ouvrir la modale ;
+- un visiteur ou un compte non autorisé ne peut pas créer de PR ;
 - aucun secret dans le bundle ou les diagnostics ;
 - seuls les fichiers autorisés changent ;
 - une PR est créée sans fusion ;
