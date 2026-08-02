@@ -1,5 +1,6 @@
 import { isAbortError } from '../../utils/errors';
 import { AppError } from '../errors/app-error';
+import { authenticatedGitHubFetch } from './authenticated-fetch';
 import type {
   GitHubCommitDto,
   GitHubProjectDetailsDto,
@@ -53,7 +54,7 @@ function isReadme(value: unknown): value is GitHubReadmeDto {
 }
 
 function browserFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
-  return globalThis.fetch(input, init);
+  return authenticatedGitHubFetch(input, init);
 }
 
 function retryAt(response: Response): string | undefined {
@@ -82,6 +83,14 @@ function responseError(response: Response): AppError {
       'Limite GitHub atteinte pour les détails. Réessayez plus tard.',
       true,
       retryAt(response),
+    );
+  }
+  if (response.status === 401) {
+    return new AppError(
+      'network',
+      'GitHub detail session expired',
+      'La session GitHub a expiré. Reconnectez-vous.',
+      true,
     );
   }
   return new AppError(

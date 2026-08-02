@@ -1,4 +1,6 @@
-import { resolveRepositoryVersion } from './release-resolver';
+import { ADMIN_SESSION_EVENT } from '../customization/admin-session';
+import type { AdminSessionState } from '../customization/types';
+import { resetRepositoryVersionCache, resolveRepositoryVersion } from './release-resolver';
 
 function repositoryName(githubUrl: string): string | undefined {
   try {
@@ -42,7 +44,20 @@ export function installReleaseBadges(root: ParentNode = document): () => void {
     }
   });
   observer.observe(root, { childList: true, subtree: true });
+
+  const refreshAfterLogin = (event: Event): void => {
+    const state = (event as CustomEvent<AdminSessionState>).detail;
+    if (state.status !== 'authenticated') return;
+    resetRepositoryVersionCache();
+    root.querySelectorAll<HTMLElement>('.project-card').forEach((card) => {
+      delete card.dataset.versionRequested;
+    });
+    scan(root);
+  };
+  window.addEventListener(ADMIN_SESSION_EVENT, refreshAfterLogin);
+
   return () => {
     observer.disconnect();
+    window.removeEventListener(ADMIN_SESSION_EVENT, refreshAfterLogin);
   };
 }

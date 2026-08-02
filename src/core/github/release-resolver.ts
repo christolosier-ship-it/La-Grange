@@ -1,4 +1,5 @@
 import type { Project } from '../projects/model';
+import { authenticatedGitHubFetch } from './authenticated-fetch';
 
 interface GitHubReleaseDto {
   readonly tag_name: string;
@@ -42,7 +43,7 @@ async function fetchVersion(githubUrl: string): Promise<string | undefined> {
   const url = apiUrl(githubUrl);
   if (!url) return undefined;
   try {
-    const response = await fetch(url, {
+    const response = await authenticatedGitHubFetch(url, {
       mode: 'cors',
       credentials: 'omit',
       cache: 'no-store',
@@ -76,6 +77,11 @@ export function resolveRepositoryVersion(
   });
   pending.set(key, request);
   return request;
+}
+
+export function resetRepositoryVersionCache(): void {
+  cache.clear();
+  pending.clear();
 }
 
 export function resolveProjectVersion(project: Project): Promise<string | undefined> {

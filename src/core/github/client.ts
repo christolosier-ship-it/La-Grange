@@ -1,5 +1,6 @@
 import { isAbortError } from '../../utils/errors';
 import { AppError } from '../errors/app-error';
+import { authenticatedGitHubFetch, hasAuthenticatedGitHubSession } from './authenticated-fetch';
 import type { GitHubRepositoryDto, RepositoryFetchResult } from './types';
 
 const MAX_PAGES = 100;
@@ -90,6 +91,15 @@ function responseError(response: Response): AppError {
     );
   }
 
+  if (response.status === 401) {
+    return new AppError(
+      'network',
+      'GitHub session expired',
+      'La session GitHub a expiré. Reconnectez-vous.',
+      true,
+    );
+  }
+
   if (response.status === 404) {
     return new AppError('not-found', 'GitHub user not found', 'Compte GitHub introuvable.', false);
   }
@@ -103,13 +113,14 @@ function responseError(response: Response): AppError {
 }
 
 function browserFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
-  return globalThis.fetch(input, init);
+  return authenticatedGitHubFetch(input, init);
 }
 
 export class GitHubClient {
   private readonly apiRoot: string;
   private readonly apiOrigin: string;
   private readonly fetcher: typeof fetch;
+  private readonly usesBrowserSession: boolean;
 
   constructor(
     fetcher: typeof fetch | undefined = undefined,
@@ -120,11 +131,12 @@ export class GitHubClient {
     this.apiRoot = root.href.replace(/\/$/u, '');
     this.apiOrigin = root.origin;
     this.fetcher = fetcher ?? browserFetch;
+    this.usesBrowserSession = fetcher === undefined;
   }
 
   async fetchAllRepositories(
     username: string,
-    _etag?: string,
+    etag?: string,
     signal?: AbortSignal,
   ): Promise<RepositoryFetchResult> {
     const cleanUsername = username.trim();
@@ -137,6 +149,7 @@ export class GitHubClient {
     const ids = new Set<number>();
     const visitedPages = new Set<string>();
     let responseEtag: string | undefined;
+    let firstPage = true;
     let pageCount = 0;
 
     while (url) {
@@ -148,7 +161,11 @@ export class GitHubClient {
 
       let response: Response;
       try {
+        const authenticated = this.usesBrowserSession && hasAuthenticatedGitHubSession();
         response = await this.fetcher(url, {
+          ...(firstPage && etag && authenticated
+            ? { headers: { 'If-None-Match': etag } }
+            : {}),
           mode: 'cors',
           credentials: 'omit',
           cache: 'no-store',
@@ -167,6 +184,9 @@ export class GitHubClient {
         );
       }
 
+      if (firstPage && response.status === 304) {
+        return { status: 'not-modified', etag: response.headers.get('etag') ?? etag };
+      }
       if (!response.ok) throw responseError(response);
       responseEtag ??= response.headers.get('etag') ?? undefined;
 
@@ -194,6 +214,7 @@ export class GitHubClient {
       }
 
       url = parseNextPage(response.headers.get('link'), this.apiOrigin);
+      firstPage = false;
     }
 
     return { status: 'success', repositories, etag: responseEtag };
