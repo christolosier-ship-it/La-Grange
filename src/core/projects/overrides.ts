@@ -121,7 +121,7 @@ function parseColors(value: unknown, name: string, strictUnknown: boolean): Proj
     if (!COLOR_KEYS.has(key)) invalidOverride(`Unknown color property: ${name}.colors.${key}`, strictUnknown);
   }
 
-  const colors: Partial<ProjectColors> = {};
+  const colors: { primary?: string; secondary?: string; progress?: string } = {};
   for (const key of ['primary', 'secondary', 'progress'] as const) {
     const color = raw[key];
     if (color === undefined) continue;
