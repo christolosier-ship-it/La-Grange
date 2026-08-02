@@ -1,161 +1,101 @@
 # Spécification des composants
 
-## Règle Phase 6
-
-La Phase 6 peut modifier l’apparence, la composition interne et les assets d’un composant. Elle ne peut pas modifier silencieusement son rôle, ses données, ses états, son ordre de tabulation ou sa surface interactive.
-
-Chaque composant possède deux couches :
-
-- une couche fonctionnelle sémantique et testable ;
-- une couche de présentation inspirée des objets de l’atelier.
-
-Les objets décoratifs restent hors de l’arbre d’accessibilité et ne capturent aucun événement.
-
-## ProjectCard
-
-### Entrées
-
-Projet, variante, indicateur nouveau, favori, densité.
-
-### Affichage
-
-- couverture ou fallback ;
-- nom ;
-- description limitée ;
-- badge d’état ;
-- langage ;
-- date relative ;
-- icône de lien d’application si disponible.
-
-### États
-
-normal, survol, focus, pressé, nouveau, image en erreur, archivé.
-
-### Présentation Phase 6
-
-La carte adopte la métaphore d’une caisse, d’un cadre ou d’une fiche d’atelier. Elle peut utiliser un cadre SVG ou CSS, une étiquette d’état et une profondeur courte.
-
-Contraintes :
-
-- le nom et l’action principale restent immédiatement identifiables ;
-- aucune donnée obligatoire n’est dessinée dans la couverture ;
-- le cadre ne modifie pas la hitbox ;
-- les textes restent droits ;
-- la couverture conserve un ratio stable ;
-- le fallback utilise la même structure que la carte illustrée ;
-- une carte archivée reste lisible ;
-- le favori reste un bouton distinct et non imbriqué dans un autre lien.
-
-## StatCard
-
-Affiche une valeur réelle, un libellé et une icône. Le clic est autorisé uniquement s’il applique un filtre explicite.
-
-### Présentation Phase 6
-
-La statistique peut prendre la forme d’une plaque ou d’un compteur fixé à une poutre. La valeur et le libellé restent du texte HTML. Quatre statistiques maximum sont affichées.
-
-## StatusBadge
-
-Texte toujours présent avec la couleur : Actif, Maintenance, En sommeil, Archivé. La couleur seule ne suffit jamais.
-
-### Présentation Phase 6
-
-Le badge peut devenir une étiquette, un ruban ou une petite plaque. Sa couleur reste secondaire par rapport au texte et à l’icône.
-
-## SyncButton
-
-États : prêt, synchronisation, succès, erreur, hors ligne. Empêche les doubles lancements et expose le statut via `aria-live`.
-
-### Présentation Phase 6
-
-Le bouton peut évoquer une commande d’atelier. Une lueur courte est autorisée pendant la synchronisation. Le bouton conserve une forme immédiatement reconnue comme interactive.
-
-## SearchField
-
-Recherche locale avec bouton d’effacement, label accessible et délai léger facultatif. Pas d’appel API à chaque frappe.
-
-### Présentation Phase 6
-
-Le champ peut être intégré dans un encart ou un tiroir visuel. L’élément `input`, son label et son bouton d’effacement restent visibles et conventionnels.
-
-## FilterChip
-
-Bouton à état pressé avec `aria-pressed`. Les filtres combinés sont visibles et réinitialisables.
-
-### Présentation Phase 6
-
-La puce peut prendre la forme d’une petite étiquette. Elle ne doit pas devenir une étiquette décorative impossible à distinguer d’un bouton.
-
-## Toast
-
-Réservé aux événements non bloquants : nouveau dépôt, synchronisation terminée, erreur récupérable. Jamais comme seul moyen de comprendre un échec durable.
-
-### Présentation Phase 6
-
-Le toast peut évoquer une étiquette ou une note temporaire. Il ne doit pas masquer la navigation ni ressembler à un panneau permanent.
-
-## EmptyState
-
-Message, explication et action unique pertinente. Peut adopter la métaphore de l’atelier sans humour obscur.
-
-### Présentation Phase 6
-
-L’état vide peut utiliser un emplacement de caisse libre, une étagère vide ou une note papier. Le message reste direct et l’action unique reste un vrai bouton ou lien.
-
-## Modal
-
-À limiter aux confirmations rares, comme vider le cache. Focus piégé, fermeture clavier et restauration du focus obligatoires.
-
-### Présentation Phase 6
-
-La modale devient un panneau au premier plan. Le reste de la page est inerte et masqué de l’arbre d’accessibilité pendant son ouverture. Aucun cadre décoratif ne peut réduire la largeur utile ou pousser les actions sous la ligne de flottaison.
-
-## Navigation principale
-
-### Fonction
-
-Présenter les quatre destinations stables : Vue d’ensemble, Projets, Activité et Paramètres.
-
-### Présentation Phase 6
-
-- bureau et tablette paysage : panneau mural vertical ;
-- smartphone : barre basse compacte inspirée d’une traverse ou d’un établi ;
-- état actif : contraste, texte et marqueur ambre ;
-- icônes SVG locales ;
-- aucune destination ajoutée pour reproduire le prototype illustré.
-
-## Panneau secondaire
-
-### Fonction
-
-Présenter activité, synchronisation, répartition, aide ou informations de cache selon la vue.
-
-### Présentation Phase 6
-
-Le panneau peut utiliser du papier, du bois ou du verre sombre. Les textes longs utilisent une surface unie. Le panneau ne doit jamais ressembler à une carte projet.
-
-## Timeline d’activité
-
-### Fonction
-
-Présenter les événements locaux dans l’ordre chronologique, groupés par semaine et par jour.
-
-### Présentation Phase 6
-
-La timeline peut évoquer un registre ou une planche d’atelier. Les repères restent alignés, les dates complètes restent accessibles et les événements disparus ne créent aucun lien mort.
-
-## Contrôles de paramètres
-
-Les cases, listes et champs restent des contrôles natifs ou équivalents accessibles. Leur environnement peut utiliser une plaque ou un panneau, mais leur état ne doit jamais dépendre d’une texture ou d’un symbole seul.
-
-## Critères communs Phase 6
-
-- focus visible au-dessus des textures ;
-- zone tactile minimale de 44 px ;
-- texte zoomable à 200 % ;
-- aucun texte fonctionnel dans un asset ;
-- état sans asset testé ;
-- mouvement réduit testé ;
-- densité compacte testée ;
-- aucun composant ne dépend d’un pseudo-élément pour son contenu accessible ;
-- aucun objet décoratif ne ressemble à une action disponible.
+## ProjectCard 6B
+
+### Contenu
+
+1. bouton ou ruban de style ;
+2. couverture ;
+3. nom ou logo avec nom accessible ;
+4. version ;
+5. description courte ;
+6. temps depuis dernière activité ;
+7. technologie principale ;
+8. avancement manuel facultatif ;
+9. rangée de cinq actions.
+
+### Actions
+
+1. GitHub ;
+2. lancer l’application ;
+3. README ;
+4. détail du projet ;
+5. personnaliser.
+
+Les cinq actions restent alignées sur les formats cibles. Les quatre premières sont des liens ou actions de consultation. La cinquième ouvre une modale et n’est rendue que pour l’administrateur.
+
+### Infobulles
+
+- affichage au survol après un délai court ;
+- affichage immédiat ou court au focus clavier ;
+- fermeture avec `Échap` ;
+- positionnement sans couper le viewport ;
+- libellé accessible toujours présent ;
+- aucune information indispensable uniquement dans l’infobulle.
+
+### Structure graphique
+
+- skin ou cadre matériel WebP ;
+- contenu dynamique en HTML ;
+- grille et adaptation en CSS ;
+- icônes SVG ;
+- progression CSS ;
+- pas de rail de boutons dessiné dans l’image ;
+- ratio couverture 640 × 400.
+
+## StatsBeam
+
+Un seul composant visuel WebP contient la poutre, les attaches et séparateurs. Les quatre statistiques sont des blocs HTML superposés. Le composant ne contient aucun chiffre rasterisé.
+
+## FixedRail
+
+Le rail regroupe marque, navigation, synchronisation, version et état administrateur. Il ne défile pas avec la zone principale. Il peut avoir son propre fallback CSS, mais pas un empilement de panneaux opaques.
+
+## ProjectCustomizationModal
+
+### Champs
+
+- couverture ;
+- style ;
+- couleur principale ;
+- couleur secondaire ;
+- couleur de progression ;
+- avancement ;
+- version manuelle.
+
+### Actions
+
+- revenir aux couleurs du style ;
+- retirer la couverture ;
+- retirer l’avancement ;
+- annuler ;
+- créer la PR ;
+- ouvrir la PR créée.
+
+### Accessibilité
+
+- `dialog` modal avec titre ;
+- focus initial ;
+- piège de focus ;
+- fermeture par `Échap` avant envoi ;
+- fond inerte ;
+- erreurs associées aux champs ;
+- état occupé annoncé ;
+- focus restauré sur le bouton 5.
+
+## ProgressBar
+
+- rendue uniquement si une valeur est définie ;
+- valeur 0 à 100 ;
+- largeur et texte cohérents ;
+- libellé « avancement estimé manuellement » ;
+- couleur issue de la palette du projet ;
+- aucune animation obligatoire.
+
+## VersionBadge
+
+- texte HTML ;
+- valeur manuelle prioritaire ;
+- sinon release résolue ;
+- absent sans valeur ;
+- préversion annoncée lorsque nécessaire.

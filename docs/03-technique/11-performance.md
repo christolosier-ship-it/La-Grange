@@ -2,159 +2,65 @@
 
 ## Objectif
 
-La Phase 6 augmente la richesse perçue sans transformer le chargement initial en téléchargement d’illustrations. L’application reste interactive dès l’affichage du cache et les assets arrivent selon leur priorité réelle.
+La richesse visuelle de 6B ne doit pas transformer le dashboard en planche d’images lourde. Le cache reste affiché immédiatement et l’interface est utilisable avant le chargement des couvertures.
 
-Le registre `docs/05-realisation/10-suivi-production-assets-phase-6.md` fixe les dimensions, formats et budgets individuels de chaque fichier ainsi que leur affectation aux lots.
+## Budgets
 
-## Budgets applicatifs
+### Shell et dashboard
 
-- JavaScript initial compressé : viser moins de 150 Ko hors assets ;
-- CSS initial compressé : viser moins de 80 Ko ;
-- aucune couverture chargée en taille fiche si elle n’est pas nécessaire ;
-- interaction possible dès l’affichage du cache ;
-- performance Lighthouse élevée sur appareil moyen ;
-- aucune dépendance lourde ajoutée pour le visuel.
+- une seule variante du fond Phase 6A par viewport ;
+- bandeau de statistiques WebP : cible inférieure à 70 Ko ;
+- skin de carte standard WebP transparent : cible inférieure à 60 Ko ;
+- bannière de style partagée : cible inférieure à 20 Ko si raster ;
+- icônes fonctionnelles SVG : cible cumulée inférieure à 40 Ko ;
+- aucune grande surface raster dupliquée par carte.
 
-## Budgets Phase 6
+### Projet
 
-### Shell critique
+- couverture 640 × 400 : 35 à 80 Ko ;
+- logo facultatif 512 × 160 : moins de 30 Ko ;
+- dimensions réservées ;
+- couvertures sous la ligne de flottaison en lazy loading ;
+- progression, version et textes en HTML/CSS.
 
-- décor critique supplémentaire chargé pour un viewport, hors variante de fond active : cible inférieure à 250 Ko compressés ;
-- une seule variante de fond B01 à B04 est chargée initialement ; B01 desktop WebP 2048 × 1152 : cible inférieure à 190 Ko ;
-- plafond desktop d’images critiques Phase 6 : B01 à 190 Ko maximum + décor supplémentaire à 250 Ko maximum, soit 440 Ko ;
-- textures et cadres critiques : cible cumulée inférieure à 100 Ko ;
-- icônes critiques : cible cumulée inférieure à 30 Ko ;
-- aucune police décorative sans licence, mesure et justification.
+### Administration
 
-Les variantes responsive non retenues pour le viewport ne sont ni préchargées ni additionnées au poids du shell initial.
+- code de la modale chargé à la demande ;
+- bibliothèque de recadrage ou d’encodage non incluse dans le chemin critique public si le traitement est serveur ;
+- aperçu local avec URL objet libérée à la fermeture ;
+- upload maximal documenté et contrôlé.
 
-### Cartes projets
+## Stratégie visuelle
 
-- couverture catalogue 640 × 400 : cible de 35 à 80 Ko ;
-- logo 512 × 160 : cible inférieure à 30 Ko ;
-- couverture fiche 960 × 600 chargée uniquement sur la fiche ;
-- aucune couverture d’une vue non visitée préchargée sans mesure ;
-- dimensions et ratio réservés avant téléchargement.
+- WebP pour matière, skins, bandeau et couvertures ;
+- SVG pour icônes ;
+- HTML/CSS pour grille, données, barre de progression et infobulles ;
+- aucun SVG complexe utilisé pour simuler du bois ;
+- aucun cadre raster complet recréé pour une simple couleur ;
+- un skin partagé par variante de carte.
 
-### Décor non critique
+## Layout
 
-- chargé après le contenu utile ou lors de l’inactivité ;
-- supprimé des formats où il n’apporte pas de valeur ;
-- absent du chemin critique hors ligne si le fallback suffit ;
-- aucun ornement individuel supérieur à 50 Ko sans justification.
-
-Les budgets sont des cibles. Tout dépassement est mesuré et expliqué dans la PR.
-
-## Contrat de fichier
-
-Chaque asset mesuré doit :
-
-- être inscrit dans le registre ;
-- porter son nom final exact ;
-- présenter les dimensions décodées attendues ;
-- être stocké à la racine de `public/assets/phase-6/`, même si I reste décoché ;
-- posséder un fallback ;
-- être absent du chargement initial s’il n’est pas critique.
-
-Les prototypes hérités ne sont pas inclus dans le budget cible et ne constituent pas une référence de poids.
-
-## Mesures
-
-- WebP avec dimensions explicites pour les rasters de production ;
-- SVG optimisés pour cadres et icônes ;
-- lazy loading sous la ligne de flottaison ;
-- miniatures dédiées ;
-- CSS critique léger ;
-- aucune bibliothèque de graphique pour un simple anneau ;
-- rendu par lots pour de nombreuses cartes ;
-- cache pour réduire appels et rechargements ;
-- `aspect-ratio`, largeur et hauteur réservés ;
-- textures répétables ou recadrages explicitement inscrits au registre ;
-- variantes responsive uniquement lorsque prévues ;
-- assets partagés mis en cache sans gonfler inutilement le shell.
-
-## Stratégie de chargement
-
-### Priorité 1
-
-- couleur de fond ;
-- structure CSS ;
-- typographie système ;
-- contenu et contrôles ;
-- focus ;
-- fallback de carte.
-
-### Priorité 2
-
-- cadres critiques ;
-- icônes P0 ;
-- enseigne ;
-- fond principal ;
-- couvertures visibles au-dessus de la ligne de flottaison.
-
-### Priorité 3
-
-- couvertures sous la ligne de flottaison ;
-- logos secondaires ;
-- textures de détail ;
-- ornements ;
-- images de fiche.
-
-Une erreur de priorité 3 ne dégrade jamais la priorité 1.
-
-## À éviter
-
-- requête détaillée par dépôt au démarrage ;
-- animation de grandes surfaces ;
-- ombres floues multiples ;
-- re-rendu complet à chaque frappe ;
-- image Base64 dans le CSS ;
-- archive ou fragment d’asset dans le dépôt ;
-- décor distant ;
-- texture différente par composant sans registre ;
-- grande image desktop utilisée sur mobile ;
-- filtres CSS coûteux sur de nombreuses cartes ;
-- particules ou canvas décoratif permanent ;
-- préchargement de toutes les couvertures ;
-- police avec des graisses inutilisées ;
-- double chaîne WebP/AVIF non approuvée.
-
-## Layout shifts
-
-- réserver les ratios ;
-- ne pas modifier la hauteur des cartes après chargement ;
-- ne pas injecter un cadre qui change la boîte ;
-- ne pas déplacer les cartes lors d’une nouvelle arrivée ;
-- conserver une largeur stable pour les compteurs ;
-- vérifier les valeurs et noms longs.
+- rail gauche fixe sans provoquer deux scrolls verticaux concurrents ;
+- contenu principal seul défilant ;
+- aucune hauteur injectée après chargement des couvertures ;
+- aucun conteneur de section autour de la grille ;
+- aucun rail droit ;
+- bandeau et cartes alignés par grille CSS stable.
 
 ## Mesures obligatoires en PR
 
-Chaque PR visuelle publie :
-
-- poids CSS avant et après ;
-- nom, dimensions et poids de chaque nouvel asset ;
-- poids du shell critique ;
-- nombre de requêtes initiales ;
-- LCP, CLS et interaction sur mobile simulé ;
-- comparaison cache froid et chaud ;
-- contrôle du lazy loading ;
-- contrôle du mouvement réduit ;
-- contrôle des images bloquées ;
-- justification des écarts.
-
-## Scénarios de test
-
-- premier chargement en réseau limité ;
-- retour avec cache chaud ;
+- poids CSS et JavaScript avant/après ;
+- poids de chaque asset ;
+- requêtes initiales ;
+- LCP et CLS ;
+- cache froid et chaud ;
+- tablette paysage et bureau ;
+- zoom 200 % ;
+- grille avec 18 projets ;
+- images bloquées ;
 - mode hors ligne ;
-- blocage des images ;
-- tablette paysage ;
-- smartphone 390 px ;
-- appareil moyen avec mouvement réduit ;
-- liste proche du nombre maximal de projets ;
-- couvertures absentes ou en erreur.
+- ouverture de la modale ;
+- upload nominal et refus d’un fichier excessif.
 
-## Suivi
-
-Mesurer sur mobile simulé et iPad réel lorsque disponible. Toute régression significative est justifiée dans la PR. Le contrôle final compare la Phase 6 à la dernière version fonctionnelle validée avant son démarrage.
+Tout dépassement est mesuré et approuvé avant fusion.

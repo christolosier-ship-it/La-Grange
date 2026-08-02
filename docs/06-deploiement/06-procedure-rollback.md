@@ -3,31 +3,42 @@
 ## Déclencheurs
 
 - écran blanc ;
-- corruption ou perte de cache ;
-- synchronisation destructive ;
-- fuite de secret ;
+- perte de cache ;
 - service worker bloquant ;
-- liens principaux inutilisables ;
+- secret exposé ;
+- Function trop permissive ;
+- écriture hors liste blanche ;
+- session compromise ;
+- personnalisation destructive ;
 - régression critique d’accessibilité.
 
-## Méthode
+## Mesures immédiates
+
+En cas de risque d’écriture :
+
+1. désactiver ou retirer les Functions ;
+2. révoquer ou suspendre la GitHub App ;
+3. masquer le bouton admin ;
+4. préserver la consultation publique ;
+5. analyser les PR et commits créés.
+
+## Rollback applicatif
 
 1. identifier le dernier commit stable ;
-2. stopper ou neutraliser le déploiement problématique ;
-3. créer un revert traçable plutôt qu’un push forcé ;
-4. redéployer ;
-5. vérifier le site et le service worker ;
-6. publier une correction de version si nécessaire ;
-7. documenter la cause.
+2. créer un revert traçable ;
+3. redéployer ;
+4. vérifier service worker et cache ;
+5. vérifier l’origine canonique ;
+6. publier un patch si nécessaire.
+
+## Configuration
+
+Une personnalisation fusionnée se corrige par revert ou nouvelle PR. Ne jamais réécrire l’historique de `main`.
 
 ## Données locales
 
-Un rollback de code ne doit pas supposer que la base IndexedDB a également reculé. Les migrations doivent être tolérantes ou fournir une compatibilité vers l’arrière pour la dernière version. En cas de schéma incompatible, afficher une procédure claire et préserver autant que possible les préférences.
-
-## Service worker
-
-Une version problématique peut rester installée. Prévoir un correctif qui prend le contrôle proprement, nettoie uniquement les caches concernés et recharge après consentement si nécessaire.
+Un rollback ne suppose pas un retour arrière d’IndexedDB. Les migrations restent tolérantes et les données sont préservées autant que possible.
 
 ## Après incident
 
-Créer un RETEX court : déclencheur, impact, détection, restauration, cause racine et action préventive.
+RETEX : déclencheur, impact, permissions, détection, restauration, cause racine et prévention.

@@ -2,36 +2,62 @@
 
 ## Pyramide
 
-1. tests unitaires nombreux pour les règles et transformations ;
-2. tests d’intégration pour synchronisation, cache et routeur ;
-3. tests end-to-end ciblés sur les parcours critiques ;
-4. contrôles manuels sur appareils réels pour PWA, tactile et accessibilité.
+1. unitaires pour mapping, règles, schémas et transformations ;
+2. intégration pour cache, rendu, modale et services ;
+3. tests des Functions avec GitHub simulé ;
+4. E2E sur les parcours publics et administrateur ;
+5. contrôles manuels tablette paysage, bureau, PWA et accessibilité.
 
-## Outils envisagés
+## Séparation
 
-- Vitest pour les tests unitaires et d’intégration ;
-- environnement DOM léger pour les composants ;
-- Playwright pour les parcours E2E ;
-- fixtures JSON représentatives de l’API GitHub ;
-- Lighthouse et audits d’accessibilité automatisés en complément.
+Deux suites critiques sont distinguées :
 
-Les versions exactes seront fixées lors de la phase socle.
+- **consultation publique** : ne dépend d’aucun secret et reste testable hors ligne ;
+- **administration** : utilise des doubles GitHub App, sessions et stockage de branche.
 
-## Isolation
+Aucun test de PR n’utilise la clé privée de production.
 
-Les tests ne dépendent pas de l’API GitHub réelle. Le client HTTP est injecté ou simulé. Les fixtures couvrent pagination, réponse 304, limite API, données nulles et renommage.
-
-## Criticité
-
-Priorité maximale :
+## Priorités
 
 - ne pas perdre le cache ;
 - ne pas créer de doublon ;
+- ne pas inventer de progression ;
 - ne pas exposer de secret ;
-- ne pas supprimer des projets après une réponse partielle ;
-- pouvoir démarrer hors ligne ;
-- conserver des liens sûrs.
+- ne pas autoriser un non-admin ;
+- ne pas écrire hors liste blanche ;
+- ne pas committer directement sur `main` ;
+- ne pas fusionner automatiquement ;
+- préserver le formulaire après conflit ;
+- garantir les fallbacks.
+
+## Phase 6B
+
+Les tests couvrent :
+
+- rail fixe et scroll principal ;
+- bandeau WebP avec HTML ;
+- absence de conteneurs et rail droit ;
+- carte et cinq actions ;
+- infobulles ;
+- progression facultative ;
+- version ;
+- neuf styles ;
+- modale ;
+- upload ;
+- création de PR ;
+- multi-appareil après déploiement.
 
 ## CI
 
-Chaque PR exécute formatage, lint, typecheck, tests, build et tests E2E essentiels. Les audits lourds peuvent être réservés à la branche principale ou aux releases.
+Chaque PR exécute :
+
+- installation reproductible ;
+- typecheck ;
+- lint ;
+- tests ;
+- tests Functions ;
+- build ;
+- smoke tests ciblés ;
+- inspection des assets et secrets.
+
+Les mesures lourdes, appareils réels et audits complets restent requis avant fusion du lot et en Phase 7.

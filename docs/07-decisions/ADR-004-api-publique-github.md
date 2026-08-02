@@ -1,31 +1,34 @@
-# ADR-004 — API publique GitHub sans authentification
+# ADR-004 - Lecture publique GitHub sans authentification
 
-- **Statut** : accepté pour le MVP
-- **Date** : 2026-07-28
-
-## Contexte
-
-Les dépôts concernés sont publics et doivent apparaître automatiquement. Un token dans une PWA publique serait un secret exposé.
+- **Statut** : accepté pour le chemin de consultation
+- **Date initiale** : 2026-07-28
+- **Révision** : 2026-08-02
 
 ## Décision
 
-Utiliser l’API REST GitHub publique sans authentification pour la liste globale, avec cache, pagination, ETag et limitation des appels.
+La liste globale des dépôts publics et les données de consultation continuent d’utiliser l’API REST GitHub publique sans jeton dans le navigateur.
 
 ## Raisons
 
-- aucun backend ;
-- aucun compte dans La Grange ;
-- installation et hébergement simples ;
-- exposition limitée aux données déjà publiques.
+- données déjà publiques ;
+- cache-first ;
+- absence de secret client ;
+- fonctionnement statique et hors ligne ;
+- simplicité du parcours public.
 
-## Conséquences
+## Administration
 
-- quota plus faible par adresse IP ;
-- dépôts privés absents ;
-- synchronisation non temps réel ;
-- détails chargés à la demande ;
-- messages dédiés en cas de limite.
+La GitHub App décrite dans ADR-010 ne remplace pas ce chemin. Elle est utilisée uniquement côté serveur pour proposer des modifications au dépôt `La-Grange`.
 
-## Évolution
+Les deux flux sont séparés :
 
-Une GitHub App ou OAuth ne sera envisagée que pour un besoin validé de dépôts privés. Le token ne devra jamais transiter comme variable publique Vite.
+- navigateur : lecture publique ;
+- Function sécurisée : écriture limitée à la personnalisation.
+
+## Contraintes
+
+- aucun jeton dans Vite ;
+- aucun appel authentifié par carte ;
+- versions mises en cache ou générées de manière mutualisée ;
+- limites GitHub explicites ;
+- dernier cache valide conservé.

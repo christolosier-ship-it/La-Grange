@@ -28,97 +28,118 @@ interface Project {
   activityState: ActivityState;
   cover?: string;
   logo?: string;
-  accent?: string;
+  style: ProjectStyle;
+  colors: ProjectColors;
+  progress?: number;
+  manualVersion?: string;
+  resolvedVersion?: string;
   featured: boolean;
   isNew: boolean;
   sortOrder?: number;
 }
 ```
 
-## ProjectOverride
+`progress` est une estimation éditoriale manuelle. Elle n’est jamais déduite des commits, issues, branches ou releases.
 
-Champs facultatifs : `displayName`, `description`, `category`, `cover`, `logo`, `accent`, `featured`, `appUrl`, `hidden`, `sortOrder`.
-
-Une signature déterministe de la configuration valide est conservée dans le snapshot. Lorsque cette signature change, une synchronisation complète récupère la liste technique avant de réappliquer les overrides. Cela permet notamment de faire réapparaître un projet précédemment masqué sans attendre une modification côté GitHub.
-
-## SyncSnapshot
+## ProjectStyle
 
 ```ts
-interface SyncSnapshot {
-  schemaVersion: number;
-  username: string;
-  projects: Project[];
-  syncedAt: string;
-  etag?: string;
-  overridesSignature?: string;
-  aliases?: Record<string, number>;
+type ProjectStyle =
+  | 'lifestyle'
+  | 'games'
+  | 'productivity'
+  | 'health'
+  | 'education'
+  | 'nature'
+  | 'creation'
+  | 'technical'
+  | 'uncategorized';
+
+interface ProjectColors {
+  primary: string;
+  secondary: string;
+  progress: string;
 }
 ```
 
-`username` est la clé d’isolation du snapshot. `aliases` relie un ancien nom de dépôt à son identifiant GitHub stable. Les alias sont supprimés lorsque le projet disparaît ou lorsqu’un nom redevient canonique.
+Chaque style possède un trio de couleurs par défaut et une icône fonctionnelle. Les couleurs personnalisées sont facultatives et doivent conserver les contrastes exigés.
 
-## ProjectDetails
+## Configuration éditoriale
+
+Le fichier canonique `public/data/project-overrides.json` utilise un schéma versionné :
+
+```json
+{
+  "schemaVersion": 3,
+  "projects": {
+    "Les-Petites-Quetes": {
+      "displayName": "Les Petites Quêtes",
+      "description": "Quêtes et routines familiales",
+      "style": "games",
+      "colors": {
+        "primary": "#d78a18",
+        "secondary": "#f0c55b",
+        "progress": "#e99312"
+      },
+      "progress": 65,
+      "manualVersion": "v0.7.1",
+      "cover": "assets/phase-6/p6-f02a-les-petites-quetes-cover-640x400.webp"
+    }
+  }
+}
+```
+
+Champs modifiables par la modale 6B :
+
+- `style` ;
+- `colors.primary` ;
+- `colors.secondary` ;
+- `colors.progress` ;
+- `progress` ;
+- `manualVersion` ;
+- `cover`.
+
+Les autres champs éditoriaux peuvent exister dans le fichier, mais ne sont pas modifiés par cette modale sans décision ultérieure.
+
+## Règles de fusion
+
+- identité, dates, archive et activité viennent de GitHub ;
+- couverture, style, couleurs, avancement et version manuelle viennent des overrides ;
+- couleurs absentes : valeurs par défaut du style ;
+- `progress` absent : aucune barre ;
+- `manualVersion` absente : résolution automatique ;
+- configuration invalide : projet conservé avec fallback et diagnostic.
+
+## Résolution de version
+
+Priorité :
+
+1. `manualVersion` non vide ;
+2. dernière release stable ;
+3. dernière préversion si aucune stable ;
+4. aucune version.
+
+Les brouillons sont ignorés et le tag est conservé tel quel. La résolution automatique est mise en cache et ne provoque jamais un appel réseau par carte à chaque rendu. Un artefact généré ou cache serveur, par exemple `public/data/project-releases.json`, peut porter cette donnée factuelle.
+
+## PublicationCustomization
 
 ```ts
-interface ProjectDetails {
-  schemaVersion: 1;
+interface PublicationCustomization {
   projectId: number;
   repositoryName: string;
-  fetchedAt: string;
-  commits: ProjectCommit[];
-  release?: ProjectRelease;
-  readmeAvailable: boolean;
-  readmeUrl?: string;
+  baseSha: string;
+  overridePatch: ProjectCustomizationPatch;
+  coverUpload?: File;
+}
+
+interface PublicationResult {
+  status: 'validating' | 'creating-branch' | 'creating-pr' | 'ready' | 'failed';
+  pullRequestUrl?: string;
+  branchName?: string;
+  errorCode?: string;
 }
 ```
 
-Les détails sont séparés du snapshot principal. Ils sont chargés uniquement pour la fiche ouverte, validés avant mapping et enregistrés dans l’object store `projectDetails`. Les identifiants numériques GitHub étant globaux, ils permettent un nettoyage ciblé à partir des projets du snapshot actif.
+## Données existantes
 
-## ActivityEvent
-
-```ts
-interface ActivityEvent {
-  id?: number;
-  username: string;
-  projectId: number;
-  type: 'added' | 'renamed' | 'removed' | 'archived' | 'app-url-changed';
-  occurredAt: string;
-  detail?: string;
-}
-```
-
-Le journal local enregistre uniquement les changements produits par la comparaison de deux synchronisations complètes réussies. Le premier import ne génère aucun événement. Les entrées sont isolées par utilisateur, triées de la plus récente à la plus ancienne et limitées aux 500 événements les plus récents par utilisateur.
-
-Chaque entrée relue depuis IndexedDB est validée profondément. Une entrée invalide est ignorée individuellement et comptabilisée. Les regroupements par semaine et par jour sont calculés dans le fuseau local sans modifier la date ISO UTC stockée.
-
-## AppPreferences
-
-```ts
-interface AppPreferences {
-  schemaVersion: 2;
-  username: string;
-  hideForks: boolean;
-  hideArchived: boolean;
-  freshnessMinutes: 5 | 15 | 30 | 60;
-  density: 'comfortable' | 'compact';
-  reduceMotion: boolean;
-  favoriteIds: number[];
-  catalogueView: 'grid' | 'list';
-}
-```
-
-Les préférences sont globales à ce navigateur dans le MVP. Elles sont stockées sous `la-grange-preferences-v2`. Le profil initial est `christolosier-ship-it`. Chaque champ est validé et réparé indépendamment, afin qu’une valeur corrompue ne supprime pas les autres choix valides.
-
-L’ancienne clé `la-grange-catalogue-preferences-v1` est migrée une fois. Les favoris et le mode grille ou liste sont conservés, puis l’ancienne entrée est supprimée lorsque le navigateur l’autorise.
-
-Masquer les forks ou archives ne modifie jamais `SyncSnapshot`. Ces préférences s’appliquent uniquement aux sélecteurs des listes. Une fiche directe reste accessible. La réduction du mouvement effective correspond au choix utilisateur **ou** au réglage système `prefers-reduced-motion`.
-
-La recherche, les filtres, le tri et le contexte de retour restent sérialisés dans le hash de l’URL. Ils ne sont pas dupliqués dans les préférences.
-
-## Diagnostics locaux
-
-Le diagnostic copiable n’est pas un export de données. Il contient uniquement version, profil, état réseau, état et date de synchronisation, compteurs du cache, préférences effectives et messages utilisateur des erreurs. Il exclut les tokens, stacks, descriptions, README et contenus complets d’IndexedDB.
-
-## Versionnement
-
-Toute modification incompatible du stockage augmente `schemaVersion` et fournit une migration testée. La version de la base IndexedDB est distincte du schéma des objets. La Phase 5 ne modifie pas la version de la base, car les stores et index nécessaires existaient déjà.
+`SyncSnapshot`, `ProjectDetails`, `ActivityEvent` et `AppPreferences` conservent leur rôle. Une évolution incompatible de leur stockage exige une migration testée. La configuration éditoriale versionnée dans Git est distincte des préférences locales de confort.

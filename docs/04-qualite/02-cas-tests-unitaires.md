@@ -1,52 +1,85 @@
 # Cas de tests unitaires
 
-## RepositoryMapper
+## Données publiques
 
-- transforme tous les champs attendus ;
-- remplace description nulle par chaîne vide ;
-- produit les URLs secondaires correctes ;
-- conserve l’identifiant numérique ;
-- normalise les topics ;
-- rejette les données structurellement invalides.
+- mapping des dépôts ;
+- descriptions nulles ;
+- dates ;
+- URLs ;
+- topics ;
+- activité ;
+- archive ;
+- renommage ;
+- comparaison complète ou partielle.
 
-## ProjectEnricher
+## Overrides
 
-- applique chaque override autorisé ;
-- ne remplace pas une donnée par `undefined` ;
-- valide `appUrl` ;
-- masque un projet uniquement si `hidden` est explicite ;
-- produit un fallback déterministe ;
-- signale un override orphelin en développement.
+- schéma version 3 ;
+- style valide ou inconnu ;
+- couleurs absentes ou personnalisées ;
+- progression absente, 0, 100 et hors bornes ;
+- version manuelle vide ou valide ;
+- chemin de couverture ;
+- propriété inconnue ;
+- projet sans override ;
+- signature déterministe.
 
-## ActivityRules
+## Version
 
-- seuils à 30, 31, 180 et 181 jours ;
-- priorité du statut archivé ;
-- gestion d’une date absente ;
-- calcul en UTC ;
-- absence de mutation de l’objet source.
+- manuel prioritaire ;
+- stable prioritaire sur préversion ;
+- préversion seulement sans stable ;
+- brouillon ignoré ;
+- tag conservé ;
+- aucune release.
 
-## RepoComparator
+## Styles
 
-- nouveau repo ;
-- repo renommé ;
-- repo inchangé ;
-- repo modifié ;
-- repo absent après réponse complète ;
-- pas de suppression après réponse incomplète.
+- neuf clés ;
+- palette par défaut ;
+- contraste ;
+- fallback `uncategorized` ;
+- remise à zéro des couleurs.
 
-## Recherche et filtres
+## Carte
 
-- casse et accents ;
-- recherche multi-champs ;
-- filtres combinés ;
-- reset ;
-- tri stable ;
-- favoris.
+- action GitHub ;
+- application disponible ou absente ;
+- README disponible ou absent ;
+- détail ;
+- bouton admin conditionnel ;
+- date relative et date complète ;
+- progression annoncée manuelle.
 
-## URL et sécurité
+## Validation admin
 
-- HTTPS accepté ;
-- protocole dangereux rejeté ;
-- URL malformée rejetée ;
-- échappement des textes assuré par l’API de rendu choisie.
+- utilisateur autorisé ;
+- dépôt imposé ;
+- chemin autorisé ;
+- progression ;
+- couleur ;
+- version ;
+- nom de branche ;
+- SHA de base ;
+- taille des champs.
+
+## Image
+
+- PNG/JPEG/WebP ;
+- signature fausse ;
+- fichier trop lourd ;
+- dimensions excessives ;
+- recadrage 8:5 ;
+- sortie 640 × 400 ;
+- métadonnées retirées ;
+- budget WebP.
+
+## Sécurité
+
+- CSRF ;
+- origine ;
+- session expirée ;
+- URL hostile ;
+- traversal de chemin ;
+- injection dans message de commit ;
+- secret absent des erreurs.

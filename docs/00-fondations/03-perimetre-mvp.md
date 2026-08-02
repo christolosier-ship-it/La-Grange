@@ -1,27 +1,48 @@
 # Périmètre du MVP
 
-## Fonctions incluses
+## Consultation
 
-- lecture des dépôts publics du compte configuré ;
-- pagination complète ;
-- synchronisation au lancement, au retour au premier plan et sur demande ;
-- détection des nouveaux dépôts par identifiant GitHub ;
-- cache IndexedDB ;
-- mode hors ligne ;
-- dashboard synthétique ;
-- catalogue avec recherche, filtres et tris ;
-- fiche projet ;
+- lecture paginée des dépôts publics ;
+- synchronisation cache-first ;
+- détection des nouveaux dépôts et renommages ;
+- IndexedDB et mode hors ligne ;
+- dashboard, catalogue, fiche, activité et paramètres ;
+- recherche, filtres, favoris et préférences ;
 - liens vers application, GitHub, README, issues et releases ;
-- activité récente synthétique ;
-- préférences locales ;
-- enrichissement graphique centralisé ;
-- installation PWA ;
-- responsive mobile, tablette et bureau.
+- installation PWA.
 
-## Données détaillées
+## Présentation 6B
 
-Les derniers commits ou la dernière release d’un projet peuvent être chargés à l’ouverture de sa fiche. Ils ne sont pas chargés pour tous les projets lors de la synchronisation générale.
+- rail gauche fixe ;
+- bandeau de statistiques WebP ;
+- grille de cartes sans conteneur de section ;
+- couvertures 640 × 400 ;
+- neuf styles génériques ;
+- version automatique ou manuelle ;
+- avancement manuel facultatif ;
+- cinq actions alignées avec infobulles ;
+- modale de personnalisation.
+
+## Administration
+
+- authentification via GitHub App ;
+- service Netlify Functions ;
+- écriture limitée à `public/data/project-overrides.json` et aux assets autorisés de `La-Grange` ;
+- création automatique d’une branche, d’un commit et d’une pull request ;
+- fusion manuelle ;
+- état administrateur visible dans le rail.
+
+## Cibles
+
+- tablette paysage ;
+- bureau ;
+- zoom 200 % ;
+- clavier, tactile et VoiceOver sur iPad.
 
 ## Conditions de sortie
 
-Le MVP doit fonctionner sans token, conserver le dernier cache valide, gérer la limite API et afficher tous les projets même sans couverture personnalisée.
+- aucun secret dans le client ;
+- aucune écriture directe sur `main` ;
+- même personnalisation après déploiement sur plusieurs appareils ;
+- consultation disponible même si l’administration est hors service ;
+- cartes exploitables sans couverture ni version.

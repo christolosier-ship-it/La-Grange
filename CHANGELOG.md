@@ -1,79 +1,40 @@
 # Changelog
 
-Toutes les évolutions notables de La Grange sont consignées ici selon une structure inspirée de Keep a Changelog.
+Toutes les évolutions notables de La Grange sont consignées ici.
 
 ## [Non publié]
 
-### Ajouté
+### Conception 6B
 
-- documentation complète de conception produit, UX, architecture, qualité, réalisation et déploiement ;
-- décisions d’architecture du MVP ;
-- règles de contribution et d’intervention des agents IA ;
-- socle Vite et TypeScript strict avec scripts reproductibles et intégration continue ;
-- shell responsive mobile, tablette et bureau fondé sur les tokens du design system ;
-- routeur hash accessible, store minimal et placeholders des cinq vues ;
-- manifest, icônes PWA provisoires et service worker natif pour le shell hors ligne ;
-- tests unitaires et d’intégration du routage et du store ;
-- couche de données de phase 2 : client GitHub public paginé, modèle, overrides, détection des changements, synchronisation cache-first et cache IndexedDB transactionnel ;
-- smoke test dynamique du véritable client de production contre les dépôts publics réels ;
-- dashboard de phase 3 avec statistiques réelles, L’établi, Prêts à partir, activité synthétique, répartition et nouvelle arrivée ;
-- catalogue de phase 4 avec recherche locale, filtres combinables, favoris et modes grille/liste ;
-- fiches projets responsive et détails GitHub ciblés à la demande avec cache séparé ;
-- journal d’activité local de phase 5A, regroupé par semaine et par jour à partir des changements réellement détectés ;
-- lecture IndexedDB des événements isolée par utilisateur, validée profondément et résistante aux entrées corrompues ;
-- préférences versionnées de phase 5B avec profil GitHub, visibilité, fraîcheur, densité, mouvement, favoris et mode catalogue ;
-- migration automatique de l’ancien stockage Phase 4 sans perte des favoris ni du mode d’affichage ;
-- coordinateur de sessions isolant synchronisation, détails et activité pour chaque profil ;
-- écran Paramètres responsive avec confirmations accessibles, informations réelles du cache et version ;
-- inspection et reset ciblés du snapshot, du journal et des détails du profil actif ;
-- diagnostic local copiable limité aux états, compteurs et préférences effectives ;
-- cadrage documentaire complet de la Phase 6 avec bible visuelle, inventaire et budgets d’assets, responsive artistique, grammaire de mouvement et checklist qualité ;
-- référence visuelle Phase 6 conservée dans le dépôt en WebP documentaire ;
-- registre canonique des assets avec noms, formats, dimensions, transparences, usages, fallbacks, budgets, provenances, droits, dépendances, lots et statuts ;
-- sources canoniques M et S séparant directions artistiques, couvertures et logos avant tout dérivé ;
-- budgets individuels et contrats fichier par fichier pour les familles A à G ;
-- matrice exacte des prérequis d’entrée, affectations aux lots et planches d’acceptation pour les PR 6A à 6E ;
-- protocole de production manuelle asset par asset et ADR maintenant GitHub comme source de vérité ;
-- découpage de la Phase 6 en production validée puis PR 6A à 6E ;
-- intégration du lot visuel 6A avec enseigne responsive A01 à A03, médaillon A04, fonds B01 à B04, texture B07, lumière B12 et iconographie fonctionnelle D01 à D05 et D21 à D26.
+- refonte de l’étape 6B autour du dashboard, des cartes projet et de la personnalisation versionnée ;
+- rail gauche fixe avec synchronisation, version et état administrateur ;
+- bandeau de statistiques unique en WebP avec valeurs HTML superposées ;
+- suppression des grands conteneurs, des en-têtes de sections, du rail droit et du lien redondant vers l’inventaire ;
+- grille continue de cartes directement sur le fond général de La Grange ;
+- contrat détaillé des dix zones de la carte projet ;
+- cinq actions alignées avec infobulles accessibles ;
+- avancement manuel facultatif ;
+- neuf styles génériques avec palette principale, secondaire et progression ;
+- règle de version : valeur manuelle, sinon dernière release stable, sinon préversion, sinon absence ;
+- modale administrateur pour couverture, style, couleurs, avancement et version ;
+- stockage officiel dans `project-overrides.json` et les assets versionnés ;
+- GitHub App limitée au dépôt `La-Grange` et Netlify Functions pour ouvrir une PR automatique ;
+- même personnalisation sur tous les appareils après fusion et déploiement ;
+- création de l’ADR-010 et des contrats UX, technique et réalisation de la Phase 6B ;
+- retrait des anciennes étapes futures de Phase 6 de la documentation ; elles seront redéfinies au fil des décisions du propriétaire ;
+- conservation de la Phase 7 comme jalon final.
 
-### Corrigé
+### Historique conservé
 
-- ajout du `package-lock.json` requis pour rendre `npm ci` et le cache GitHub Actions reproductibles ;
-- remise en état des workflows CI et GitHub Pages sous Node.js 22 ;
-- isolation du cache du service worker et suppression du chemin GitHub Pages codé en dur ;
-- ajout des icônes PWA requises ;
-- normalisation des routes et amélioration de l’accessibilité ;
-- requêtes GitHub navigateur simplifiées et liaison correcte de `Window.fetch` sur Safari/iOS ;
-- conservation du snapshot mémoire pendant les erreurs et rafraîchissements ;
-- respect des limites GitHub principales et secondaires ;
-- acquittement persistant des nouveaux projets ;
-- redirection des anciennes URL après renommage ;
-- prévention des rendus réentrants et conservation du focus clavier ;
-- réparation individuelle des préférences invalides ;
-- filtrage des forks et archives sans altérer le snapshot ni bloquer les fiches directes ;
-- restauration de l’ancien profil lorsqu’un changement échoue sans cache utilisable ;
-- reconstruction de la session après reset afin d’empêcher la réapparition d’un snapshot supprimé en mémoire ;
-- comptage des seuls détails réellement supprimés pendant la maintenance ;
-- remplacement de l’ancienne méthode de prototypage externe par une production manuelle pilotée par le registre ;
-- adoption d’une cible runtime plate `public/assets/phase-6/` et d’une convention de nommage unique ;
-- distinction du cycle A/R/P/V/I entre source approuvée et versionnée, fichier produit et validé, puis fichier réellement consommé par l’application ;
-- correction de la chaîne M04 vers S01a et S01c avant la production de F01 ;
-- ordonnancement des fallbacks C18 et C15 avant leurs assets dépendants ;
-- distinction entre dépendance canonique soumise à P/V et fallback runtime hors registre contrôlé sans faux statut ;
-- contrats exacts pour les fallbacks hors registre avec consommateurs et feuilles CSS versionnées, `viewBox` complets, fallbacks PWA opérationnels et provenance d’export bloquante sur chaque fichier projet F et chaque planche G ;
-- clarification du budget du shell en séparant le fond responsive actif du plafond global de 250 Ko ;
-- déplacement des planches G dans les critères d’acceptation des PR afin de supprimer les dépendances circulaires ;
-- séparation des preuves du shell 6A et du dashboard final 6C, avec trois planches dédiées au shell ;
-- distinction entre contrôle CSS spécifié à l’entrée d’un lot et intégré dans sa PR ;
-- formalisation de l’exception transitoire gelée pour les sous-dossiers de prototypes hérités ;
-- retrait des ornements P3 facultatifs de la porte d’entrée du lot 6E ;
-- neutralisation de la procédure historique du lot 01.
+- Phases 1 à 5 fonctionnelles ;
+- fondations visuelles 6A intégrées ;
+- masters et premiers assets validés conservés avec leur traçabilité ;
+- prototypes SVG C01 à C10 de la PR historique non retenus comme direction finale.
 
 ## Versionnement prévu
 
-- `0.x` : construction et prototypes ;
-- `1.0.0` : MVP stable publié ;
+- `0.x` : construction et personnalisation ;
+- `1.0.0` : version stable validée en Phase 7 ;
 - correctif : correction compatible ;
 - mineur : fonction compatible ;
-- majeur : rupture de données, d’API interne ou d’expérience.
+- majeur : rupture de données, de sécurité ou d’expérience.

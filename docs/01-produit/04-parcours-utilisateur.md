@@ -1,38 +1,33 @@
 # Parcours utilisateur
 
-## Premier lancement
-
-1. affichage de l’écran de démarrage ;
-2. aucun cache disponible ;
-3. chargement des overrides ;
-4. récupération paginée des dépôts ;
-5. création de l’instantané initial ;
-6. ouverture du dashboard ;
-7. proposition d’installation PWA gérée sans insistance.
-
 ## Lancement courant
 
 1. lecture du cache ;
-2. dashboard visible immédiatement ;
+2. affichage du rail fixe, du bandeau et des cartes ;
 3. synchronisation discrète ;
-4. mise à jour des cartes ;
-5. notification uniquement en cas de nouveauté ou d’erreur utile.
+4. mise à jour des données GitHub ;
+5. conservation de la position de défilement lorsque possible.
 
-## Ouvrir un projet
+## Utiliser une carte
 
-1. sélection d’une carte ;
-2. route vers la fiche ;
-3. affichage des données déjà connues ;
-4. chargement facultatif des détails récents ;
-5. ouverture de l’application ou de GitHub dans un nouvel onglet sécurisé.
+1. lire couverture, style, version, description, activité et avancement éventuel ;
+2. choisir l’une des cinq actions ;
+3. recevoir une infobulle au survol ou au focus ;
+4. ouvrir la destination sans zone cliquable imbriquée.
 
-## Rechercher
+## Personnaliser
 
-1. ouverture du catalogue ;
-2. saisie immédiate ;
-3. filtrage local sans nouvel appel API ;
-4. mémorisation facultative du mode d’affichage, pas du texte de recherche.
+1. se connecter comme administrateur ;
+2. ouvrir le cinquième bouton ;
+3. modifier couverture, style, couleurs, avancement ou version ;
+4. vérifier l’aperçu ;
+5. envoyer la proposition ;
+6. le service crée une branche et une PR ;
+7. La Grange affiche le lien de la PR ;
+8. l’administrateur fusionne sur GitHub ;
+9. le déploiement publie la nouvelle configuration ;
+10. les appareils reçoivent la mise à jour au renouvellement du cache.
 
 ## Hors ligne
 
-L’utilisateur consulte les projets et fiches déjà mises en cache. Les actions externes sont signalées comme nécessitant une connexion.
+La consultation du dernier snapshot et des assets déjà mis en cache reste disponible. Le bouton de personnalisation est indisponible ou masqué et aucune fausse publication locale n’est simulée.

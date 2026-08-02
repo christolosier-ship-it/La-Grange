@@ -1,124 +1,111 @@
 # Definition of Done
 
-Une fonction est terminée lorsque toutes les conditions applicables sont satisfaites.
+Une fonction ou un lot est terminé lorsque toutes les conditions applicables sont satisfaites.
 
 ## Produit
 
 - comportement conforme aux règles métier ;
-- critères d’acceptation couverts ;
-- hors périmètre respecté ;
-- données affichées compréhensibles et non fictives ;
-- aucune donnée de démonstration ou de prototype dans le chemin de production.
+- données factuelles distinguées des données éditoriales ;
+- avancement explicitement manuel ;
+- version conforme à la priorité documentée ;
+- aucune métrique inventée ;
+- aucune fonctionnalité future glissée dans le lot.
 
 ## Code
 
-- TypeScript strict sans contournement injustifié ;
-- architecture respectée ;
-- pas de duplication importante ;
+- TypeScript strict ;
+- architecture et frontières respectées ;
 - erreurs gérées ;
 - dépendances justifiées ;
 - aucun secret ;
-- composants fonctionnels existants conservés lorsqu’ils remplissent déjà leur rôle ;
-- aucun framework, backend ou service externe introduit par une proposition visuelle.
+- aucun jeton GitHub dans le navigateur ;
+- aucune écriture directe sur `main` ;
+- logique d’administration isolée de la consultation publique.
 
-## Interface
+## Interface 6B
 
-- états chargement, vide, erreur et hors ligne ;
-- responsive mobile, tablette et bureau ;
+- rail gauche fixe ;
+- contenu principal seul défilant ;
+- bandeau de statistiques WebP unique ;
+- statistiques en HTML ;
+- une grille continue ;
+- aucun en-tête de section ;
+- aucun lien redondant « Voir tout » ;
+- aucun rail droit ;
+- aucun panneau ou voile derrière les cartes ;
+- cinq actions alignées ;
+- infobulles au survol et au focus ;
+- modale accessible ;
+- bouton de personnalisation absent hors admin.
+
+## Carte projet
+
+- couverture ou fallback ;
+- bannière de style ;
+- version ;
+- description ;
+- dernière activité ;
+- progression facultative ;
+- GitHub ;
+- application si disponible ;
+- README si disponible ;
+- détail ;
+- personnalisation pour l’administrateur.
+
+Tous les textes et données restent en HTML. Le skin ne porte aucun statut ni bouton rasterisé.
+
+## Personnalisation
+
+- schéma validé ;
+- aperçu fidèle ;
+- progression bornée ;
+- couleurs contrôlées ;
+- couverture recadrée et réencodée ;
+- session administrateur vérifiée ;
+- liste blanche des fichiers ;
+- branche et PR créées ;
+- aucune fusion automatique ;
+- état de publication compréhensible ;
+- conflits Git gérés.
+
+## Accessibilité
+
 - navigation clavier ;
-- contraste ;
-- mouvement réduit ;
-- textes relus ;
-- focus visible au-dessus des textures ;
-- zoom à 200 % sans perte ;
-- zones tactiles de 44 px minimum ;
-- décor inerte et hors de l’arbre d’accessibilité ;
-- fonction et hiérarchie conservées sans les assets.
+- focus visible ;
+- infobulles accessibles ;
+- cible de 44 px minimum ;
+- contraste mesuré sur le rendu final ;
+- zoom 200 % ;
+- lecteur d’écran ;
+- modale avec fond inerte et restauration du focus ;
+- aucune information essentielle au survol seulement ;
+- fonctionnement avec images bloquées.
 
-## Phase 6 - Direction artistique
+## Performance et PWA
 
-Un lot visuel est terminé lorsque :
-
-- il respecte la direction artistique et la bible validées ;
-- le rendu est stylisé, ni photoréaliste ni cartoon ;
-- la métaphore de l’atelier ne rend aucune action ambiguë ;
-- aucune métrique, progression, release, branche ou donnée fictive n’est ajoutée ;
-- aucun texte fonctionnel n’est rasterisé ;
-- les matières, cadres et accents utilisent les tokens documentés ;
-- la cohérence avec les autres vues est contrôlée ;
-- les formats prévus par le lot possèdent des captures comparatives ;
-- les écarts à la référence sont explicités ;
-- les masters, propositions et éléments rejetés sont tracés sans devenir la source de vérité.
-
-## Assets
-
-- chaque asset possède un identifiant dans `docs/05-realisation/10-suivi-production-assets-phase-6.md` ;
-- le nom final, le format, les dimensions et la transparence correspondent exactement au registre ;
-- le fichier runtime est placé directement dans `public/assets/phase-6/`, sans sous-dossier ;
-- rôle et provenance documentés ;
-- licence vérifiée lorsque nécessaire ;
-- dimensions et poids publiés ;
-- format optimisé ;
-- ratio réservé ;
-- lazy loading appliqué lorsque pertinent ;
-- fallback CSS ou SVG testé ;
-- aucun asset distant requis ;
-- aucun script dans les SVG ;
-- aucune sortie IA brute intégrée ;
-- aucun ZIP, Base64, fragment ou workflow de reconstruction ;
-- les prototypes hérités ne valident aucun statut du registre ;
-- les fichiers remplacés sont supprimés seulement après contrôle des références ;
-- référence documentaire non incluse dans le runtime.
-
-## Performance
-
-- budgets applicatifs et visuels mesurés ;
-- poids CSS et JavaScript avant et après ;
-- poids des assets ajouté par famille ;
-- nombre de requêtes initiales contrôlé ;
-- LCP et CLS mesurés sur le lot concerné ;
-- interaction possible dès affichage du cache ;
-- cache froid, cache chaud et réseau limité vérifiés lorsque pertinent ;
-- images bloquées et assets manquants testés ;
-- tout dépassement justifié et approuvé.
-
-## Tests
-
-- unitaires ;
-- intégration ;
-- E2E critique si parcours utilisateur ;
-- build réussi ;
-- régression hors ligne vérifiée si concernée ;
-- fallbacks visuels ;
-- noms et textes longs ;
-- densité compacte ;
-- mouvement réduit ;
-- formats requis par la checklist Phase 6.
+- budgets mesurés ;
+- couvertures lazy loaded ;
+- ratios réservés ;
+- LCP et CLS contrôlés ;
+- consultation cache-first ;
+- mode hors ligne ;
+- mise à jour du service worker ;
+- code d’administration hors chemin critique autant que possible.
 
 ## Documentation
 
-- documents métier ou techniques mis à jour ;
-- changelog complété ;
-- ADR créé si décision structurante ;
-- commande et procédure reproductibles ;
-- registre et inventaire des assets à jour ;
-- captures et mesures jointes ou référencées ;
-- éléments produits, validés, rejetés et remplacés documentés.
+- documents produit, UX, technique et qualité à jour ;
+- ADR si décision structurante ;
+- registre des assets exact ;
+- changelog ;
+- preuves et captures référencées ;
+- Phase 7 non lancée avant clôture explicite de toute la Phase 6.
 
 ## Revue
 
 - diff relu ;
-- commentaires résolus ;
 - CI verte ;
-- aucun avertissement bloquant ;
-- branche à jour avec `main` avant fusion lorsque nécessaire ;
-- review Codex demandée ;
-- review threads interrogés réellement ;
-- chaque P1 et P2 possède une correction et un test de non-régression ;
-- seconde interrogation des fils effectuée ;
-- fusion verrouillée sur le SHA exact validé ;
+- contrôles manuels exécutés ;
+- aucun P1 ou P2 ouvert ;
+- branche à jour ;
 - `main` contrôlé après fusion.
-
-## Condition finale Phase 6
-
-Un résultat seulement esthétique ou seulement fonctionnel n’est pas acceptable. La Phase 6 n’est pas terminée si une vue majeure reste dans l’ancien langage, si le fonctionnement sans assets est cassé, si le mode hors ligne ou le mouvement réduit régresse, si un budget dépasse sans approbation, si le registre n’est pas exact ou si un P1 ou P2 reste ouvert.

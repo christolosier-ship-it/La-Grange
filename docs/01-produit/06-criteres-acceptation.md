@@ -1,38 +1,47 @@
 # Critères d’acceptation produit
 
-## Synchronisation
+## Dashboard 6B
 
-- tous les dépôts publics paginés sont importés ;
-- un repo ajouté apparaît au prochain rafraîchissement ;
-- aucun doublon après renommage ;
-- le dernier cache reste présent après une erreur ;
-- la date de synchronisation correspond uniquement à une synchronisation complète réussie.
+- rail gauche fixe ;
+- seule la zone principale défile ;
+- un bandeau WebP unique porte quatre statistiques réelles ;
+- aucune carte statistique indépendante ;
+- aucune section « L’établi » ou « Prêts à partir » ;
+- aucun lien « Voir tout l’inventaire » ;
+- aucun rail droit ;
+- aucune surface derrière la grille autre que le fond général ;
+- une grille continue de cartes.
 
-## Dashboard
+## Carte projet
 
-- les compteurs proviennent des projets chargés ;
-- les sections n’affichent pas le même projet deux fois sans raison explicitée ;
-- une carte sans image reste exploitable ;
-- aucune progression fictive n’est visible.
+- couverture au ratio 8:5 ;
+- bannière de style ;
+- version selon la règle métier ;
+- temps depuis dernière activité ;
+- avancement manuel facultatif ;
+- cinq actions alignées ;
+- action absente ou désactivée proprement si la destination n’existe pas ;
+- infobulles accessibles ;
+- personnalisation invisible hors session administrateur ;
+- fonctionnement complet avec image bloquée.
 
-## Catalogue et fiche
+## Personnalisation
 
-- recherche locale insensible à la casse et aux accents ;
-- filtres combinables et réinitialisables ;
-- fiche accessible directement par URL hash ;
-- boutons externes présents uniquement si valides ;
-- retour conserve l’état raisonnable du catalogue.
-
-## PWA
-
-- installation possible sur navigateurs compatibles ;
-- shell et dernier instantané consultables hors ligne ;
-- mise à jour du service worker ne détruit pas les données ;
-- mode réduit en animations respecté.
+- modale accessible avec aperçu ;
+- style limité à neuf valeurs ;
+- trois couleurs cohérentes avec retour aux valeurs par défaut ;
+- image recadrée en 640 × 400 et convertie en WebP ;
+- validation du JSON et du fichier ;
+- PR créée sans écrire sur `main` ;
+- lien de PR affiché ;
+- aucune permission vers un autre dépôt ;
+- rendu identique après fusion et déploiement sur plusieurs appareils.
 
 ## Qualité
 
-- navigation clavier complète ;
-- contraste conforme ;
 - aucun secret dans le bundle ;
-- typecheck, tests et build réussis.
+- consultation fonctionnelle lorsque le backend est indisponible ;
+- tests 1024, 1366, 1440 et 1920 px ;
+- zoom 200 % ;
+- clavier, tactile et mouvement réduit ;
+- typecheck, lint, tests et build réussis.

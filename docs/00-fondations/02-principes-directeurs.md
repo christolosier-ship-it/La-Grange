@@ -2,32 +2,36 @@
 
 ## 1. Les projets avant la plateforme
 
-Le nom, la couverture et l’usage du projet dominent. GitHub est une destination secondaire.
+Le projet, sa couverture et son usage dominent. GitHub reste une destination et une source technique.
 
-## 2. Lire, ne pas piloter
+## 2. Consulter largement, administrer étroitement
 
-Toutes les fonctions du MVP sont consultatives. Aucune mutation distante n’est autorisée.
+La consultation reste publique. L’écriture distante est limitée à la configuration éditoriale du dépôt `La-Grange`, après authentification administrateur et par pull request.
 
 ## 3. Automatique par défaut
 
-Un dépôt public nouvellement créé apparaît sans ajout manuel. L’enrichissement visuel est facultatif.
+Un dépôt public nouvellement créé apparaît sans ajout manuel. La personnalisation reste facultative.
 
 ## 4. Cache d’abord
 
-Le dernier état connu doit s’afficher immédiatement et rester disponible hors ligne.
+Le dernier état connu s’affiche immédiatement et reste consultable hors ligne.
 
 ## 5. Vérité des données
 
-Une métrique non fiable ou trop coûteuse n’est pas affichée. L’absence d’information est préférable à une donnée inventée.
+Les statistiques, dates et états techniques viennent de GitHub. L’avancement est manuel, facultatif et présenté comme une estimation éditoriale.
 
-## 6. Élégance frugale
+## 6. Une scène, pas une pile de boîtes
 
-Les animations, textures et effets doivent renforcer la compréhension, jamais ralentir la consultation.
+Le fond général porte la scène. Le rail, le bandeau et les cartes sont des objets distincts. Aucun conteneur décoratif n’est ajouté autour d’une grille sans nécessité fonctionnelle.
 
-## 7. Dégradation gracieuse
+## 7. Sécurité par séparation
 
-Une image manquante, une API indisponible ou un repo incomplet ne doit pas casser la grille.
+Le navigateur ne contient aucun secret. Le service d’écriture possède des permissions minimales, une liste blanche de chemins et ne fusionne jamais automatiquement.
 
-## 8. Évolutivité contenue
+## 8. Cibles assumées
 
-L’architecture autorise des extensions futures, mais le MVP reste sans backend, sans authentification et sans connecteurs multiples.
+La tablette paysage et le bureau sont les cibles produit. Les formats étroits restent un mode de robustesse, pas une expérience mobile dédiée.
+
+## 9. Évolution documentée
+
+Les prochaines étapes UI/UX de Phase 6 ne sont pas pré-écrites. Elles sont définies au fur et à mesure des décisions du propriétaire.

@@ -1,48 +1,59 @@
 # Checklist PWA
 
-## Manifest
+## Installation
 
-- [ ] nom et nom court ;
-- [ ] start URL compatible GitHub Pages ;
-- [ ] scope correct ;
-- [ ] display standalone ;
-- [ ] couleurs ;
-- [ ] icônes 192 et 512 ;
-- [ ] icône maskable ;
-- [ ] description ;
-- [ ] aucune URL absolue fragile.
+- [ ] manifest valide ;
+- [ ] icônes ;
+- [ ] nom et couleurs ;
+- [ ] installation iPad ;
+- [ ] lancement standalone ;
+- [ ] origine canonique Netlify.
 
 ## Service worker
 
-- [ ] enregistré uniquement en production ou mode test contrôlé ;
-- [ ] scope limité ;
-- [ ] version de cache explicite ;
-- [ ] nettoyage des anciens caches ;
-- [ ] fallback navigation ;
-- [ ] absence de secret ;
-- [ ] stratégie séparée des données IndexedDB.
+- [ ] scope exact ;
+- [ ] cache versionné ;
+- [ ] activation sûre ;
+- [ ] anciens caches La Grange seulement ;
+- [ ] aucune Function mise en cache comme réponse permanente ;
+- [ ] aucune session admin mise en cache ;
+- [ ] aucune réponse privée servie hors ligne.
 
 ## Hors ligne
 
-- [ ] shell disponible ;
-- [ ] dernier instantané disponible ;
-- [ ] fiches principales consultables ;
-- [ ] message hors ligne ;
-- [ ] actions réseau expliquées ;
-- [ ] premier lancement hors ligne traité proprement.
+- [ ] shell ;
+- [ ] dernier snapshot ;
+- [ ] overrides ;
+- [ ] couvertures déjà mises en cache ;
+- [ ] fallbacks ;
+- [ ] liens externes signalés ;
+- [ ] publication désactivée ;
+- [ ] aucune file d’écriture silencieuse.
 
 ## Mise à jour
 
 - [ ] nouvelle version détectée ;
-- [ ] rechargement proposé ;
-- [ ] données locales préservées ;
-- [ ] rollback possible ;
-- [ ] test après modification du manifest.
+- [ ] message accessible ;
+- [ ] rechargement consenti ;
+- [ ] nouvelles personnalisations visibles ;
+- [ ] IndexedDB conservée ;
+- [ ] ancien shell utilisable jusqu’à activation.
 
-## Installation
+## Administration
 
-- [ ] iOS Safari ;
-- [ ] Chrome Android ;
-- [ ] navigateur bureau compatible ;
-- [ ] rendu standalone sans marges anormales ;
-- [ ] safe areas iOS prises en compte.
+- [ ] bouton absent sans session ;
+- [ ] session vérifiée en ligne ;
+- [ ] déconnexion ;
+- [ ] erreur réseau ;
+- [ ] aucune donnée sensible dans Cache Storage ;
+- [ ] aucune clé dans le manifest ou le bundle.
+
+## Performance
+
+- [ ] assets critiques seulement ;
+- [ ] couvertures lazy ;
+- [ ] bandeau et skin budgétés ;
+- [ ] cache froid/chaud ;
+- [ ] LCP ;
+- [ ] CLS ;
+- [ ] grille complète.

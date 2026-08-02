@@ -1,45 +1,64 @@
 # Cas de tests end-to-end
 
-## Parcours 1 : premier lancement
+## Consultation publique
 
-1. ouvrir sans données ;
-2. simuler plusieurs pages GitHub ;
-3. vérifier le dashboard ;
-4. vérifier les compteurs ;
-5. ouvrir une carte ;
-6. revenir au dashboard.
+1. ouvrir avec cache vide ;
+2. synchroniser des dépôts ;
+3. vérifier le rail fixe ;
+4. vérifier les quatre statistiques ;
+5. faire défiler la grille ;
+6. utiliser les quatre actions publiques ;
+7. recharger hors ligne.
 
-## Parcours 2 : nouvelle arrivée
+## Carte
 
-1. charger un instantané existant ;
-2. synchroniser avec un repo supplémentaire ;
-3. vérifier le toast et le badge ;
-4. ouvrir la fiche ;
-5. vérifier l’acquittement du statut nouveau.
+1. couverture et fallback ;
+2. bannière de style ;
+3. version ;
+4. activité ;
+5. progression absente puis présente ;
+6. cinq boutons alignés avec admin ;
+7. infobulles souris et clavier.
 
-## Parcours 3 : hors ligne
+## Administration nominale
 
-1. réaliser une synchronisation ;
-2. recharger sans réseau ;
-3. vérifier le shell et les projets ;
-4. ouvrir une fiche ;
-5. vérifier le signalement des liens externes.
+1. visiteur : bouton absent ;
+2. connexion admin ;
+3. bouton visible ;
+4. ouverture de la modale ;
+5. modification des champs ;
+6. sélection et recadrage d’une couverture ;
+7. création de PR ;
+8. vérifier l’URL de PR ;
+9. vérifier qu’elle n’est pas fusionnée.
 
-## Parcours 4 : erreur GitHub
+## Administration refusée
 
-1. cache valide ;
-2. réponse 403 ou 500 ;
-3. vérifier que les cartes restent présentes ;
-4. vérifier le message et l’absence de boucle de retry.
+- compte non autorisé ;
+- session expirée ;
+- CSRF ;
+- autre dépôt ;
+- autre chemin ;
+- image invalide ;
+- progression hors bornes ;
+- conflit SHA ;
+- erreur GitHub.
 
-## Parcours 5 : catalogue
+## Publication multi-appareil
 
-Recherche, combinaison de filtres, tri, mode liste, ouverture puis retour.
+1. créer et fusionner une PR de test ;
+2. attendre le déploiement ;
+3. accepter la mise à jour PWA sur appareil A ;
+4. ouvrir sur appareil B ;
+5. vérifier la même couverture, palette, progression et version.
 
-## Parcours 6 : PWA
+## Formats
 
-Installation ou simulation, démarrage standalone, mise à jour du service worker et reprise après nouvelle version.
-
-## Matrices
-
-Tester au minimum moteur Chromium, WebKit et une taille mobile, tablette paysage et bureau.
+- 1024 × 768 ;
+- 1180 × 820 ;
+- 1366 × 1024 ;
+- 1440 × 1024 ;
+- 1920 × 1080 ;
+- zoom 200 % ;
+- Chromium et WebKit ;
+- iPad paysage réel lorsque disponible.

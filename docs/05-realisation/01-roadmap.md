@@ -5,90 +5,68 @@
 0. documentation et décisions ;
 1. socle PWA ;
 2. intégration GitHub et cache ;
-3. dashboard ;
+3. dashboard fonctionnel ;
 4. catalogue et fiche projet ;
 5. activité et paramètres ;
-6. identité visuelle et polissage ;
+6. identité visuelle et personnalisation progressive ;
 7. validation et release.
 
-## Règle de passage
+## État
 
-Une phase ne démarre que si :
+- Phases 1 à 5 : implémentées ;
+- Phase 6A : fondations visuelles intégrées ;
+- Phase 6B : contrat du dashboard, cartes et personnalisation validé, réalisation à venir ;
+- suite de la Phase 6 : non définie volontairement ;
+- Phase 7 : conservée, non démarrée.
 
-- ses prérequis sont fusionnés ;
-- ses documents sont à jour ;
-- ses critères de sortie sont vérifiables ;
-- aucune dette bloquante de la phase précédente n’est cachée.
+## Phase 6B
 
-## Lots recommandés
+La Phase 6B comprend :
 
-Chaque phase peut être découpée en plusieurs PR courtes. Éviter une PR unique mêlant architecture, interface, service worker et assets.
+- rail gauche fixe ;
+- contenu principal défilant ;
+- bandeau de statistiques WebP ;
+- grille continue sans conteneur de section ;
+- cartes projets enrichies ;
+- cinq actions alignées ;
+- infobulles ;
+- progression manuelle ;
+- version manuelle ou release ;
+- neuf styles et palettes ;
+- modale de personnalisation ;
+- GitHub App, Netlify Functions et création automatique de PR ;
+- assets prioritaires des projets visibles ;
+- validation tablette paysage et bureau.
 
-## Découpage Phase 6
+## Règle pour la suite de la Phase 6
 
-La Phase 6 suit obligatoirement cet ordre :
+Aucune étape ultérieure n’est pré-écrite. Le propriétaire donnera les indications UI/UX au fur et à mesure. Chaque nouvelle étape exige avant développement :
 
-1. **6.0 Cadrage documentaire** : direction, bible, inventaire, budgets, responsive, mouvement, registre et protocole de production ;
-2. **6.1 Production manuelle** : un seul asset à la fois, selon le registre ;
-3. **6A Fondations visuelles** : tokens, marque, shell, navigation et focus ;
-4. **6B Composants principaux** : cartes, statistiques, panneaux et fallbacks ;
-5. **6C Vues de découverte** : dashboard et catalogue ;
-6. **6D Vues de détail** : fiches, activité et paramètres ;
-7. **6E Finitions** : mouvement, assets finaux, optimisation et audit global ;
-8. **Corrections** : lot facultatif réservé aux P1 et P2.
+1. décisions explicites ;
+2. spécification de vue ou de composant ;
+3. impacts techniques ;
+4. assets et budgets ;
+5. critères d’acceptation ;
+6. mise à jour de cette roadmap.
 
-Chaque lot 6A à 6E démarre après validation de ses sources et assets d’entrée et spécification de ses contrôles CSS. Ses changements sont appliqués avant la production des planches qui l’acceptent ; ces planches et les contrôles CSS intégrés bloquent la fusion, pas le démarrage.
+## Passage à la Phase 7
+
+La Phase 7 démarre uniquement lorsque :
+
+- toutes les personnalisations Phase 6 décidées par le propriétaire sont réalisées ;
+- le registre d’assets est exact ;
+- les vues majeures sont cohérentes ;
+- l’administration est sécurisée ;
+- le fonctionnement hors ligne est préservé ;
+- aucun P1 ou P2 n’est ouvert.
 
 ## Jalons
 
-- **M0** : documentation validée ;
-- **M1** : shell installable ;
-- **M2** : données réelles synchronisées ;
-- **M3** : dashboard utilisable ;
-- **M4** : navigation complète ;
-- **M5** : MVP fonctionnel ;
-- **M6.0** : cadrage artistique et registre validés ;
-- **M6.1** : premiers assets conformes validés ;
-- **M6.2** : planches responsive validées progressivement dans les PR 6A à 6E ;
-- **M6** : identité visuelle aboutie ;
-- **M7** : version 1.0.0 publiée.
+- M6A : shell et fondations visuelles ;
+- M6B : dashboard et personnalisation versionnée ;
+- M6 : identité et expérience validées par le propriétaire ;
+- M7 : version 1.0.0 prête à publier.
 
-## Go ou No-Go Phase 6
+## Discipline
 
-No-Go vers la production si :
-
-- la référence visuelle n’est pas conservée ;
-- la bible visuelle n’est pas validée ;
-- le registre ne précise pas le nom et les dimensions du prochain asset ;
-- le protocole de production n’est pas à jour ;
-- les budgets ne sont pas définis ;
-- la racine runtime pour les nouveaux assets et l’exception héritée gelée ne sont pas des règles communes ;
-- une proposition exige un framework ou un backend ;
-- les fallbacks ne sont pas prévus ;
-- l’accessibilité est traitée comme une finition.
-
-No-Go vers l’intégration si :
-
-- l’asset n’est pas inscrit au registre ;
-- sa source M/S requise ou sa source amont n’est pas versionnée R ;
-- un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback n’est pas P/V ;
-- un fallback HTML, CSS, système ou runtime hors registre n’est pas décrit exactement par sa ligne du registre, présent et testé ;
-- une création interne n’a pas de méthode, provenance ou droits renseignés ;
-- son nom, son format ou ses dimensions diffèrent ;
-- il n’est pas contrôlé et versionné P à la racine du dossier runtime ;
-- sa validation humaine manque ;
-- son fallback n’est pas testé ;
-- il provient d’un prototype hérité non remplacé ;
-- plusieurs assets ont été produits sans validation intermédiaire.
-
-No-Go vers la Phase 7 si :
-
-- une vue majeure n’est pas alignée ;
-- un P1 ou P2 reste ouvert ;
-- la performance a régressé sans approbation ;
-- le mode hors ligne ou le mouvement réduit est incomplet ;
-- des données fictives ont été ajoutées.
-
-## Gestion des idées
-
-Les extensions non MVP sont consignées séparément. La roadmap n’est pas une liste infinie de souhaits.
+Une PR ne mélange pas documentation, production massive d’assets et implémentation fonctionnelle. Les décisions structurantes passent par ADR. Une idée non validée reste hors roadmap.

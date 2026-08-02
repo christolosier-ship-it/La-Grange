@@ -1,35 +1,69 @@
 # Arborescence du code
 
+## Cible 6B
+
 ```text
 src/
-├── app/          démarrage, routeur, store
+├── app/                         démarrage, routes, store
 ├── core/
-│   ├── github/   accès REST et DTO
-│   ├── projects/ modèle et règles
-│   ├── cache/    IndexedDB et préférences
-│   └── sync/     orchestration
-├── features/     vues fonctionnelles
+│   ├── activity/
+│   ├── cache/
+│   ├── customization/           types, validation client, état de publication
+│   ├── github/                  lecture publique
+│   ├── preferences/
+│   ├── profile/
+│   ├── projects/
+│   ├── settings/
+│   └── sync/
+├── features/
+│   ├── dashboard/
+│   ├── project-customization/   modale, aperçu, appels API
+│   ├── project-detail/
+│   ├── activity/
+│   └── settings/
 ├── ui/
 │   ├── components/
 │   └── layout/
-├── styles/       tokens et styles transversaux
-└── utils/        fonctions génériques sans métier
+├── styles/
+└── utils/
+
+netlify/
+└── functions/
+    ├── admin-session/
+    ├── admin-login/
+    ├── admin-logout/
+    └── project-customization-pr/
+
+public/
+├── assets/phase-6/
+└── data/
+    ├── project-overrides.json
+    └── project-releases.json     si génération retenue
 ```
 
-## Règles
+## Frontières
 
-- un module métier ne dépend pas d’une vue ;
-- `utils` ne devient pas un tiroir fourre-tout ;
-- les composants génériques ne connaissent pas GitHub ;
-- une feature peut assembler des composants mais pas contourner les services ;
-- les types GitHub bruts restent dans `core/github` ;
-- le modèle `Project` est défini dans `core/projects` ;
-- les fichiers CSS de feature ne redéfinissent pas les tokens globaux.
+- `core/github` ne contient que la lecture publique ;
+- `core/customization` ne possède aucun secret ;
+- la feature modale parle à une API same-origin ;
+- les Functions seules utilisent la GitHub App ;
+- le traitement d’image est serveur ;
+- aucun composant n’écrit directement dans GitHub ;
+- IndexedDB reste inaccessible directement depuis les vues.
 
 ## Nommage
 
 - fichiers en kebab-case ;
-- types et classes en PascalCase ;
-- fonctions et variables en camelCase ;
-- constantes réellement globales en UPPER_SNAKE_CASE ;
-- événements nommés au passé pour un fait, à l’infinitif pour une commande.
+- types en PascalCase ;
+- fonctions en camelCase ;
+- routes d’API explicites ;
+- fonctions serveur à responsabilité unique ;
+- validation partagée seulement si elle n’embarque aucun secret.
+
+## Tests
+
+- tests unitaires dans les modules ;
+- tests d’intégration pour la modale ;
+- tests Functions avec GitHub simulé ;
+- smoke test public séparé du smoke test admin ;
+- aucun secret réel requis dans les tests de PR.

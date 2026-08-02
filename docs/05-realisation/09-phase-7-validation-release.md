@@ -1,121 +1,93 @@
 # Phase 7 - Validation et release
 
+## Statut
+
+Conservée. Non démarrée.
+
 ## Objectif
 
-Prouver que le MVP est stable avant la version 1.0.0.
-
-La Phase 7 ne complète pas la direction artistique. Elle vérifie que la Phase 6 est réellement terminée, performante, accessible et cohérente avec la référence validée.
+Prouver que La Grange est stable, cohérente, sécurisée, accessible et publiable en version 1.0.0. La Phase 7 n’ajoute aucune personnalisation UI/UX.
 
 ## Prérequis
 
+- clôture explicite de toute la Phase 6 par le propriétaire ;
 - toutes les PR Phase 6 fusionnées ;
-- checklist `docs/04-qualite/14-checklist-phase-6.md` clôturée ;
-- bible visuelle alignée avec l’implémentation finale ;
-- registre `docs/05-realisation/10-suivi-production-assets-phase-6.md` clôturé ;
-- inventaire ou manifest d’assets à jour ;
-- captures multi-écrans disponibles ;
+- contrats UX/UI alignés avec l’application ;
+- registre d’assets clôturé ;
+- documentation à jour ;
+- administration sécurisée ;
 - budgets mesurés ;
-- aucun P1 ou P2 ouvert ;
-- `main` contrôlé directement après le dernier lot.
+- aucun P1 ou P2 ;
+- `main` contrôlé.
 
 ## Audit
 
-1. revue du périmètre ;
-2. audit architecture ;
-3. audit sécurité ;
-4. exécution complète des tests ;
-5. contrôle accessibilité ;
-6. contrôle performance ;
-7. contrôle PWA et hors ligne ;
-8. test API limitée ;
-9. test nouveau dépôt réel ou fixture de bout en bout ;
-10. test iPad, iPhone et bureau ;
-11. vérification documentation ;
-12. inspection du bundle ;
-13. comparaison avec la référence visuelle Phase 6 ;
-14. contrôle de cohérence entre toutes les vues ;
-15. fonctionnement avec images bloquées ;
-16. audit des fallbacks CSS et SVG ;
-17. vérification du manifest, du registre et des licences d’assets ;
-18. comparaison des budgets avant et après Phase 6 ;
-19. contrôle du mouvement réduit et de la densité compacte ;
-20. validation des formats 320, 390, 768, 1024, 1440 et 1920 px ;
-21. vérification que `public/assets/phase-6/` est plat et ne contient aucun prototype hérité consommé.
+1. produit et périmètre ;
+2. architecture ;
+3. sécurité de la GitHub App et des Functions ;
+4. lecture publique GitHub ;
+5. création de PR de personnalisation ;
+6. conflits et erreurs ;
+7. modèle de données et migrations ;
+8. tests complets ;
+9. accessibilité ;
+10. performance ;
+11. PWA et hors ligne ;
+12. responsive décidé pendant la Phase 6 ;
+13. images bloquées ;
+14. fallbacks ;
+15. conformité des assets ;
+16. déploiement Netlify canonique ;
+17. solution de repli GitHub Pages si conservée ;
+18. documentation ;
+19. rollback ;
+20. audit du bundle et des secrets.
 
-## Audit visuel final
+## Preuves
 
-### Référence
-
-`docs/assets/phase-6/reference-dashboard-grange.webp`
-
-La comparaison porte sur :
-
-- reconnaissance immédiate de l’atelier ;
-- structure en bois et panneaux ;
-- lumière ambrée ;
-- cartes comme caisses ou cadres ;
-- hiérarchie des projets ;
-- richesse maîtrisée ;
-- cohérence du mobile et du bureau.
-
-Elle ne porte pas sur une reproduction pixel-perfect ni sur les données fictives de l’illustration.
-
-### Preuves
-
-Conserver ou référencer :
-
-- captures des cinq vues en 390, 768, 1024 et 1440 px ;
-- captures des principaux fallbacks ;
-- captures en densité compacte ;
-- captures ou vidéo courte du mouvement normal et réduit ;
+- captures finales des vues ;
+- planches de fallbacks ;
 - résultats de contraste ;
-- poids du shell et des assets ;
+- résultats clavier et lecteur d’écran ;
+- poids et requêtes ;
 - LCP et CLS ;
-- liste des écarts visuels acceptés ;
-- export final du registre avec statuts P, V et I.
+- tests cache froid et chaud ;
+- test hors ligne ;
+- test de personnalisation sur deux appareils ;
+- PR de test sans fusion automatique ;
+- contrôle des permissions GitHub App ;
+- export final du registre.
 
-## Préparation release
-
-- mettre à jour version et changelog ;
-- générer build propre ;
-- publier via GitHub Actions ;
-- vérifier l’URL publique ;
-- créer tag `v1.0.0` ;
-- conserver artefact de build ou commit traçable ;
-- documenter le rollback ;
-- contrôler la version et le cache du service worker ;
-- confirmer que la référence documentaire n’est pas incluse dans le runtime ;
-- confirmer qu’aucun asset distant, temporaire ou non enregistré n’est requis ;
-- confirmer l’absence de sous-dossier, ZIP, fragment Base64 et workflow de matérialisation ;
-- confirmer que les prototypes remplacés ont été supprimés après contrôle des références.
-
-## Go ou No-Go
+## Go / No-Go
 
 No-Go si :
 
+- secret exposé ;
+- utilisateur non autorisé capable d’écrire ;
+- mutation hors liste blanche ;
+- commit direct sur `main` ;
+- fusion automatique ;
 - perte de cache ;
-- secret ;
-- problème d’installation ;
 - navigation cassée ;
-- nouveau dépôt non détecté ;
-- contraste bloquant ;
-- échec de CI ;
-- vue majeure restée dans l’ancien langage visuel ;
-- donnée fictive ajoutée ;
 - fallback cassé ;
-- fonctionnement sans images incomplet ;
-- asset distant obligatoire ;
-- mouvement réduit incomplet ;
-- scroll horizontal global ;
-- régression de performance non approuvée ;
-- provenance ou licence d’un asset non clarifiée ;
-- nom, format ou dimensions en conflit avec le registre ;
-- sous-dossier runtime ;
-- prototype hérité encore consommé ;
-- P1 ou P2 ouvert.
+- contraste bloquant ;
+- régression hors ligne ;
+- personnalisation incohérente entre appareils ;
+- donnée fictive ;
+- budget non approuvé ;
+- vue majeure non validée ;
+- P1 ou P2 ouvert ;
+- CI non verte.
 
-## Après publication
+## Release
 
-Effectuer une vérification de fumée, surveiller les erreurs manuellement et ne lancer aucune extension fonctionnelle avant correction des anomalies de release.
-
-La vérification de fumée comprend le chargement de chaque vue, le mode hors ligne, une carte fallback, une fiche directe, le changement de profil, le mouvement réduit et l’affichage correct de la version publiée.
+- mettre à jour version et changelog ;
+- générer le build ;
+- déployer l’application canonique ;
+- vérifier l’URL ;
+- vérifier les Functions ;
+- créer le tag `v1.0.0` ;
+- documenter le rollback ;
+- vérifier le service worker ;
+- contrôler l’installation PWA ;
+- effectuer une vérification de fumée après publication.

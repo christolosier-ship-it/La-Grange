@@ -2,40 +2,31 @@
 
 | Besoin | Règle / conception | Vue | Tests principaux |
 |---|---|---|---|
-| Nouveau dépôt automatique | comparaison par identifiant | Dashboard, activité | unitaires comparator, intégration sync, E2E nouvelle arrivée |
-| Consultation immédiate | cache-first | toutes | intégration cache, E2E hors ligne |
-| Aucun doublon après renommage | identité numérique stable | catalogue | unitaires comparator, intégration renommage |
-| Ouvrir l’application | URL HTTPS validée | carte, fiche | unitaires URL, E2E fiche |
-| Données réelles | statistiques dérivées | dashboard | unitaires sélecteurs, audit produit |
-| Recherche rapide | index local normalisé | catalogue | unitaires recherche, E2E catalogue |
-| Résilience API | instantané atomique | shell, dashboard | intégration 403, 500 et réponse partielle |
-| PWA hors ligne | service worker et IndexedDB | toutes | checklist PWA, E2E hors ligne |
-| Accessibilité | composants et navigation | toutes | checklist, clavier, VoiceOver |
-| Identité visuelle | overrides et fallback | cartes, fiche | unitaires enrichissement, tests image absente |
-| Lecture seule | aucune mutation | toutes | revue architecture et sécurité |
-| Responsive | layouts adaptatifs | toutes | E2E viewport et contrôle appareil |
-| Atelier stylisé reconnaissable | direction artistique et bible Phase 6 | toutes | captures comparatives, checklist Phase 6, validation humaine |
-| Cohérence des matières | design system sémantique et registre d’assets | shell, cartes, panneaux | planche de composants, contraste final, revue visuelle |
-| Fonctionnement sans assets | fallbacks CSS et SVG obligatoires | shell, cartes, fiches | images bloquées, chemins cassés, tests de fallback |
-| Carte projet tactile et lisible | spécification `ProjectCard` Phase 6 | dashboard, catalogue | états normal, focus, pressé, archivé, noms longs |
-| Aucune donnée dessinée | textes HTML et données issues du modèle | toutes | inspection des assets, audit produit et bundle |
-| Performance visuelle | budgets d’assets et chargement priorisé | toutes | poids, requêtes, LCP, CLS, cache froid et chaud |
-| Images adaptées | miniatures dédiées et lazy loading | cartes, fiches | contrôle réseau, dimensions réservées, images sous la ligne de flottaison |
-| Mouvement optionnel | grammaire d’animation et préférence effective | toutes | `prefers-reduced-motion`, réglage local, audit manuel |
-| Nouvelle caisse factuelle | animation liée au marqueur réel et à son acquittement | dashboard | intégration nouvelle arrivée, mouvement réduit, absence de rejeu |
-| Décor inerte | ornements hors arbre d’accessibilité et sans événement | toutes | clavier, VoiceOver, inspection DOM |
-| Mobile conçu spécifiquement | établi compact et navigation basse | toutes | 320 px, 390 px, zoom 200 %, tactile |
-| Tablette comme cible de confort | composition paysage avec rail compact | dashboard, catalogue, fiche | 1024 px, iPad réel, orientation |
-| Production contrôlée | ADR-009, registre canonique et protocole asset par asset | production et intégration | contrôle du nom, format, dimensions, alpha, poids et validation humaine |
-| Source de vérité unique | GitHub canonique et registre `10-suivi-production-assets-phase-6.md` | processus de réalisation | historique PR, SHA verrouillé, contrôle de `main` |
-| Racine runtime canonique | nouveaux assets à la racine de `public/assets/phase-6/`, sous-dossiers hérités gelés | assets | inspection du diff, test de chemins, absence d’ajout dans l’exception héritée |
-| Assets traçables | identifiant, provenance, licence, dimensions, poids et cycle A/R/P/V/I | toutes | audit du registre, vérification des sources amont, suppression des fichiers remplacés après contrôle |
-| Cohérence sans texture | couches de matière avec couleur de fallback | toutes | blocage d’images, contraste, hors ligne |
-| Densité compacte | réduction des espacements sans perte tactile | toutes | préférence persistée, 44 px, captures comparatives |
-| Phase 6 réversible | PR courtes et lots indépendants | dépôt | comparaison des commits, rollback, absence de migration métier |
+| Dépôt public automatique | synchronisation par identifiant | dashboard, catalogue | mapping, pagination, comparaison |
+| Cache immédiat | cache-first IndexedDB | toutes | cache froid, cache chaud, hors ligne |
+| Dashboard sans empilement | contrat 6B | dashboard | captures, inspection DOM |
+| Rail gauche fixe | shell à deux zones | toutes | scroll tablette et bureau |
+| Statistiques intégrées | WebP de fond + HTML | dashboard | données réelles, images bloquées |
+| Grille continue | aucun conteneur de section | dashboard | ordre, noms longs, 18 projets |
+| Cinq portes d’accès | rangée d’actions | carte | clavier, liens, absence URL |
+| Infobulles | survol et focus | carte | souris, clavier, Échap |
+| Progression honnête | champ manuel facultatif | carte, modale | absent, 0, 100, invalide |
+| Version factuelle | manuel puis release | carte | stable, préversion, aucune |
+| Style générique | neuf styles | carte, modale | valeur valide, fallback |
+| Couleurs cohérentes | trio de palette | carte | contraste, reset style |
+| Couverture commune | WebP 640 × 400 versionné | carte | crop, poids, erreur |
+| Personnalisation multi-appareil | overrides dans Git | modale | fusion, déploiement, second appareil |
+| Administration protégée | GitHub App + Function | modale | 401, 403, CSRF |
+| Publication réversible | branche et PR | administration | PR créée, aucune fusion |
+| Conflit non destructif | SHA de base | administration | `409`, formulaire conservé |
+| Chemins limités | liste blanche serveur | administration | tentative hors périmètre |
+| Fonctionnement sans images | fallbacks | dashboard | blocage des images |
+| Accessibilité | composants sémantiques | toutes | clavier, zoom, VoiceOver |
+| Performance | budgets et lazy loading | dashboard | poids, LCP, CLS |
+| PWA | service worker et cache | toutes | installation, mise à jour, hors ligne |
+| Phase 6 progressive | 6B documentée, suite non pré-écrite | documentation | audit des références |
+| Release contrôlée | Phase 7 conservée | dépôt | Go / No-Go final |
 
 ## Usage
 
-Toute nouvelle exigence doit ajouter ou mettre à jour une ligne. Une exigence sans vue, règle ou test n’est pas prête à être développée. Une ligne devenue obsolète doit être corrigée dans la même PR que le changement de comportement.
-
-Pour la Phase 6, chaque PR cite les lignes de cette matrice qu’elle couvre et joint les preuves correspondantes : tests, captures, mesures ou audit.
+Toute nouvelle exigence ajoute ou corrige une ligne avant développement. Les personnalisations UI/UX postérieures à 6B seront ajoutées au fur et à mesure des décisions du propriétaire.

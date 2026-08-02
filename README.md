@@ -2,33 +2,34 @@
 
 > L’atelier où vivent mes projets.
 
-La Grange est une PWA personnelle, en lecture seule, qui récupère automatiquement les dépôts publics d’un profil GitHub configurable, les enrichit avec une identité visuelle locale et les présente comme une galerie d’applications chaleureuse et installable.
+La Grange est une PWA personnelle qui récupère les dépôts publics d’un profil GitHub, les enrichit avec une identité visuelle locale et les présente comme un atelier de projets installable.
 
 ## Objectif
 
-La Grange n’est ni une GMAO du code, ni un clone de GitHub, ni un outil de pilotage. Elle fournit un accès synthétique aux projets, à leurs applications déployées, à leur dépôt, à leur README, à leurs releases et à leur activité récente.
+La Grange permet de retrouver, comprendre, lancer et personnaliser les projets depuis un seul écran. La consultation des dépôts reste publique et cache-first. La seule écriture distante autorisée concerne la configuration éditoriale de La Grange et passe par une pull request automatique dans son propre dépôt.
 
 ## Principes
 
-- lecture seule ;
-- ajout automatique des nouveaux dépôts publics ;
-- affichage immédiat depuis le cache ;
-- fonctionnement hors ligne ;
-- aucune clé GitHub exposée ;
-- données réelles, sans faux pourcentage de progression ;
-- tablette comme cible de confort, avec responsive complet ;
-- ambiance d’atelier chaleureuse sans sacrifier la lisibilité.
+- données GitHub réelles ;
+- cache immédiat et fonctionnement hors ligne ;
+- fond général et rail gauche fixes ;
+- tablette paysage et bureau comme cibles de confort ;
+- personnalisation versionnée, commune à tous les appareils ;
+- aucune écriture dans les dépôts présentés ;
+- aucun secret dans le navigateur ;
+- aucune fusion automatique.
 
-## Architecture du MVP
+## Architecture
 
-- Vite + TypeScript ;
+- Vite + TypeScript strict ;
 - HTML sémantique et CSS natif ;
-- routeur par hash compatible GitHub Pages ;
-- API REST publique GitHub ;
-- IndexedDB pour les snapshots, détails et événements ;
-- localStorage pour les préférences versionnées ;
-- service worker et manifest PWA ;
-- configuration éditoriale centralisée dans `public/data/project-overrides.json`.
+- routeur par hash ;
+- API GitHub publique pour la consultation ;
+- IndexedDB pour les snapshots et détails ;
+- `project-overrides.json` pour la personnalisation ;
+- Netlify Functions et GitHub App limitée à `La-Grange` pour créer une PR de personnalisation ;
+- aucun token GitHub permanent dans le client ;
+- service worker et manifest PWA.
 
 ## Développement local
 
@@ -44,32 +45,21 @@ npm run build
 npm run preview
 ```
 
-Le service worker est enregistré uniquement par le build de production. Pour repartir d’un environnement propre, supprimer le service worker et les données du site depuis les outils de développement du navigateur.
-
 ## Documentation
 
 Le point d’entrée documentaire est [`docs/INDEX.md`](docs/INDEX.md).
 
 Documents majeurs :
 
-- [`ARCHITECTURE.md`](ARCHITECTURE.md) : synthèse technique ;
-- [`AGENTS.md`](AGENTS.md) : règles obligatoires pour les agents IA ;
-- [`docs/00-fondations/`](docs/00-fondations/) : vision et périmètre ;
-- [`docs/01-produit/`](docs/01-produit/) : besoins et règles métier ;
-- [`docs/02-ux-ui/`](docs/02-ux-ui/) : vues et design system ;
-- [`docs/03-technique/`](docs/03-technique/) : conception détaillée ;
-- [`docs/05-realisation/`](docs/05-realisation/) : phases de construction.
-
-Cadrage Phase 6 :
-
-- [`docs/02-ux-ui/10-bible-visuelle-phase-6.md`](docs/02-ux-ui/10-bible-visuelle-phase-6.md) ;
-- [`docs/02-ux-ui/11-inventaire-assets-phase-6.md`](docs/02-ux-ui/11-inventaire-assets-phase-6.md) ;
-- [`docs/05-realisation/08-phase-6-polissage-visuel.md`](docs/05-realisation/08-phase-6-polissage-visuel.md) ;
-- [`docs/05-realisation/10-suivi-production-assets-phase-6.md`](docs/05-realisation/10-suivi-production-assets-phase-6.md) ;
-- [`docs/08-generation-ia/13-protocole-production-assets-phase-6.md`](docs/08-generation-ia/13-protocole-production-assets-phase-6.md).
+- [`ARCHITECTURE.md`](ARCHITECTURE.md) ;
+- [`AGENTS.md`](AGENTS.md) ;
+- [`docs/02-ux-ui/12-contrat-dashboard-phase-6b.md`](docs/02-ux-ui/12-contrat-dashboard-phase-6b.md) ;
+- [`docs/03-technique/13-personnalisation-github.md`](docs/03-technique/13-personnalisation-github.md) ;
+- [`docs/05-realisation/11-phase-6b-dashboard-personnalisation.md`](docs/05-realisation/11-phase-6b-dashboard-personnalisation.md) ;
+- [`docs/07-decisions/ADR-010-personnalisation-versionnee-via-github.md`](docs/07-decisions/ADR-010-personnalisation-versionnee-via-github.md).
 
 ## État
 
-Les Phases 1 à 5 sont implémentées : socle PWA, synchronisation GitHub cache-first, dashboard responsive, catalogue complet, fiches détaillées, journal local factuel et paramètres.
+Les Phases 1 à 5 sont implémentées. La Phase 6A a intégré les fondations visuelles.
 
-La Phase 6 suit désormais une méthode séquentielle pilotée par `10-suivi-production-assets-phase-6.md` : une source M/S est approuvée puis versionnée avec A/R ; chaque asset est ensuite contrôlé et versionné à la racine de `public/assets/phase-6/` avec P, validé humainement avec V, puis raccordé au code avec I dans le lot 6A à 6E concerné. Les sous-dossiers de prototypes hérités restent gelés, non canoniques et sont retirés fichier par fichier après leur remplacement.
+L’étape 6B est désormais la refonte du dashboard, des cartes projet et de leur personnalisation versionnée. Les anciennes subdivisions ultérieures de la Phase 6 ont été retirées de la documentation. Les prochaines étapes UI/UX seront définies au fur et à mesure par le propriétaire. La Phase 7 de validation et release est conservée, mais ne pourra démarrer qu’après clôture explicite de l’ensemble de la Phase 6.

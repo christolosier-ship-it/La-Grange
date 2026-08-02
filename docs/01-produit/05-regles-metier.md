@@ -2,36 +2,59 @@
 
 ## Identité
 
-- l’identifiant GitHub numérique est la clé stable ;
-- le nom de dépôt sert de slug lisible ;
-- un changement de nom ne doit pas créer un doublon ;
-- un override inconnu est ignoré avec avertissement de développement.
-
-## Nouveaux dépôts
-
-- un dépôt absent du précédent instantané est marqué `isNew` ;
-- ce marqueur disparaît après ouverture de sa fiche ou acquittement explicite ;
-- le premier import complet ne marque pas tous les dépôts comme nouveaux.
+- l’identifiant GitHub numérique reste la clé stable ;
+- le nom du dépôt reste le slug technique ;
+- un renommage ne crée pas de doublon ;
+- la personnalisation cible un dépôt existant de l’inventaire.
 
 ## Activité
-
-Seuil initial configurable :
 
 - actif : activité dans les 30 derniers jours ;
 - maintenance : de 31 à 180 jours ;
 - en sommeil : au-delà de 180 jours ;
-- archivé : le drapeau GitHub prime sur les dates.
+- archivé : drapeau GitHub prioritaire.
 
-Ces états mesurent l’activité constatée, jamais la qualité ni l’avancement.
+Le temps affiché sur la carte vient de `pushedAt`, sinon `updatedAt`.
+
+## Avancement
+
+- valeur manuelle de 0 à 100 ;
+- valeur absente : aucune barre ;
+- jamais calculé depuis GitHub ;
+- 100 % ne signifie ni archivé ni terminé ;
+- libellé accessible indiquant qu’il s’agit d’une estimation manuelle.
+
+## Version
+
+Ordre de priorité :
+
+1. `manualVersion` non vide ;
+2. dernière release stable GitHub ;
+3. dernière préversion si aucune stable n’existe ;
+4. aucun badge.
+
+Les drafts sont ignorés et le tag est affiché sans ajout artificiel de `v`.
+
+## Styles
+
+Valeurs autorisées :
+
+- `lifestyle` ;
+- `games` ;
+- `productivity` ;
+- `health` ;
+- `education` ;
+- `nature` ;
+- `creation` ;
+- `technical` ;
+- `uncategorized`.
+
+Chaque style fournit une bannière, une icône et trois couleurs par défaut. Les couleurs personnalisées restent facultatives.
 
 ## Publication
 
-Un projet est « prêt à partir » si `homepage` ou un override `appUrl` contient une URL HTTPS valide.
-
-## Fallback visuel
-
-Sans couverture, la carte utilise un fond déterministe, des initiales et un pictogramme générique. Aucun projet ne doit disparaître pour manque d’asset.
-
-## Suppression
-
-Un dépôt disparu de l’API n’est retiré qu’après une synchronisation complète réussie. Une réponse partielle ou en erreur ne peut pas déclencher sa suppression.
+- toute modification crée une PR dans `La-Grange` ;
+- aucun commit direct sur `main` ;
+- aucun auto-merge ;
+- une PR obsolète ou en conflit doit être corrigée ou remplacée ;
+- la personnalisation devient officielle seulement après fusion et déploiement.
