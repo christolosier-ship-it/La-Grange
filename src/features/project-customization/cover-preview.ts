@@ -5,7 +5,9 @@ function snapshot(container: HTMLElement): DocumentFragment {
   const existing = initialCovers.get(container);
   if (existing) return existing;
   const fragment = document.createDocumentFragment();
-  container.childNodes.forEach((node) => fragment.append(node.cloneNode(true)));
+  container.childNodes.forEach((node) => {
+    fragment.append(node.cloneNode(true));
+  });
   initialCovers.set(container, fragment);
   return fragment;
 }
