@@ -145,19 +145,27 @@ function decorateTooltip(element: HTMLElement, label: string): void {
   element.setAttribute('aria-label', label);
 }
 
+function accessibleLabel(label: string): HTMLSpanElement {
+  const text = document.createElement('span');
+  text.className = 'visually-hidden';
+  text.textContent = label;
+  return text;
+}
+
 function externalAction(
   href: string,
   iconFilename: string,
   label: string,
   offline = false,
 ): HTMLAnchorElement {
+  const resolvedLabel = offline ? `${label}, connexion requise` : label;
   const link = document.createElement('a');
   link.className = 'project-card__action';
   link.href = href;
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
-  link.append(createIcon(iconFilename));
-  decorateTooltip(link, offline ? `${label}, connexion requise` : label);
+  link.append(createIcon(iconFilename), accessibleLabel(resolvedLabel));
+  decorateTooltip(link, resolvedLabel);
   if (offline) link.classList.add('requires-connection');
   return link;
 }
@@ -167,7 +175,7 @@ function unavailableAction(iconFilename: string, label: string): HTMLButtonEleme
   button.type = 'button';
   button.className = 'project-card__action';
   button.disabled = true;
-  button.append(createIcon(iconFilename));
+  button.append(createIcon(iconFilename), accessibleLabel(label));
   decorateTooltip(button, label);
   return button;
 }
@@ -248,25 +256,40 @@ export function createProjectCard(project: Project, options: ProjectCardOptions 
 
   const actions = document.createElement('div');
   actions.className = 'project-card__actions';
-  actions.append(
-    externalAction(project.githubUrl, 'p6-d06-icon-github.svg', 'Ouvrir sur GitHub', options.offline),
-    project.appUrl
-      ? externalAction(project.appUrl, 'p6-d07-icon-launch-app.svg', 'Lancer l’application', options.offline)
-      : unavailableAction('p6-d07-icon-launch-app.svg', 'Application non disponible'),
-    externalAction(project.readmeUrl, 'p6-d42-icon-readme.svg', 'Ouvrir le README', options.offline),
+  const githubAction = externalAction(
+    project.githubUrl,
+    'p6-d06-icon-github.svg',
+    'Ouvrir sur GitHub',
+    options.offline,
   );
+  const applicationAction = project.appUrl
+    ? externalAction(
+      project.appUrl,
+      'p6-d07-icon-launch-app.svg',
+      'Lancer l’application',
+      options.offline,
+    )
+    : unavailableAction('p6-d07-icon-launch-app.svg', 'Application non disponible');
+  applicationAction.classList.add('project-card__launch');
+  const readmeAction = externalAction(
+    project.readmeUrl,
+    'p6-d42-icon-readme.svg',
+    'Ouvrir le README',
+    options.offline,
+  );
+  actions.append(githubAction, applicationAction, readmeAction);
 
   const details = document.createElement('a');
   details.className = 'project-card__action';
   details.href = options.detailHref ?? `#/project/${encodeURIComponent(project.repositoryName)}`;
-  details.append(createIcon('p6-d20-icon-details.svg'));
+  details.append(createIcon('p6-d20-icon-details.svg'), accessibleLabel('Voir le détail du projet'));
   decorateTooltip(details, 'Voir le détail du projet');
   actions.append(details);
 
   const customize = document.createElement('button');
   customize.type = 'button';
   customize.className = 'project-card__action project-card__action--customize';
-  customize.append(createIcon('p6-d43-icon-customize.svg'));
+  customize.append(createIcon('p6-d43-icon-customize.svg'), accessibleLabel('Personnaliser le projet'));
   decorateTooltip(customize, 'Personnaliser le projet');
   customize.addEventListener('click', () => openProjectCustomization(project));
   actions.append(customize);
