@@ -28,5 +28,10 @@ export interface CustomizationPublicationResult {
 export type AdminSessionState =
   | { readonly status: 'loading' }
   | { readonly status: 'anonymous' }
-  | { readonly status: 'authenticated'; readonly login: string }
+  | {
+      readonly status: 'authenticated';
+      readonly login: string;
+      readonly admin: boolean;
+      readonly githubAuthenticated: boolean;
+    }
   | { readonly status: 'error'; readonly message: string };
