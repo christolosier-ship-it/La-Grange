@@ -4,155 +4,108 @@
 
 **Ce fichier est l’unique registre opérationnel des assets Phase 6.**
 
-Dernière révision : 2026-08-02.
+Dernière révision : 2026-08-02, après purge du dépôt.
 
-La Phase 6B est volontairement simplifiée : elle ne pré-produit plus les couvertures et logos de chaque projet et ne génère plus de planches PNG documentaires. Les couvertures sont ajoutées depuis la modale de personnalisation, puis versionnées par la pull request automatique.
+## Doctrine
+
+- conserver uniquement les fichiers réellement consommés ou explicitement nécessaires à la prochaine intégration ;
+- WebP ou PNG pour les matières et décors ;
+- SVG pour les icônes fonctionnelles ;
+- HTML/CSS pour les textes, états, couleurs, progression, séparateurs et fallbacks ;
+- couvertures ajoutées depuis la modale, puis réencodées en WebP 640 × 400 ;
+- aucun master, planche de validation, ZIP, doublon ou asset prospectif dans le dépôt.
 
 ## Statuts
 
-### Sources
-
-- **A** : direction approuvée ;
-- **R** : source canonique versionnée dans `docs/assets/phase-6/`.
-
-### Assets runtime
-
-- **P** : fichier final contrôlé et versionné dans `public/assets/phase-6/` ;
+- **P** : fichier final présent et techniquement contrôlé ;
 - **V** : validation humaine ;
-- **I** : consommation réelle par l’application.
-
-## Emplacements
-
-- masters : `docs/assets/phase-6/` ;
-- assets runtime : `public/assets/phase-6/` ;
-- nouveaux fichiers à plat ;
-- aucun ZIP, Base64, fragment ou workflow de reconstruction.
-
-## Doctrine 6B
-
-- WebP pour les matières, skins et bandeaux ;
-- HTML/CSS pour la structure, les textes, les états, les couleurs et la progression ;
-- SVG pour les icônes fonctionnelles ;
-- aucun texte fonctionnel dans un raster ;
-- aucune couverture ou logo de projet pré-produit dans le registre ;
-- aucune planche de validation versionnée.
+- **I** : fichier réellement consommé par l’application.
 
 ---
 
-# 1. Historique Phase 6A conservé
+# 1. Assets intégrés au shell actuel
 
-Les assets 6A déjà validés et intégrés restent canoniques : enseigne A01 à A04, fonds B01 à B04, texture B07, lumière B12, icônes D01 à D05 et D21 à D26.
-
-Les anciens prototypes SVG C01 à C10 de la PR #29 restent non canoniques et ne doivent jamais être intégrés.
-
----
-
-# 2. Master actif Phase 6B
-
-| ID | Source | Fichier | Format | Dimensions | Alpha | Fonction | Budget max | A | R |
-|---|---|---|---|---|---|---|---:|---|---|
-| M06 | Composition dashboard 6B | `p6-m06-dashboard-phase-6b-master-1920x1080.webp` | WebP | 1920 × 1080 | non | Référence de composition : rail fixe, bandeau, grille directe, cartes, cinq actions et absence de sections | 2 Mo | [x] | [x] |
-
-Provenance : composition interne `PROD-LG`, dérivée de la référence fournie par le propriétaire le 2026-08-02.
-
----
-
-# 3. Assets visuels Phase 6B
-
-| ID | Fichier | Format | Dimensions | Alpha | Fonction | Fallback | Budget max | P | V | I |
-|---|---|---|---|---|---|---|---:|---|---|---|
-| C01 | `p6-c01-project-card-skin-standard-640x960.webp` | WebP | 640 × 960 | oui | Skin matériel partagé de carte, fenêtre de couverture transparente et zones HTML libres | surface CSS `FB-PANEL` | 60 Ko | [x] | [x] | [ ] |
-| C06 | `p6-c06-style-ribbon-neutral-160x240.webp` | WebP | 160 × 240 | oui | Bannière neutre recolorable du style de projet | couleur CSS et libellé HTML | 20 Ko | [x] | [x] | [ ] |
-| C11 | `p6-c11-stats-beam-1600x220.webp` | WebP | 1600 × 220 | oui | Poutre unique recevant quatre statistiques HTML | grille CSS `FB-PANEL` | 70 Ko | [x] | [x] | [ ] |
-
-Les chiffres, textes, versions, progressions, boutons et séparateurs fonctionnels restent en HTML/CSS.
-
-## Contrôles CSS sans fichier
-
-| ID | Contrôle | Critère | Spécifié | Intégré |
-|---|---|---|---|---|
-| C05 | traitement archivé | lisible, sans masquer les actions | [x] | [ ] |
-| C08 | badge de version | texte HTML, couleur issue de la palette | [x] | [ ] |
-| C09 | progression | valeur manuelle 0–100, absente si non renseignée | [x] | [ ] |
-| C10 | rangée d’actions | cinq emplacements flexibles | [x] | [ ] |
-| C30 | rail fixe | rail entier fixe dans le viewport | [x] | [ ] |
-| C31 | scroll principal | seule la zone principale défile | [x] | [ ] |
-| C32 | grille directe | aucun panneau, en-tête ou rail droit | [x] | [ ] |
-| C33 | infobulle | survol, focus et fermeture clavier | [x] | [ ] |
-| C34 | modale | focus piégé, fond inerte et restitution | [x] | [ ] |
-
----
-
-# 4. Iconographie Phase 6B
-
-Règles communes : SVG local, `viewBox="0 0 24 24"`, `currentColor`, moins de 8 Ko.
-
-| ID | Fonction | Fichier | P | V | I |
+| ID | Fichier ou série | Fonction | P | V | I |
 |---|---|---|---|---|---|
-| D06 | GitHub | `p6-d06-icon-github.svg` | [x] | [x] | [ ] |
-| D07 | lancer l’application | `p6-d07-icon-launch-app.svg` | [x] | [x] | [ ] |
-| D20 | détail du projet | `p6-d20-icon-details.svg` | [x] | [x] | [ ] |
-| D42 | README | `p6-d42-icon-readme.svg` | [x] | [x] | [ ] |
-| D43 | personnaliser | `p6-d43-icon-customize.svg` | [x] | [x] | [ ] |
-| D44 | style de vie | `p6-d44-icon-style-lifestyle.svg` | [ ] | [ ] | [ ] |
-| D45 | jeux | `p6-d45-icon-style-games.svg` | [ ] | [ ] | [ ] |
-| D46 | productivité | `p6-d46-icon-style-productivity.svg` | [ ] | [ ] | [ ] |
-| D47 | santé | `p6-d47-icon-style-health.svg` | [ ] | [ ] | [ ] |
-| D48 | éducation | `p6-d48-icon-style-education.svg` | [ ] | [ ] | [ ] |
-| D49 | nature | `p6-d49-icon-style-nature.svg` | [ ] | [ ] | [ ] |
-| D50 | création | `p6-d50-icon-style-creation.svg` | [ ] | [ ] | [ ] |
-| D51 | technique et métier | `p6-d51-icon-style-technical.svg` | [ ] | [ ] | [ ] |
-| D52 | inclassable | `p6-d52-icon-style-uncategorized.svg` | [ ] | [ ] | [ ] |
+| A01–A03 | enseignes WebP responsive | marque principale | [x] | [x] | [x] |
+| A04 | `p6-a04-brand-mark.svg` | médaillon LG | [x] | [x] | [x] |
+| B01–B04 | fonds d’atelier responsive | fond général | [x] | [x] | [x] |
+| B07 | `p6-b07-texture-wood-structure-1024x1024.webp` | texture du shell | [x] | [x] | [x] |
+| B12 | `p6-b12-light-main-1600x900.png` | lumière principale | [x] | [x] | [x] |
+| D01–D05 | navigation et synchronisation | shell fixe | [x] | [x] | [x] |
+| D21–D26 | états réseau et feedback | panneau de synchronisation | [x] | [x] | [x] |
+
+Ces fichiers restent protégés tant que le shell actuel les référence.
 
 ---
 
-# 5. Couvertures et logos ajoutés depuis l’application
+# 2. Noyau graphique de la Phase 6B
 
-Les anciennes séries S02 à S18 et F02 à F18 sont retirées du registre 6B.
+| ID | Fichier | Format | Dimensions | Alpha | Fonction | P | V | I |
+|---|---|---|---|---|---|---|---|---|
+| C01 | `p6-c01-project-card-skin-standard-640x960.webp` | WebP | 640 × 960 | oui | skin commun des cartes | [x] | [x] | [ ] |
+| C11 | `p6-c11-stats-beam-1600x220.webp` | WebP | 1600 × 220 | oui | bandeau supérieur des statistiques | [x] | [x] | [ ] |
+| D06 | `p6-d06-icon-github.svg` | SVG | 24 × 24 | oui | accès GitHub | [x] | [x] | [ ] |
+| D07 | `p6-d07-icon-launch-app.svg` | SVG | 24 × 24 | oui | lancement de l’application | [x] | [x] | [ ] |
+| D20 | `p6-d20-icon-details.svg` | SVG | 24 × 24 | oui | détail du projet | [x] | [x] | [ ] |
+| D42 | `p6-d42-icon-readme.svg` | SVG | 24 × 24 | oui | README | [x] | [x] | [ ] |
+| D43 | `p6-d43-icon-customize.svg` | SVG | 24 × 24 | oui | personnalisation | [x] | [x] | [ ] |
 
-La modale administrateur accepte PNG, JPEG ou WebP, affiche un recadrage 8:5, puis le service sécurisé :
+## Éléments sans fichier graphique
 
-1. valide le type, les octets, les dimensions et le poids ;
-2. supprime les métadonnées ;
-3. réencode en WebP 640 × 400 ;
-4. calcule le chemin canonique côté serveur ;
-5. met à jour `project-overrides.json` ;
-6. crée une branche, un commit et une pull request.
+- marqueur de style du projet ;
+- palettes principale, secondaire et progression ;
+- badge de version ;
+- barre de progression ;
+- cinq emplacements d’action ;
+- infobulles ;
+- fallback de couverture ;
+- modale et ses états.
 
-Un projet sans couverture utilise C18 et le fallback HTML/CSS. Aucun logo séparé n’est exigé en 6B : le nom du projet reste du texte HTML.
-
----
-
-# 6. Validation
-
-Les anciennes planches G16a à G20 sont supprimées du processus.
-
-La validation s’effectue directement sur le build de la PR avec :
-
-- captures jointes à la PR sans statut d’asset ;
-- tablette paysage et bureau ;
-- zoom 200 % ;
-- images bloquées ;
-- hors ligne ;
-- clavier, focus et lecteur d’écran ;
-- état administrateur et visiteur ;
-- création de PR de personnalisation sans fusion automatique.
+Ces éléments sont réalisés en HTML/CSS et ne doivent pas recréer C06, C18 ou une autre image décorative dédiée.
 
 ---
 
-# 7. Porte d’entrée de l’intégration 6B
+# 3. Couvertures de projets
 
-L’intégration peut commencer lorsque :
+Les couvertures ne sont pas pré-produites.
 
-- M06 possède A/R ;
-- C01, C06 et C11 possèdent P/V ;
-- D42 et D43 possèdent P/V ;
-- C05, C08, C09, C10 et C30 à C34 sont spécifiés ;
-- ADR-010 est accepté ;
-- le contrat serveur est documenté.
+La modale administrateur :
 
-D44 à D52 peuvent être produits dans le lot d’intégration ou remplacés par des icônes locales existantes, sous réserve de conserver les neuf styles validés et une cohérence visuelle.
+1. accepte PNG, JPEG ou WebP ;
+2. permet le recadrage 8:5 ;
+3. supprime les métadonnées ;
+4. réencode en WebP 640 × 400 ;
+5. calcule le chemin canonique ;
+6. met à jour `project-overrides.json` ;
+7. crée une branche, un commit et une pull request.
+
+Sans couverture, la carte utilise un fallback HTML/CSS avec le nom ou les initiales du projet. Aucun logo séparé n’est requis.
+
+---
+
+# 4. Assets purgés
+
+Sont explicitement retirés et ne doivent pas être recréés sans nouvelle décision :
+
+- variantes de marque A05 à A12 dupliquant les icônes PWA existantes ;
+- fonds, textures, lumières et ombres B05, B08 à B11 et B13 à B15 ;
+- anciens cadres C01, C02 et C03 ;
+- bannière raster C06 ;
+- papier C15, panneau C16 et fallback C18 ;
+- icônes D08 à D19 et D27 à D41 non consommées ;
+- pack Gargotte F01a à F01c ;
+- masters et planches sous `docs/assets/phase-6/` ;
+- anciens sous-dossiers `brand`, `components`, `panels`, `projects` et `shell`.
+
+---
+
+# 5. Porte d’entrée de l’intégration 6B
+
+L’intégration peut commencer avec C01, C11, D06, D07, D20, D42 et D43.
+
+Les icônes des neuf styles sont réutilisées depuis l’iconographie locale ou dessinées au moment du raccord. Elles ne sont pas pré-produites dans le registre.
 
 ## Prochain travail autorisé
 
-**Démarrer l’intégration fonctionnelle 6B et produire ou réutiliser l’iconographie des neuf styles au moment du raccord.**
+**Intégrer le dashboard 6B et la modale de personnalisation, sans produire de nouveau lot graphique préalable.**
