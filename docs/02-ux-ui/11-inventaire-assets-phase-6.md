@@ -1,97 +1,62 @@
-# Inventaire des assets de la Phase 6
+# Inventaire des assets Phase 6B
 
 ## Principe
 
-Le registre détaillé est `docs/05-realisation/10-suivi-production-assets-phase-6.md`.
+La Phase 6B utilise un noyau graphique volontairement réduit. Les cartes et le bandeau sont habillés par trois WebP partagés ; l’interface, les textes, les couleurs et les états restent en HTML/CSS ; les actions utilisent des SVG locaux.
 
-## Formats
+Les couvertures de projets ne sont pas produites à l’avance. Elles sont ajoutées depuis la modale administrateur et versionnées par une pull request automatique.
 
-### WebP
+## Assets produits
 
-Format principal pour :
+| ID | Fichier | Format | Dimensions | Alpha | Usage | Poids réel |
+|---|---|---|---|---|---|---:|
+| M06 | `p6-m06-dashboard-phase-6b-master-1920x1080.webp` | WebP | 1920 × 1080 | non | master de composition | inférieur à 2 Mo |
+| C01 | `p6-c01-project-card-skin-standard-640x960.webp` | WebP | 640 × 960 | oui | skin partagé des cartes | inférieur à 60 Ko |
+| C11 | `p6-c11-stats-beam-1600x220.webp` | WebP | 1600 × 220 | oui | poutre de statistiques | inférieur à 70 Ko |
+| C06 | `p6-c06-style-ribbon-neutral-160x240.webp` | WebP | 160 × 240 | oui | bannière de style recolorable | inférieur à 20 Ko |
+| D42 | `p6-d42-icon-readme.svg` | SVG | viewBox 0 0 24 24 | oui | action README | inférieur à 8 Ko |
+| D43 | `p6-d43-icon-customize.svg` | SVG | viewBox 0 0 24 24 | oui | action personnalisation | inférieur à 8 Ko |
 
-- fonds ;
-- cadres matériels ;
-- poutre de statistiques ;
-- bannière de style ;
-- couvertures ;
-- logos éditoriaux ;
-- ornements utiles.
+## Assets existants réutilisés
 
-### SVG
+- D06 : GitHub ;
+- D07 : lancement de l’application ;
+- D20 : détail du projet ;
+- C18 : fallback de couverture ;
+- enseigne, fonds, texture et lumière issus de la Phase 6A.
 
-Réservé aux icônes fonctionnelles, symboles de style et formes simples devant hériter de `currentColor`.
+## Iconographie de styles
 
-Les cadres de cartes, rails de métadonnées, rails d’actions et grandes poutres ne sont plus produits sous forme de SVG géométriques.
+Les neuf styles restent : style de vie, jeux, productivité, santé, éducation, nature, création, technique et métier, inclassable.
 
-### PNG
+Leurs icônes D44 à D52 peuvent être créées ou réutilisées depuis l’iconographie locale pendant l’intégration. Elles ne bloquent plus la production du noyau graphique.
 
-Réservé aux halos, masques et planches documentaires.
+## Éléments qui ne sont pas des assets
 
-## Arborescence
+- rail fixe ;
+- grille ;
+- progression ;
+- badge de version ;
+- rangée des cinq actions ;
+- infobulles ;
+- modale ;
+- palettes des styles ;
+- séparateurs fonctionnels ;
+- textes et statistiques.
 
-Les nouveaux assets canoniques restent à plat dans :
+## Couvertures
 
-`public/assets/phase-6/`
+Les couvertures sont téléversées manuellement dans l’application :
 
-Les masters et planches restent à plat dans :
+- entrée PNG, JPEG ou WebP ;
+- recadrage 8:5 ;
+- sortie WebP 640 × 400 ;
+- validation et réencodage côté serveur ;
+- mise à jour des overrides ;
+- branche, commit et PR automatiques.
 
-`docs/assets/phase-6/`
+Aucune série de masters Sxx, exports Fxx ou logos séparés n’est requise par la Phase 6B.
 
-Les sous-dossiers hérités restent gelés jusqu’au remplacement de leurs fichiers.
+## Validation
 
-## Familles actives
-
-- A : marque et icônes PWA déjà définies ;
-- B : fond, textures et lumière déjà définis ;
-- C : skins WebP du dashboard, bandeau et éléments de carte ;
-- D : icônes d’action et de style en SVG ;
-- F : couvertures et logos des projets prioritaires ;
-- G : planches d’acceptation 6A et 6B.
-
-Les familles et fichiers prévus pour des étapes UI/UX ultérieures ont été retirés. Ils seront recréés uniquement après nouveau cadrage.
-
-## Dimensions 6B
-
-- skin de carte master : 640 × 960 WebP transparent ;
-- couverture : 640 × 400 WebP ;
-- logo : 512 × 160 WebP transparent ;
-- bandeau de statistiques : 1600 × 220 WebP ;
-- bannière de style : 160 × 240 WebP transparent ;
-- icône : `viewBox 0 0 24 24` ;
-- planche bureau : 1440 × 1024 PNG ;
-- planche tablette paysage : 1366 × 1024 PNG.
-
-## Upload depuis la modale
-
-Entrées acceptées : PNG, JPEG et WebP.
-
-Sortie canonique :
-
-- WebP ;
-- 640 × 400 ;
-- nom issu du registre et du projet ;
-- cible 35 à 80 Ko ;
-- signature, dimensions et poids contrôlés côté serveur ;
-- aucune métadonnée sensible ;
-- aucune image distante conservée par URL.
-
-## Budgets
-
-- bandeau : cible inférieure à 70 Ko ;
-- skin de carte : cible inférieure à 60 Ko ;
-- couverture : 35 à 80 Ko ;
-- logo : moins de 30 Ko ;
-- icône SVG : moins de 8 Ko ;
-- aucune image non visible préchargée sans mesure.
-
-## Fallbacks
-
-- fond : gradients CSS ;
-- bandeau : grille CSS avec bordure ;
-- skin de carte : surface CSS opaque ;
-- couverture : C18 et initiales HTML ;
-- logo : nom HTML ;
-- icône : libellé accessible ;
-- bannière : couleur et icône de style ;
-- administration : fonction absente sans casser la consultation.
+Aucune planche PNG canonique n’est produite. Les captures de contrôle restent des preuves temporaires jointes à la PR d’intégration.
