@@ -1,21 +1,61 @@
-# Personnalisation versionnée via GitHub
+# Connexion GitHub et personnalisation versionnée
 
 ## Objectif
 
-Permettre au propriétaire de personnaliser une carte depuis La Grange tout en conservant une configuration identique sur tablette et ordinateur.
+Permettre à l’utilisateur de se connecter à GitHub directement depuis La Grange afin d’utiliser une synchronisation authentifiée, tout en réservant la personnalisation éditoriale aux comptes administrateurs autorisés.
 
 ## Principes validés
 
+- bouton « Se connecter avec GitHub » dans l’application ;
+- authentification réalisée sur le domaine officiel GitHub ;
+- retour automatique dans La Grange après autorisation ;
+- session GitHub limitée dans le temps et stockée en cookie `HttpOnly` chiffré ;
+- aucune clé ni aucun jeton lisible par le JavaScript client ;
+- lectures GitHub authentifiées via un proxy Netlify en liste blanche ;
+- consultation publique anonyme conservée ;
+- rôle administrateur séparé de la simple connexion GitHub ;
 - modale ouverte depuis le cinquième bouton de la carte ;
 - cinquième bouton toujours visible afin de conserver les cinq emplacements du skin ;
 - création d’une PR réservée à une session administrateur authentifiée ;
-- authentification GitHub ;
-- GitHub App limitée au dépôt `La-Grange` ;
+- GitHub App limitée au dépôt `La-Grange` pour les écritures ;
 - Netlify Functions pour les opérations privilégiées ;
-- aucune clé dans le navigateur ;
 - toute modification passe par une PR automatique ;
 - fusion manuelle ;
 - publication effective après déploiement et mise à jour PWA.
+
+## Flux de connexion
+
+```text
+Se connecter avec GitHub
+→ autorisation sur github.com
+→ callback Netlify
+→ lecture de l’identité GitHub
+→ création d’une session chiffrée
+→ retour dans La Grange
+→ synchronisation forcée
+→ lectures GitHub authentifiées
+```
+
+La session expose uniquement au client :
+
+- l’état connecté ou non connecté ;
+- le login GitHub ;
+- le statut administrateur.
+
+Le jeton OAuth reste contenu dans le cookie chiffré `HttpOnly`. Il n’est jamais renvoyé par `/api/admin/session`, écrit dans IndexedDB ou placé dans les diagnostics.
+
+## Proxy de lecture GitHub
+
+Le proxy `/api/github/*` n’accepte que des requêtes `GET` sur les ressources nécessaires :
+
+- liste des dépôts publics d’un profil ;
+- commits récents d’un dépôt ;
+- liste et dernière release ;
+- README.
+
+Les routes, segments et paramètres de requête sont validés par liste blanche avant tout appel à GitHub. Les en-têtes de quota, d’ETag et de pagination utiles sont retransmis au navigateur.
+
+En l’absence de session, les clients continuent à lire directement l’API GitHub publique. Après connexion, ils basculent automatiquement vers le proxy same-origin et relancent la synchronisation.
 
 ## Champs de la modale
 
@@ -64,6 +104,7 @@ Chaque style fournit une icône locale, un marqueur HTML/CSS et trois couleurs p
 ```text
 Enregistrer et publier
 → validation
+→ vérification du rôle administrateur
 → branche créée
 → commit créé
 → PR ouverte
@@ -77,24 +118,32 @@ Le formulaire reste disponible après un échec. Aucune fausse confirmation « p
 
 ## États UX
 
-- non authentifié ;
+- session GitHub en vérification ;
+- non connecté ;
 - authentification en cours ;
-- administrateur connecté ;
+- compte GitHub connecté ;
+- compte GitHub connecté avec droits administrateur ;
 - validation locale ;
 - upload ;
 - création de PR ;
 - PR créée ;
 - conflit avec `main` ;
+- session expirée ;
+- limite GitHub atteinte ;
 - erreur récupérable ;
 - hors ligne.
 
 ## Critères d’acceptation
 
-- un visiteur voit les cinq actions et peut ouvrir la modale ;
-- un visiteur ou un compte non autorisé ne peut pas créer de PR ;
-- aucun secret dans le bundle ou les diagnostics ;
+- un visiteur peut consulter les données publiques sans connexion ;
+- un utilisateur peut lancer la connexion depuis La Grange et revenir automatiquement dans l’application ;
+- la synchronisation suivante utilise la session authentifiée ;
+- le jeton OAuth n’est jamais accessible au code client ;
+- un compte connecté non administrateur ne peut pas créer de PR ;
+- un administrateur voit les cinq actions et peut ouvrir la modale ;
 - seuls les fichiers autorisés changent ;
 - une PR est créée sans fusion ;
 - une couverture non conforme est refusée ;
 - un conflit ne détruit aucune modification ;
+- la déconnexion détruit la session ;
 - après fusion et déploiement, tous les appareils affichent la même personnalisation.
