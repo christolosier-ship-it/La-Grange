@@ -1,17 +1,22 @@
 import type { AppState } from '../../app/store';
 import { selectVisibleProjects } from '../../core/preferences/project-visibility';
+import { createProjectCard } from '../../ui/components/project-card';
 import {
   createDashboardFeedback,
   createDashboardLoadingState,
   createDashboardStats,
 } from './dashboard-header';
-import {
-  createActivityPanel,
-  createDistributionPanel,
-  createNewArrivalPanel,
-  createProjectSection,
-} from './dashboard-panels';
-import { selectDashboard } from './dashboard-selectors';
+
+function createEmptyDashboard(): HTMLElement {
+  const empty = document.createElement('section');
+  empty.className = 'dashboard-empty';
+  const title = document.createElement('h2');
+  title.textContent = 'Aucun projet visible';
+  const text = document.createElement('p');
+  text.textContent = 'L’inventaire apparaîtra ici dès qu’un dépôt public sera disponible.';
+  empty.append(title, text);
+  return empty;
+}
 
 export function renderDashboard(state: AppState | undefined): HTMLElement {
   const dashboard = document.createElement('div');
@@ -33,46 +38,20 @@ export function renderDashboard(state: AppState | undefined): HTMLElement {
   }
 
   const projects = selectVisibleProjects(inventory, state.preferences);
-  const model = selectDashboard(projects);
   const offline = state.sync.status === 'offline';
   dashboard.append(createDashboardStats(projects));
 
-  const layout = document.createElement('div');
-  layout.className = 'dashboard-layout';
+  if (projects.length === 0) {
+    dashboard.append(createEmptyDashboard());
+    return dashboard;
+  }
 
-  const main = document.createElement('div');
-  main.className = 'dashboard-main';
-  main.append(
-    createProjectSection(
-      'L’établi',
-      'Les projets dont une activité a été détectée au cours des trente derniers jours.',
-      model.workbench,
-      'standard',
-      'Aucun projet actif visible n’attend sur l’établi.',
-      'Voir tout l’inventaire',
-      offline,
-    ),
-    createProjectSection(
-      'Prêts à partir',
-      'Des applications visibles disposant d’une adresse HTTPS directement exploitable.',
-      model.readyToLaunch,
-      'compact',
-      'Aucune autre application lançable n’est disponible dans cette sélection.',
-      undefined,
-      offline,
-    ),
-  );
-
-  const rail = document.createElement('aside');
-  rail.className = 'dashboard-rail';
-  rail.setAttribute('aria-label', 'Informations complémentaires du dashboard');
-  rail.append(
-    createNewArrivalPanel(model.newArrival, offline),
-    createActivityPanel(model.recentActivity),
-    createDistributionPanel(projects),
-  );
-
-  layout.append(main, rail);
-  dashboard.append(layout);
+  const grid = document.createElement('section');
+  grid.className = 'dashboard-project-grid';
+  grid.setAttribute('aria-label', 'Projets de La Grange');
+  for (const project of projects) {
+    grid.append(createProjectCard(project, { variant: 'standard', offline }));
+  }
+  dashboard.append(grid);
   return dashboard;
 }
