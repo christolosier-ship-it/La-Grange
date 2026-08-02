@@ -1,19 +1,31 @@
-import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
+import {
+  createCipheriv,
+  createDecipheriv,
+  createHash,
+  createHmac,
+  randomBytes,
+  timingSafeEqual,
+} from 'node:crypto';
 
 const SESSION_COOKIE = '__Host-lg_admin_session';
 const OAUTH_COOKIE = '__Host-lg_oauth_state';
 const SESSION_DURATION_SECONDS = 8 * 60 * 60;
 const OAUTH_DURATION_SECONDS = 10 * 60;
 
-interface SessionPayload {
+export interface SessionPayload {
   readonly login: string;
   readonly exp: number;
+  readonly githubToken?: string;
 }
 
 function secret(): string {
   const value = process.env.LA_GRANGE_SESSION_SECRET;
   if (!value || value.length < 32) throw new Error('LA_GRANGE_SESSION_SECRET must contain at least 32 characters.');
   return value;
+}
+
+function encryptionKey(): Buffer {
+  return createHash('sha256').update(secret(), 'utf8').digest();
 }
 
 function encode(value: string): string {
@@ -41,6 +53,34 @@ function verifySigned(value: string | undefined): string | undefined {
   const body = value.slice(0, separator);
   const signature = value.slice(separator + 1);
   return secureEqual(signature, sign(body)) ? body : undefined;
+}
+
+function encrypt(value: string): string {
+  const iv = randomBytes(12);
+  const cipher = createCipheriv('aes-256-gcm', encryptionKey(), iv);
+  const encrypted = Buffer.concat([cipher.update(value, 'utf8'), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  return `${iv.toString('base64url')}.${tag.toString('base64url')}.${encrypted.toString('base64url')}`;
+}
+
+function decrypt(value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  const [encodedIv, encodedTag, encodedContent, ...extra] = value.split('.');
+  if (!encodedIv || !encodedTag || !encodedContent || extra.length > 0) return undefined;
+  try {
+    const decipher = createDecipheriv(
+      'aes-256-gcm',
+      encryptionKey(),
+      Buffer.from(encodedIv, 'base64url'),
+    );
+    decipher.setAuthTag(Buffer.from(encodedTag, 'base64url'));
+    return Buffer.concat([
+      decipher.update(Buffer.from(encodedContent, 'base64url')),
+      decipher.final(),
+    ]).toString('utf8');
+  } catch {
+    return undefined;
+  }
 }
 
 function cookies(request: Request): Record<string, string> {
@@ -76,12 +116,13 @@ export function clearOAuthCookie(): string {
   return cookie(OAUTH_COOKIE, '', 0);
 }
 
-export function createSessionCookie(login: string): string {
+export function createSessionCookie(login: string, githubToken?: string): string {
   const payload: SessionPayload = {
     login,
     exp: Math.floor(Date.now() / 1000) + SESSION_DURATION_SECONDS,
+    ...(githubToken ? { githubToken } : {}),
   };
-  return cookie(SESSION_COOKIE, signed(encode(JSON.stringify(payload))), SESSION_DURATION_SECONDS);
+  return cookie(SESSION_COOKIE, encrypt(JSON.stringify(payload)), SESSION_DURATION_SECONDS);
 }
 
 export function clearSessionCookie(): string {
@@ -89,13 +130,20 @@ export function clearSessionCookie(): string {
 }
 
 export function readSession(request: Request): SessionPayload | undefined {
-  const encoded = verifySigned(cookies(request)[SESSION_COOKIE]);
-  if (!encoded) return undefined;
+  const decrypted = decrypt(cookies(request)[SESSION_COOKIE]);
+  if (!decrypted) return undefined;
   try {
-    const payload = JSON.parse(Buffer.from(encoded, 'base64url').toString('utf8')) as Partial<SessionPayload>;
+    const payload = JSON.parse(decrypted) as Partial<SessionPayload>;
     if (typeof payload.login !== 'string' || !payload.login.trim()) return undefined;
     if (typeof payload.exp !== 'number' || payload.exp <= Math.floor(Date.now() / 1000)) return undefined;
-    return { login: payload.login.trim(), exp: payload.exp };
+    if (payload.githubToken !== undefined && (
+      typeof payload.githubToken !== 'string' || !payload.githubToken.trim()
+    )) return undefined;
+    return {
+      login: payload.login.trim(),
+      exp: payload.exp,
+      ...(payload.githubToken ? { githubToken: payload.githubToken.trim() } : {}),
+    };
   } catch {
     return undefined;
   }
