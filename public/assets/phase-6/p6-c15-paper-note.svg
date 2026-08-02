@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800" role="img" aria-labelledby="title desc">
+  <title id="title">Papier de note vide</title>
+  <desc id="desc">Feuille de parchemin vieillie, sans texte, avec bords irréguliers et punaise décorative.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ead3a0"/><stop offset=".42" stop-color="#d7b879"/><stop offset="1" stop-color="#b98e4f"/></linearGradient>
+    <radialGradient id="light" cx=".46" cy=".36" r=".72"><stop offset="0" stop-color="#fff0c5" stop-opacity=".72"/><stop offset=".65" stop-color="#f0cf8f" stop-opacity=".18"/><stop offset="1" stop-color="#6d3d1d" stop-opacity=".18"/></radialGradient>
+    <radialGradient id="pin" cx=".35" cy=".28" r=".72"><stop offset="0" stop-color="#d7a85a"/><stop offset=".34" stop-color="#8a5429"/><stop offset=".72" stop-color="#3e2517"/><stop offset="1" stop-color="#1a100b"/></radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#120b07" flood-opacity=".58"/></filter>
+    <filter id="grain" x="-8%" y="-8%" width="116%" height="116%"><feTurbulence type="fractalNoise" baseFrequency=".014 .07" numOctaves="3" seed="17" result="n"/><feColorMatrix in="n" type="saturate" values="0" result="g"/><feComponentTransfer in="g" result="f"><feFuncA type="table" tableValues="0 .14"/></feComponentTransfer><feBlend in="SourceGraphic" in2="f" mode="multiply"/></filter>
+    <clipPath id="clip"><path d="M62 57 123 49 181 54 236 45 298 51 356 46 418 52 479 47 580 58 586 118 580 177 588 238 581 298 587 362 579 426 585 487 578 551 584 611 576 672 582 735 526 748 466 743 405 751 345 745 282 752 220 744 161 750 101 741 58 728 63 670 56 610 62 549 55 489 61 429 54 367 61 305 55 243 62 181 56 119Z"/></clipPath>
+  </defs>
+  <g filter="url(#shadow)">
+    <path d="M62 57 123 49 181 54 236 45 298 51 356 46 418 52 479 47 580 58 586 118 580 177 588 238 581 298 587 362 579 426 585 487 578 551 584 611 576 672 582 735 526 748 466 743 405 751 345 745 282 752 220 744 161 750 101 741 58 728 63 670 56 610 62 549 55 489 61 429 54 367 61 305 55 243 62 181 56 119Z" fill="url(#paper)" stroke="#5e351d" stroke-width="14" stroke-linejoin="round"/>
+    <g clip-path="url(#clip)" filter="url(#grain)">
+      <rect x="48" y="40" width="548" height="720" fill="url(#light)"/>
+      <path d="M84 121c96-21 183 7 272-8 77-13 132-8 188 7M77 677c112 14 197-7 287 5 72 10 132 2 179-12" fill="none" stroke="#7b4c27" stroke-opacity=".16" stroke-width="7"/>
+      <path d="M108 204c24-13 48-12 72 2m312 420c18-9 37-8 56 3M118 569c29 10 56 9 82-4" fill="none" stroke="#8a572e" stroke-opacity=".18" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="505" cy="175" r="38" fill="#6b3d20" opacity=".06"/><circle cx="151" cy="639" r="53" fill="#6b3d20" opacity=".05"/>
+      <path d="M58 292c22 4 35 14 45 31-19 9-33 20-44 37M581 468c-22 6-35 17-45 33 20 8 34 18 43 34" fill="#8c5c31" opacity=".12"/>
+    </g>
+    <path d="M75 73 122 62M560 74l-42-10M73 715l47 14M563 718l-45 13" stroke="#f4dbac" stroke-opacity=".34" stroke-width="5" stroke-linecap="round"/>
+    <g transform="translate(319 59)"><circle r="25" fill="#1d110b" opacity=".62"/><circle r="20" fill="url(#pin)" stroke="#2c180e" stroke-width="4"/><circle cx="-6" cy="-7" r="5" fill="#f0c779" opacity=".56"/><path d="M0 20v32" stroke="#50301d" stroke-width="7" stroke-linecap="round"/></g>
+  </g>
+</svg>

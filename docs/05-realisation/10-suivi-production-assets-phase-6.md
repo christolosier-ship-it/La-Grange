@@ -4,7 +4,7 @@
 
 **Ce fichier est la source de vérité unique du catalogue des assets de la Phase 6.**
 
-Dernière mise à jour : 2026-08-01.
+Dernière mise à jour : 2026-08-02.
 
 Il fixe les identifiants, noms finaux, formats, dimensions, transparences, usages, fallbacks, budgets, provenances, droits et statuts. En cas de conflit, le présent registre prime pour la production et l’intégration des assets.
 
@@ -160,7 +160,7 @@ Le contrôle bloque l’image ou le SVG, vérifie les déclarations, littéraux,
 | M02 | P0 | Fond d’atelier | `p6-m02-background-workshop-master-2048x1152.webp` | 2048 × 1152 | non | Direction approuvée du fond nocturne | `PROD-LG` | 2 Mo | [x] | [x] |
 | M03 | P0 | Cadre de carte vide | `p6-m03-project-card-frame-master-640x960.webp` | 640 × 960 | oui | Direction approuvée du cadre vertical | `PROD-LG` | 1,2 Mo | [x] | [x] |
 | M04 | P1 | Carte Gargotte complète | `p6-m04-gargotte-card-master-640x960.webp` | 640 × 960 | non | Référence de composition Gargotte, jamais intégrée telle quelle | `PROD-LG` | 1,2 Mo | [x] | [x] |
-| M05 | P0 | Panneau de bienvenue | `p6-m05-welcome-panel-master-640x960.webp` | 640 × 960 | oui | Direction approuvée du papier suspendu | `PROD-LG` | 1,2 Mo | [x] | [ ] |
+| M05 | P0 | Panneau de bienvenue | `p6-m05-welcome-panel-master-640x960.webp` | 640 × 960 | oui | Direction approuvée du papier suspendu | `PROD-LG` | 1,2 Mo | [x] | [x] |
 
 ## 1.2 Sources canoniques des projets
 
@@ -266,8 +266,8 @@ Les fallbacks runtime existants d’A09 à A12 restent opérationnels jusqu’à
 | C12 | P0 | `p6-c12-section-beam.svg` | SVG | viewBox 0 0 1600 120 | oui | Poutre de titre, texte et lien hors asset | `FB-BORDER` + `FB-LABEL` | `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
 | C13 | P0 | `p6-c13-panel-wood-secondary.svg` | SVG | viewBox 0 0 640 960 | oui | Panneau bois de navigation, filtre ou résumé | `FB-WOOD` + `FB-BORDER` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
 | C14 | P1 | `p6-c14-panel-dark-glass.svg` | SVG | viewBox 0 0 640 960 | oui | Panneau sombre pour activité et données secondaires | `FB-DARK` | `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
-| C15 | P1 | `p6-c15-paper-note.svg` | SVG | viewBox 0 0 640 800 | oui | Papier vide pour aide et état vide | `FB-PAPER` + `FB-BORDER` | `PROD-LG` | 30 Ko | [ ] | [ ] | [ ] |
-| C16 | P0 | `p6-c16-welcome-panel-640x960.webp` | WebP | 640 × 960 | oui | Panneau de bienvenue illustré, sans texte fonctionnel | C15 + `FB-WELCOME` | M05 + `PROD-LG` | 100 Ko | [ ] | [ ] | [ ] |
+| C15 | P1 | `p6-c15-paper-note.svg` | SVG | viewBox 0 0 640 800 | oui | Papier vide pour aide et état vide | `FB-PAPER` + `FB-BORDER` | `PROD-LG` | 30 Ko | [x] | [x] | [ ] |
+| C16 | P0 | `p6-c16-welcome-panel-640x960.webp` | WebP | 640 × 960 | oui | Panneau de bienvenue illustré, sans texte fonctionnel | C15 + `FB-WELCOME` | M05 + `PROD-LG` | 100 Ko | [x] | [x] | [ ] |
 | C17 | P1 | `p6-c17-empty-slot.svg` | SVG | viewBox 0 0 512 720 | oui | Emplacement vide non ambigu | `FB-DASHED` | `PROD-LG` | 20 Ko | [ ] | [ ] | [ ] |
 | C18 | P1 | `p6-c18-project-cover-fallback.svg` | SVG | viewBox 0 0 640 400 | oui | Fallback de couverture, initiales hors asset | `FB-PROJECT` | `PROD-LG` | 25 Ko | [x] | [x] | [ ] |
 | C19 | P2 | `p6-c19-modal-frame.svg` | SVG | viewBox 0 0 960 720 | oui | Décor périphérique de modale accessible | `FB-PANEL` | `PROD-LG` | 35 Ko | [ ] | [ ] | [ ] |
@@ -532,4 +532,4 @@ Un asset canonique Phase 6 cité par identifiant comme dépendance ou fallback r
 
 **Démarrer le lot d’intégration 6A : raccorder A01 à A04, B01 à B04, B07, B12, D01 à D05 et D21 à D26 ; intégrer B06 et C29 ; puis produire les planches G15a, G15b et G15c avant fusion.**
 
-En production d’assets, le prochain élément autorisé est M05 sous `docs/assets/phase-6/p6-m05-welcome-panel-master-640x960.webp`.
+En production d’assets, le prochain élément autorisé est C01 sous `public/assets/phase-6/p6-c01-project-card-frame-standard.svg`.
