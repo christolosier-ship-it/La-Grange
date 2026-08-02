@@ -135,7 +135,9 @@ function createFavoriteButton(project: Project, options: ProjectCardOptions): HT
     ? `Retirer ${project.displayName} des favoris`
     : `Ajouter ${project.displayName} aux favoris`);
   button.textContent = favorite ? '★' : '☆';
-  button.addEventListener('click', () => options.onToggleFavorite?.(project.id));
+  button.addEventListener('click', () => {
+    options.onToggleFavorite?.(project.id);
+  });
   return button;
 }
 
@@ -291,7 +293,9 @@ export function createProjectCard(project: Project, options: ProjectCardOptions 
   customize.className = 'project-card__action project-card__action--customize';
   customize.append(createIcon('p6-d43-icon-customize.svg'), accessibleLabel('Personnaliser le projet'));
   decorateTooltip(customize, 'Personnaliser le projet');
-  customize.addEventListener('click', () => openProjectCustomization(project));
+  customize.addEventListener('click', () => {
+    openProjectCustomization(project);
+  });
   actions.append(customize);
 
   card.append(headingPanel, visual, description, metadata, progress, actions);
