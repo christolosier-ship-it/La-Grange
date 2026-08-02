@@ -30,7 +30,9 @@ function apiUrl(githubUrl: string): string | undefined {
     const url = new URL(githubUrl);
     const parts = url.pathname.split('/').filter(Boolean);
     if (url.hostname !== 'github.com' || parts.length !== 2) return undefined;
-    return `https://api.github.com/repos/${encodeURIComponent(parts[0]!)}/${encodeURIComponent(parts[1]!)}/releases?per_page=20`;
+    const [owner, repository] = parts;
+    if (!owner || !repository) return undefined;
+    return `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repository)}/releases?per_page=20`;
   } catch {
     return undefined;
   }
