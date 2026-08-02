@@ -30,9 +30,12 @@
 - [x] version manuelle, release stable ou préversion ;
 - [x] dernière activité ;
 - [x] progression manuelle facultative ;
-- [x] GitHub, application, README, détail et personnalisation alignés ;
+- [x] titre centré sur la planche supérieure ;
+- [x] description, métadonnées et progression alignées sur les trois zones médianes ;
+- [x] GitHub, application, README, détail et personnalisation répartis sur cinq emplacements ;
+- [x] actions sans conteneur circulaire ;
 - [x] infobulles au survol et au focus ;
-- [x] personnalisation masquée hors administrateur.
+- [x] bouton de personnalisation visible, publication protégée côté serveur.
 
 ## Couverture administrateur
 
