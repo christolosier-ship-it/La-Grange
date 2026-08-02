@@ -1,7 +1,7 @@
 import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 
-const SESSION_COOKIE = 'lg_admin_session';
-const OAUTH_COOKIE = 'lg_oauth_state';
+const SESSION_COOKIE = '__Host-lg_admin_session';
+const OAUTH_COOKIE = '__Host-lg_oauth_state';
 const SESSION_DURATION_SECONDS = 8 * 60 * 60;
 const OAUTH_DURATION_SECONDS = 10 * 60;
 
@@ -48,7 +48,11 @@ function cookies(request: Request): Record<string, string> {
   for (const part of (request.headers.get('cookie') ?? '').split(';')) {
     const [rawName, ...rawValue] = part.trim().split('=');
     if (!rawName || rawValue.length === 0) continue;
-    result[rawName] = decodeURIComponent(rawValue.join('='));
+    try {
+      result[rawName] = decodeURIComponent(rawValue.join('='));
+    } catch {
+      continue;
+    }
   }
   return result;
 }
@@ -105,14 +109,18 @@ export function allowedAdmin(login: string): boolean {
   return logins.includes(login.trim().toLowerCase());
 }
 
-export function canonicalOrigin(request: Request): string {
+export function canonicalOrigin(): string {
   const configured = process.env.LA_GRANGE_PUBLIC_ORIGIN?.trim();
-  if (configured) return new URL(configured).origin;
-  return new URL(request.url).origin;
+  if (!configured) throw new Error('LA_GRANGE_PUBLIC_ORIGIN is required.');
+  const origin = new URL(configured);
+  if (origin.protocol !== 'https:' && !['localhost', '127.0.0.1'].includes(origin.hostname)) {
+    throw new Error('LA_GRANGE_PUBLIC_ORIGIN must use HTTPS.');
+  }
+  return origin.origin;
 }
 
 export function validWriteOrigin(request: Request): boolean {
   const origin = request.headers.get('origin');
-  return origin === canonicalOrigin(request)
+  return origin === canonicalOrigin()
     && request.headers.get('x-la-grange-csrf') === '1';
 }
