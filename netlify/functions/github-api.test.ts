@@ -53,7 +53,9 @@ describe('GitHub authenticated proxy', () => {
     expect(response.headers.get('etag')).toBe('repositories-v2');
     expect(response.headers.get('x-ratelimit-remaining')).toBe('4999');
     const [input, init] = fetcher.mock.calls[0] ?? [];
-    expect(String(input)).toBe(
+    expect(input).toBeInstanceOf(URL);
+    if (!(input instanceof URL)) throw new Error('Expected the proxy to fetch a URL instance.');
+    expect(input.href).toBe(
       'https://api.github.com/users/christolosier-ship-it/repos?sort=updated&direction=desc&per_page=100&type=owner',
     );
     const headers = new Headers(init?.headers);
