@@ -47,7 +47,12 @@ export function validateRepositoryName(value: string): string {
 }
 
 export function repositorySlug(value: string): string {
-  return validateRepositoryName(value).toLowerCase().replace(/[^a-z0-9]+/gu, '-').replace(/^-|-$/gu, '');
+  const slug = validateRepositoryName(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/gu, '-')
+    .replace(/^-|-$/gu, '');
+  if (!slug) throw new Error('Nom de dépôt inutilisable pour une couverture.');
+  return slug;
 }
 
 export function validatePatch(value: unknown): ValidatedPatch {
@@ -89,7 +94,7 @@ export function validatePatch(value: unknown): ValidatedPatch {
 }
 
 function uint24(buffer: Buffer, offset: number): number {
-  return buffer[offset]! | (buffer[offset + 1]! << 8) | (buffer[offset + 2]! << 16);
+  return buffer.readUIntLE(offset, 3);
 }
 
 function webpDimensions(bytes: Buffer): { readonly width: number; readonly height: number } {
