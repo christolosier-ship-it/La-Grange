@@ -11,7 +11,12 @@ function apiUrl(path: string): string {
 
 function applyState(state: AdminSessionState): AdminSessionState {
   currentState = state;
-  document.documentElement.dataset.adminAuthenticated = String(state.status === 'authenticated');
+  document.documentElement.dataset.adminAuthenticated = String(
+    state.status === 'authenticated' && state.admin,
+  );
+  document.documentElement.dataset.githubAuthenticated = String(
+    state.status === 'authenticated' && state.githubAuthenticated,
+  );
   window.dispatchEvent(new CustomEvent<AdminSessionState>(ADMIN_SESSION_EVENT, { detail: state }));
   return state;
 }
@@ -37,10 +42,25 @@ export async function initializeAdminSession(
         cache: 'no-store',
       });
       if (response.status === 401 || response.status === 404) return applyState({ status: 'anonymous' });
-      if (!response.ok) return applyState({ status: 'error', message: 'Administration indisponible.' });
-      const data = await response.json() as { authenticated?: unknown; login?: unknown };
-      if (data.authenticated === true && typeof data.login === 'string' && data.login.trim()) {
-        return applyState({ status: 'authenticated', login: data.login.trim() });
+      if (!response.ok) return applyState({ status: 'error', message: 'Connexion GitHub indisponible.' });
+      const data = await response.json() as {
+        authenticated?: unknown;
+        login?: unknown;
+        admin?: unknown;
+        githubAuthenticated?: unknown;
+      };
+      if (
+        data.authenticated === true
+        && typeof data.login === 'string'
+        && data.login.trim()
+        && data.githubAuthenticated === true
+      ) {
+        return applyState({
+          status: 'authenticated',
+          login: data.login.trim(),
+          admin: data.admin === true,
+          githubAuthenticated: true,
+        });
       }
       return applyState({ status: 'anonymous' });
     } catch {
@@ -71,12 +91,14 @@ function renderAdminControls(container: HTMLElement, state: AdminSessionState): 
   action.className = 'admin-session-action';
 
   if (state.status === 'loading') {
-    status.textContent = 'Administration : vérification…';
+    status.textContent = 'GitHub : vérification…';
     action.textContent = 'Connexion';
     if (action instanceof HTMLAnchorElement) action.href = adminLoginUrl();
     action.setAttribute('aria-disabled', 'true');
   } else if (state.status === 'authenticated') {
-    status.textContent = `Administrateur : ${state.login}`;
+    status.textContent = state.admin
+      ? `GitHub : ${state.login} · administrateur`
+      : `GitHub : ${state.login} · synchronisation authentifiée`;
     action.textContent = 'Se déconnecter';
     if (action instanceof HTMLButtonElement) {
       action.type = 'button';
@@ -88,8 +110,8 @@ function renderAdminControls(container: HTMLElement, state: AdminSessionState): 
   } else {
     status.textContent = state.status === 'error'
       ? state.message
-      : 'Administration : non connectée';
-    action.textContent = 'Se connecter';
+      : 'GitHub : non connecté';
+    action.textContent = 'Se connecter avec GitHub';
     if (action instanceof HTMLAnchorElement) action.href = adminLoginUrl();
   }
   container.replaceChildren(status, action);
