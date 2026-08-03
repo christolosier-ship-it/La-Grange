@@ -15,10 +15,10 @@ function userResponse(login = 'christolosier-ship-it'): Response {
 }
 
 describe('local GitHub session', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     localStorage.clear();
     sessionStorage.clear();
-    await logoutAdmin();
+    logoutAdmin();
   });
 
   it('keeps the token in session storage by default', async () => {
@@ -78,11 +78,11 @@ describe('local GitHub session', () => {
     });
   });
 
-  it('disconnects and clears every storage location', async () => {
+  it('disconnects and clears every storage location', () => {
     sessionStorage.setItem(SESSION_KEY, 'github_pat_session-token');
     localStorage.setItem(PERSISTENT_KEY, 'github_pat_persistent-token');
 
-    await logoutAdmin();
+    logoutAdmin();
 
     expect(sessionStorage.getItem(SESSION_KEY)).toBeNull();
     expect(localStorage.getItem(PERSISTENT_KEY)).toBeNull();
