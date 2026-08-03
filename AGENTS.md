@@ -2,7 +2,7 @@
 
 ## Mission
 
-Construire La Grange conformément à la documentation. L’application reste un hub personnel de consultation, enrichi d’une administration étroitement limitée à la personnalisation éditoriale de ses propres projets.
+Construire La Grange conformément à la documentation. L’application reste un hub personnel de consultation statique, déployé exclusivement sur GitHub Pages.
 
 ## Lecture obligatoire
 
@@ -18,15 +18,16 @@ Pour l’étape 6B, lire en plus :
 - `docs/03-technique/13-personnalisation-github.md` ;
 - `docs/05-realisation/11-phase-6b-dashboard-personnalisation.md` ;
 - `docs/05-realisation/10-suivi-production-assets-phase-6.md` ;
-- `docs/07-decisions/ADR-010-personnalisation-versionnee-via-github.md`.
+- `docs/07-decisions/ADR-011-github-pages-authentification-locale.md`.
 
 ## Interdictions
 
-- ne jamais placer un token GitHub dans le code, le bundle, une variable Vite publique ou le dépôt ;
-- ne pas permettre d’écriture sur un dépôt autre que `La-Grange` ;
-- ne pas écrire directement sur `main` depuis l’application ;
-- ne pas fusionner automatiquement une PR de personnalisation ;
-- ne pas modifier issues, releases, labels, branches de projets ou réglages de dépôt ;
+- ne jamais placer un token GitHub dans le code, le bundle, une variable Vite publique, le dépôt ou les journaux ;
+- ne jamais envoyer le jeton local vers une origine autre que `https://api.github.com` ;
+- ne pas demander de droit d’écriture pour la connexion de lecture ;
+- ne pas conserver le jeton dans IndexedDB ;
+- ne pas implémenter de Function, proxy ou dépendance Netlify sans nouvelle décision explicite du propriétaire ;
+- ne pas effectuer d’écriture GitHub depuis la PWA ;
 - ne pas inventer de donnée technique ;
 - ne pas calculer un avancement depuis les commits, issues ou branches ;
 - ne pas transformer La Grange en outil de pilotage ;
@@ -38,6 +39,17 @@ Pour l’étape 6B, lire en plus :
 - ne pas intégrer les SVG de la PR historique C01 à C10 comme direction finale ;
 - ne pas recréer des étapes futures de Phase 6 sans instruction du propriétaire.
 
+## Règles de connexion
+
+- consultation anonyme toujours disponible ;
+- jeton personnel finement contrôlé saisi par l’utilisateur ;
+- validation du jeton par `GET https://api.github.com/user` ;
+- `sessionStorage` par défaut ;
+- `localStorage` seulement après choix explicite ;
+- suppression complète à la déconnexion ou après réponse `401` ;
+- aucun droit administrateur déduit de la simple connexion ;
+- aucune écriture distante depuis le navigateur.
+
 ## Règles 6B
 
 - rail gauche fixe sur tablette paysage et bureau ;
@@ -48,21 +60,19 @@ Pour l’étape 6B, lire en plus :
 - cadre matériel en WebP, structure et contenu en HTML/CSS, icônes en SVG ;
 - cinq actions alignées : GitHub, application, README, détail, personnalisation ;
 - infobulles au survol et au focus ;
-- bouton de personnalisation invisible hors session administrateur ;
+- le bouton de personnalisation explique le parcours manuel GitHub ;
 - avancement manuel facultatif ;
 - version manuelle prioritaire, sinon dernière release GitHub ;
-- personnalisation enregistrée par PR automatique ;
 - tablette paysage et bureau sont les formats d’acceptation.
 
 ## Qualité
 
 Avant PR :
 
-- typecheck, lint, tests, build ;
-- tests de sécurité du chemin administrateur ;
-- contrôle de permissions de la GitHub App ;
-- validation des fichiers image ;
-- test de conflit de base Git ;
+- typecheck, lint, tests, smoke test et build ;
+- tests de stockage et suppression du jeton ;
+- test garantissant que le jeton n’est envoyé qu’à `api.github.com` ;
+- test du mode public sans jeton ;
 - test sans image, hors ligne, mouvement réduit et zoom 200 % ;
 - contrôle 1024, 1366, 1440 et 1920 px ;
 - audit du diff et de la documentation ;

@@ -1,0 +1,142 @@
+.github-connection-dialog {
+  width: min(92vw, 38rem);
+  max-height: min(90vh, 52rem);
+  padding: 0;
+  border: 1px solid rgba(232, 207, 170, 0.38);
+  border-radius: 0.85rem;
+  background: #21150f;
+  color: #f1dfc1;
+  box-shadow: 0 1.4rem 4rem rgba(0, 0, 0, 0.62);
+}
+
+.github-connection-dialog::backdrop {
+  background: rgba(10, 6, 4, 0.76);
+  backdrop-filter: blur(0.2rem);
+}
+
+.github-connection-form {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1.1rem, 4vw, 2rem);
+  overflow: auto;
+}
+
+.github-connection-form h2,
+.github-connection-form p,
+.github-connection-form ol {
+  margin: 0;
+}
+
+.github-connection-form ol {
+  display: grid;
+  gap: 0.45rem;
+  padding-left: 1.35rem;
+  color: #d8c09d;
+  line-height: 1.45;
+}
+
+.github-connection-link {
+  justify-self: start;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(232, 207, 170, 0.35);
+  border-radius: 0.45rem;
+  background: rgba(111, 70, 36, 0.34);
+  color: #ffe3b5;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.github-connection-link:hover,
+.github-connection-link:focus-visible {
+  background: rgba(151, 96, 49, 0.48);
+}
+
+.github-connection-field {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 700;
+}
+
+.github-connection-field input {
+  width: 100%;
+  min-height: 2.8rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(232, 207, 170, 0.4);
+  border-radius: 0.45rem;
+  background: rgba(8, 5, 3, 0.62);
+  color: #fff4df;
+  font: inherit;
+}
+
+.github-connection-field input:focus-visible {
+  outline: 2px solid #e2ae63;
+  outline-offset: 2px;
+}
+
+.github-connection-remember {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  cursor: pointer;
+}
+
+.github-connection-remember input {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.github-connection-warning {
+  padding: 0.75rem;
+  border-left: 0.25rem solid #c38c48;
+  background: rgba(131, 82, 38, 0.2);
+  color: #dec7a6;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.github-connection-status {
+  min-height: 1.4rem;
+  color: #d8c09d;
+}
+
+.github-connection-status[data-tone='danger'] {
+  color: #ffb8aa;
+}
+
+.github-connection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.65rem;
+}
+
+.github-connection-actions button {
+  min-height: 2.6rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(232, 207, 170, 0.34);
+  border-radius: 0.45rem;
+  background: rgba(47, 29, 18, 0.84);
+  color: #f1dfc1;
+  font: inherit;
+  cursor: pointer;
+}
+
+.github-connection-actions button.is-primary {
+  background: #815027;
+  color: #fff3df;
+  font-weight: 700;
+}
+
+.github-connection-actions button:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+@media (forced-colors: active) {
+  .github-connection-dialog,
+  .github-connection-link,
+  .github-connection-field input,
+  .github-connection-actions button {
+    border: 2px solid CanvasText;
+  }
+}

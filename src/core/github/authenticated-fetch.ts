@@ -1,7 +1,10 @@
-import { getAdminSessionState } from '../customization/admin-session';
+import {
+  getAdminSessionState,
+  getGitHubAccessToken,
+  invalidateAdminSession,
+} from '../customization/admin-session';
 
 const GITHUB_API_ORIGIN = 'https://api.github.com';
-const PROXY_PREFIX = '/api/github';
 
 function inputUrl(input: RequestInfo | URL): URL | undefined {
   try {
@@ -13,26 +16,34 @@ function inputUrl(input: RequestInfo | URL): URL | undefined {
 }
 
 export function hasAuthenticatedGitHubSession(): boolean {
-  return getAdminSessionState().status === 'authenticated';
+  return getAdminSessionState().status === 'authenticated'
+    && getGitHubAccessToken() !== undefined;
 }
 
-export function authenticatedGitHubFetch(
+export async function authenticatedGitHubFetch(
   input: RequestInfo | URL,
   init?: RequestInit,
 ): Promise<Response> {
   const target = inputUrl(input);
-  if (
-    typeof window !== 'undefined'
-    && hasAuthenticatedGitHubSession()
-    && target?.origin === GITHUB_API_ORIGIN
-  ) {
-    const proxy = new URL(`${PROXY_PREFIX}${target.pathname}${target.search}`, window.location.origin);
-    return globalThis.fetch(proxy, {
-      ...init,
-      mode: 'same-origin',
-      credentials: 'include',
-      referrerPolicy: 'no-referrer',
-    });
+  const token = getGitHubAccessToken();
+  if (!token || target?.origin !== GITHUB_API_ORIGIN) {
+    return globalThis.fetch(input, init);
   }
-  return globalThis.fetch(input, init);
+
+  const headers = new Headers(init?.headers);
+  if (!headers.has('Accept')) headers.set('Accept', 'application/vnd.github+json');
+  if (!headers.has('Authorization')) headers.set('Authorization', `Bearer ${token}`);
+  if (!headers.has('X-GitHub-Api-Version')) headers.set('X-GitHub-Api-Version', '2022-11-28');
+
+  const response = await globalThis.fetch(input, {
+    ...init,
+    headers,
+    mode: 'cors',
+    credentials: 'omit',
+    referrerPolicy: 'no-referrer',
+  });
+  if (response.status === 401) {
+    invalidateAdminSession('Le jeton GitHub a expiré ou a été révoqué.');
+  }
+  return response;
 }

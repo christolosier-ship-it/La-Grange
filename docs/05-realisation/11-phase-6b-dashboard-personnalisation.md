@@ -2,32 +2,25 @@
 
 ## Objectif
 
-Réaliser le dashboard validé le 2026-08-02 et permettre au propriétaire de personnaliser chaque carte par une pull request GitHub sécurisée.
+Réaliser le dashboard validé le 2026-08-02 et conserver une personnalisation éditoriale versionnée, compatible avec l’hébergement GitHub Pages choisi par le propriétaire.
 
 ## Statut d’implémentation
 
-L’implémentation est portée par la PR #33.
+Le dashboard 6B est implémenté. La tentative initiale de publication automatique reposait sur Netlify et a été retirée, car aucun compte ni backend tiers ne fait partie du projet.
 
-Sont réalisés dans le dépôt :
+Sont réalisés :
 
 - dashboard 6B et rail fixe ;
 - cartes C01 et bandeau C11 ;
 - styles, couleurs, version et avancement ;
-- modale de personnalisation ;
 - schéma versionné des overrides ;
-- recadrage et conversion des couvertures ;
-- session OAuth administrateur ;
-- Netlify Functions ;
-- écriture par GitHub App et création automatique de PR ;
-- tests, typecheck des Functions, cache PWA et documentation.
+- connexion GitHub facultative pour les lectures authentifiées ;
+- mode public cache-first ;
+- GitHub Actions et GitHub Pages ;
+- tests de sécurité du jeton local ;
+- documentation corrigée.
 
-Restent externes au code et nécessaires à l’activation réelle :
-
-- création ou configuration du client OAuth GitHub ;
-- création et installation de la GitHub App sur le seul dépôt `La-Grange` ;
-- configuration des variables Netlify ;
-- contrôle visuel sur les appareils cibles ;
-- test bout en bout de création d’une PR depuis le déploiement Netlify.
+La personnalisation automatique par branche et pull request n’est pas activée. Le cinquième bouton de carte explique le parcours manuel vers `project-overrides.json`.
 
 ## Noyau graphique retenu
 
@@ -39,28 +32,25 @@ La production graphique 6B est limitée à :
 - D07, lancement de l’application ;
 - D20, détail du projet ;
 - D42, accès au README ;
-- D43, personnalisation.
+- D43, accès à la personnalisation versionnée.
 
 Aucun master, bannière raster de style, fallback de couverture illustré, pack de projet ou planche PNG canonique n’est requis.
 
-## Lot serveur implémenté
+## Lot connexion
 
-- authentification OAuth GitHub ;
-- session HMAC sécurisée en cookie ;
-- Function de lecture et de fermeture de session ;
-- Function de publication ;
-- validation stricte du patch ;
-- contrôle réel du WebP, de ses dimensions et de son poids ;
-- chemin de couverture calculé côté serveur ;
-- création de branche, commit et PR ;
-- contrôle de la SHA de `main` ;
-- aucune écriture directe sur `main` ;
-- aucune fusion automatique.
+- mode public sans jeton ;
+- saisie locale d’un jeton personnel finement contrôlé ;
+- validation du compte GitHub ;
+- stockage dans la session par défaut ;
+- mémorisation persistante facultative ;
+- suppression à la déconnexion ou après rejet GitHub ;
+- envoi uniquement à `api.github.com` ;
+- aucune écriture distante.
 
-## Lot interface implémenté
+## Lot interface
 
 - rail gauche fixe à partir de la cible tablette ;
-- version et état administrateur dans le rail ;
+- version et état GitHub dans le rail ;
 - bandeau de statistiques C11 ;
 - grille continue directement sur le fond ;
 - carte habillée par C01 ;
@@ -69,23 +59,13 @@ Aucun master, bannière raster de style, fallback de couverture illustré, pack 
 - progression manuelle ;
 - version manuelle ou dernière release GitHub ;
 - neuf styles avec marqueur HTML/CSS et palettes ;
-- modale et aperçu ;
-- téléversement et recadrage de couverture ;
-- publication et feedback.
+- dialogue explicatif pour la personnalisation manuelle.
 
 ## Couvertures
 
-La couverture est facultative et gérée depuis la modale :
+Les couvertures restent facultatives et versionnées dans `public/assets/phase-6/covers/`. Leur préparation et leur publication sont réalisées lors d’une modification du dépôt, pas depuis la PWA.
 
-1. sélection PNG, JPEG ou WebP ;
-2. décodage dans le navigateur ;
-3. recadrage central 8:5 ;
-4. réencodage WebP 640 × 400 par canvas, ce qui retire les métadonnées sources ;
-5. validation serveur de la signature, du sous-format, des dimensions et du poids ;
-6. mise à jour des overrides ;
-7. création de PR.
-
-Sans couverture, la carte utilise un fallback HTML/CSS avec le nom ou les initiales du projet. Aucun logo séparé n’est requis.
+Sans couverture, la carte utilise un fallback HTML/CSS avec le nom ou les initiales du projet.
 
 ## Critères d’acceptation
 
@@ -94,20 +74,17 @@ Sans couverture, la carte utilise un fallback HTML/CSS avec le nom ou les initia
 - aucune boîte derrière la grille ;
 - cinq actions alignées ;
 - infobulles accessibles ;
-- même personnalisation après fusion sur plusieurs appareils ;
-- publication uniquement par PR ;
-- aucune fusion automatique ;
-- aucun secret client ;
-- couverture conforme ou fallback complet ;
+- GitHub Pages comme unique déploiement ;
+- mode public fonctionnel ;
+- lecture authentifiée facultative ;
+- aucun token dans le bundle ou IndexedDB ;
+- aucune écriture depuis le navigateur ;
+- personnalisation versionnée manuellement ;
 - hors ligne préservé ;
 - accessibilité et performances ;
 - validation sur tablette paysage, bureau, zoom 200 % et images bloquées ;
 - aucun P1 ou P2.
 
-## Validation
-
-Les preuves sont jointes à la PR d’intégration sous forme de captures et de résultats de tests. Elles ne deviennent pas des assets canoniques et ne sont pas ajoutées au registre.
-
 ## Sortie
 
-La Phase 6B est terminée après fusion de l’implémentation, contrôle de `main`, déploiement, test multi-appareil, test de publication réel et résolution de tous les P1/P2. Elle ne déclenche pas automatiquement la Phase 7.
+La Phase 6B est terminée après fusion de l’implémentation corrective, contrôle de `main`, déploiement GitHub Pages, test multi-appareil et résolution de tous les P1/P2. Elle ne déclenche pas automatiquement la Phase 7.

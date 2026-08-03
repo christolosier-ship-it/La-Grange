@@ -30,7 +30,8 @@ Un conflit doit être corrigé avant implémentation.
 
 - Phases 1 à 5 : implémentées ;
 - Phase 6A : fondations visuelles intégrées ;
-- Phase 6B : dashboard et personnalisation définis ;
+- Phase 6B : dashboard et cartes implémentés ;
+- publication automatique des personnalisations : retirée au profit d’un parcours manuel compatible GitHub Pages ;
 - suite de Phase 6 : volontairement non définie ;
 - Phase 7 : conservée pour l’audit et la release.
 
@@ -58,35 +59,25 @@ Lire dans cet ordre :
 16. [`05-realisation/08-phase-6-polissage-visuel.md`](05-realisation/08-phase-6-polissage-visuel.md) ;
 17. [`05-realisation/10-suivi-production-assets-phase-6.md`](05-realisation/10-suivi-production-assets-phase-6.md) ;
 18. [`05-realisation/11-phase-6b-dashboard-personnalisation.md`](05-realisation/11-phase-6b-dashboard-personnalisation.md) ;
-19. [`06-deploiement/07-deploiement-netlify.md`](06-deploiement/07-deploiement-netlify.md) ;
+19. [`06-deploiement/07-deploiement-github-pages.md`](06-deploiement/07-deploiement-github-pages.md) ;
 20. [`07-decisions/ADR-009-github-source-verite-production-assets.md`](07-decisions/ADR-009-github-source-verite-production-assets.md) ;
 21. [`07-decisions/ADR-010-personnalisation-versionnee-via-github.md`](07-decisions/ADR-010-personnalisation-versionnee-via-github.md) ;
-22. [`08-generation-ia/13-protocole-production-assets-phase-6.md`](08-generation-ia/13-protocole-production-assets-phase-6.md).
+22. [`07-decisions/ADR-011-github-pages-authentification-locale.md`](07-decisions/ADR-011-github-pages-authentification-locale.md) ;
+23. [`08-generation-ia/13-protocole-production-assets-phase-6.md`](08-generation-ia/13-protocole-production-assets-phase-6.md).
 
 Référence visuelle :
 
 [`assets/phase-6/reference-dashboard-grange.webp`](assets/phase-6/reference-dashboard-grange.webp)
 
-## Gouvernance des assets
+## Gouvernance de la connexion GitHub
 
-- registre unique ;
-- A/R pour les sources ;
-- P/V/I pour les assets ;
-- fichiers canoniques à plat ;
-- prototypes hérités gelés ;
-- un fichier à la fois ;
-- planches après intégration ;
-- aucune production pour une étape future non cadrée.
-
-## Gouvernance de l’administration
-
-- GitHub App limitée à `La-Grange` ;
-- secret serveur ;
-- compte admin autorisé ;
-- liste blanche de fichiers ;
-- branche et PR ;
-- aucune fusion automatique ;
-- même configuration sur tous les appareils après déploiement.
+- GitHub Pages uniquement ;
+- mode public par défaut ;
+- jeton personnel finement contrôlé facultatif ;
+- stockage de session par défaut ;
+- aucune écriture distante ;
+- aucun backend tiers ;
+- personnalisation manuelle et versionnée dans le dépôt.
 
 ## Phase 7
 
