@@ -37,12 +37,16 @@ export function openProjectCustomization(project: Project): void {
   close.type = 'button';
   close.className = 'is-primary';
   close.textContent = 'Fermer';
-  close.addEventListener('click', () => dialog.close());
+  close.addEventListener('click', () => {
+    dialog.close();
+  });
   actions.append(close);
 
   container.append(heading, explanation, consequence, link, actions);
   dialog.append(container);
-  dialog.addEventListener('close', () => dialog.remove(), { once: true });
+  dialog.addEventListener('close', () => {
+    dialog.remove();
+  }, { once: true });
   document.body.append(dialog);
   dialog.showModal();
   close.focus();
