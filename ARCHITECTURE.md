@@ -2,100 +2,83 @@
 
 ## Résumé
 
-La Grange combine trois chemins strictement séparés :
+La Grange est une PWA statique déployée sur GitHub Pages. Elle possède deux modes de consultation :
 
-1. **consultation publique** : PWA cache-first lisant les dépôts publics GitHub sans authentification ;
-2. **consultation connectée** : les mêmes lectures passent par un proxy Netlify authentifié avec la session OAuth GitHub ;
-3. **personnalisation administrateur** : service serveur minimal créant une pull request dans le seul dépôt `La-Grange`.
+1. **mode public** : lectures directes de l’API GitHub sans authentification ;
+2. **mode connecté** : les mêmes lectures directes reçoivent un jeton personnel fourni localement par l’utilisateur.
 
 ```text
-Visiteur anonyme ──> API GitHub publique ──> GitHubClient
+Mode public ────────────────────────────────┐
+                                             │
+Jeton local facultatif ─> Authorization ─────┼─> API GitHub
+                                             │
+                                             v
+GitHubClient ─> RepositoryMapper ─> ProjectEnricher
+                                       │
+project-overrides.json ────────────────┘
+                                       │
+                                SyncService
+                               │          │
+                          IndexedDB     Store
+                                       │
+                                      Vues
 
-Utilisateur connecté ──> proxy Netlify /api/github/* ──> API GitHub authentifiée
-                               │
-                               └─ session OAuth chiffrée en cookie HttpOnly
-
-GitHubClient ──> RepositoryMapper ──> ProjectEnricher
-                                         │
-project-overrides.json ──────────────────┘
-                                         │
-                                  SyncService
-                                 │          │
-                            IndexedDB     Store
-                                         │
-                                        Vues
-
-Modale admin ──> API Netlify same-origin ──> GitHub App limitée à La-Grange
-                                      ├─ valide JSON et images
-                                      ├─ crée branche et commit
-                                      └─ ouvre une pull request
+main ─> GitHub Actions ─> build Vite ─> GitHub Pages
 ```
+
+Aucune Function, aucun proxy applicatif et aucun service Netlify ne participent à l’exécution.
 
 ## Frontières
 
-- les données techniques des projets restent issues de GitHub ;
-- les données éditoriales sont issues des overrides versionnés ;
-- la consultation anonyme reste disponible sans compte ;
-- après connexion OAuth, les lectures GitHub utilisent le quota authentifié du compte connecté ;
-- le jeton OAuth est chiffré dans une session `HttpOnly` et n’est jamais accessible au JavaScript client ;
-- le proxy de lecture n’accepte qu’une liste blanche de routes GitHub en `GET` ;
-- le rôle administrateur reste distinct de la simple connexion GitHub ;
-- le navigateur ne reçoit jamais le secret de la GitHub App ;
-- le service d’écriture ne peut cibler qu’une liste blanche de chemins dans `La-Grange` ;
-- aucune écriture n’est effectuée sur les dépôts présentés ;
-- la fusion de la PR reste une action explicite sur GitHub.
+- les données techniques des projets viennent de GitHub ;
+- les données éditoriales viennent des overrides versionnés ;
+- le mode public reste disponible sans compte ;
+- le jeton facultatif n’est jamais intégré au code, au bundle ou au dépôt ;
+- le jeton est envoyé uniquement à `https://api.github.com` ;
+- le stockage par défaut est `sessionStorage` ;
+- `localStorage` est utilisé uniquement après choix explicite « Mémoriser sur cet appareil » ;
+- le jeton n’est jamais écrit dans IndexedDB ou dans les diagnostics ;
+- aucune requête d’écriture GitHub n’est produite par l’application ;
+- la personnalisation partagée reste gérée manuellement dans `project-overrides.json`.
 
 ## Shell 6B
 
-- fond général fixe déjà implémenté ;
-- rail gauche fixe contenant marque, navigation, synchronisation, version et état de connexion GitHub ;
+- fond général fixe ;
+- rail gauche fixe contenant marque, navigation, synchronisation, version et état GitHub ;
 - zone principale avec défilement vertical indépendant ;
 - bandeau de statistiques WebP avec données HTML ;
-- grille de cartes directement sur le fond, sans panneau intermédiaire ;
+- grille de cartes directement sur le fond ;
 - aucun rail droit sur le dashboard.
 
 ## Connexion GitHub
 
-La connexion est déclenchée depuis l’application par le bouton « Se connecter avec GitHub » :
+Le bouton **Connecter GitHub** ouvre une boîte de dialogue locale :
 
-1. redirection vers l’autorisation OAuth officielle GitHub ;
-2. retour sur `/api/admin/callback` ;
-3. vérification de l’identité GitHub ;
-4. chiffrement du jeton OAuth dans une session à durée limitée ;
-5. relance immédiate de la synchronisation ;
-6. routage automatique des lectures vers `/api/github/*` ;
-7. destruction de la session à la déconnexion.
+1. l’utilisateur crée un jeton personnel finement contrôlé sur GitHub ;
+2. il le colle dans La Grange ;
+3. La Grange vérifie le jeton avec `GET /user` ;
+4. le jeton est conservé dans la session, ou sur l’appareil si l’utilisateur le demande ;
+5. une synchronisation forcée utilise les lectures authentifiées ;
+6. la déconnexion supprime toutes les copies locales du jeton.
 
-Le proxy autorise seulement les lectures nécessaires à La Grange : inventaire des dépôts, commits récents, releases et README. Les appels anonymes continuent à joindre directement l’API publique GitHub.
+Le wrapper réseau ajoute l’en-tête `Authorization` uniquement lorsque l’origine cible est exactement `https://api.github.com`. Toute autre origine reçoit la requête sans jeton.
 
 ## Personnalisation
 
-La modale édite une proposition de configuration. Après validation :
+Les styles, palettes, versions manuelles, progressions et couvertures restent versionnés dans le dépôt `La-Grange`. Depuis GitHub Pages, l’application ne peut pas protéger un jeton doté de droits d’écriture. La création automatique de branches et de pull requests est donc désactivée.
 
-1. l’image est recadrée et vérifiée ;
-2. l’override est validé ;
-3. le service relit la tête de `main` ;
-4. une branche dédiée est créée ;
-5. les fichiers sont commités ;
-6. une PR est ouverte ;
-7. l’interface affiche le lien et l’état de publication ;
-8. le rendu multi-appareil devient effectif après fusion, déploiement et renouvellement du cache.
-
-La capacité d’écriture exige en plus que le login connecté appartienne à la liste blanche administrateur. Elle utilise toujours la GitHub App dédiée et non le jeton OAuth de lecture.
+Le cinquième bouton de carte conserve l’équilibre du composant et explique le parcours manuel vers `public/data/project-overrides.json`.
 
 ## Hébergement
 
-Le déploiement avec connexion et administration utilise Netlify afin de servir l’interface, le proxy GitHub et les Functions sur la même origine. GitHub Pages peut rester un fallback temporaire de consultation anonyme pendant la transition, mais ne porte ni la connexion authentifiée ni le chemin d’écriture.
+GitHub Pages est la cible canonique unique. Le workflow `.github/workflows/pages.yml` exécute typecheck, lint, tests, smoke test, build puis déploie `dist`.
 
 ## Contraintes
 
-- permissions minimales de la GitHub App ;
-- aucun PAT dans le navigateur ;
-- jeton OAuth chiffré et limité à la durée de session ;
-- proxy GitHub en lecture seule et à routes explicitement autorisées ;
-- aucune écriture directe sur `main` ;
+- aucun token codé en dur ou partagé dans le bundle ;
+- jeton utilisateur limité aux lectures nécessaires ;
+- aucune écriture distante depuis la PWA ;
 - aucune fusion automatique ;
-- CSP, CSRF, validation d’origine et limitation de débit ;
-- upload limité à PNG, JPEG et WebP, vérifié par signature réelle ;
-- aucune donnée sensible dans IndexedDB ou les diagnostics ;
-- fonctionnement de consultation conservé lorsque le service connecté est indisponible.
+- aucune donnée sensible dans IndexedDB ;
+- mode public et cache local conservés si le jeton est absent ou révoqué ;
+- l’interface ne doit jamais prétendre qu’une personnalisation a été publiée automatiquement.
