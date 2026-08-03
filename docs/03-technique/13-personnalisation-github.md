@@ -2,62 +2,57 @@
 
 ## Objectif
 
-Permettre à l’utilisateur de se connecter à GitHub directement depuis La Grange afin d’utiliser une synchronisation authentifiée, tout en réservant la personnalisation éditoriale aux comptes administrateurs autorisés.
+Permettre une synchronisation GitHub authentifiée depuis la PWA statique tout en conservant GitHub Pages comme unique hébergement. La personnalisation éditoriale reste versionnée dans le dépôt, mais n’est plus publiée automatiquement depuis l’application.
 
 ## Principes validés
 
-- bouton « Se connecter avec GitHub » dans l’application ;
-- authentification réalisée sur le domaine officiel GitHub ;
-- retour automatique dans La Grange après autorisation ;
-- session GitHub limitée dans le temps et stockée en cookie `HttpOnly` chiffré ;
-- aucune clé ni aucun jeton lisible par le JavaScript client ;
-- lectures GitHub authentifiées via un proxy Netlify en liste blanche ;
-- consultation publique anonyme conservée ;
-- rôle administrateur séparé de la simple connexion GitHub ;
-- modale ouverte depuis le cinquième bouton de la carte ;
-- cinquième bouton toujours visible afin de conserver les cinq emplacements du skin ;
-- création d’une PR réservée à une session administrateur authentifiée ;
-- GitHub App limitée au dépôt `La-Grange` pour les écritures ;
-- Netlify Functions pour les opérations privilégiées ;
-- toute modification passe par une PR automatique ;
-- fusion manuelle ;
-- publication effective après déploiement et mise à jour PWA.
+- consultation publique disponible sans connexion ;
+- bouton **Connecter GitHub** dans le rail ;
+- jeton personnel finement contrôlé créé par l’utilisateur ;
+- aucune permission supplémentaire nécessaire pour lire les dépôts publics ;
+- validation du jeton par l’API GitHub ;
+- stockage de session par défaut ;
+- mémorisation sur l’appareil uniquement sur choix explicite ;
+- aucune copie dans IndexedDB ;
+- ajout de l’en-tête `Authorization` uniquement pour `https://api.github.com` ;
+- aucune Function, aucun proxy et aucune dépendance Netlify ;
+- aucune écriture GitHub depuis la PWA ;
+- personnalisation partagée conservée dans `project-overrides.json`.
 
 ## Flux de connexion
 
 ```text
-Se connecter avec GitHub
-→ autorisation sur github.com
-→ callback Netlify
-→ lecture de l’identité GitHub
-→ création d’une session chiffrée
-→ retour dans La Grange
+Connecter GitHub
+→ créer un jeton finement contrôlé sur github.com
+→ coller le jeton dans La Grange
+→ GET https://api.github.com/user
+→ stockage local selon le choix de l’utilisateur
 → synchronisation forcée
 → lectures GitHub authentifiées
 ```
 
-La session expose uniquement au client :
+La déconnexion supprime les copies de `sessionStorage` et `localStorage`. Une réponse GitHub `401` invalide également la session locale.
 
-- l’état connecté ou non connecté ;
-- le login GitHub ;
-- le statut administrateur.
+## Lectures authentifiées
 
-Le jeton OAuth reste contenu dans le cookie chiffré `HttpOnly`. Il n’est jamais renvoyé par `/api/admin/session`, écrit dans IndexedDB ou placé dans les diagnostics.
+Le wrapper réseau couvre :
 
-## Proxy de lecture GitHub
-
-Le proxy `/api/github/*` n’accepte que des requêtes `GET` sur les ressources nécessaires :
-
-- liste des dépôts publics d’un profil ;
-- commits récents d’un dépôt ;
-- liste et dernière release ;
+- inventaire des dépôts publics ;
+- commits récents ;
+- releases ;
 - README.
 
-Les routes, segments et paramètres de requête sont validés par liste blanche avant tout appel à GitHub. Les en-têtes de quota, d’ETag et de pagination utiles sont retransmis au navigateur.
+Les URL restent celles de l’API GitHub. Les ETag peuvent être envoyés avec les requêtes authentifiées. Le jeton n’est jamais ajouté à une requête vers une autre origine.
 
-En l’absence de session, les clients continuent à lire directement l’API GitHub publique. Après connexion, ils basculent automatiquement vers le proxy same-origin et relancent la synchronisation.
+## Personnalisation
 
-## Champs de la modale
+Le cinquième bouton de la carte reste visible afin de conserver le contrat graphique. Il ouvre une explication et un lien vers :
+
+```text
+public/data/project-overrides.json
+```
+
+Les champs versionnés restent :
 
 - couverture ;
 - style ;
@@ -67,83 +62,31 @@ En l’absence de session, les clients continuent à lire directement l’API Gi
 - avancement manuel ;
 - version manuelle.
 
-La modale montre un aperçu fidèle de la carte.
+La modification est réalisée sur GitHub ou par une intervention de développement, puis suit le cycle normal commit, revue, fusion et déploiement Pages.
 
-## Styles
+## Pourquoi la PR automatique est désactivée
 
-Neuf valeurs :
-
-| Clé | Libellé |
-|---|---|
-| `lifestyle` | Style de vie |
-| `games` | Jeux |
-| `productivity` | Productivité |
-| `health` | Santé |
-| `education` | Éducation |
-| `nature` | Nature |
-| `creation` | Création |
-| `technical` | Technique et métier |
-| `uncategorized` | Inclassable |
-
-Chaque style fournit une icône locale, un marqueur HTML/CSS et trois couleurs par défaut. Aucune bannière raster dédiée n’est utilisée.
-
-## Traitement de couverture
-
-1. sélection PNG, JPEG ou WebP ;
-2. aperçu et recadrage 8:5 ;
-3. envoi sécurisé ;
-4. validation des octets et dimensions ;
-5. suppression des métadonnées ;
-6. encodage WebP 640 × 400 ;
-7. contrôle du budget ;
-8. écriture sous le nom canonique ;
-9. remplacement de la référence dans les overrides.
-
-## Cycle de publication
-
-```text
-Enregistrer et publier
-→ validation
-→ vérification du rôle administrateur
-→ branche créée
-→ commit créé
-→ PR ouverte
-→ lien affiché
-→ fusion manuelle
-→ déploiement
-→ mise à jour disponible
-```
-
-Le formulaire reste disponible après un échec. Aucune fausse confirmation « publié » n’est affichée avant le déploiement.
+Une application statique ne possède pas de coffre serveur. Un jeton capable de créer une branche et une pull request serait accessible au JavaScript et augmenterait fortement le risque. La Grange n’accepte donc qu’un jeton de lecture pour améliorer le quota de synchronisation.
 
 ## États UX
 
-- session GitHub en vérification ;
-- non connecté ;
-- authentification en cours ;
+- vérification locale ;
+- mode public ;
+- saisie du jeton ;
 - compte GitHub connecté ;
-- compte GitHub connecté avec droits administrateur ;
-- validation locale ;
-- upload ;
-- création de PR ;
-- PR créée ;
-- conflit avec `main` ;
-- session expirée ;
+- jeton rejeté ou révoqué ;
 - limite GitHub atteinte ;
-- erreur récupérable ;
+- erreur réseau récupérable ;
 - hors ligne.
 
 ## Critères d’acceptation
 
-- un visiteur peut consulter les données publiques sans connexion ;
-- un utilisateur peut lancer la connexion depuis La Grange et revenir automatiquement dans l’application ;
-- la synchronisation suivante utilise la session authentifiée ;
-- le jeton OAuth n’est jamais accessible au code client ;
-- un compte connecté non administrateur ne peut pas créer de PR ;
-- un administrateur voit les cinq actions et peut ouvrir la modale ;
-- seuls les fichiers autorisés changent ;
-- une PR est créée sans fusion ;
-- une couverture non conforme est refusée ;
-- un conflit ne détruit aucune modification ;
-- la déconnexion détruit la session ;
-- après fusion et déploiement, tous les appareils affichent la même personnalisation.
+- la PWA fonctionne entièrement sur GitHub Pages ;
+- le mode public reste opérationnel ;
+- un jeton valide active les lectures authentifiées ;
+- le jeton n’est envoyé qu’à `api.github.com` ;
+- le stockage persistant exige un choix explicite ;
+- la déconnexion et un rejet `401` suppriment le jeton ;
+- aucune route `/api/*` locale n’est appelée ;
+- aucune écriture GitHub n’est effectuée ;
+- la personnalisation manuelle reste versionnée et commune après déploiement.
