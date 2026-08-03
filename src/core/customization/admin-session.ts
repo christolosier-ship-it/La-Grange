@@ -194,7 +194,7 @@ export async function initializeAdminSession(
   return activeRequest;
 }
 
-export async function logoutAdmin(): Promise<void> {
+export function logoutAdmin(): void {
   currentToken = undefined;
   clearStoredToken();
   applyState({ status: 'anonymous' });
@@ -279,7 +279,9 @@ function createConnectionDialog(): HTMLDialogElement {
   const cancel = document.createElement('button');
   cancel.type = 'button';
   cancel.textContent = 'Annuler';
-  cancel.addEventListener('click', () => dialog.close());
+  cancel.addEventListener('click', () => {
+    dialog.close();
+  });
   const submit = document.createElement('button');
   submit.type = 'submit';
   submit.className = 'is-primary';
@@ -321,7 +323,9 @@ function createConnectionDialog(): HTMLDialogElement {
     actions,
   );
   dialog.append(form);
-  dialog.addEventListener('close', () => dialog.remove(), { once: true });
+  dialog.addEventListener('close', () => {
+    dialog.remove();
+  }, { once: true });
   document.body.append(dialog);
   return dialog;
 }
@@ -342,7 +346,7 @@ function renderAdminControls(container: HTMLElement, state: AdminSessionState): 
     action.textContent = 'Se déconnecter';
     action.addEventListener('click', () => {
       action.disabled = true;
-      void logoutAdmin();
+      logoutAdmin();
     });
   } else {
     status.textContent = state.status === 'error'
