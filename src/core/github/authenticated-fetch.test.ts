@@ -16,8 +16,8 @@ function githubUser(login = 'christolosier-ship-it'): Response {
 }
 
 describe('authenticatedGitHubFetch', () => {
-  beforeEach(async () => {
-    await logoutAdmin();
+  beforeEach(() => {
+    logoutAdmin();
   });
 
   afterEach(() => {
