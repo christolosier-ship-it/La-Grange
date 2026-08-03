@@ -61,7 +61,10 @@ describe('createProjectCard', () => {
     expect(projectCardStyles).toContain('grid-template-rows: 16% 43% 11% 8% 10% 12%;');
     expect(projectCardStyles).toContain('grid-template-columns: repeat(5, minmax(0, 1fr));');
     expect(projectCardStyles).toMatch(/\.project-card__title\s*\{[\s\S]*?text-align:\s*center;/u);
+    expect(projectCardStyles).toMatch(/\.project-card__metadata\s*\{[\s\S]*?transform:\s*translateY\(-0\.28rem\);/u);
+    expect(projectCardStyles).toMatch(/\.project-card__actions\s*\{[\s\S]*?transform:\s*translateY\(-0\.18rem\);/u);
     expect(projectCardStyles).toMatch(/\.project-card__action\s*\{[\s\S]*?border:\s*0;[\s\S]*?background:\s*transparent;/u);
+    expect(projectCardStyles).toMatch(/\.project-card__action img\s*\{[\s\S]*?width:\s*2\.5rem;[\s\S]*?height:\s*2\.5rem;/u);
     expect(projectCardStyles).not.toMatch(/\.project-card__action--customize\s*\{\s*display:\s*none;/u);
   });
 
