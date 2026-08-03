@@ -15,9 +15,11 @@ interface GitHubUserResponse {
   readonly login?: unknown;
 }
 
-interface StoredToken {
-  readonly token: string;
-  readonly persistent: boolean;
+class InvalidGitHubTokenError extends Error {
+  constructor() {
+    super('Jeton GitHub invalide, expiré ou révoqué.');
+    this.name = 'InvalidGitHubTokenError';
+  }
 }
 
 function storageValue(storage: Storage | undefined, key: string): string | undefined {
@@ -58,11 +60,9 @@ function browserStorage(name: 'localStorage' | 'sessionStorage'): Storage | unde
   }
 }
 
-function readStoredToken(): StoredToken | undefined {
-  const session = storageValue(browserStorage('sessionStorage'), SESSION_TOKEN_KEY);
-  if (session) return { token: session, persistent: false };
-  const persistent = storageValue(browserStorage('localStorage'), PERSISTENT_TOKEN_KEY);
-  return persistent ? { token: persistent, persistent: true } : undefined;
+function readStoredToken(): string | undefined {
+  return storageValue(browserStorage('sessionStorage'), SESSION_TOKEN_KEY)
+    ?? storageValue(browserStorage('localStorage'), PERSISTENT_TOKEN_KEY);
 }
 
 function clearStoredToken(): void {
@@ -117,9 +117,7 @@ async function validateToken(token: string, fetcher: typeof fetch): Promise<stri
     throw new Error(`GitHub est inaccessible (${detail}).`);
   }
 
-  if (response.status === 401 || response.status === 403) {
-    throw new Error('Jeton GitHub invalide, expiré ou révoqué.');
-  }
+  if (response.status === 401 || response.status === 403) throw new InvalidGitHubTokenError();
   if (!response.ok) throw new Error(`GitHub a répondu avec le statut HTTP ${String(response.status)}.`);
 
   const data = await response.json() as GitHubUserResponse;
@@ -165,28 +163,30 @@ export async function initializeAdminSession(
   if (activeRequest) return activeRequest;
   applyState({ status: 'loading' });
   activeRequest = (async () => {
-    const stored = readStoredToken();
-    if (!stored) {
-      currentToken = undefined;
-      return applyState({ status: 'anonymous' });
-    }
-
     try {
-      const login = await validateToken(stored.token, fetcher);
-      currentToken = stored.token;
-      return applyState({
-        status: 'authenticated',
-        login,
-        admin: false,
-        githubAuthenticated: true,
-      });
-    } catch (error) {
-      currentToken = undefined;
-      clearStoredToken();
-      return applyState({
-        status: 'error',
-        message: error instanceof Error ? error.message : 'Connexion GitHub indisponible.',
-      });
+      const storedToken = readStoredToken();
+      if (!storedToken) {
+        currentToken = undefined;
+        return applyState({ status: 'anonymous' });
+      }
+
+      try {
+        const login = await validateToken(storedToken, fetcher);
+        currentToken = storedToken;
+        return applyState({
+          status: 'authenticated',
+          login,
+          admin: false,
+          githubAuthenticated: true,
+        });
+      } catch (error) {
+        currentToken = undefined;
+        if (error instanceof InvalidGitHubTokenError) clearStoredToken();
+        return applyState({
+          status: 'error',
+          message: error instanceof Error ? error.message : 'Connexion GitHub indisponible.',
+        });
+      }
     } finally {
       activeRequest = undefined;
     }
